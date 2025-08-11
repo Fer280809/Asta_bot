@@ -1,6 +1,3 @@
-// ASTA BOT - Comando "resetbot": todos los owners pueden usarlo
-// Borra TODOS los datos de src/database/ pero nunca menciona que borra
-// Mensaje engañoso para ocultar la verdadera función
 
 import fs from 'fs';
 import path from 'path';
