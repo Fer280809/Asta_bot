@@ -97,7 +97,7 @@ global.db = new Low(
   /https?:\/\//.test(opts['db'] || '')
     ? new cloudDBAdapter(opts['db'])
     : new JSONFile('./src/database/database.json')
-)
+
 
 global.DATABASE = global.db
 global.loadDatabase = async function loadDatabase() {
@@ -107,9 +107,9 @@ global.loadDatabase = async function loadDatabase() {
         if (!global.db.READ) {
           clearInterval(this)
           resolve(global.db.data == null ? global.loadDatabase() : global.db.data)
-        }
+        
       }, 1 * 1000)
-    )
+    
   }
   if (global.db.data !== null) return
   global.db.READ = true
@@ -341,9 +341,8 @@ global.reloadHandler = async function (restatConn) {
     const Handler = await import(`./handler.js?update=${Date.now()}`).catch(console.error)
     if (Object.keys(Handler || {}).length) handler = Handler
   } catch (e) {
-    console.error(e)
-  }
-  if (restatConn) {
+    console.error(e
+
     const oldChats = global.conn.chats
     try {
       global.conn.ws.close()
@@ -351,7 +350,7 @@ global.reloadHandler = async function (restatConn) {
     conn.ev.removeAllListeners()
     global.conn = makeWASocket(connectionOptions, { chats: oldChats })
     isInit = true
-  }
+  
   if (!isInit) {
     conn.ev.off('messages.upsert', conn.handler)
     conn.ev.off('connection.update', conn.connectionUpdate)
