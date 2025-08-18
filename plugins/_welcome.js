@@ -22,6 +22,6 @@ export async function before(m, { conn, participants, groupMetadata }) {
   }
   
   if (chat.welcome && (m.messageStubType == 28 || m.messageStubType == 32)) {
-    let bye = `* *╭━〔👑 *ASTA-BOT* 👑  〕* \n *┋* \n *┋「  *¡ADIOS!* 👋 」* \n *┋* \n *┋* 「 ${groupMetadata.subject} 」 \n *┋* \n *╰━★ 「*.   @${m.messageStubParameters[0].split`@`[0]} . *」* \n *╭━━━━━━ * \n *┋❖ Que bueno se fue un mas* \n *┋❀ Jamás te quisimos aquí perro* \n *┋❖ ahora somos* ${groupSize} \n *┗━━━━━━━━━━━━━━━┅ ⳹* \n  ${global.welcom2}`
+    let bye = `* *╭━〔👑 *ASTA-BOT* 👑  〕* \n *┋* \n *┋「  *¡ADIOS!* 👋 」* \n *┋* \n *┋* 「 ${groupMetadata.subject} 」 \n *┋* \n *╰━★ 「*.   @${m.messageStubParameters[0].split`@`[0]} . *」* \n *╭━━━━━━ * \n *┋❖ Que bueno se fue un mas* \n *┋❀ Jamás te quisimos aquí* \n *┋❖ ahora somos* ${groupSize} \n *┗━━━━━━━━━━━━━━━┅ ⳹* \n  ${global.welcom2}`
     await conn.sendMini(m.chat, txt1, dev, bye, img, img, redes, fkontak)
   }}
