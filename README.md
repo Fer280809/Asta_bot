@@ -91,65 +91,167 @@ href="https://www.mediafire.com/file/llugt4zgj7g3n3u/com.termux_1020.apk/file"><
   <a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=800&size=25&pause=1000&color=F70000&width=435&center=true&random=false&width=435&lines=%E2%9A%A1%EF%B8%8F+INSTALACI%C3%93N+R%C3%81PIDA+%E2%9A%A1%EF%B8%8F;%F0%9F%94%A5+SIGUE+LOS+PASOS+%F0%9F%94%A5" alt="Typing SVG" /></a>
 </div>
 
-### **`🛠️ Instalación por termux`**
+### **`🛠️ Instalación por Termux`**
 
 <details>
- <summary><b>📋 Click para ver los Comandos </b></summary>
+<summary><b>📋 Instalación Manual - Click para ver los Comandos</b></summary>
 
-### **🔰 Instalación manual por termux**
-> Nota: Copie y pegue los comandos en termux uno por uno.
+### **🔰 Instalación paso a paso**
+
+> **Nota:** Copie y pegue los comandos en Termux uno por uno.
+
+**1️⃣ Otorgar permisos de almacenamiento:**
 ```bash
 termux-setup-storage
 ```
+
+**2️⃣ Actualizar paquetes e instalar dependencias:**
 ```bash
 apt update && apt upgrade && pkg install -y git nodejs ffmpeg imagemagick yarn
 ```
+
+**3️⃣ Clonar el repositorio:**
 ```bash
 git clone https://github.com/Fer280809/Asta_bot && cd Asta_bot
 ```
+
+**4️⃣ Instalar dependencias con Yarn:**
 ```bash
-yarn install 
+yarn install
 ```
+
+**5️⃣ Instalar dependencias con NPM:**
 ```bash
 npm install
 ```
+
+**6️⃣ Actualizar paquetes:**
 ```bash
 npm update
 ```
 
+**7️⃣ Iniciar el bot:**
 ```bash
 npm start
 ```
 
-> Si aparece (Y/I/N/O/D/Z) [default=N] ? use la letra "y" + "ENTER" para continuar con la instalación
+> **Importante:** Si aparece **(Y/I/N/O/D/Z) [default=N] ?** use la letra **"y"** y luego **"ENTER"** para continuar con la instalación.
 
-### **🔄 Activar en caso de detenerse en termux**
+---
 
-> Si después de instalar el bot en Termux se detiene (pantalla en blanco, pérdida de conexión a Internet, reinicio del dispositivo), sigue estos pasos:
+### **🔄 Reactivar el Bot (si se detiene)**
 
-❒ Abre Termux y navega al directorio del bot:
-   
-   ```bash
-    cd Asta_bot
-   ```
+Si después de instalar el bot Termux se detiene (pantalla en blanco, pérdida de Internet, reinicio del dispositivo), sigue estos pasos:
+```bash
+cd && cd Asta_bot && npm start
+```
 
-❒ Inicia el bot nuevamente:
-  
-   ```bash
-    npm start
-   ```
+---
 
-### **👑 Volverte owner del Bot**
+### **👑 Volverte Owner del Bot**
 
-> Si después de instalar el bot en Termux y iniciar la sesión del bot deseas poner tu número en la lista de owner, usa este comando:
+Si deseas agregar tu número a la lista de owners del bot:
+```bash
+cd && cd Asta_bot && nano settings.js
+```
 
-   ```bash
-    cd Asta_bot && nano settings.js
-   ```
+> Busca la sección de `global.owner` y agrega tu número. Luego presiona `CTRL + X`, luego `Y` y `ENTER` para guardar.
+
+---
+
+### **🔐 Obtener nuevo código QR**
+
+Si necesitas escanear un nuevo código QR:
+
+**1️⃣ Detener el bot:**
+> Presiona `CTRL + Z` hasta que aparezca: `Asta_bot $`
+
+**2️⃣ Ejecutar comando:**
+```bash
+cd && cd Asta_bot && rm -rf sessions/Principal && npm run qr
+```
+
+---
+
+### **📱 Obtener nuevo código de teléfono**
+
+Si prefieres vincular por código de teléfono:
+```bash
+cd && cd Asta_bot && rm -rf sessions/Principal && npm run code
+```
 
 </details>
 
+<details>
+<summary><b>🜸 Comandos para mantener el Bot activo 24/7</b></summary>
+
+### **⚡ Mantener el Bot siempre activo con PM2**
+
+> **Ejecutar estos comandos dentro de la carpeta Asta_bot**
+
+**Activar Wake Lock e instalar PM2:**
+```bash
+termux-wake-lock && npm i -g pm2 && pm2 start index.js && pm2 save && pm2 logs
+```
+
+---
+
+#### 📋 Opciones Disponibles con PM2
+
+**🗑️ Eliminar proceso del bot:**
+```bash
+pm2 delete index
+```
+
+**📊 Ver logs del bot:**
+```bash
+pm2 logs
+```
+
+**⏸️ Detener el bot:**
+```bash
+pm2 stop index
+```
+
+**▶️ Iniciar el bot nuevamente:**
+```bash
+pm2 start index
+```
+
+**🔄 Reiniciar el bot:**
+```bash
+pm2 restart index
+```
+
+**📋 Ver lista de procesos:**
+```bash
+pm2 list
+```
+
+</details>
+
+<details>
+<summary><b>❀ Actualizar Asta-Bot</b></summary>
+
+### **🔄 Actualización Automática**
+
+> **Nota:** Este método actualizará el bot a la última versión. Se conservará la base de datos, pero será necesario volver a vincular el bot.
+
+**Comando de actualización automática:**
+```bash
+grep -q 'bash\|wget' <(dpkg -l) || apt install -y bash wget && wget -O - https://raw.githubusercontent.com/Fer280809/Asta_bot/main/termux.sh | bash
+```
+
+> Este comando realiza un respaldo automático de tu `database.json` y lo integra a la nueva versión.
+
+**⚠️ Importante:** Después de actualizar, deberás volver a escanear el código QR o usar el código de teléfono para vincular nuevamente el bot.
+
+</details>
+
+
 📢 EL BOT SE ACTUALIZA CADA SEMANA O MES Y SE LE HACE MANTENIMIENTO EN ESTE REPOSITORIO
+
+
 
 ### **`📹 Video tutorial de instalacion`**
 
