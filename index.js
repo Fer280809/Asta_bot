@@ -32,16 +32,21 @@ const { chain } = lodash
 const PORT = process.env.PORT || process.env.SERVER_PORT || 3000
 
 let { say } = cfonts
-console.log(chalk.magentaBright('\n❀ Iniciando...'))
-say('Asta Suou', {
-font: 'simple',
-align: 'left',
-gradient: ['green', 'white']
+console.log(chalk.magentaBright('\n⚡ Iniciando Sistema...'))
+say('Asta Bot', {
+font: 'block',
+align: 'center',
+gradient: ['red', 'magenta']
 })
-say('Made with love by Destroy', {
+say('Sistema Multi-Plugins Activado', {
 font: 'console',
 align: 'center',
-colors: ['cyan', 'magenta', 'yellow']
+colors: ['cyan']
+})
+say('By Destroy & Fernando', {
+font: 'tiny',
+align: 'center',
+colors: ['yellow', 'green']
 })
 protoType()
 serialize()
@@ -103,9 +108,9 @@ opcion = '1'
 }
 if (!methodCodeQR && !methodCode && !fs.existsSync(`./${sessions}/creds.json`)) {
 do {
-opcion = await question(colors("Seleccione una opción:\n") + qrOption("1. Con código QR\n") + textOption("2. Con código de texto de 8 dígitos\n--> "))
+opcion = await question(colors("Seleccione una opción:\n") + qrOption("1. Con código QR\n") + textOption("2. Con código de texto de 8 dígitos\n━━━> "))
 if (!/^[1-2]$/.test(opcion)) {
-console.log(chalk.bold.redBright(`No se permiten numeros que no sean 1 o 2, tampoco letras o símbolos especiales.`))
+console.log(chalk.bold.redBright(`❌ No se permiten números que no sean 1 o 2, tampoco letras o símbolos especiales.`))
 }} while (opcion !== '1' && opcion !== '2' || fs.existsSync(`./${sessions}/creds.json`))
 } 
 
@@ -152,7 +157,7 @@ if (!!phoneNumber) {
 addNumber = phoneNumber.replace(/[^0-9]/g, '')
 } else {
 do {
-phoneNumber = await question(chalk.bgBlack(chalk.bold.greenBright(`[ ✿ ]  Por favor, Ingrese el número de WhatsApp.\n${chalk.bold.magentaBright('---> ')}`)))
+phoneNumber = await question(chalk.bgBlack(chalk.bold.greenBright(`[ 🔐 ]  Por favor, Ingrese el número de WhatsApp.\n${chalk.bold.magentaBright('━━━> ')}`)))
 phoneNumber = phoneNumber.replace(/\D/g,'')
 if (!phoneNumber.startsWith('+')) {
 phoneNumber = `+${phoneNumber}`
@@ -162,12 +167,12 @@ addNumber = phoneNumber.replace(/\D/g, '')
 setTimeout(async () => {
 let codeBot = await conn.requestPairingCode(addNumber)
 codeBot = codeBot.match(/.{1,4}/g)?.join("-") || codeBot
-console.log(chalk.bold.white(chalk.bgMagenta(`[ ✿ ]  Código:`)), chalk.bold.white(chalk.white(codeBot)))
+console.log(chalk.bold.white(chalk.bgMagenta(`[ 🔑 ]  Código:`)), chalk.bold.white(chalk.white(codeBot)))
 }, 3000)
 }}}}
 conn.isInit = false;
 conn.well = false;
-conn.logger.info(`[ ✿ ]  H E C H O\n`)
+conn.logger.info(`[ ✓ ]  C O M P L E T A D O\n`)
 if (!opts['test']) {
 if (global.db) setInterval(async () => {
 if (global.db.data) await global.db.write()
@@ -187,20 +192,20 @@ global.timestamp.connect = new Date;
 if (global.db.data == null) loadDatabase()
 if (update.qr != 0 && update.qr != undefined || methodCodeQR) {
 if (opcion == '1' || methodCodeQR) {
-console.log(chalk.green.bold(`[ ✿ ]  Escanea este código QR`))}
+console.log(chalk.green.bold(`[ 📱 ]  Escanea este código QR`))}
 }
 if (connection === "open") {
 const userJid = jidNormalizedUser(conn.user.id)
 const userName = conn.user.name || conn.user.verifiedName || "Desconocido"
 await joinChannels(conn)
-console.log(chalk.green.bold(`[ ✿ ]  Conectado a: ${userName}`))
+console.log(chalk.green.bold(`[ ✓ ]  Conectado exitosamente: ${userName}`))
 }
 let reason = new Boom(lastDisconnect?.error)?.output?.statusCode
 if (connection === "close") {
 if ([401, 440, 428, 405].includes(reason)) {
-console.log(chalk.red(`→ (${code}) › Cierra la session Principal.`));
+console.log(chalk.red(`⚠ (${code}) › Sesión principal cerrada.`));
 }
-console.log(chalk.yellow("→ Reconectando el Bot Principal..."));
+console.log(chalk.yellow("⟳ Reconectando el Bot Principal..."));
 await global.reloadHandler(true).catch(console.error)
 }};
 process.on('uncaughtException', console.error);
@@ -244,16 +249,16 @@ isInit = false
 return true
 };
 process.on('unhandledRejection', (reason, promise) => {
-console.error("Rechazo no manejado detectado:", reason);
+console.error("⚠ Rechazo no manejado detectado:", reason);
 });
 
 global.rutaJadiBot = join(__dirname, `./${jadi}`)
 if (global.AstaJadibts) {
 if (!existsSync(global.rutaJadiBot)) {
 mkdirSync(global.rutaJadiBot, { recursive: true }) 
-console.log(chalk.bold.cyan(`ꕥ La carpeta: ${jadi} se creó correctamente.`))
+console.log(chalk.bold.cyan(`✓ La carpeta: ${jadi} se creó correctamente.`))
 } else {
-console.log(chalk.bold.cyan(`ꕥ La carpeta: ${jadi} ya está creada.`)) 
+console.log(chalk.bold.cyan(`✓ La carpeta: ${jadi} ya está creada.`)) 
 }
 const readRutaJadiBot = readdirSync(rutaJadiBot)
 if (readRutaJadiBot.length > 0) {
@@ -265,46 +270,116 @@ if (readBotPath.includes(creds)) {
 AstaJadiBot({pathAstaJadiBot: botPath, m: null, conn, args: '', usedPrefix: '/', command: 'serbot'})
 }}}}
 
-const pluginFolder = global.__dirname(join(__dirname, './plugins/index'))
+// ═══════════════════════════════════════════════════════════════
+// 🔥 SISTEMA DE CARGA DE PLUGINS MULTI-CARPETA 🔥
+// ═══════════════════════════════════════════════════════════════
+const pluginFolders = ['./plugins/index', './plugins2', './plugins3', './plugins4', './plugins5']
 const pluginFilter = (filename) => /\.js$/.test(filename)
 global.plugins = {}
+
 async function filesInit() {
-for (const filename of readdirSync(pluginFolder).filter(pluginFilter)) {
-try {
-const file = global.__filename(join(pluginFolder, filename))
-const module = await import(file)
-global.plugins[filename] = module.default || module
-} catch (e) {
-conn.logger.error(e)
-delete global.plugins[filename]
-}}}
+  let totalPlugins = 0
+  
+  console.log(chalk.bold.cyan('\n╔═══════════════════════════════════╗'))
+  console.log(chalk.bold.cyan('║   CARGANDO PLUGINS DEL SISTEMA   ║'))
+  console.log(chalk.bold.cyan('╚═══════════════════════════════════╝\n'))
+  
+  for (const folder of pluginFolders) {
+    const folderPath = join(__dirname, folder)
+    
+    if (!existsSync(folderPath)) {
+      console.log(chalk.yellow(`⚠  Carpeta no encontrada: ${folder}`))
+      continue
+    }
+    
+    let pluginCount = 0
+    const files = readdirSync(folderPath).filter(pluginFilter)
+    
+    for (const filename of files) {
+      try {
+        const file = global.__filename(join(folderPath, filename))
+        const module = await import(file)
+        global.plugins[filename] = module.default || module
+        pluginCount++
+        totalPlugins++
+      } catch (e) {
+        conn.logger.error(`❌ Error cargando ${filename} de ${folder}:`, e)
+        delete global.plugins[filename]
+      }
+    }
+    
+    if (pluginCount > 0) {
+      console.log(chalk.green(`✓ ${folder}: ${pluginCount} plugins cargados`))
+    }
+  }
+  
+  console.log(chalk.bold.cyan('\n╔═══════════════════════════════════╗'))
+  console.log(chalk.bold.cyan(`║  🔥 TOTAL: ${totalPlugins} PLUGINS ACTIVOS 🔥  ║`))
+  console.log(chalk.bold.cyan('╚═══════════════════════════════════╝\n'))
+}
+
 filesInit().then((_) => Object.keys(global.plugins)).catch(console.error)
 
+// Función de recarga actualizada para múltiples carpetas
 global.reload = async (_ev, filename) => {
-if (pluginFilter(filename)) {
-const dir = global.__filename(join(pluginFolder, filename), true);
-if (filename in global.plugins) {
-if (existsSync(dir)) conn.logger.info(` updated plugin - '${filename}'`)
-else {
-conn.logger.warn(`deleted plugin - '${filename}'`)
-return delete global.plugins[filename]
-}} else conn.logger.info(`new plugin - '${filename}'`)
-const err = syntaxerror(readFileSync(dir), filename, {
-sourceType: 'module',
-allowAwaitOutsideFunction: true,
-});
-if (err) conn.logger.error(`syntax error while loading '${filename}'\n${format(err)}`)
-else {
-try {
-const module = (await import(`${global.__filename(dir)}?update=${Date.now()}`));
-global.plugins[filename] = module.default || module;
-} catch (e) {
-conn.logger.error(`error require plugin '${filename}\n${format(e)}'`)
-} finally {
-global.plugins = Object.fromEntries(Object.entries(global.plugins).sort(([a], [b]) => a.localeCompare(b)))
-}}}}
+  if (pluginFilter(filename)) {
+    let found = false
+    
+    for (const folder of pluginFolders) {
+      const folderPath = join(__dirname, folder)
+      const dir = global.__filename(join(folderPath, filename), true)
+      
+      if (existsSync(dir)) {
+        found = true
+        
+        if (filename in global.plugins) {
+          conn.logger.info(`⟳ Actualizado: ${folder}/${filename}`)
+        } else {
+          conn.logger.info(`✨ Nuevo plugin: ${folder}/${filename}`)
+        }
+        
+        const err = syntaxerror(readFileSync(dir), filename, {
+          sourceType: 'module',
+          allowAwaitOutsideFunction: true,
+        })
+        
+        if (err) {
+          conn.logger.error(`❌ Error de sintaxis en '${filename}'\n${format(err)}`)
+        } else {
+          try {
+            const module = await import(`${global.__filename(dir)}?update=${Date.now()}`)
+            global.plugins[filename] = module.default || module
+          } catch (e) {
+            conn.logger.error(`❌ Error al cargar '${filename}'\n${format(e)}`)
+          } finally {
+            global.plugins = Object.fromEntries(
+              Object.entries(global.plugins).sort(([a], [b]) => a.localeCompare(b))
+            )
+          }
+        }
+        break
+      }
+    }
+    
+    if (!found && filename in global.plugins) {
+      conn.logger.warn(`🗑 Plugin eliminado: ${filename}`)
+      delete global.plugins[filename]
+    }
+  }
+}
+
 Object.freeze(global.reload)
-watch(pluginFolder, global.reload)
+
+// Observar cambios en todas las carpetas
+for (const folder of pluginFolders) {
+  const folderPath = join(__dirname, folder)
+  if (existsSync(folderPath)) {
+    watch(folderPath, global.reload)
+    console.log(chalk.gray(`👁 Observando cambios en: ${folder}`))
+  }
+}
+// ═══════════════════════════════════════════════════════════════
+
 await global.reloadHandler()
 async function _quickTest() {
 const test = await Promise.all([
@@ -338,9 +413,9 @@ const filenames = readdirSync(tmpDir)
 filenames.forEach(file => {
 const filePath = join(tmpDir, file)
 unlinkSync(filePath)})
-console.log(chalk.gray(`→ Archivos de la carpeta TMP eliminados`))
+console.log(chalk.gray(`⚡ Archivos temporales eliminados`))
 } catch {
-console.log(chalk.gray(`→ Los archivos de la carpeta TMP no se pudieron eliminar`));
+console.log(chalk.gray(`⚠ Los archivos temporales no se pudieron eliminar`));
 }}, 30 * 1000) 
 _quickTest().catch(console.error)
 async function isValidPhoneNumber(number) {
