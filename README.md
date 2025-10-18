@@ -277,7 +277,7 @@ href="https://www.youtube.com/watch?v=SYbEOZZ__Wo"><img src="https://github.com/
 <summary><b>☎️ Contactos Directos</b></summary>
 
 * 📲 WhatsApp: [`CONTÁCTANOS`](https:/Wa.me/524181450063)
-* 🔥 Solicita bot oficial: [`CONTÁCTANOS`](https://wa.me/527461177130)
+* 🔥 Solicita bot oficial: [`CONTÁCTANOS`](https://wa.me/524181450063)
 
 </details>
 
