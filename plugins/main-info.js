@@ -87,7 +87,7 @@ break
 }
 case 'script': case 'sc': {
 await m.react('🕒')
-const res = await fetch('https://api.github.com/repos/The-King-Destroy/Yuki_Suou-Bot')
+const res = await fetch('https://api.github.com/repos/Fer280809/Asta_bot')
 if (!res.ok) throw new Error('No se pudo obtener los datos del repositorio.')
 const json = await res.json()
 const txt = `*乂  S C R I P T  -  M A I N  乂*\n\n✩ *Nombre* : ${json.name}\n✩ *Visitas* : ${json.watchers_count}\n✩ *Peso* : ${(json.size / 1024).toFixed(2)} MB\n✩ *Actualizado* : ${moment(json.updated_at).format('DD/MM/YY - HH:mm:ss')}\n✩ *Url* : ${json.html_url}\n✩ *Forks* : ${json.forks_count}\n✩ *Stars* : ${json.stargazers_count}\n\n> *${dev}*`
