@@ -1,0 +1,473 @@
+
+import fetch from "node-fetch"
+import yts from "yt-search"
+import Jimp from "jimp"
+import axios from "axios"
+import crypto from "crypto"
+
+const MAX_FILE_SIZE = 500 * 1024 * 1024 // 500 MB
+const AUDIO_DOC_THRESHOLD = 30 * 1024 * 1024 // 30 MB
+
+async function resizeImage(buffer, size = 300) {
+  try {
+    const image = await Jimp.read(buffer)
+    return await image.resize(size, size).getBufferAsync(Jimp.MIME_JPEG)
+  } catch {
+    return buffer
+  }
+}
+
+// API SaveTube (LA MÁS FUNCIONAL)
+const savetube = {
+  api: {
+    base: "https://media.savetube.me/api",
+    info: "/v2/info",
+    download: "/download",
+    cdn: "/random-cdn"
+  },
+  headers: {
+    accept: "*/*",
+    "content-type": "application/json",
+    origin: "https://yt.savetube.me",
+    referer: "https://yt.savetube.me/",
+    "user-agent": "Postify/1.0.0"
+  },
+  crypto: {
+    hexToBuffer: (hexString) => {
+      const matches = hexString.match(/.{1,2}/g)
+      return Buffer.from(matches.join(""), "hex")
+    },
+    decrypt: async (enc) => {
+      const secretKey = "C5D58EF67A7584E4A29F6C35BBC4EB12"
+      const data = Buffer.from(enc, "base64")
+      const iv = data.slice(0, 16)
+      const content = data.slice(16)
+      const key = savetube.crypto.hexToBuffer(secretKey)
+      const decipher = crypto.createDecipheriv("aes-128-cbc", key, iv)
+      let decrypted = decipher.update(content)
+      decrypted = Buffer.concat([decrypted, decipher.final()])
+      return JSON.parse(decrypted.toString())
+    }
+  },
+  isUrl: (str) => {
+    try {
+      new URL(str)
+      return /youtube.com|youtu.be/.test(str)
+    } catch {
+      return false
+    }
+  },
+  youtube: (url) => {
+    const patterns = [
+      /youtube.com\/watch\?v=([a-zA-Z0-9_-]{11})/,
+      /youtube.com\/embed\/([a-zA-Z0-9_-]{11})/,
+      /youtu.be\/([a-zA-Z0-9_-]{11})/
+    ]
+    for (let pattern of patterns) {
+      const match = url.match(pattern)
+      if (match) return match[1]
+    }
+    return null
+  },
+  request: async (endpoint, data = {}, method = "post") => {
+    try {
+      const { data: response } = await axios({
+        method,
+        url: `${endpoint.startsWith("http") ? "" : savetube.api.base}${endpoint}`,
+        data: method === "post" ? data : undefined,
+        params: method === "get" ? data : undefined,
+        headers: savetube.headers
+      })
+      return { status: true, code: 200, data: response }
+    } catch (error) {
+      return { status: false, code: error.response?.status || 500, error: error.message }
+    }
+  },
+  getCDN: async () => {
+    const response = await savetube.request(savetube.api.cdn, {}, "get")
+    if (!response.status) return response
+    return { status: true, code: 200, data: response.data.cdn }
+  },
+  download: async (link, type = "audio") => {
+    if (!savetube.isUrl(link)) return { status: false, code: 400, error: "URL inválida" }
+    const id = savetube.youtube(link)
+    if (!id) return { status: false, code: 400, error: "No se pudo obtener el ID del video" }
+    try {
+      const cdnx = await savetube.getCDN()
+      if (!cdnx.status) return cdnx
+      const cdn = cdnx.data
+      const videoInfo = await savetube.request(`https://${cdn}${savetube.api.info}`, { url: `https://www.youtube.com/watch?v=${id}` })
+      if (!videoInfo.status || !videoInfo.data?.data) return { status: false, code: 500, error: "No se pudo obtener información del video" }
+      const decrypted = await savetube.crypto.decrypt(videoInfo.data.data)
+      const downloadData = await savetube.request(
+        `https://${cdn}${savetube.api.download}`,
+        { id, downloadType: type === "audio" ? "audio" : "video", quality: type === "audio" ? "mp3" : "720p", key: decrypted.key }
+      )
+      if (!downloadData?.data?.data?.downloadUrl) return { status: false, code: 500, error: "No se pudo obtener link de descarga" }
+      return {
+        status: true,
+        code: 200,
+        result: {
+          title: decrypted.title || "Desconocido",
+          author: decrypted.channel || "Desconocido",
+          views: decrypted.viewCount || "Desconocido",
+          timestamp: decrypted.lengthSeconds || "0",
+          ago: decrypted.uploadedAt || "Desconocido",
+          format: type === "audio" ? "mp3" : "mp4",
+          download: downloadData.data.data.downloadUrl,
+          thumbnail: decrypted.thumbnail || null
+        }
+      }
+    } catch (error) {
+      return { status: false, code: 500, error: error.message }
+    }
+  }
+}
+
+async function downloadWithFallback(url, type = 'audio') {
+  return await savetube.download(url, type)
+}
+
+function formatSize(bytes) {
+  if (!bytes || isNaN(bytes)) return 'Desconocido'
+  const units = ['B', 'KB', 'MB', 'GB']
+  let i = 0
+  bytes = Number(bytes)
+  while (bytes >= 1024 && i < units.length - 1) {
+    bytes /= 1024
+    i++
+  }
+  return `${bytes.toFixed(2)} ${units[i]}`
+}
+
+async function getSize(url) {
+  try {
+    const res = await axios.head(url, { 
+      timeout: 10000,
+      headers: { 'User-Agent': 'Mozilla/5.0' }
+    })
+    return parseInt(res.headers['content-length'], 10) || 0
+  } catch {
+    return 0
+  }
+}
+
+const handler = async (m, { conn, text, usedPrefix, command }) => {
+  // Si es comando de descarga directa
+  if (['ytmp3', 'ytmp4', 'ytmp3doc', 'ytmp4doc'].includes(command)) {
+    return await handleDownload(m, conn, text, command, usedPrefix)
+  }
+  
+  // Comando play principal
+  if (!text?.trim()) {
+    return conn.reply(m.chat, `❗ Ingresa el nombre de una canción o video.\n\n📝 Ejemplo: *${usedPrefix + command} Bad Bunny Tití Me Preguntó*`, m)
+  }
+  
+  await m.react('🔍')
+  
+  try {
+    const search = await yts(text)
+    const videoInfo = search.all?.[0]
+    
+    if (!videoInfo) {
+      throw '❗ No se encontraron resultados.'
+    }
+    
+    const { title, thumbnail, timestamp, views, ago, url, author } = videoInfo
+    const vistas = views?.toLocaleString?.() || 'Desconocido'
+    
+    const cleanTitle = title.substring(0, 100)
+    const cleanAuthor = author.name.substring(0, 50)
+    
+    const body = `╭━━━━━━━━━━━━━╮
+│ 🎵 *YouTube Play*
+╰━━━━━━━━━━━━━╯
+
+📹 *${cleanTitle}*
+
+👤 Canal: ${cleanAuthor}
+👁️ Vistas: ${vistas}
+⏱️ Duración: ${timestamp}
+📅 Publicado: ${ago}
+🔗 Link: ${url}
+
+*Elige una opción:*`
+
+    const buttons = [
+      { buttonId: `${usedPrefix}ytmp3 ${url}`, buttonText: { displayText: '🎧 Audio' } },
+      { buttonId: `${usedPrefix}ytmp4 ${url}`, buttonText: { displayText: '📽️ Video' } },
+      { buttonId: `${usedPrefix}ytmp3doc ${url}`, buttonText: { displayText: '💿 Audio Doc' } },
+      { buttonId: `${usedPrefix}ytmp4doc ${url}`, buttonText: { displayText: '🎥 Video Doc' } }
+    ]
+
+    try {
+      // Método 1: sendMessage con botones
+      await conn.sendMessage(m.chat, {
+        image: { url: thumbnail },
+        caption: body,
+        footer: `『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』⚡`,
+        buttons: buttons,
+        viewOnce: true,
+        headerType: 4
+      }, { quoted: m })
+      
+    } catch (e1) {
+      try {
+        // Método 2: sendButton
+        await conn.sendButton(m.chat, body, `『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』⚡`, thumbnail, buttons, m)
+        
+      } catch (e2) {
+        try {
+          // Método 3: sendFile con caption
+          await conn.sendFile(m.chat, thumbnail, 'thumbnail.jpg', body + `\n\n*Comandos disponibles:*\n• ${usedPrefix}ytmp3 ${url}\n• ${usedPrefix}ytmp4 ${url}\n• ${usedPrefix}ytmp3doc ${url}\n• ${usedPrefix}ytmp4doc ${url}`, m)
+          
+        } catch (e3) {
+          // Método 4: Mensaje de texto simple
+          await conn.reply(m.chat, body + `\n\n*Usa estos comandos:*\n• ${usedPrefix}ytmp3 ${url}\n• ${usedPrefix}ytmp4 ${url}\n• ${usedPrefix}ytmp3doc ${url}\n• ${usedPrefix}ytmp4doc ${url}`, m)
+        }
+      }
+    }
+    
+    await m.react('✅')
+    
+  } catch (e) {
+    await m.react('❌')
+    return conn.reply(m.chat, typeof e === 'string' ? e : `⚠️ Error: ${e.message}`, m)
+  }
+}
+
+async function handleDownload(m, conn, text, command, usedPrefix) {
+  if (!text?.trim()) {
+    return conn.reply(m.chat, `❌ Ingresa una URL o nombre.\n\n📝 Ejemplo: *${usedPrefix + command} Bad Bunny*`, m)
+  }
+  
+  await m.react('⏳')
+  
+  try {
+    let url, title, thumbnail, author
+    
+    // Si es URL directa
+    if (/youtube.com|youtu.be/.test(text)) {
+      const id = text.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/)?.[1]
+      if (!id) throw '❌ URL inválida'
+      
+      const search = await yts({ videoId: id })
+      url = `https://www.youtube.com/watch?v=${id}`
+      title = search.title || "Sin título"
+      thumbnail = search.thumbnail
+      author = search.author?.name || "Desconocido"
+      
+    } else {
+      // Si es búsqueda
+      const search = await yts(text)
+      if (!search.videos.length) throw "❌ No se encontraron resultados"
+      
+      const videoInfo = search.videos[0]
+      url = videoInfo.url
+      title = videoInfo.title
+      thumbnail = videoInfo.thumbnail
+      author = videoInfo.author?.name || "Desconocido"
+    }
+    
+    console.log(`🎯 Descargando: ${title}`)
+    
+    const thumbResized = await resizeImage(await (await fetch(thumbnail)).buffer(), 300)
+    
+    // YTMP3 - Audio (como nota de voz)
+    if (command === 'ytmp3') {
+      await conn.reply(m.chat, `╭━━━━━━━━━━━━━╮
+│ ⏳ *DESCARGANDO...*
+╰━━━━━━━━━━━━━╯
+
+🎵 *${title}*
+
+⚡ _Procesando audio..._
+⌛ _Espera un momento..._
+
+*『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』*`, m)
+      
+      const dl = await downloadWithFallback(url, 'audio')
+      if (!dl.status) throw dl.error || '❌ Error al descargar'
+      
+      const size = await getSize(dl.result.download)
+      console.log(`📦 Tamaño: ${formatSize(size)}`)
+      
+      const fkontak = {
+        key: { fromMe: false, participant: "0@s.whatsapp.net" },
+        message: {
+          documentMessage: {
+            title: `🎵「 ${title} 」⚡`,
+            fileName: `Descargas Asta-Bot`,
+            jpegThumbnail: thumbResized
+          }
+        }
+      }
+      
+      if (size > AUDIO_DOC_THRESHOLD) {
+        await conn.sendMessage(m.chat, {
+          document: { url: dl.result.download },
+          mimetype: 'audio/mpeg',
+          fileName: `${title}.mp3`,
+          caption: `🎵 *${title}*\n📦 ${formatSize(size)}\n👤 ${author}`,
+          jpegThumbnail: thumbResized
+        }, { quoted: fkontak })
+      } else {
+        await conn.sendMessage(m.chat, {
+          audio: { url: dl.result.download },
+          mimetype: 'audio/mpeg',
+          fileName: `${title}.mp3`,
+          ptt: true
+        }, { quoted: fkontak })
+      }
+      
+      await m.react('✅')
+      return
+    }
+    
+    // YTMP4 - Video
+    if (command === 'ytmp4') {
+      await conn.reply(m.chat, `╭━━━━━━━━━━━━━╮
+│ ⏳ *DESCARGANDO...*
+╰━━━━━━━━━━━━━╯
+
+📹 *${title}*
+
+⚡ _Procesando video..._
+🎬 _Puede tardar unos minutos..._
+
+*『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』*`, m)
+      
+      const dl = await downloadWithFallback(url, 'video')
+      if (!dl.status) throw dl.error || '❌ Error al descargar'
+      
+      const size = await getSize(dl.result.download)
+      console.log(`📦 Tamaño: ${formatSize(size)}`)
+      
+      const fkontak = {
+        key: { fromMe: false, participant: "0@s.whatsapp.net" },
+        message: {
+          documentMessage: {
+            title: `🎬「 ${title} 」⚡`,
+            fileName: `Descargas Asta-Bot`,
+            jpegThumbnail: thumbResized
+          }
+        }
+      }
+      
+      if (size > 200 * 1024 * 1024) {
+        throw `📦 Video muy grande (${formatSize(size)}).\n\n💡 Usa: *${usedPrefix}ytmp4doc ${url}*`
+      }
+      
+      await conn.sendMessage(m.chat, {
+        video: { url: dl.result.download },
+        mimetype: 'video/mp4',
+        caption: `🎬 *${title}*`,
+        jpegThumbnail: thumbResized
+      }, { quoted: fkontak })
+      
+      await m.react('✅')
+      return
+    }
+    
+    // YTMP3DOC - Audio como documento
+    if (command === 'ytmp3doc') {
+      await conn.reply(m.chat, `╭━━━━━━━━━━━━━╮
+│ 💿 *DESCARGANDO...*
+╰━━━━━━━━━━━━━╯
+
+🎵 *${title}*
+
+📄 _Formato: Documento MP3_
+⚡ _Procesando audio..._
+⏳ _Aguarda un momento..._
+
+*『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』*`, m)
+      
+      const dl = await downloadWithFallback(url, 'audio')
+      if (!dl.status) throw dl.error || '❌ Error al descargar'
+      
+      const size = await getSize(dl.result.download)
+      
+      const fkontak = {
+        key: { fromMe: false, participant: "0@s.whatsapp.net" },
+        message: {
+          documentMessage: {
+            title: `👑「 ${title} 」📿`,
+            fileName: `Descargas Asta-Bot`,
+            jpegThumbnail: thumbResized
+          }
+        }
+      }
+      
+      await conn.sendMessage(m.chat, {
+        document: { url: dl.result.download },
+        mimetype: 'audio/mpeg',
+        fileName: `${title}.mp3`,
+        caption: `${title}`,
+        jpegThumbnail: thumbResized
+      }, { quoted: fkontak })
+      
+      await m.react('✅')
+      return
+    }
+    
+    // YTMP4DOC - Video como documento
+    if (command === 'ytmp4doc') {
+      await conn.reply(m.chat, `╭━━━━━━━━━━━━━╮
+│ 🎥 *DESCARGANDO...*
+╰━━━━━━━━━━━━━╯
+
+📹 *${title}*
+
+📄 _Formato: Documento MP4_
+⚡ _Procesando video..._
+⏳ _Archivos grandes pueden tardar..._
+
+*『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』*`, m)
+      
+      const dl = await downloadWithFallback(url, 'video')
+      if (!dl.status) throw dl.error || '❌ Error al descargar'
+      
+      const size = await getSize(dl.result.download)
+      
+      if (size > 600 * 1024 * 1024) {
+        throw `📦 Video muy grande (${formatSize(size)}).\n\n⚠️ El archivo supera los 600 MB, no puedo enviarlo.`
+      }
+      
+      const fkontak = {
+        key: { fromMe: false, participant: "0@s.whatsapp.net" },
+        message: {
+          documentMessage: {
+            title: `🎬「 ${title} 」⚡`,
+            fileName: `Descargas Asta-Bot`,
+            jpegThumbnail: thumbResized
+          }
+        }
+      }
+      
+      await conn.sendMessage(m.chat, {
+        document: { url: dl.result.download },
+        mimetype: 'video/mp4',
+        fileName: `${title}.mp4`,
+        jpegThumbnail: thumbResized,
+        caption: `🎬 *${title}*`
+      }, { quoted: fkontak })
+      
+      await m.react('✅')
+      return
+    }
+    
+  } catch (e) {
+    await m.react('❌')
+    console.error('❌ Error:', e)
+    return conn.reply(m.chat, typeof e === 'string' ? e : `❌ Error: ${e.message}`, m)
+  }
+}
+
+handler.help = ['play', 'ytmp3', 'ytmp4', 'ytmp3doc', 'ytmp4doc']
+handler.tags = ['descargas']
+handler.command = ['play', 'ytmp3', 'ytmp4', 'ytmp3doc', 'ytmp4doc']
+handler.register = false
+handler.group = false
+
+export default handler
