@@ -67,7 +67,7 @@ const __dirname = global.__dirname(import.meta.url)
 global.opts = new Object(yargs(process.argv.slice(2)).exitProcess(false).parse())
 global.prefix = new RegExp('^[#!./-]')
 
-// Base de datos optimizada (sin clanes)
+// Base de datos optimizada
 global.db = new Low(/https?:\/\//.test(opts['db'] || '') ? new cloudDBAdapter(opts['db']) : new JSONFile('database.json'))
 global.DATABASE = global.db
 global.loadDatabase = async function loadDatabase() {
@@ -153,6 +153,7 @@ const connectionOptions = {
 global.conn = makeWASocket(connectionOptions)
 conn.ev.on("creds.update", saveCreds)
 
+// ============ SECCIÓN CORREGIDA DEL CÓDIGO ============
 if (!fs.existsSync(`./${sessions}/creds.json`)) {
   if (opcion === '2' || methodCode) {
     opcion = '2'
@@ -170,15 +171,23 @@ if (!fs.existsSync(`./${sessions}/creds.json`)) {
         } while (!await isValidPhoneNumber(phoneNumber))
         rl.close()
         addNumber = phoneNumber.replace(/\D/g, '')
-        setTimeout(async () => {
-          let codeBot = await conn.requestPairingCode(addNumber)
-          codeBot = codeBot.match(/.{1,4}/g)?.join("-") || codeBot
-          console.log(chalk.bold.white(chalk.bgMagenta(`[ 🔑 ] Código:`)), chalk.bold.white(codeBot))
-        }, 3000)
       }
+      
+      // CORRECCIÓN: Esperamos a que la conexión esté lista antes de solicitar el código
+      setTimeout(async () => {
+        try {
+          let codeBot = await conn.requestPairingCode(addNumber)
+          codeBot = codeBot?.match(/.{1,4}/g)?.join("-") || codeBot
+          console.log(chalk.bold.white(chalk.bgMagenta(`\n[ 🔑 ] CÓDIGO DE EMPAREJAMIENTO:`)), chalk.bold.white(chalk.bgGreen(` ${codeBot} `)))
+          console.log(chalk.yellow(`\n📱 Ingresa este código en WhatsApp > Dispositivos vinculados > Vincular dispositivo\n`))
+        } catch (error) {
+          console.error(chalk.red(`❌ Error al solicitar código: ${error.message}`))
+        }
+      }, 3000)
     }
   }
 }
+// ============ FIN SECCIÓN CORREGIDA ============
 
 conn.isInit = false
 conn.well = false
@@ -351,10 +360,10 @@ global.reload = async (_ev, filename) => {
     if (!existsSync(folderPath)) continue
 
     const dir = global.__filename(join(folderPath, filename), true)
-    
+
     if (existsSync(dir)) {
       const isUpdate = filename in global.plugins
-      
+
       if (isUpdate) {
         console.log(chalk.yellow(`⟳ ${folder}/${filename}`))
       } else {
@@ -365,7 +374,7 @@ global.reload = async (_ev, filename) => {
         sourceType: 'module',
         allowAwaitOutsideFunction: true,
       })
-      
+
       if (err) {
         console.error(chalk.red(`❌ Syntax error: ${filename}`))
         delete global.plugins[filename]
@@ -382,7 +391,6 @@ global.reload = async (_ev, filename) => {
     }
   }
 
-  // Si el archivo fue eliminado
   if (filename in global.plugins) {
     console.log(chalk.red(`🗑 ${filename}`))
     delete global.plugins[filename]
@@ -413,7 +421,6 @@ setInterval(async () => {
           const stats = statSync(filePath)
           const now = Date.now()
           const fileAge = now - stats.mtimeMs
-          // Eliminar archivos con más de 5 minutos
           if (fileAge > 5 * 60 * 1000) {
             unlinkSync(filePath)
           }
