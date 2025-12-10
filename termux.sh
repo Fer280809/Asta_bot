@@ -1,8 +1,8 @@
 #!/data/data/com.termux/files/usr/bin/bash
 # Código desarrollado por @Asta_bot
 
-BOT_DIR="AstaBot"
-BOT_REPO="https://github.com/Fer280809/Asta_bot"
+BOT_DIR="Asta_bot"
+BOT_REPO="https://github.com/Fer280809/Asta_bot.git"
 DB_FILE="database.json"
 
 # Colores estilo Index.js
