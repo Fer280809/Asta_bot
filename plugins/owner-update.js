@@ -1,191 +1,198 @@
-import fs from 'fs'
-import { exec } from 'child_process'
-import { promisify } from 'util'
-import { join } from 'path'
-import chalk from 'chalk'
+import fetch from "node-fetch"
 
-const execAsync = promisify(exec)
-
-export async function before(m, { conn, args, usedPrefix, command }) {
-  // Verificar si es owner
-  if (!global.owner.includes(m.sender.split('@')[0])) {
-    return m.reply('🚫 Este comando solo está disponible para el owner del bot.')
-  }
-
-  // Obtener directorio base
-  const botDir = process.cwd()
-  const backupDir = join(botDir, 'backup_astra')
-  const dbFile = join(botDir, 'database.json')
-  const settingsFile = join(botDir, 'settings.js')
-  
-  await m.reply('🔄 *Iniciando actualización automática...*\n\n⏳ Esto puede tomar unos minutos.')
-  
+let handler = async (m, { conn, usedPrefix }) => {
   try {
-    // Crear directorio de backup si no existe
-    if (!fs.existsSync(backupDir)) {
-      fs.mkdirSync(backupDir, { recursive: true })
+    // Verificar si es owner
+    if (!global.owner.includes(m.sender.split('@')[0])) {
+      return m.reply('🚫 Este comando solo está disponible para el owner del bot.')
     }
+    
+    await m.react('🕒')
+    await m.reply('🔄 *Iniciando actualización...*\n\n⏳ Esto puede tomar 1-2 minutos...')
 
-    // 1. Respaldar archivos críticos
-    await m.reply('💾 *Respaldando archivos importantes...*')
+    const botDir = process.cwd()
+    const backupDir = `${botDir}/backup_update_${Date.now()}`
     
-    const backups = []
-    if (fs.existsSync(dbFile)) {
-      fs.copyFileSync(dbFile, join(backupDir, 'database.json'))
-      backups.push('✅ Base de datos')
-    }
+    // 1. Crear backup
+    await conn.sendMessage(m.chat, { text: '💾 *Creando respaldo de seguridad...*' }, { quoted: m })
     
-    if (fs.existsSync(settingsFile)) {
-      fs.copyFileSync(settingsFile, join(backupDir, 'settings.js'))
-      backups.push('✅ Configuración')
-    }
-    
-    // Respaldar sesiones si existen
-    const sessionsDir = join(botDir, 'sessions')
-    if (fs.existsSync(sessionsDir)) {
-      const sessionBackup = join(backupDir, 'sessions_backup')
-      if (!fs.existsSync(sessionBackup)) {
-        fs.mkdirSync(sessionBackup, { recursive: true })
-      }
-      // Copiar contenido de sessions
-      const sessionFiles = fs.readdirSync(sessionsDir)
-      sessionFiles.forEach(file => {
-        fs.copyFileSync(
-          join(sessionsDir, file),
-          join(sessionBackup, file)
-        )
+    // Función para ejecutar comandos
+    const execCmd = (cmd) => new Promise((resolve, reject) => {
+      require('child_process').exec(cmd, { cwd: botDir }, (error, stdout, stderr) => {
+        if (error) reject(error)
+        else resolve({ stdout, stderr })
       })
-      backups.push('✅ Sesiones activas')
-    }
-
-    // 2. Obtener cambios del repositorio
-    await m.reply('📥 *Verificando actualizaciones en GitHub...*')
-    
-    const { stdout: fetchOutput } = await execAsync('git fetch origin', { cwd: botDir })
-    
-    // Verificar si hay cambios
-    const { stdout: statusOutput } = await execAsync('git status -uno', { cwd: botDir })
-    
-    if (statusOutput.includes('Your branch is up to date')) {
-      await m.reply('✅ *El bot ya está actualizado*\n\nNo hay cambios disponibles en el repositorio.')
-      return
-    }
-
-    // 3. Mostrar cambios disponibles
-    const { stdout: logOutput } = await execAsync(
-      'git log HEAD..origin/main --oneline --no-merges',
-      { cwd: botDir }
-    )
-    
-    const changes = logOutput.trim().split('\n').filter(line => line).slice(0, 5)
-    let changelog = '*📝 Cambios disponibles:*\n'
-    changes.forEach((change, i) => {
-      changelog += `\n${i+1}. ${change.substring(8)}`
     })
 
-    await m.reply(`${changelog}\n\n🔄 *Procediendo con la actualización...*`)
-
-    // 4. Aplicar actualización (stash cambios locales primero)
-    await execAsync('git stash', { cwd: botDir })
-    const { stdout: pullOutput } = await execAsync('git pull origin main', { cwd: botDir })
+    // Crear directorio de backup
+    await execCmd(`mkdir -p "${backupDir}"`)
     
-    // Verificar si hubo conflictos
-    if (pullOutput.includes('CONFLICT') || pullOutput.includes('error:')) {
-      // Revertir en caso de conflicto
-      await execAsync('git merge --abort', { cwd: botDir })
-      await execAsync('git stash pop', { cwd: botDir })
-      throw new Error('Conflicto al fusionar cambios. Actualización abortada.')
+    // Backup de archivos críticos
+    const backupFiles = ['database.json', 'settings.js', 'sessions']
+    for (const file of backupFiles) {
+      try {
+        await execCmd(`cp -r "${botDir}/${file}" "${backupDir}/${file}" 2>/dev/null || true`)
+      } catch (e) {}
     }
 
-    // 5. Verificar si hay cambios en package.json
-    const packageChanged = pullOutput.toLowerCase().includes('package.json')
+    // 2. Verificar cambios en GitHub
+    await conn.sendMessage(m.chat, { text: '📥 *Verificando actualizaciones...*' }, { quoted: m })
     
-    if (packageChanged) {
-      await m.reply('📦 *Actualizando dependencias...*\n\nEsto puede tardar unos minutos.')
+    try {
+      await execCmd('git fetch origin')
+    } catch (e) {
+      await m.react('❌')
+      return conn.sendMessage(m.chat, { 
+        text: '❌ *Error de conexión*\n\nNo se pudo conectar con GitHub. Verifica tu internet.' 
+      }, { quoted: m })
+    }
+
+    // 3. Verificar si hay cambios
+    const { stdout: status } = await execCmd('git status -uno')
+    if (status.includes('Tu rama está actualizada') || status.includes('Your branch is up to date')) {
+      await m.react('✅')
+      return conn.sendMessage(m.chat, { 
+        text: '✅ *Bot actualizado*\n\nNo hay nuevas actualizaciones disponibles.' 
+      }, { quoted: m })
+    }
+
+    // 4. Obtener cambios disponibles
+    const { stdout: cambios } = await execCmd('git log HEAD..origin/main --oneline --no-merges')
+    const listaCambios = cambios.split('\n').filter(l => l).slice(0, 5)
+    
+    let infoCambios = '📝 *Cambios disponibles:*\n'
+    listaCambios.forEach((cambio, i) => {
+      infoCambios += `\n${i+1}. ${cambio.substring(8)}`
+    })
+    
+    await conn.sendMessage(m.chat, { text: infoCambios }, { quoted: m })
+
+    // 5. Aplicar actualización
+    await conn.sendMessage(m.chat, { text: '⚡ *Aplicando actualización...*' }, { quoted: m })
+    
+    try {
+      // Guardar cambios locales
+      await execCmd('git stash')
       
-      // Instalar dependencias
-      const { stdout: npmOutput } = await execAsync('npm install --legacy-peer-deps', { cwd: botDir })
+      // Hacer pull
+      const { stdout: pullResult } = await execCmd('git pull origin main --no-rebase')
       
-      // Verificar si hay errores críticos
-      if (npmOutput.includes('ERR!') && npmOutput.includes('critical')) {
-        // Reintentar con force
-        await execAsync('npm install --force', { cwd: botDir })
+      // Verificar conflictos
+      if (pullResult.includes('CONFLICT') || pullResult.includes('error:')) {
+        await execCmd('git merge --abort')
+        await execCmd('git stash pop')
+        throw new Error('Conflicto al fusionar cambios')
+      }
+      
+      // 6. Verificar si package.json cambió
+      const packageChanged = pullResult.toLowerCase().includes('package.json')
+      
+      if (packageChanged) {
+        await conn.sendMessage(m.chat, { text: '📦 *Actualizando dependencias...*' }, { quoted: m })
+        
+        try {
+          await execCmd('npm install --legacy-peer-deps')
+        } catch (npmError) {
+          await execCmd('npm install --force')
+        }
+      }
+
+      // 7. Restaurar backups
+      await conn.sendMessage(m.chat, { text: '♻️ *Restaurando configuraciones...*' }, { quoted: m })
+      
+      // Restaurar database.json si existe
+      if (await execCmd(`test -f "${backupDir}/database.json" && echo "exists"`).catch(() => {})) {
+        await execCmd(`cp "${backupDir}/database.json" "${botDir}/database.json"`)
+      }
+      
+      // Restaurar settings.js si existe
+      if (await execCmd(`test -f "${backupDir}/settings.js" && echo "exists"`).catch(() => {})) {
+        await execCmd(`cp "${backupDir}/settings.js" "${botDir}/settings.js"`)
+      }
+      
+      // Restaurar sessions si existe
+      if (await execCmd(`test -d "${backupDir}/sessions" && echo "exists"`).catch(() => {})) {
+        await execCmd(`rm -rf "${botDir}/sessions" 2>/dev/null || true`)
+        await execCmd(`cp -r "${backupDir}/sessions" "${botDir}/"`)
+      }
+
+      // 8. Obtener información del commit
+      const { stdout: commitHash } = await execCmd('git log -1 --pretty=format:"%h"')
+      const { stdout: commitMsg } = await execCmd('git log -1 --pretty=format:"%s"')
+      
+      // Contar archivos cambiados
+      const filesChanged = (pullResult.match(/\| \d+ [+-]+/g) || []).length
+
+      // 9. Enviar resumen
+      const mensajeFinal = `
+✅ *ACTUALIZACIÓN COMPLETADA*
+
+🔧 *Detalles:*
+🆕 Commit: ${commitHash.trim()}
+📝 Mensaje: ${commitMsg.trim()}
+📄 Archivos: ${filesChanged} modificados
+🔧 Dependencias: ${packageChanged ? 'Actualizadas' : 'Sin cambios'}
+
+⚠️ *Para aplicar los cambios:*
+• Reinicia el bot manualmente
+• O usa el comando *${usedPrefix}reiniciar*
+
+📌 *Cambios aplicados:*
+${listaCambios.map((c, i) => `• ${c.substring(8)}`).join('\n')}
+
+💾 *Backup guardado en:* ${backupDir}
+      `.trim()
+
+      await m.react('✅')
+      await conn.sendMessage(m.chat, { text: mensajeFinal }, { quoted: m })
+
+      // 10. Limpiar backup antiguo (opcional)
+      setTimeout(async () => {
+        try {
+          await execCmd(`rm -rf "${backupDir}"`)
+        } catch (e) {}
+      }, 60000) // Eliminar después de 1 minuto
+
+    } catch (updateError) {
+      // Restaurar desde backup en caso de error
+      await conn.sendMessage(m.chat, { text: '⚠️ *Error durante la actualización*' }, { quoted: m })
+      
+      // Intentar restaurar todo
+      try {
+        await execCmd(`cp "${backupDir}/database.json" "${botDir}/database.json" 2>/dev/null || true`)
+        await execCmd(`cp "${backupDir}/settings.js" "${botDir}/settings.js" 2>/dev/null || true`)
+        await execCmd(`rm -rf "${botDir}/sessions" 2>/dev/null || true`)
+        await execCmd(`cp -r "${backupDir}/sessions" "${botDir}/" 2>/dev/null || true`)
+        
+        // Revertir cambios de git
+        await execCmd('git reset --hard HEAD')
+        
+        await m.react('❌')
+        await conn.sendMessage(m.chat, { 
+          text: `❌ *Actualización fallida*\n\nSe restauró la versión anterior.\n\nError: ${updateError.message}\n\n📍 Usa *${usedPrefix}report* para informar el problema.` 
+        }, { quoted: m })
+      } catch (restoreError) {
+        await m.react('💀')
+        await conn.sendMessage(m.chat, { 
+          text: `💀 *Error crítico*\n\nNo se pudo restaurar el backup.\n\nContacta al desarrollador.\n\nBackup en: ${backupDir}` 
+        }, { quoted: m })
       }
     }
 
-    // 6. Restaurar archivos respaldados
-    await m.reply('♻️ *Restaurando configuraciones...*')
-    
-    if (fs.existsSync(join(backupDir, 'database.json'))) {
-      fs.copyFileSync(join(backupDir, 'database.json'), dbFile)
-    }
-    
-    if (fs.existsSync(join(backupDir, 'settings.js'))) {
-      fs.copyFileSync(join(backupDir, 'settings.js'), settingsFile)
-    }
-
-    // 7. Preparar mensaje final
-    const commitHash = (await execAsync('git log -1 --pretty=format:"%h"', { cwd: botDir })).stdout.trim()
-    const commitMessage = (await execAsync('git log -1 --pretty=format:"%s"', { cwd: botDir })).stdout.trim()
-    const filesChanged = pullOutput.match(/\| \d+ [+-]+/g) || []
-    
-    const updateSummary = `
-✅ *ACTUALIZACIÓN COMPLETADA*
-
-📊 *Resumen:*
-🆕 Commit: ${commitHash}
-📝 Mensaje: ${commitMessage}
-📄 Archivos: ${filesChanged.length} modificados
-🔧 Dependencias: ${packageChanged ? 'Actualizadas' : 'Sin cambios'}
-
-💾 *Backups realizados:*
-${backups.join('\n')}
-
-⚠️ *Reinicia el bot para aplicar cambios:*
-• \`#reiniciar\` - Reiniciar ahora
-• \`#detener\` y \`#iniciar\` - Control manual
-
-📌 *Cambios aplicados:*
-${changes.map(c => `• ${c.substring(8)}`).join('\n')}
-    `.trim()
-
-    await m.reply(updateSummary)
-
-    // 8. Registrar actualización en logs
-    const logEntry = `[${new Date().toISOString()}] Actualización completada - Commit: ${commitHash} - User: ${m.sender}\n`
-    fs.appendFileSync(join(botDir, 'update_log.txt'), logEntry)
-
   } catch (error) {
-    console.error('Error en actualización:', error)
-    
-    // Mensaje de error detallado
-    const errorMsg = `
-❌ *ERROR EN ACTUALIZACIÓN*
-
-🔍 Detalles:
-${error.message}
-
-💡 Soluciones:
-1. Verifica tu conexión a internet
-2. Comprueba que GitHub esté accesible
-3. Ejecuta manualmente en Termux:
-   \`\`\`
-   cd ~/Asta_bot
-   git pull origin main
-   \`\`\`
-
-⚠️ Los archivos de respaldo se mantienen en:
-${backupDir}
-    `.trim()
-    
-    await m.reply(errorMsg)
+    await m.react('✖️')
+    await conn.sendMessage(m.chat, { 
+      text: `⚠️ *Error inesperado*\n\n${error.message}\n\n📍 Usa *${usedPrefix}report* para informar.` 
+    }, { quoted: m })
   }
 }
 
-// Metadata del comando
-export const command = ['actualizar', 'update', 'upgrade']
-export const desc = 'Actualizar el bot desde GitHub (Owner only)'
-export const category = 'Owner'
-export const owner = true
-export const admin = false
-export const botAdmin = false
+handler.help = ['actualizar', 'update', 'upgrade']
+handler.tags = ['owner']
+handler.command = ['actualizar', 'update', 'upgrade']
+handler.group = false
+handler.owner = true
+handler.admin = false
+handler.botAdmin = false
+
+export default handler
