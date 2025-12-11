@@ -1,21 +1,13 @@
 import fetch from "node-fetch"
 
-let handler = async (m, { conn, usedPrefix }) => {
+let handler = async (m, { conn, usedPrefix, text }) => {
   try {
     // Verificar si es owner
     if (!global.owner.includes(m.sender.split('@')[0])) {
       return m.reply('🚫 Este comando solo está disponible para el owner del bot.')
     }
 
-    await m.react('🕒')
-    
-    // Mensaje inicial único
-    const msgInicial = await conn.sendMessage(m.chat, { 
-      text: '🔄 *Iniciando actualización...*\n\n⏳ Esto puede tomar 1-2 minutos...' 
-    }, { quoted: m })
-
     const botDir = process.cwd()
-    const backupDir = `${botDir}/backup_update_${Date.now()}`
 
     // Función para ejecutar comandos
     const execCmd = (cmd) => {
@@ -29,7 +21,73 @@ let handler = async (m, { conn, usedPrefix }) => {
       })
     }
 
-    // Función para actualizar el mensaje en lugar de enviar nuevos
+    // Si no hay argumento, mostrar ramas disponibles
+    if (!text || text.trim() === '') {
+      await m.react('🔍')
+      
+      try {
+        // Obtener rama actual
+        const { stdout: ramaActual } = await execCmd('git branch --show-current')
+        
+        // Obtener todas las ramas remotas
+        await execCmd('git fetch origin --prune')
+        const { stdout: ramasRemotas } = await execCmd('git branch -r')
+        
+        // Procesar ramas remotas
+        const ramas = ramasRemotas
+          .split('\n')
+          .map(r => r.trim())
+          .filter(r => r && !r.includes('HEAD') && r.startsWith('origin/'))
+          .map(r => r.replace('origin/', ''))
+        
+        if (ramas.length === 0) {
+          return m.reply('❌ No se encontraron ramas remotas.')
+        }
+
+        // Obtener último commit de cada rama
+        let listaRamas = `🌿 *RAMAS DISPONIBLES*\n\n`
+        listaRamas += `📍 *Rama actual:* \`${ramaActual.trim()}\`\n\n`
+        
+        for (const rama of ramas) {
+          try {
+            const { stdout: lastCommit } = await execCmd(`git log origin/${rama} -1 --pretty=format:"%s" 2>/dev/null`)
+            const { stdout: commitDate } = await execCmd(`git log origin/${rama} -1 --pretty=format:"%cr" 2>/dev/null`)
+            const esActual = rama === ramaActual.trim()
+            
+            listaRamas += `${esActual ? '🔹' : '▫️'} *${rama}*\n`
+            listaRamas += `   📝 ${lastCommit.trim()}\n`
+            listaRamas += `   🕐 ${commitDate.trim()}\n\n`
+          } catch (e) {
+            listaRamas += `${rama === ramaActual.trim() ? '🔹' : '▫️'} *${rama}*\n\n`
+          }
+        }
+
+        listaRamas += `\n💡 *Uso:*\n`
+        listaRamas += `• \`${usedPrefix}update\` - Ver ramas\n`
+        listaRamas += `• \`${usedPrefix}update ${ramaActual.trim()}\` - Actualizar rama actual\n`
+        listaRamas += `• \`${usedPrefix}update <rama>\` - Cambiar y actualizar`
+
+        await m.react('✅')
+        return m.reply(listaRamas)
+
+      } catch (error) {
+        await m.react('❌')
+        return m.reply(`❌ *Error al obtener ramas*\n\n${error.message}`)
+      }
+    }
+
+    // Si hay argumento, proceder con la actualización
+    const ramaDeseada = text.trim()
+    
+    await m.react('🕒')
+    
+    const msgInicial = await conn.sendMessage(m.chat, { 
+      text: `🔄 *Iniciando actualización a rama: ${ramaDeseada}*\n\n⏳ Esto puede tomar 1-2 minutos...` 
+    }, { quoted: m })
+
+    const backupDir = `${botDir}/backup_update_${Date.now()}`
+
+    // Función para actualizar el mensaje
     const actualizarMensaje = async (texto) => {
       try {
         await conn.sendMessage(m.chat, { 
@@ -37,16 +95,35 @@ let handler = async (m, { conn, usedPrefix }) => {
           edit: msgInicial.key 
         })
       } catch (e) {
-        // Si no se puede editar, no enviar nada
         console.log('No se pudo editar mensaje:', e.message)
       }
     }
 
-    // 1. Crear backup
-    await actualizarMensaje('🔄 *Actualizando...*\n\n💾 Creando respaldo de seguridad...')
+    // Verificar que la rama existe en remoto
+    await actualizarMensaje(`🔄 *Actualizando a: ${ramaDeseada}*\n\n🔍 Verificando rama en GitHub...`)
+    
+    try {
+      await execCmd('git fetch origin --prune')
+      const { stdout: ramasRemotas } = await execCmd('git branch -r')
+      const ramaExiste = ramasRemotas.includes(`origin/${ramaDeseada}`)
+      
+      if (!ramaExiste) {
+        await m.react('❌')
+        await actualizarMensaje(`❌ *Rama no encontrada*\n\nLa rama \`${ramaDeseada}\` no existe en GitHub.\n\nUsa \`${usedPrefix}update\` para ver las ramas disponibles.`)
+        return
+      }
+    } catch (e) {
+      await m.react('❌')
+      await actualizarMensaje('❌ *Error de conexión*\n\nNo se pudo conectar con GitHub. Verifica tu internet.')
+      return
+    }
 
-    const fs = await import('fs')
-    const path = await import('path')
+    // Obtener rama actual
+    const { stdout: ramaActual } = await execCmd('git branch --show-current')
+    const cambioRama = ramaActual.trim() !== ramaDeseada
+
+    // 1. Crear backup
+    await actualizarMensaje(`🔄 *Actualizando a: ${ramaDeseada}*\n\n💾 Creando respaldo de seguridad...`)
 
     await execCmd(`mkdir -p "${backupDir}"`)
 
@@ -59,47 +136,59 @@ let handler = async (m, { conn, usedPrefix }) => {
       }
     }
 
-    // 2. Verificar cambios en GitHub
-    await actualizarMensaje('🔄 *Actualizando...*\n\n📥 Verificando actualizaciones en GitHub...')
+    // 2. Verificar cambios disponibles
+    await actualizarMensaje(`🔄 *Actualizando a: ${ramaDeseada}*\n\n📊 Analizando cambios disponibles...`)
 
-    try {
-      await execCmd('git fetch origin')
-    } catch (e) {
-      await m.react('❌')
-      await actualizarMensaje('❌ *Error de conexión*\n\nNo se pudo conectar con GitHub. Verifica tu internet.')
-      return
-    }
-
-    // 3. Verificar si hay cambios
-    const { stdout: status } = await execCmd('git status -uno')
-    if (status.includes('Tu rama está actualizada') || status.includes('Your branch is up to date')) {
-      await m.react('✅')
-      await actualizarMensaje('✅ *Bot actualizado*\n\nNo hay nuevas actualizaciones disponibles.')
-      return
-    }
-
-    // 4. Obtener cambios disponibles
-    const { stdout: cambios } = await execCmd('git log HEAD..origin/main --oneline --no-merges')
+    const { stdout: cambios } = await execCmd(`git log HEAD..origin/${ramaDeseada} --oneline --no-merges`)
     const listaCambios = cambios.split('\n').filter(l => l).slice(0, 5)
 
-    // 5. Aplicar actualización
-    await actualizarMensaje('🔄 *Actualizando...*\n\n⚡ Aplicando actualización y restaurando configuraciones...')
+    if (listaCambios.length === 0 && !cambioRama) {
+      await m.react('✅')
+      await actualizarMensaje(`✅ *Bot actualizado*\n\nLa rama \`${ramaDeseada}\` ya está actualizada.\n\nNo hay nuevos cambios disponibles.`)
+      // Limpiar backup
+      await execCmd(`rm -rf "${backupDir}"`)
+      return
+    }
+
+    // 3. Aplicar actualización
+    await actualizarMensaje(`🔄 *Actualizando a: ${ramaDeseada}*\n\n⚡ ${cambioRama ? 'Cambiando de rama y actualizando' : 'Aplicando actualización'}...`)
 
     try {
+      // Guardar cambios locales
       await execCmd('git stash')
-      const { stdout: pullResult } = await execCmd('git pull origin main --no-rebase')
+
+      // Cambiar de rama si es necesario
+      if (cambioRama) {
+        try {
+          // Verificar si la rama local existe
+          const { stdout: ramasLocales } = await execCmd('git branch')
+          const ramaLocalExiste = ramasLocales.includes(ramaDeseada)
+
+          if (ramaLocalExiste) {
+            await execCmd(`git checkout ${ramaDeseada}`)
+          } else {
+            await execCmd(`git checkout -b ${ramaDeseada} origin/${ramaDeseada}`)
+          }
+        } catch (checkoutError) {
+          throw new Error(`No se pudo cambiar a la rama ${ramaDeseada}: ${checkoutError.message}`)
+        }
+      }
+
+      // Hacer pull de la rama
+      const { stdout: pullResult } = await execCmd(`git pull origin ${ramaDeseada} --no-rebase`)
 
       if (pullResult.includes('CONFLICT') || pullResult.includes('error:')) {
         await execCmd('git merge --abort')
+        await execCmd(`git checkout ${ramaActual.trim()}`)
         await execCmd('git stash pop')
         throw new Error('Conflicto al fusionar cambios')
       }
 
-      // 6. Actualizar dependencias si es necesario
+      // 4. Actualizar dependencias si es necesario
       const packageChanged = pullResult.toLowerCase().includes('package.json')
 
       if (packageChanged) {
-        await actualizarMensaje('🔄 *Actualizando...*\n\n📦 Instalando nuevas dependencias...')
+        await actualizarMensaje(`🔄 *Actualizando a: ${ramaDeseada}*\n\n📦 Instalando nuevas dependencias...`)
         try {
           await execCmd('npm install --legacy-peer-deps')
         } catch (npmError) {
@@ -107,7 +196,7 @@ let handler = async (m, { conn, usedPrefix }) => {
         }
       }
 
-      // 7. Restaurar backups
+      // 5. Restaurar backups
       const checkBackup = async (file) => {
         try {
           const { stdout } = await execCmd(`[ -e "${backupDir}/${file}" ] && echo "exists"`)
@@ -130,17 +219,22 @@ let handler = async (m, { conn, usedPrefix }) => {
         await execCmd(`cp -r "${backupDir}/sessions" "${botDir}/"`)
       }
 
-      // 8. Obtener información del commit
+      // 6. Obtener información del commit
       const { stdout: commitHash } = await execCmd('git log -1 --pretty=format:"%h"')
       const { stdout: commitMsg } = await execCmd('git log -1 --pretty=format:"%s"')
+      const { stdout: commitAuthor } = await execCmd('git log -1 --pretty=format:"%an"')
+      const { stdout: ramaFinal } = await execCmd('git branch --show-current')
       const filesChanged = (pullResult.match(/\| \d+ [+-]+/g) || []).length
 
-      // 9. Mensaje final único
+      // 7. Mensaje final
       const mensajeFinal = `
 ✅ *ACTUALIZACIÓN COMPLETADA*
 
+🌿 *Rama:* \`${ramaFinal.trim()}\` ${cambioRama ? '(cambiada)' : ''}
+${cambioRama ? `   Desde: \`${ramaActual.trim()}\`\n` : ''}
 🔧 *Detalles:*
 🆕 Commit: ${commitHash.trim()}
+👤 Autor: ${commitAuthor.trim()}
 📝 Mensaje: ${commitMsg.trim()}
 📄 Archivos: ${filesChanged} modificados
 🔧 Dependencias: ${packageChanged ? 'Actualizadas' : 'Sin cambios'}
@@ -149,10 +243,9 @@ let handler = async (m, { conn, usedPrefix }) => {
 • Reinicia el bot manualmente
 • O usa el comando *${usedPrefix}reiniciar*
 
-📌 *Cambios aplicados:*
-${listaCambios.map((c, i) => `• ${c.substring(8)}`).join('\n')}
+${listaCambios.length > 0 ? `📌 *Últimos cambios aplicados:*\n${listaCambios.map((c, i) => `• ${c.substring(8)}`).join('\n')}` : ''}
 
-💾 Backup guardado en: ${backupDir}
+💾 Backup guardado temporalmente
       `.trim()
 
       await m.react('✅')
@@ -168,7 +261,7 @@ ${listaCambios.map((c, i) => `• ${c.substring(8)}`).join('\n')}
       }, 60000)
 
     } catch (updateError) {
-      await actualizarMensaje('🔄 *Actualizando...*\n\n⚠️ Error durante la actualización, restaurando versión anterior...')
+      await actualizarMensaje(`🔄 *Actualizando a: ${ramaDeseada}*\n\n⚠️ Error durante la actualización, restaurando versión anterior...`)
 
       try {
         const restoreFile = async (file) => {
@@ -190,11 +283,16 @@ ${listaCambios.map((c, i) => `• ${c.substring(8)}`).join('\n')}
         await restoreFile('database.json')
         await restoreFile('settings.js')
         await restoreFile('sessions')
+        
+        // Volver a la rama original si hubo cambio
+        if (cambioRama) {
+          await execCmd(`git checkout ${ramaActual.trim()}`)
+        }
         await execCmd('git reset --hard HEAD')
 
         await m.react('❌')
         await actualizarMensaje(
-          `❌ *Actualización fallida*\n\nSe restauró la versión anterior.\n\nError: ${updateError.message}\n\n📍 Usa *${usedPrefix}report* para informar el problema.`
+          `❌ *Actualización fallida*\n\nSe restauró la versión anterior en la rama \`${ramaActual.trim()}\`.\n\nError: ${updateError.message}\n\n📍 Usa *${usedPrefix}report* para informar el problema.`
         )
       } catch (restoreError) {
         await m.react('💀')
