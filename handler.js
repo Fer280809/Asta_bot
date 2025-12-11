@@ -68,7 +68,7 @@ global.db.data.chats[m.chat] = {
 isBanned: false,
 isMute: false,
 mutes: {},
-welcome: false,
+welcome: true, // Activado por defecto
 sWelcome: "",
 sBye: "",
 detect: true,
@@ -96,9 +96,9 @@ settings = global.db.data.settings[this.user.jid]
 
 if (typeof m.text !== "string") m.text = ""
 
-// ============ SISTEMA DE PERMISOS CORREGIDO ============
+// ============ SISTEMA DE PERMISOS CORREGIDO Y OPTIMIZADO ============
 
-// 1. DETECCIÓN DE OWNER - Forma correcta
+// 1. DETECCIÓN DE OWNER
 let isROwner = false
 let isOwner = false
 let isPrems = false
@@ -107,9 +107,8 @@ let isFernando = false
 // Convertir m.sender a número sin @s.whatsapp.net
 const senderNumber = m.sender.split('@')[0]
 
-// Verificar si es root owner (de settings.js)
+// Verificar si es root owner
 if (Array.isArray(global.owner)) {
-// Buscar en cada owner (puede ser string o array [number, name])
 for (const ownerData of global.owner) {
 let ownerNumber = ''
 if (Array.isArray(ownerData)) {
@@ -148,7 +147,7 @@ break
 }
 }
 
-// 2. DETECCIÓN DE ADMIN EN GRUPOS - Forma correcta
+// ============ DETECCIÓN DE ADMIN EN GRUPOS - SISTEMA MEJORADO ============
 let isAdmin = false
 let isBotAdmin = false
 let groupMetadata = {}
@@ -156,38 +155,102 @@ let participants = []
 
 if (m.isGroup) {
 try {
-// Obtener metadata del grupo
-groupMetadata = this.chats[m.chat]?.metadata || await this.groupMetadata(m.chat).catch(() => ({ participants: [] }))
+// Método 1: Obtener metadata de la caché del socket
+if (this.chats && this.chats[m.chat]) {
+groupMetadata = this.chats[m.chat]
 participants = groupMetadata.participants || []
+} else {
+// Método 2: Llamar a groupMetadata
+groupMetadata = await this.groupMetadata(m.chat).catch(() => ({}))
+participants = groupMetadata.participants || []
+}
 
-// Buscar al usuario en participantes
-const userParticipant = participants.find(p => {
-const pjid = p.id || p.jid
+// Método 3: Usar fetchGroupMetadataFromWA si está disponible
+if (!participants.length && this.fetchGroupMetadataFromWA) {
+try {
+const metadata = await this.fetchGroupMetadataFromWA(m.chat)
+participants = metadata?.participants || []
+} catch (e) {}
+}
+
+// BUSCAR PARTICIPANTE USUARIO
+let userParticipant = null
+if (participants.length) {
+// Buscar por diferentes propiedades
+userParticipant = participants.find(p => {
+const pjid = p.id || p.jid || p.userId
 return pjid === m.sender
 })
 
-// Buscar al bot en participantes
-const botParticipant = participants.find(p => {
-const pjid = p.id || p.jid
-return pjid === this.user.jid
+// Si no se encuentra, intentar buscar por número
+if (!userParticipant) {
+const userNum = m.sender.split('@')[0]
+userParticipant = participants.find(p => {
+const pjid = p.id || p.jid || p.userId
+return pjid && pjid.includes(userNum)
 })
-
-// Determinar si es admin
-if (userParticipant) {
-isAdmin = userParticipant.admin === 'admin' || 
-userParticipant.admin === 'superadmin' || 
-userParticipant.admin === true
+}
 }
 
-// Determinar si el bot es admin
+// BUSCAR PARTICIPANTE BOT
+let botParticipant = null
+if (participants.length) {
+const botJid = this.user.jid
+botParticipant = participants.find(p => {
+const pjid = p.id || p.jid || p.userId
+return pjid === botJid
+})
+}
+
+// DETERMINAR SI ES ADMIN (MÚLTIPLES MÉTODOS)
+if (userParticipant) {
+// Método 1: Propiedad admin directa
+if (userParticipant.admin) {
+isAdmin = userParticipant.admin === true || 
+userParticipant.admin === 'admin' || 
+userParticipant.admin === 'superadmin'
+}
+// Método 2: Propiedad admin en string
+else if (userParticipant.admin !== undefined) {
+isAdmin = String(userParticipant.admin).toLowerCase().includes('admin')
+}
+// Método 3: Verificar permisos
+else if (userParticipant.isAdmin !== undefined) {
+isAdmin = userParticipant.isAdmin
+}
+}
+
+// DETERMINAR SI EL BOT ES ADMIN
 if (botParticipant) {
-isBotAdmin = botParticipant.admin === 'admin' || 
-botParticipant.admin === 'superadmin' || 
-botParticipant.admin === true
+if (botParticipant.admin) {
+isBotAdmin = botParticipant.admin === true || 
+botParticipant.admin === 'admin' || 
+botParticipant.admin === 'superadmin'
+} else if (botParticipant.admin !== undefined) {
+isBotAdmin = String(botParticipant.admin).toLowerCase().includes('admin')
+} else if (botParticipant.isAdmin !== undefined) {
+isBotAdmin = botParticipant.isAdmin
+}
+}
+
+// DEBUG: Mostrar información de detección (opcional)
+if (global.opts.debug) {
+console.log('DEBUG ADMIN:', {
+chat: m.chat,
+user: m.sender,
+userParticipant: userParticipant?.admin,
+isAdmin,
+botParticipant: botParticipant?.admin,
+isBotAdmin,
+participantsCount: participants.length
+})
 }
 
 } catch (e) {
 console.error('Error al obtener metadata del grupo:', e.message)
+// En caso de error, asumir que no es admin para seguridad
+isAdmin = false
+isBotAdmin = false
 }
 }
 
@@ -195,7 +258,6 @@ console.error('Error al obtener metadata del grupo:', e.message)
 if (!isOwner && settings.self) return
 
 if (settings.gponly && !isOwner && !m.chat.endsWith('g.us')) {
-// Lista de comandos permitidos en privado
 const allowedCommands = ['code', 'p', 'ping', 'qr', 'estado', 'status', 'infobot', 'botinfo', 
 'report', 'reportar', 'invite', 'join', 'logout', 'suggest', 'help', 'menu']
 const isAllowed = allowedCommands.some(cmd => m.text.toLowerCase().includes(cmd))
@@ -310,10 +372,17 @@ return
 }
 }
 
-// Verificar modo admin (modoadmin)
-if (chat.modoadmin && !isOwner && m.isGroup && !isAdmin && 
-(plugin.botAdmin || plugin.admin || plugin.group || plugin.mods)) {
-continue
+// Verificar modo admin (modoadmin) - CORREGIDO
+if (chat.modoadmin && m.isGroup) {
+// Si está en modo admin y el usuario NO es admin NI owner
+if (!isAdmin && !isOwner) {
+// Si el plugin requiere permisos de admin/botAdmin
+if (plugin.botAdmin || plugin.admin || plugin.mods) {
+continue // Saltar el comando
+}
+// Si el plugin es solo para grupo, permitirlo (no requiere admin)
+// if (plugin.group) { } // Se permite
+}
 }
 
 // ============ VERIFICACIÓN DE PERMISOS DEL PLUGIN ============
