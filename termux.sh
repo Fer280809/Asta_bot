@@ -1,5 +1,5 @@
 #!/data/data/com.termux/files/usr/bin/bash
-# Código desarrollado por @Asta_bot
+# Código desarrollado por @Asta_bot - VERSIÓN ACTUALIZADA SEGURA
 
 BOT_DIR="Asta_bot"
 BOT_REPO="https://github.com/Fer280809/Asta_bot.git"
@@ -25,14 +25,14 @@ show_changes() {
     echo -e "${BOLD}${CYAN}╔═══════════════════════════════════╗${RESET}"
     echo -e "${BOLD}${CYAN}║   📝 ARCHIVOS ACTUALIZADOS        ║${RESET}"
     echo -e "${BOLD}${CYAN}╚═══════════════════════════════════╝${RESET}\n"
-    
+
     if [ -d ".git" ]; then
         # Obtener cambios del repositorio remoto
         git fetch origin main 2>/dev/null
-        
+
         # Listar archivos modificados
         local changes=$(git diff --name-status HEAD origin/main 2>/dev/null)
-        
+
         if [ -n "$changes" ]; then
             echo "$changes" | while IFS=$'\t' read -r status file; do
                 case $status in
@@ -46,12 +46,12 @@ show_changes() {
         else
             echo -e "${GREEN}✓ No hay cambios nuevos${RESET}\n"
         fi
-        
+
         # Contar archivos por tipo de cambio
         local modified=$(echo "$changes" | grep -c "^M" 2>/dev/null || echo "0")
         local added=$(echo "$changes" | grep -c "^A" 2>/dev/null || echo "0")
         local deleted=$(echo "$changes" | grep -c "^D" 2>/dev/null || echo "0")
-        
+
         if [ "$modified" != "0" ] || [ "$added" != "0" ] || [ "$deleted" != "0" ]; then
             echo -e "${BOLD}${CYAN}╔═══════════════════════════════════╗${RESET}"
             echo -e "${BOLD}${CYAN}║       RESUMEN DE CAMBIOS          ║${RESET}"
@@ -64,137 +64,190 @@ show_changes() {
     fi
 }
 
-# Función de instalación limpia
-clean_install() {
-    echo -e "${BOLD}${CYAN}📦 Instalando dependencias...${RESET}"
-    yarn --ignore-scripts 2>/dev/null
-    npm install
-    echo -e "${GREEN}✓ Dependencias instaladas${RESET}\n"
+# Función para actualizar SIN eliminar carpetas críticas
+safe_update() {
+    echo -e "${BOLD}${CYAN}📥 Actualizando desde GitHub...${RESET}"
+    
+    # Verificar si hay cambios pendientes locales
+    if [ -n "$(git status --porcelain)" ]; then
+        echo -e "${YELLOW}⚠ Tienes cambios locales. Haciendo stash...${RESET}"
+        git stash
+    fi
+    
+    # Actualizar desde el repositorio remoto
+    if git pull origin main; then
+        echo -e "${GREEN}✓ Repositorio actualizado${RESET}"
+        
+        # Si hay stash, intentar aplicar cambios
+        if [ -n "$(git stash list)" ]; then
+            echo -e "${YELLOW}⚠ Aplicando cambios locales...${RESET}"
+            if git stash pop; then
+                echo -e "${GREEN}✓ Cambios locales aplicados${RESET}"
+            else
+                echo -e "${RED}⚠ Conflictos en cambios locales${RESET}"
+                echo -e "${YELLOW}Revisa manualmente con: git status${RESET}"
+            fi
+        fi
+    else
+        echo -e "${RED}❌ Error al actualizar el repositorio${RESET}"
+        return 1
+    fi
+    
+    return 0
 }
+
+# Función para verificar e instalar dependencias si es necesario
+check_dependencies() {
+    echo -e "${BOLD}${CYAN}🔍 Verificando dependencias...${RESET}"
+    
+    # Verificar si package.json fue modificado
+    if git diff --name-only HEAD@{1} HEAD | grep -q "package.json"; then
+        echo -e "${YELLOW}⚠ package.json modificado. Actualizando dependencias...${RESET}"
+        
+        # Verificar si usa yarn o npm
+        if [ -f "yarn.lock" ]; then
+            echo -e "${CYAN}📦 Usando Yarn para instalar...${RESET}"
+            yarn install --ignore-scripts
+        else
+            echo -e "${CYAN}📦 Usando NPM para instalar...${RESET}"
+            npm install --legacy-peer-deps
+        fi
+        
+        echo -e "${GREEN}✓ Dependencias actualizadas${RESET}"
+    else
+        echo -e "${GREEN}✓ No hay cambios en dependencias${RESET}"
+    fi
+    echo ""
+}
+
+# Función para respaldar y restaurar base de datos
+handle_database() {
+    # Respaldar database.json si existe
+    if [ -e "$DB_FILE" ]; then 
+        echo -e "${BOLD}${CYAN}💾 Respaldando base de datos \"$DB_FILE\"...${RESET}"
+        cp "$DB_FILE" "$HOME/database_backup.json"
+        echo -e "${GREEN}✓ Base de datos respaldada${RESET}\n"
+        return 0
+    else
+        echo -e "${YELLOW}⚠ \"$DB_FILE\" no encontrada${RESET}\n"
+        return 1
+    fi
+}
+
+# ============================= MAIN =============================
 
 # Verificar si estamos en el directorio del bot
 if [[ $(basename "$PWD") == "$BOT_DIR" ]]; then
-    if [ -e "$DB_FILE" ]; then 
-        echo -e "${BOLD}${CYAN}💾 Respaldando base de datos \"$DB_FILE\"...${RESET}"
-        mv "$HOME/$BOT_DIR/$DB_FILE" "$HOME"
-        echo -e "${GREEN}✓ Base de datos respaldada${RESET}\n"
+    echo -e "${CYAN}📍 Ubicación actual: Directorio del Bot${RESET}\n"
+    
+    # Respaldar base de datos si existe
+    handle_database
+    
+    # Mostrar cambios antes de actualizar
+    show_changes
+    
+    # Actualizar de forma segura
+    if safe_update; then
+        # Verificar dependencias
+        check_dependencies
         
-        echo -e "${BOLD}${MAGENTA}🔄 Clonando última versión del repositorio...${RESET}"
-        cd "$HOME"
-        rm -rf "$BOT_DIR"
-        
-        if git clone "$BOT_REPO"; then
-            echo -e "${GREEN}✓ Repositorio clonado exitosamente${RESET}\n"
-            cd "$HOME/$BOT_DIR"
-            
-            # Mostrar cambios
-            show_changes
-            
-            clean_install
-            
-            if [ -e "$HOME/$DB_FILE" ]; then
-                echo -e "${BOLD}${CYAN}♻️  Restaurando base de datos...${RESET}"
-                mv "$HOME/$DB_FILE" "$HOME/$BOT_DIR/"
-                echo -e "${GREEN}✓ Base de datos restaurada${RESET}\n"
+        # Restaurar database.json si existía backup
+        if [ -e "$HOME/database_backup.json" ]; then
+            echo -e "${BOLD}${CYAN}♻️  Restaurando base de datos...${RESET}"
+            # Solo restaurar si no hubo conflictos con database.json
+            if [ -e "$DB_FILE" ]; then
+                echo -e "${YELLOW}⚠ database.json existe. Manteniendo versión actualizada${RESET}"
+                rm "$HOME/database_backup.json"
+            else
+                mv "$HOME/database_backup.json" "$DB_FILE"
+                echo -e "${GREEN}✓ Base de datos restaurada${RESET}"
             fi
-        else
-            echo -e "${RED}❌ Error al clonar el repositorio${RESET}"
-            exit 1
         fi
         
         echo -e "${BOLD}${GREEN}"
         echo "╔═══════════════════════════════════╗"
-        echo "║    🚀 INICIANDO ASTA BOT 🚀       ║"
+        echo "║    ✅ ACTUALIZACIÓN COMPLETA      ║"
         echo "╚═══════════════════════════════════╝${RESET}"
         echo ""
-        npm start
+        
+        # Preguntar si iniciar el bot
+        read -p "¿Iniciar Asta Bot ahora? (s/n): " -n 1 -r
+        echo ""
+        if [[ $REPLY =~ ^[Ss]$ ]]; then
+            echo -e "${BOLD}${GREEN}"
+            echo "╔═══════════════════════════════════╗"
+            echo "║    🚀 INICIANDO ASTA BOT 🚀       ║"
+            echo "╚═══════════════════════════════════╝${RESET}"
+            echo ""
+            npm start
+        else
+            echo -e "${CYAN}📌 Para iniciar manualmente: npm start${RESET}"
+        fi
     else
-        echo -e "${YELLOW}⚠ \"$DB_FILE\" no existe, realizando instalación limpia...${RESET}\n"
-        cd "$HOME"
-        rm -rf "$BOT_DIR"
-        
-        echo -e "${BOLD}${MAGENTA}🔄 Clonando repositorio...${RESET}"
-        if git clone "$BOT_REPO"; then
-            echo -e "${GREEN}✓ Repositorio clonado${RESET}\n"
-            cd "$HOME/$BOT_DIR"
-            show_changes
-            clean_install
-        else
-            echo -e "${RED}❌ Error al clonar el repositorio${RESET}"
-            exit 1
-        fi
-        
-        echo -e "${BOLD}${GREEN}"
-        echo "╔═══════════════════════════════════╗"
-        echo "║    🚀 INICIANDO ASTA BOT 🚀       ║"
-        echo "╚═══════════════════════════════════╝${RESET}"
-        echo ""
-        npm start
+        echo -e "${RED}❌ Error en la actualización${RESET}"
+        exit 1
     fi
+    
 else
     echo -e "${CYAN}📍 Ubicación actual: \"$HOME\"${RESET}\n"
-    cd "$HOME"
     
-    if [ -e "$HOME/$BOT_DIR" ]; then
+    # Verificar si el directorio del bot existe
+    if [ -d "$HOME/$BOT_DIR" ]; then
         cd "$HOME/$BOT_DIR"
         
-        if [ -e "$DB_FILE" ]; then
-            echo -e "${BOLD}${CYAN}💾 Respaldando base de datos...${RESET}"
-            mv "$HOME/$BOT_DIR/$DB_FILE" "$HOME"
-            echo -e "${GREEN}✓ Base de datos respaldada${RESET}\n"
-        fi
+        echo -e "${BOLD}${MAGENTA}📂 Accediendo al directorio del bot...${RESET}\n"
         
-        cd "$HOME"
-        echo -e "${BOLD}${MAGENTA}🔄 Actualizando repositorio...${RESET}"
-        rm -rf "$BOT_DIR"
+        # Respaldar base de datos si existe
+        handle_database
         
-        if git clone "$BOT_REPO"; then
-            echo -e "${GREEN}✓ Repositorio actualizado${RESET}\n"
-            cd "$BOT_DIR"
-            show_changes
-            clean_install
+        # Mostrar cambios antes de actualizar
+        show_changes
+        
+        # Actualizar de forma segura
+        if safe_update; then
+            # Verificar dependencias
+            check_dependencies
             
-            if [ -e "$HOME/$DB_FILE" ]; then
+            # Restaurar database.json si existía backup
+            if [ -e "$HOME/database_backup.json" ]; then
                 echo -e "${BOLD}${CYAN}♻️  Restaurando base de datos...${RESET}"
-                mv "$HOME/$DB_FILE" "$HOME/$BOT_DIR/"
-                echo -e "${GREEN}✓ Base de datos restaurada${RESET}\n"
+                if [ -e "$DB_FILE" ]; then
+                    echo -e "${YELLOW}⚠ database.json existe. Manteniendo versión actualizada${RESET}"
+                    rm "$HOME/database_backup.json"
+                else
+                    mv "$HOME/database_backup.json" "$DB_FILE"
+                    echo -e "${GREEN}✓ Base de datos restaurada${RESET}"
+                fi
             fi
-        else
-            echo -e "${RED}❌ Error al actualizar el repositorio${RESET}"
-            exit 1
-        fi
-        
-        echo -e "${BOLD}${GREEN}"
-        echo "╔═══════════════════════════════════╗"
-        echo "║    🚀 INICIANDO ASTA BOT 🚀       ║"
-        echo "╚═══════════════════════════════════╝${RESET}"
-        echo ""
-        npm start
-    else
-        echo -e "${YELLOW}⚠ \"$BOT_DIR\" no existe, realizando instalación inicial...${RESET}\n"
-        
-        echo -e "${BOLD}${MAGENTA}🔄 Clonando repositorio...${RESET}"
-        if git clone "$BOT_REPO"; then
-            echo -e "${GREEN}✓ Repositorio clonado${RESET}\n"
-            cd "$BOT_DIR"
-            show_changes
-            clean_install
             
-            if [ -e "$HOME/$DB_FILE" ]; then
-                echo -e "${BOLD}${CYAN}♻️  Rescatando base de datos...${RESET}"
-                mv "$HOME/$DB_FILE" "$HOME/$BOT_DIR/"
-                echo -e "${GREEN}✓ Base de datos rescatada${RESET}\n"
+            echo -e "${BOLD}${GREEN}"
+            echo "╔═══════════════════════════════════╗"
+            echo "║    ✅ ACTUALIZACIÓN COMPLETA      ║"
+            echo "╚═══════════════════════════════════╝${RESET}"
+            echo ""
+            
+            # Preguntar si iniciar el bot
+            read -p "¿Iniciar Asta Bot ahora? (s/n): " -n 1 -r
+            echo ""
+            if [[ $REPLY =~ ^[Ss]$ ]]; then
+                echo -e "${BOLD}${GREEN}"
+                echo "╔═══════════════════════════════════╗"
+                echo "║    🚀 INICIANDO ASTA BOT 🚀       ║"
+                echo "╚═══════════════════════════════════╝${RESET}"
+                echo ""
+                npm start
+            else
+                echo -e "${CYAN}📌 Para iniciar manualmente: cd ~/Asta_bot && npm start${RESET}"
             fi
         else
-            echo -e "${RED}❌ Error al clonar el repositorio${RESET}"
+            echo -e "${RED}❌ Error en la actualización${RESET}"
             exit 1
         fi
         
-        echo -e "${BOLD}${GREEN}"
-        echo "╔═══════════════════════════════════╗"
-        echo "║    🚀 INICIANDO ASTA BOT 🚀       ║"
-        echo "╚═══════════════════════════════════╝${RESET}"
-        echo ""
-        npm start
+    else
+        echo -e "${YELLOW}⚠ \"$BOT_DIR\" no existe en $HOME${RESET}"
+        echo -e "${CYAN}📌 Para clonar el repositorio manualmente:${RESET}"
+        echo -e "  cd ~ && git clone $BOT_REPO${RESET}"
+        exit 1
     fi
 fi
