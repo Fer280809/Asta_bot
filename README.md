@@ -243,43 +243,8 @@ href="https://www.youtube.com/watch?v=SYbEOZZ__Wo"><img src="https://github.com/
 
 * 📲 WhatsApp: [`CONTÁCTANOS`](https:/Wa.me/524181450063)
 * 🔥 Solicita bot oficial: [`CONTÁCTANOS`](https://wa.me/524181450063)
+</details>
 
-<div align="center">
-  <hr>
-  <p style="font-size: 20px; font-weight: bold; color: #3498DB;">
-    VISITAS AL REPOSITORIO
-  </p>
-  <img src="https://profile-counter.glitch.me/Fer280809/count.svg" alt="Contador de Visitas" />
-  <p style="font-size: 14px; margin-top: 5px; color: #7f8c8d;">
-    👁️ Total de Visitantes Únicos 👁️
-  </p>
-  <hr>
-</div>
-
----
-
-<div align="center">
-  <h2 style="
-    background: linear-gradient(to right, #FF0000, #00FF00, #0000FF);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-size: 35px; /* Ligeramente más grande */
-    font-weight: 900; /* Mayor grosor */
-    margin: 30px 0 10px 0; /* Más espacio arriba y menos abajo */
-  ">
-    🔥 ¡ÚNETE AL CANAL OFICIAL DEL BOT ASTA! 🔥
-  </h2>
-</div>
-  
-  <p style="color: #FF9900; font-size: 18px; margin-bottom: 15px;">En nuestro canal estaremos compartiendo todas las novedades, actualizaciones y tips exclusivos</p>
-  
-  <a href="https://whatsapp.com/channel/0029VbAoYE99hXF1wm3zmQ21" style="display: inline-block; background: linear-gradient(to right, #25D366, #128C7E); color: white; font-weight: bold; padding: 12px 30px; text-decoration: none; border-radius: 30px; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.5); transition: all 0.3s ease;">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/768px-WhatsApp.svg.png" height="20px" style="vertical-align: middle; margin-right: 8px;">
-    ACCEDER AL CANAL AHORA
-  </a>
-  
-  <p style="color: #FF5252; font-size: 16px; margin-top: 15px;">💎 No te pierdas ninguna actualización importante 💎</p>
-</div>
 
 <div align="center">
   <h2>👑 CREADOR DEL BOT 👑</h2>
