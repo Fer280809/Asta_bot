@@ -89,6 +89,8 @@ let txt = `̮
 
 ╰┈➤ 🎵 *#tiktok / #tt* + [Link] / [busqueda]
         ╰┈➤ Descargar un video de TikTok  
+╰┈➤ 📱 #estados – Descarga estados de WhatsApp
+        ╰┈➤ Descarga estados de whatsapp
 ╰┈➤ 📂 *#mediafire / #mf* + [Link]
         ╰┈➤ Descargar un archivo de MediaFire  
 ╰┈➤ 📂 *#mega / #mg* + [Link]
