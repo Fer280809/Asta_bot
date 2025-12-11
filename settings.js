@@ -15,7 +15,7 @@ global.owner = [
 "5214181450063",
 "573153057295"
 ]
-global.rowner = ["5214181450063"]
+
 global.suittag = ["5214181450063"] 
 global.prems = ["573114758599", "5214181450063"]
 global.fernando = ["5214181450063"]
