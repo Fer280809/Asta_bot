@@ -4,8 +4,6 @@ import { fileURLToPath } from "url"
 import path, { join } from "path"
 import fs, { unwatchFile, watchFile } from "fs"
 import chalk from "chalk"
-import fetch from "node-fetch"
-import ws from "ws"
 
 const { proto } = (await import("@whiskeysockets/baileys")).default
 const isNumber = x => typeof x === "number" && !isNaN(x)
@@ -15,41 +13,24 @@ resolve()
 }, ms))
 
 export async function handler(chatUpdate) {
-this.msgqueque = this.msgqueque || []
-this.uptime = this.uptime || Date.now()
-if (!chatUpdate) return
-this.pushMessage(chatUpdate.messages).catch(console.error)
+if (!chatUpdate?.messages?.length) return
 let m = chatUpdate.messages[chatUpdate.messages.length - 1]
-if (!m) return
-if (global.db.data == null) await global.loadDatabase()
+if (!m || !m.message) return
+if (m.key?.remoteJid === 'status@broadcast') return
+
+if (!global.db.data) await global.loadDatabase()
+
 try {
 m = smsg(this, m) || m
 if (!m) return
+if (m.isBaileys) return
+if (m.id?.startsWith("BAE5") || m.id?.startsWith("B24E") || m.id?.startsWith("NJX-")) return
+
 m.exp = 0
-try {
+
 let user = global.db.data.users[m.sender]
-if (typeof user !== "object") global.db.data.users[m.sender] = {}
-if (user) {
-if (!("name" in user)) user.name = m.name
-if (!("exp" in user) || !isNumber(user.exp)) user.exp = 0
-if (!("coin" in user) || !isNumber(user.coin)) user.coin = 0
-if (!("bank" in user) || !isNumber(user.bank)) user.bank = 0
-if (!("level" in user) || !isNumber(user.level)) user.level = 0
-if (!("health" in user) || !isNumber(user.health)) user.health = 100
-if (!("genre" in user)) user.genre = ""
-if (!("birth" in user)) user.birth = ""
-if (!("marry" in user)) user.marry = ""
-if (!("description" in user)) user.description = ""
-if (!("packstickers" in user)) user.packstickers = null
-if (!("premium" in user)) user.premium = false
-if (!("premiumTime" in user)) user.premiumTime = 0
-if (!("banned" in user)) user.banned = false
-if (!("bannedReason" in user)) user.bannedReason = ""
-if (!("commands" in user) || !isNumber(user.commands)) user.commands = 0
-if (!("afk" in user) || !isNumber(user.afk)) user.afk = -1
-if (!("afkReason" in user)) user.afkReason = ""
-if (!("warn" in user) || !isNumber(user.warn)) user.warn = 0
-} else global.db.data.users[m.sender] = {
+if (!user) {
+global.db.data.users[m.sender] = {
 name: m.name,
 exp: 0,
 coin: 0,
@@ -70,164 +51,117 @@ afk: -1,
 afkReason: "",
 warn: 0
 }
+user = global.db.data.users[m.sender]
+}
+
+if (m.pushName && user.name !== m.pushName) user.name = m.pushName
+
 let chat = global.db.data.chats[m.chat]
-if (typeof chat !== "object") global.db.data.chats[m.chat] = {}
-if (chat) {
-if (!("isBanned" in chat)) chat.isBanned = false
-if (!("isMute" in chat)) chat.isMute = false;
-if (!("welcome" in chat)) chat.welcome = false
-if (!("sWelcome" in chat)) chat.sWelcome = ""
-if (!("sBye" in chat)) chat.sBye = ""
-if (!("detect" in chat)) chat.detect = true
-if (!("primaryBot" in chat)) chat.primaryBot = null
-if (!("modoadmin" in chat)) chat.modoadmin = false
-if (!("antiLink" in chat)) chat.antiLink = true
-if (!("nsfw" in chat)) chat.nsfw = false
-if (!("economy" in chat)) chat.economy = true;
-if (!("gacha" in chat)) chat.gacha = true
-} else global.db.data.chats[m.chat] = {
+if (!chat) {
+global.db.data.chats[m.chat] = {
 isBanned: false,
 isMute: false,
-welcome: false,
+mutes: {},
+welcome: true,
 sWelcome: "",
 sBye: "",
 detect: true,
-primaryBot: null,
 modoadmin: false,
 antiLink: true,
 nsfw: false,
 economy: true,
 gacha: true
 }
+chat = global.db.data.chats[m.chat]
+}
+
 let settings = global.db.data.settings[this.user.jid]
-if (typeof settings !== "object") global.db.data.settings[this.user.jid] = {}
-if (settings) {
-if (!("self" in settings)) settings.self = false
-if (!("jadibotmd" in settings)) settings.jadibotmd = true
-if (!("restrict" in settings)) settings.restrict = true
-if (!("antiPrivate" in settings)) settings.antiPrivate = false
-if (!("gponly" in settings)) settings.gponly = false
-} else global.db.data.settings[this.user.jid] = {
+if (!settings) {
+global.db.data.settings[this.user.jid] = {
 self: false,
 jadibotmd: true,
 restrict: true,
 antiPrivate: false,
 gponly: false
-}} catch (e) {
-console.error(e)
 }
+settings = global.db.data.settings[this.user.jid]
+}
+
 if (typeof m.text !== "string") m.text = ""
-const user = global.db.data.users[m.sender]
-try {
-const actual = user.name || ""
-const nuevo = m.pushName || await this.getName(m.sender)
-if (typeof nuevo === "string" && nuevo.trim() && nuevo !== actual) {
-user.name = nuevo
-}} catch {}
-const chat = global.db.data.chats[m.chat]
-const settings = global.db.data.settings[this.user.jid]  
 
-// ============ SISTEMA DE PERMISOS MEJORADO ============
+// ============ DETECCIÓN SIMPLIFICADA DE PERMISOS ============
 
-// 1. DETECCIÓN DE OWNER Y FERNANDO
+// 1. DETECCIÓN DE OWNER Y FERNANDO (DIRECTA)
+const senderNumber = m.sender.split('@')[0]
 let isROwner = false
 let isFernando = false
 
-// Convertir m.sender a número sin @s.whatsapp.net
-const senderNumber = m.sender.split('@')[0]
-
-// Verificar si es root owner
-if (Array.isArray(global.owner)) {
-for (const ownerData of global.owner) {
-let ownerNumber = ''
-if (Array.isArray(ownerData)) {
-ownerNumber = ownerData[0]?.toString().replace(/[^0-9]/g, '')
-} else {
-ownerNumber = ownerData.toString().replace(/[^0-9]/g, '')
-}
-if (ownerNumber && senderNumber.endsWith(ownerNumber)) {
+// Verificar owner
+if (global.owner && Array.isArray(global.owner)) {
+const ownerNumbers = global.owner.map(num => {
+if (Array.isArray(num)) return num[0]?.toString().replace(/[^0-9]/g, '')
+return num.toString().replace(/[^0-9]/g, '')
+})
+if (ownerNumbers.some(num => senderNumber.endsWith(num))) {
 isROwner = true
-break
-}
 }
 }
 
-// Verificar si es Fernando
+// Verificar Fernando
 if (global.fernando && Array.isArray(global.fernando)) {
-for (const fernandoNum of global.fernando) {
-const cleanFernando = fernandoNum.toString().replace(/[^0-9]/g, '')
-if (cleanFernando && senderNumber.endsWith(cleanFernando)) {
+const fernandoNumbers = global.fernando.map(num => num.toString().replace(/[^0-9]/g, ''))
+if (fernandoNumbers.some(num => senderNumber.endsWith(num))) {
 isFernando = true
-break
-}
 }
 }
 
 const isOwner = isROwner || m.fromMe
-const isOwners = [this.user.jid, ...global.owner.map((number) => number + "@s.whatsapp.net")].includes(m.sender)
+const isPrems = isROwner || isFernando || user.premium || false
 
-// 2. DETECCIÓN DE PREMIUM
-let isPrems = isROwner || isFernando || user.premium == true
-if (global.prems && Array.isArray(global.prems)) {
-for (const premNumber of global.prems) {
-const cleanPrem = premNumber.toString().replace(/[^0-9]/g, '')
-if (cleanPrem && senderNumber.endsWith(cleanPrem)) {
-isPrems = true
-break
-}
-}
-}
-
-if (opts["queque"] && m.text && !(isPrems)) {
-const queque = this.msgqueque, time = 1000 * 5
-const previousID = queque[queque.length - 1]
-queque.push(m.id || m.key.id)
-setInterval(async function () {
-if (queque.indexOf(previousID) === -1) clearInterval(this)
-await delay(time)
-}, time)
-}
-
-if (m.isBaileys) return
-m.exp += Math.ceil(Math.random() * 10)
-
-// ============ DETECCIÓN SIMPLIFICADA Y CONFIABLE DE ADMINS ============
+// 2. DETECCIÓN DE ADMIN EN GRUPOS - MÉTODO DIRECTO
 let isAdmin = false
 let isBotAdmin = false
 
 if (m.isGroup) {
 try {
-// Método directo y confiable para obtener metadata
-const metadata = await this.groupMetadata(m.chat).catch(() => null)
-if (metadata && metadata.participants) {
-// Buscar el usuario en los participantes
-const userParticipant = metadata.participants.find(p => 
-p.id === m.sender || p.jid === m.sender || (p.id && p.id.split('@')[0] === senderNumber)
-)
+// Método más directo y confiable
+const metadata = await this.groupMetadata(m.chat)
+const participants = metadata.participants || []
 
-// Buscar el bot en los participantes
-const botParticipant = metadata.participants.find(p => 
-p.id === this.user.jid || p.jid === this.user.jid
-)
+// Buscar usuario
+const userParticipant = participants.find(p => {
+const pjid = p.id || p.jid || p.userId
+return pjid === m.sender
+})
 
-// Verificar si el usuario es admin
+// Buscar bot
+const botParticipant = participants.find(p => {
+const pjid = p.id || p.jid || p.userId
+return pjid === this.user.jid
+})
+
+// Verificar admin del usuario
 if (userParticipant) {
-// Método 1: Propiedad admin booleana
+// Primero verificar admin como booleano
 if (userParticipant.admin === true) {
 isAdmin = true
 } 
-// Método 2: Propiedad admin como string
+// Luego como string
 else if (typeof userParticipant.admin === 'string') {
 isAdmin = userParticipant.admin.toLowerCase() === 'admin' || 
 userParticipant.admin.toLowerCase() === 'superadmin'
 }
-// Método 3: Propiedad type
+// Luego como tipo
 else if (userParticipant.type) {
 isAdmin = userParticipant.type === 'admin' || userParticipant.type === 'superadmin'
 }
+// Último recurso
+else if (userParticipant.isAdmin === true) {
+isAdmin = true
+}
 }
 
-// Verificar si el bot es admin
+// Verificar admin del bot (misma lógica)
 if (botParticipant) {
 if (botParticipant.admin === true) {
 isBotAdmin = true
@@ -236,143 +170,20 @@ isBotAdmin = botParticipant.admin.toLowerCase() === 'admin' ||
 botParticipant.admin.toLowerCase() === 'superadmin'
 } else if (botParticipant.type) {
 isBotAdmin = botParticipant.type === 'admin' || botParticipant.type === 'superadmin'
+} else if (botParticipant.isAdmin === true) {
+isBotAdmin = true
 }
 }
-}
-} catch (error) {
-console.error('Error en detección de admin:', error.message)
-// Valores por defecto seguros
+} catch (e) {
+console.error('Error en detección admin:', e.message)
 isAdmin = false
 isBotAdmin = false
 }
 }
 
-// ============ PROCESAMIENTO DE COMANDOS ============
-const ___dirname = path.join(path.dirname(fileURLToPath(import.meta.url)), "./plugins")
-for (const name in global.plugins) {
-const plugin = global.plugins[name]
-if (!plugin) continue
-if (plugin.disabled) continue
-const __filename = join(___dirname, name)
-if (typeof plugin.all === "function") {
-try {
-await plugin.all.call(this, m, {
-chatUpdate,
-__dirname: ___dirname,
-__filename,
-user,
-chat,
-settings,
-isROwner,
-isOwner,
-isAdmin,
-isBotAdmin,
-isPrems,
-isFernando
-})
-} catch (err) {
-console.error(err)
-}}
-if (!opts["restrict"])
-if (plugin.tags && plugin.tags.includes("admin")) {
-continue
-}
-const strRegex = (str) => str.replace(/[|\\{}()[\]^$+*?.]/g, "\\$&")
-const pluginPrefix = plugin.customPrefix || conn.prefix || global.prefix
-const match = (pluginPrefix instanceof RegExp ?
-[[pluginPrefix.exec(m.text), pluginPrefix]] :
-Array.isArray(pluginPrefix) ?
-pluginPrefix.map(prefix => {
-const regex = prefix instanceof RegExp ?
-prefix : new RegExp(strRegex(prefix))
-return [regex.exec(m.text), regex]
-}) : typeof pluginPrefix === "string" ?
-[[new RegExp(strRegex(pluginPrefix)).exec(m.text), new RegExp(strRegex(pluginPrefix))]] :
-[[[], new RegExp]]).find(prefix => prefix[1])
-if (typeof plugin.before === "function") {
-if (await plugin.before.call(this, m, {
-match,
-conn: this,
-isROwner,
-isOwner,
-isAdmin,
-isBotAdmin,
-isPrems,
-isFernando,
-chatUpdate,
-__dirname: ___dirname,
-__filename,
-user,
-chat,
-settings
-}))
-continue
-}
-if (typeof plugin !== "function") {
-continue
-}
+// 3. VERIFICACIONES DE SEGURIDAD
+if (!isOwner && settings.self) return
 
-// Definir usedPrefix
-let usedPrefix = null
-if (match && match[0] && match[0][0]) {
-usedPrefix = match[0][0]
-}
-
-if (!usedPrefix) continue
-
-const noPrefix = m.text.replace(usedPrefix, "")
-let [command, ...args] = noPrefix.trim().split(" ").filter(v => v)
-args = args || []
-let _args = noPrefix.trim().split(" ").slice(1)
-let text = _args.join(" ")
-command = (command || "").toLowerCase()
-const fail = plugin.fail || global.dfail
-const isAccept = plugin.command instanceof RegExp ?
-plugin.command.test(command) :
-Array.isArray(plugin.command) ?
-plugin.command.some(cmd => cmd instanceof RegExp ?
-cmd.test(command) : cmd === command) :
-typeof plugin.command === "string" ?
-plugin.command === command : false
-global.comando = command
-
-// Verificaciones básicas
-if (!isOwners && settings.self) return
-if ((m.id.startsWith("NJX-") || (m.id.startsWith("BAE5") && m.id.length === 16) || (m.id.startsWith("B24E") && m.id.length === 20))) return
-
-// Verificación de bot primario
-if (global.db.data.chats[m.chat].primaryBot && global.db.data.chats[m.chat].primaryBot !== this.user.jid) {
-const primaryBotConn = global.conns.find(conn => conn.user.jid === global.db.data.chats[m.chat].primaryBot && conn.ws.socket && conn.ws.socket.readyState !== ws.CLOSED)
-const participants = m.isGroup ? (await this.groupMetadata(m.chat).catch(() => ({ participants: [] }))).participants : []
-const primaryBotInGroup = participants.some(p => p.jid === global.db.data.chats[m.chat].primaryBot)
-if (primaryBotConn && primaryBotInGroup || global.db.data.chats[m.chat].primaryBot === global.conn.user.jid) {
-throw !1
-} else {
-global.db.data.chats[m.chat].primaryBot = null
-}}
-
-if (!isAccept) continue
-m.plugin = name
-global.db.data.users[m.sender].commands++
-
-// Verificaciones de chat
-if (chat) {
-const botId = this.user.jid
-const primaryBotId = chat.primaryBot
-if (name !== "group-banchat.js" && chat?.isBanned && !isROwner) {
-if (!primaryBotId || primaryBotId === botId) {
-const aviso = `⚠️ El bot *${global.botname}* está desactivado en este grupo.\n\n> 🔹 Un *administrador* puede activarlo usando el comando:\n> » *${conn.prefix || global.prefix}bot on*`
-await m.reply(aviso)
-return
-}}
-if (m.text && user.banned && !isROwner) {
-const mensaje = `🚫 *Acceso Denegado* 🚫\n⚡ Has sido *baneado/a* y no puedes usar comandos en este bot.\n\n> ⚡ *Razón:* ${user.bannedReason}\n> 🛡️ *Si crees que esto es un error*, presenta tu caso ante un *moderador* para revisión.`
-if (!primaryBotId || primaryBotId === botId) {
-m.reply(mensaje)
-return
-}}}
-
-// Verificación gponly
 if (settings.gponly && !isOwner && !m.chat.endsWith('g.us')) {
 const allowedCommands = ['code', 'p', 'ping', 'qr', 'estado', 'status', 'infobot', 'botinfo', 
 'report', 'reportar', 'invite', 'join', 'logout', 'suggest', 'help', 'menu']
@@ -393,66 +204,163 @@ return
 }
 }
 
-// ============ VERIFICACIÓN DE MODOADMIN CORREGIDA ============
-// SOLUCIÓN: Cuando modoadmin está activado, solo permitir comandos de admin a admins
-// pero permitir todos los comandos a owners
-if (chat.modoadmin && m.isGroup) {
-// Si el usuario NO es admin y NO es owner, y el comando requiere admin/botAdmin
-const requiresAdminPerms = plugin.botAdmin || plugin.admin || plugin.mods
-if (requiresAdminPerms && !isAdmin && !isOwner) {
-fail("admin", m, this)
-continue
+m.exp += Math.ceil(Math.random() * 10)
+
+// ============ PROCESAMIENTO DE COMANDOS ============
+const ___dirname = path.join(path.dirname(fileURLToPath(import.meta.url)), "./plugins")
+
+for (const name in global.plugins) {
+const plugin = global.plugins[name]
+if (!plugin || plugin.disabled) continue
+
+const __filename = join(___dirname, name)
+
+if (typeof plugin.all === "function") {
+try {
+await plugin.all.call(this, m, { 
+chatUpdate, 
+__dirname: ___dirname, 
+__filename, 
+user, 
+chat, 
+settings,
+isROwner,
+isOwner,
+isAdmin,
+isBotAdmin,
+isPrems,
+isFernando
+})
+} catch (e) {
+console.error(e)
 }
-// NOTA: Si modoadmin está activado pero el comando NO requiere permisos de admin,
-// se permite a cualquier usuario (esto es intencional)
 }
 
-// ============ VERIFICACIÓN DE PERMISOS DE PLUGIN ============
-if (plugin.rowner && !isROwner) {
-fail("rowner", m, this)
-continue
+if (typeof plugin !== "function") continue
+
+const pluginPrefix = plugin.customPrefix || conn.prefix || global.prefix
+let usedPrefix = null
+let command = null
+
+// Detectar prefijo
+if (pluginPrefix instanceof RegExp) {
+const match = pluginPrefix.exec(m.text)
+if (match) {
+usedPrefix = match[0]
+command = m.text.slice(match[0].length).trim().split(" ")[0].toLowerCase()
 }
-if (plugin.owner && !isOwner) {
-fail("owner", m, this)
-continue
+} else if (Array.isArray(pluginPrefix)) {
+for (const prefix of pluginPrefix) {
+if (typeof prefix === 'string' && m.text.startsWith(prefix)) {
+usedPrefix = prefix
+command = m.text.slice(prefix.length).trim().split(" ")[0].toLowerCase()
+break
+} else if (prefix instanceof RegExp) {
+const match = prefix.exec(m.text)
+if (match) {
+usedPrefix = match[0]
+command = m.text.slice(match[0].length).trim().split(" ")[0].toLowerCase()
+break
 }
-if (plugin.fernando && !isFernando && !isROwner) {
-fail("fernando", m, this)
-continue
 }
-if (plugin.premium && !isPrems) {
-fail("premium", m, this)
-continue
 }
-if (plugin.group && !m.isGroup) {
-fail("group", m, this)
-continue
-} 
-if (plugin.botAdmin && !isBotAdmin) {
-fail("botAdmin", m, this)
-continue
-} 
-if (plugin.admin && !isAdmin) {
+} else if (typeof pluginPrefix === 'string') {
+if (m.text.startsWith(pluginPrefix)) {
+usedPrefix = pluginPrefix
+command = m.text.slice(pluginPrefix.length).trim().split(" ")[0].toLowerCase()
+}
+}
+
+if (!usedPrefix || !command) continue
+
+const isAccept = plugin.command instanceof RegExp ? plugin.command.test(command) :
+Array.isArray(plugin.command) ? plugin.command.some(cmd => {
+if (cmd instanceof RegExp) return cmd.test(command)
+return cmd === command
+}) : typeof plugin.command === 'string' ? plugin.command === command : false
+
+if (!isAccept) continue
+
+global.comando = command
+m.plugin = name
+user.commands = (user.commands || 0) + 1
+
+// Verificaciones de baneo
+if (!isROwner) {
+if (name !== "group-banchat.js" && chat?.isBanned) {
+await m.reply(`⚠️ El bot *${global.botname}* está desactivado en este grupo.\n\n> 🔹 Un *administrador* puede activarlo usando el comando:\n> » *${usedPrefix}bot on*`)
+return
+}
+if (user.banned) {
+await m.reply(`🚫 *Acceso Denegado* 🚫\n⚡ Has sido *baneado/a* y no puedes usar comandos en este bot.\n\n> ⚡ *Razón:* ${user.bannedReason}\n> 🛡️ *Si crees que esto es un error*, presenta tu caso ante un *moderador* para revisión.`)
+return
+}
+}
+
+// ============ CORRECCIÓN CRÍTICA DEL MODOADMIN ============
+// SI modoadmin está activado Y el usuario NO es admin NI owner
+if (chat.modoadmin && m.isGroup && !isAdmin && !isOwner) {
+// Si el plugin requiere permisos de admin/botAdmin
+if (plugin.botAdmin || plugin.admin || plugin.mods) {
+// Enviar mensaje de error y continuar
+const fail = plugin.fail || global.dfail
 fail("admin", m, this)
 continue
 }
-if (plugin.mods && !isAdmin && !isOwner) {
-fail("mods", m, this)
-continue
+// Si NO requiere permisos de admin, PERMITIR el comando
 }
-if (plugin.private && m.isGroup) {
-fail("private", m, this)
-continue
+
+const fail = plugin.fail || global.dfail
+
+if (plugin.rowner && !isROwner) { 
+fail("rowner", m, this); 
+continue 
+}
+if (plugin.owner && !isOwner) { 
+fail("owner", m, this); 
+continue 
+}
+if (plugin.fernando && !isFernando && !isROwner) { 
+fail("fernando", m, this); 
+continue 
+}
+if (plugin.premium && !isPrems) { 
+fail("premium", m, this); 
+continue 
+}
+if (plugin.group && !m.isGroup) { 
+fail("group", m, this); 
+continue 
+}
+if (plugin.botAdmin && !isBotAdmin) { 
+fail("botAdmin", m, this); 
+continue 
+}
+if (plugin.admin && !isAdmin) { 
+fail("admin", m, this); 
+continue 
+}
+if (plugin.mods && !isAdmin && !isOwner) { 
+fail("mods", m, this); 
+continue 
+}
+if (plugin.private && m.isGroup) { 
+fail("private", m, this); 
+continue 
 }
 
 // Ejecutar plugin
 m.isCommand = true
-m.exp += plugin.exp ? parseInt(plugin.exp) : 10
-let extra = {
-match,
+m.exp += plugin.exp || 10
+
+const noPrefix = m.text.slice(usedPrefix.length).trim()
+const args = noPrefix.split(" ").slice(1)
+const text = args.join(" ")
+
+try {
+await plugin.call(this, m, {
 usedPrefix,
 noPrefix,
-_args,
 args,
 command,
 text,
@@ -463,43 +371,34 @@ isAdmin,
 isBotAdmin,
 isPrems,
 isFernando,
-chatUpdate,
-__dirname: ___dirname,
-__filename,
 user,
 chat,
-settings
+settings,
+__dirname: ___dirname,
+__filename
+})
+} catch (e) {
+m.error = e
+console.error(`Error en plugin ${name}:`, e)
 }
-try {
-await plugin.call(this, m, extra)
-} catch (err) {
-m.error = err
-console.error(err)
-} finally {
-if (typeof plugin.after === "function") {
-try {
-await plugin.after.call(this, m, extra)
-} catch (err) {
-console.error(err)
-}}}}}} catch (err) {
-console.error(err)
-} finally {
-if (opts["queque"] && m.text) {
-const quequeIndex = this.msgqueque.indexOf(m.id || m.key.id)
-if (quequeIndex !== -1)
-this.msgqueque.splice(quequeIndex, 1)
 }
-let user = global.db.data.users[m.sender]
-if (m) {
-if (m.sender && user) {
+
+if (m.sender) {
 user.exp += m.exp
-}}
+}
+
+} catch (e) {
+console.error('Error general en handler:', e)
+} finally {
 try {
-if (!opts["noprint"]) await (await import("./lib/print.js")).default(m, this)
-} catch (err) {
-console.warn(err)
-console.log(m.message)
-}}}
+if (!opts["noprint"] && global.plugins && global.plugins["print.js"]) {
+await global.plugins["print.js"].default(m, this)
+}
+} catch (e) {
+console.log('Error al imprimir mensaje:', e)
+}
+}
+}
 
 global.dfail = (type, m, conn) => {
 const msg = {
@@ -518,6 +417,7 @@ if (msg) {
 conn.reply(m.chat, msg, m).then(() => m.react('✖️')).catch(() => {})
 }
 }
+
 let file = global.__filename(import.meta.url, true)
 watchFile(file, async () => {
 unwatchFile(file)
