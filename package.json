@@ -63,7 +63,7 @@
 },
 "optionalDependencies": {
 "moment-timezone": "^0.5.37",
-"wa-sticker-formatter": "^4.4.4"
+"wa-sticker-formatter": "^4.3.2"
 },
 "engines": {
 "node": ">=20.0.0"
