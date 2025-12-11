@@ -26,7 +26,7 @@
     "cheerio": "^1.0.0-rc.12",
     "@hapi/boom": "^10.0.1",
     "@vitalets/google-translate-api": "^8.0.0",
-    "@whiskeysockets/baileys": "github:this-xyz/bails",
+    "@whiskeysockets/baileys": "github:this-xyz/baileys",
     "acrcloud": "^1.4.0",
     "aptoide-scraper": "github:DIEGO-OFC/dv-aptoide-scraper",
     "awesome-phonenumber": "^3.4.0",
