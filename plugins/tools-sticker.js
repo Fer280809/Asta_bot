@@ -1,127 +1,83 @@
-import Jimp from 'jimp'
-import { fileTypeFromBuffer } from 'file-type'
-import fetch from 'node-fetch'
-import { exec } from 'child_process'
-import { promisify } from 'util'
-import fs from 'fs'
-import path from 'path'
-
-const execPromise = promisify(exec)
+import { sticker } from '../lib/sticker.js'
+import uploadFile from '../lib/uploadFile.js'
+import uploadImage from '../lib/uploadImage.js'
+import { webp2png } from '../lib/webp2mp4.js'
 
 let handler = async (m, { conn, args, usedPrefix, command }) => {
+    let stiker = false
+    let userId = m.sender
+    let packstickers = global.db.data.users[userId] || {}
+    let texto1 = packstickers.text1 || global.packsticker || 'Sticker'
+    let texto2 = packstickers.text2 || global.packsticker2 || 'Bot'
+    
     try {
         let q = m.quoted ? m.quoted : m
-        let mime = (q.msg || q).mimetype || q.mediaType || ''
+        let mime = (q.msg || q).mimetype || q.mediaType || q.mtype || ''
         
-        // Validar que sea una imagen
-        if (!/image|webp/g.test(mime)) {
-            if (args[0] && isUrl(args[0])) {
-                // Es una URL
-            } else {
-                return conn.reply(m.chat, '❀ Por favor, envía o responde a una *imagen* para crear un sticker.\n\n*Uso:* Responde a una imagen con `.s`', m)
-            }
+        // Intentar detectar el tipo de mensaje de múltiples formas
+        if (!mime) {
+            if (q.message?.imageMessage) mime = 'image'
+            else if (q.message?.videoMessage) mime = 'video'
+            else if (q.message?.stickerMessage) mime = 'webp'
         }
         
-        await m.react('🕓')
+        let txt = args.join(' ')
         
-        let media
-        if (args[0] && isUrl(args[0])) {
-            // Descargar desde URL
-            const res = await fetch(args[0])
-            if (!res.ok) throw new Error('No se pudo descargar la imagen')
-            media = await res.buffer()
+        if (/webp|image|video/g.test(mime)) {
+            if (!q.download) {
+                return conn.reply(m.chat, '❀ No se pudo descargar el archivo multimedia.', m)
+            }
+            
+            if (/video/.test(mime)) {
+                const seconds = (q.msg || q).seconds || 0
+                if (seconds > 16) {
+                    return conn.reply(m.chat, '✧ El video no puede durar más de *15 segundos*', m)
+                }
+            }
+            
+            await m.react('🕓')
+            
+            console.log('Descargando multimedia...')
+            let buffer = await q.download()
+            
+            if (!buffer || buffer.length === 0) {
+                throw new Error('El buffer descargado está vacío')
+            }
+            
+            console.log('Buffer descargado:', buffer.length, 'bytes')
+            
+            let marca = txt ? txt.split(/[•|]/).map(part => part.trim()) : [texto1, texto2]
+            if (marca.length === 1) marca.push(texto2)
+            
+            console.log('Creando sticker con marcas:', marca)
+            // Usar null en vez de false para que mantenga proporciones
+            stiker = await sticker(buffer, null, marca[0], marca[1])
+            
+        } else if (args[0] && isUrl(args[0])) {
+            await m.react('🕓')
+            console.log('Descargando desde URL:', args[0])
+            stiker = await sticker(false, args[0], texto1, texto2)
+            
         } else {
-            // Descargar desde mensaje
-            media = await q.download()
+            return conn.reply(m.chat, `❀ Por favor, envía o responde a una *imagen* o *video* para hacer un sticker.\n\n*Uso:*\n• ${usedPrefix + command} (responde a imagen/video)\n• ${usedPrefix + command} <url>\n• ${usedPrefix + command} <texto1> | <texto2> (responde a multimedia)`, m)
         }
-        
-        if (!media) {
-            await m.react('✖️')
-            return conn.reply(m.chat, '⚠︎ No se pudo descargar la imagen.', m)
-        }
-        
-        // Verificar tipo de archivo
-        const type = await fileTypeFromBuffer(media)
-        
-        // Si es WebP o formato no soportado por Jimp, intentar con conversión manual
-        if (type && type.mime === 'image/webp') {
-            try {
-                // Verificar si tiene FFmpeg instalado
-                await execPromise('ffmpeg -version')
-                
-                // Usar FFmpeg para convertir WebP
-                const tmpInput = path.join('./tmp', `${Date.now()}_input.webp`)
-                const tmpOutput = path.join('./tmp', `${Date.now()}_output.png`)
-                
-                // Crear carpeta tmp si no existe
-                if (!fs.existsSync('./tmp')) {
-                    fs.mkdirSync('./tmp', { recursive: true })
-                }
-                
-                // Guardar WebP temporal
-                fs.writeFileSync(tmpInput, media)
-                
-                // Convertir con FFmpeg
-                await execPromise(`ffmpeg -i ${tmpInput} -vf scale=512:512:force_original_aspect_ratio=decrease,pad=512:512:(ow-iw)/2:(oh-ih)/2:color=white@0.0 ${tmpOutput}`)
-                
-                // Leer resultado
-                const converted = fs.readFileSync(tmpOutput)
-                
-                // Limpiar archivos temporales
-                fs.unlinkSync(tmpInput)
-                fs.unlinkSync(tmpOutput)
-                
-                // Enviar como sticker
-                await conn.sendMessage(m.chat, {
-                    sticker: converted
-                }, { quoted: m })
-                
-                await m.react('✅')
-                return
-                
-            } catch (ffmpegError) {
-                // Si no tiene FFmpeg, intentar enviar el WebP directo
-                console.log('FFmpeg no disponible, enviando WebP directo')
-                try {
-                    await conn.sendMessage(m.chat, {
-                        sticker: media
-                    }, { quoted: m })
-                    
-                    await m.react('✅')
-                    return
-                } catch (e) {
-                    throw new Error('No se puede procesar WebP sin FFmpeg. Instala FFmpeg con: pkg install ffmpeg')
-                }
-            }
-        }
-        
-        // Para otros formatos, usar Jimp
-        const image = await Jimp.read(media)
-        
-        // Redimensionar a 512x512 manteniendo proporción
-        image.contain(512, 512, Jimp.HORIZONTAL_ALIGN_CENTER | Jimp.VERTICAL_ALIGN_MIDDLE)
-        
-        // Convertir a PNG
-        const stickerBuffer = await image.getBufferAsync(Jimp.MIME_PNG)
-        
-        // Enviar como sticker
-        await conn.sendMessage(m.chat, {
-            sticker: stickerBuffer
-        }, { quoted: m })
-        
-        await m.react('✅')
         
     } catch (e) {
-        console.error('Error en comando sticker:', e)
+        console.error('Error completo en sticker:', e)
         await m.react('✖️')
+        return conn.reply(m.chat, `⚠︎ Ocurrió un Error al crear el sticker:\n\n${e.message}\n\n_Asegúrate de que ffmpeg esté instalado correctamente._`, m)
         
-        let errorMsg = `⚠︎ Ocurrió un Error: ${e.message}`
-        
-        if (e.message.includes('Unsupported MIME type') || e.message.includes('WebP')) {
-            errorMsg += '\n\n*Solución:* Instala FFmpeg para soportar todos los formatos:\n`pkg install ffmpeg -y`'
+    } finally {
+        if (stiker && Buffer.isBuffer(stiker) && stiker.length > 0) {
+            console.log('Enviando sticker:', stiker.length, 'bytes')
+            await conn.sendFile(m.chat, stiker, 'sticker.webp', '', m, false, { asSticker: true })
+            await m.react('✅')
+        } else if (stiker === false) {
+            // No hacer nada, ya se envió un mensaje de error
+        } else {
+            await m.react('✖️')
+            await conn.reply(m.chat, '⚠︎ No se pudo crear el sticker. Intenta con otra imagen o video.', m)
         }
-        
-        await conn.reply(m.chat, errorMsg, m)
     }
 }
 
@@ -132,5 +88,5 @@ handler.command = ['s', 'sticker', 'stiker']
 export default handler
 
 const isUrl = (text) => {
-    return text.match(new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)(jpe?g|gif|png|webp)/, 'gi'))
+    return text.match(new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)(jpe?g|gif|png|webp|mp4)/, 'gi'))
 }
