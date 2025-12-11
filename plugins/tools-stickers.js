@@ -1,4 +1,4 @@
-import { sticker, addExif } from '../lib/sticker.js'
+import { sticker6, addExif } from '../lib/sticker.js'
 import axios from 'axios'
 import fetch from 'node-fetch'
 
@@ -44,6 +44,31 @@ const fetchJson = (url, options) => new Promise((resolve, reject) => {
         .catch(err => reject(err))
 })
 
+// Función sticker simplificada que solo usa sticker6 y addExif
+const sticker = async (buffer, url, packname = 'Sticker Pack', author = 'Autor') => {
+    try {
+        let webpBuffer;
+        
+        if (url) {
+            // Si tenemos URL, descargarla y convertir
+            const response = await fetch(url);
+            const imgBuffer = await response.buffer();
+            webpBuffer = await sticker6(imgBuffer, null);
+        } else if (buffer) {
+            // Si tenemos buffer, convertir directamente
+            webpBuffer = await sticker6(buffer, null);
+        } else {
+            throw new Error('Se requiere buffer o URL');
+        }
+        
+        // Añadir metadata
+        return await addExif(webpBuffer, packname, author);
+    } catch (error) {
+        console.error('Error en función sticker:', error);
+        throw error;
+    }
+}
+
 const handler = async (m, { conn, text, args, command, usedPrefix }) => {
     try {
         let userId = m.sender
@@ -60,7 +85,6 @@ const handler = async (m, { conn, text, args, command, usedPrefix }) => {
                 const buffer = await fetchSticker(textInput)
                 if (!buffer || buffer.length === 0) throw new Error('No se obtuvo respuesta válida de la API')
                 
-                // Usar null como segundo parámetro para indicar que no es URL
                 const stiker = await sticker(buffer, null, texto1, texto2)
                 if (!stiker) throw new Error('ꕥ No se pudo generar el sticker.')
                 
@@ -76,8 +100,10 @@ const handler = async (m, { conn, text, args, command, usedPrefix }) => {
                 await m.react('🕒')
                 const videoBuffer = await fetchStickerVideo(textInput)
                 
-                // Para stickers animados, solo pasar el buffer y null para URL
-                const stickerBuffer = await sticker(videoBuffer, null, texto1, texto2)
+                // Convertir video a webp
+                const webpBuffer = await sticker6(videoBuffer, null)
+                // Añadir metadata
+                const stickerBuffer = await addExif(webpBuffer, texto1, texto2)
                 
                 if (!stickerBuffer) throw new Error('No se pudo generar el sticker animado')
                 await conn.sendMessage(m.chat, { sticker: stickerBuffer }, { quoted: m })
@@ -103,9 +129,13 @@ const handler = async (m, { conn, text, args, command, usedPrefix }) => {
                 let result = res.results[0]
                 if (!result.url) throw new Error('No se encontró URL para el emoji combinado')
                 
-                // Para URL, pasar false como buffer y la URL como segundo parámetro
-                let stiker = await sticker(false, result.url, texto1, texto2)
-                await conn.sendFile(m.chat, stiker, null, { asSticker: true }, m)
+                // Descargar y convertir
+                const response = await fetch(result.url)
+                const imgBuffer = await response.buffer()
+                const webpBuffer = await sticker6(imgBuffer, null)
+                const finalSticker = await addExif(webpBuffer, texto1, texto2)
+                
+                await conn.sendFile(m.chat, finalSticker, null, { asSticker: true }, m)
                 await m.react('✔️')
                 break
             }
@@ -167,7 +197,8 @@ const handler = async (m, { conn, text, args, command, usedPrefix }) => {
                 if (!json.data?.result?.image) throw new Error('No se obtuvo imagen del servicio de quotes')
                 
                 const buffer = Buffer.from(json.data.result.image, 'base64')
-                const stiker = await sticker(buffer, null, texto1, texto2)
+                const webpBuffer = await sticker6(buffer, null)
+                const stiker = await addExif(webpBuffer, texto1, texto2)
                 
                 if (stiker) {
                     await conn.sendFile(m.chat, stiker, 'sticker.webp', '', m)
