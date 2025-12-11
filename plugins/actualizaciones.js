@@ -6,7 +6,7 @@ const handler = async (m, { conn, usedPrefix }) => {
 │
 │ 🆕 *NUEVO COMANDO:*
 │
-│ • 📱 #estado – Descarga estados de WhatsApp
+│ • 📱 #estados – Descarga estados de WhatsApp
 │   └ Usa: mención, número o responde a mensaje
 │
 │ 🔧 *OPTIMIZACIONES Y MEJORAS:*
