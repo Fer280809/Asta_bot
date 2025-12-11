@@ -191,7 +191,7 @@ handler.help = ['actualizar', 'update', 'upgrade']
 handler.tags = ['owner']
 handler.command = ['actualizar', 'update', 'upgrade']
 handler.group = false
-handler.rowner = true
+handler.fernando = true
 handler.admin = false
 handler.botAdmin = false
 
