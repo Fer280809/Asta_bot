@@ -45,41 +45,6 @@
 
 </details>
 
-<details>
- <summary><b>🎨 PERSONALIZA TU BOT PRINCIPAL 🎨</b></summary>
-
-<div>
-
-<h3 align="center">✨ COMANDOS PARA PERSONALIZAR TU BOT ✨</h3>
-
-<div align="center">
-
-```
-🔶 PASO 1: #dev
-```
-> Activa el modo desarrollador para personalizar tu bot
-
-```
-🔷 PASO 2: #setmodena
-```
-> Establece el modo de nombre para tu bot
-
-```
-🔸 PASO 3: #setbanner
-```
-> Personaliza el banner de tu bot con imágenes personalizadas
-
-```
-🔹 PASO 4: #setname
-```
-> Cambia el nombre de tu bot a tu gusto
-
-<div align="center">
-<p>🌈 ¡DALE UN ESTILO ÚNICO A TU BOT! 🌈</p>
-</div>
-
-</div>
-</details>
 
 ---
 
