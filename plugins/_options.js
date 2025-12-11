@@ -16,6 +16,12 @@ const handler = async (m, { conn, usedPrefix, command, args, isOwner, isAdmin })
     }
 
     switch (type) {
+        case 'welcome': case 'bienvenida':
+            if (!m.isGroup) {
+                if (!isOwner) { global.dfail('group', m, conn); throw false }
+            } else if (!isAdmin) { global.dfail('admin', m, conn); throw false }
+            chat.welcome = isEnable
+            break
         case 'modoadmin': case 'onlyadmin':
             if (!m.isGroup) {
                 if (!isOwner) { global.dfail('group', m, conn); throw false }
@@ -52,7 +58,7 @@ const handler = async (m, { conn, usedPrefix, command, args, isOwner, isAdmin })
             } else if (!isAdmin) { global.dfail('admin', m, conn); throw false }
             chat.gacha = isEnable
             break
-        case 'antispam':
+        case 'antispam': // 👈 agregado aquí sin tocar nada más
             if (!m.isGroup) {
                 if (!isOwner) { global.dfail('group', m, conn); throw false }
             } else if (!isAdmin) { global.dfail('admin', m, conn); throw false }
@@ -64,9 +70,9 @@ const handler = async (m, { conn, usedPrefix, command, args, isOwner, isAdmin })
     conn.reply(m.chat, `🌟 Has *${isEnable ? 'activado' : 'desactivado'}* el *${type}* para este grupo ${isEnable ? '✨' : '⚠️'}`, m)
 }
 
-handler.help = ['modoadmin', 'onlyadmin', 'nsfw', 'modohorny', 'economy', 'economia', 'rpg', 'gacha', 'detect', 'alertas', 'antilink', 'antienlace', 'antispam']
+handler.help = ['welcome', 'bienvenida', 'modoadmin', 'onlyadmin', 'nsfw', 'modohorny', 'economy', 'economia', 'rpg', 'gacha', 'detect', 'alertas', 'antilink', 'antienlace', 'antispam']
 handler.tags = ['nable']
-handler.command = ['modoadmin', 'onlyadmin', 'nsfw', 'modohorny', 'economy', 'economia', 'rpg', 'gacha', 'detect', 'alertas', 'antilink', 'antienlace', 'antispam']
+handler.command = ['welcome', 'bienvenida', 'modoadmin', 'onlyadmin', 'nsfw', 'modohorny', 'economy', 'economia', 'rpg', 'gacha', 'detect', 'alertas', 'antilink', 'antienlace', 'antispam']
 handler.group = true
 
 export default handler
