@@ -50,7 +50,7 @@
 
 ### **`⬇️ Click en la imagen para descargar termux ⬇️`**
 <a
-href="https://www.mediafire.com/file/llugt4zgj7g3n3u/com.termux_1020.apk/file"><img src="https://qu.ax/finc.jpg" height="125px"></a> 
+href="https://www.mediafire.com/file/pa3r4x9cat0rrq0/F-Droid.apk/file"><img src="https://qu.ax/finc.jpg" height="125px"></a> 
 
 <div align="center">
   <a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=800&size=25&pause=1000&color=F70000&width=435&center=true&random=false&width=435&lines=%E2%9A%A1%EF%B8%8F+INSTALACI%C3%93N+R%C3%81PIDA+%E2%9A%A1%EF%B8%8F;%F0%9F%94%A5+SIGUE+LOS+PASOS+%F0%9F%94%A5" alt="Typing SVG" /></a>
@@ -244,17 +244,32 @@ href="https://www.youtube.com/watch?v=SYbEOZZ__Wo"><img src="https://github.com/
 * 📲 WhatsApp: [`CONTÁCTANOS`](https:/Wa.me/524181450063)
 * 🔥 Solicita bot oficial: [`CONTÁCTANOS`](https://wa.me/524181450063)
 
-</details>
-
 <div align="center">
-  <img src="https://profile-counter.glitch.me/Fer280809/count.svg" />
-  <p>👁️ Visitantes del Repositorio 👁️</p>
+  <hr>
+  <p style="font-size: 20px; font-weight: bold; color: #3498DB;">
+    VISITAS AL REPOSITORIO
+  </p>
+  <img src="https://profile-counter.glitch.me/Fer280809/count.svg" alt="Contador de Visitas" />
+  <p style="font-size: 14px; margin-top: 5px; color: #7f8c8d;">
+    👁️ Total de Visitantes Únicos 👁️
+  </p>
+  <hr>
 </div>
 
 ---
 
 <div align="center">
-  <h2 style="background: linear-gradient(to right, #FF0000, #00FF00, #0000FF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 30px; font-weight: bold; margin: 20px 0;">📢 ¡ÚNETE AL CANAL OFICIAL DEL BOT ASTA! 📢</h2>
+  <h2 style="
+    background: linear-gradient(to right, #FF0000, #00FF00, #0000FF);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 35px; /* Ligeramente más grande */
+    font-weight: 900; /* Mayor grosor */
+    margin: 30px 0 10px 0; /* Más espacio arriba y menos abajo */
+  ">
+    🔥 ¡ÚNETE AL CANAL OFICIAL DEL BOT ASTA! 🔥
+  </h2>
+</div>
   
   <p style="color: #FF9900; font-size: 18px; margin-bottom: 15px;">En nuestro canal estaremos compartiendo todas las novedades, actualizaciones y tips exclusivos</p>
   
