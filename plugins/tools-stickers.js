@@ -1,4 +1,3 @@
-
 import { sticker, addExif } from '../lib/sticker.js'
 import axios from 'axios'
 import fetch from 'node-fetch'
@@ -24,13 +23,18 @@ const fetchSticker = async (text, attempt = 1) => {
 }
 
 const fetchStickerVideo = async (text) => {
-    const response = await axios.get(`https://skyzxu-brat.hf.space/brat-animated`, { 
-        params: { text }, 
-        responseType: 'arraybuffer',
-        timeout: 30000
-    })
-    if (!response.data) throw new Error('Error al obtener el video de la API.')
-    return response.data
+    try {
+        const response = await axios.get(`https://skyzxu-brat.hf.space/brat-animated`, { 
+            params: { text }, 
+            responseType: 'arraybuffer',
+            timeout: 30000
+        })
+        if (!response.data) throw new Error('Error al obtener el video de la API.')
+        return response.data
+    } catch (error) {
+        console.error('Error en fetchStickerVideo:', error.message)
+        throw new Error(`No se pudo obtener el sticker animado: ${error.message}`)
+    }
 }
 
 const fetchJson = (url, options) => new Promise((resolve, reject) => {
@@ -54,9 +58,10 @@ const handler = async (m, { conn, text, args, command, usedPrefix }) => {
                 
                 await m.react('🕒')
                 const buffer = await fetchSticker(textInput)
-                if (!buffer) throw new Error('No se obtuvo respuesta de la API')
+                if (!buffer || buffer.length === 0) throw new Error('No se obtuvo respuesta válida de la API')
                 
-                const stiker = await sticker(buffer, false, texto1, texto2)
+                // Usar null como segundo parámetro para indicar que no es URL
+                const stiker = await sticker(buffer, null, texto1, texto2)
                 if (!stiker) throw new Error('ꕥ No se pudo generar el sticker.')
                 
                 await conn.sendFile(m.chat, stiker, 'sticker.webp', '', m)
@@ -70,7 +75,9 @@ const handler = async (m, { conn, text, args, command, usedPrefix }) => {
                 
                 await m.react('🕒')
                 const videoBuffer = await fetchStickerVideo(textInput)
-                const stickerBuffer = await sticker(videoBuffer, true, texto1, texto2)
+                
+                // Para stickers animados, solo pasar el buffer y null para URL
+                const stickerBuffer = await sticker(videoBuffer, null, texto1, texto2)
                 
                 if (!stickerBuffer) throw new Error('No se pudo generar el sticker animado')
                 await conn.sendMessage(m.chat, { sticker: stickerBuffer }, { quoted: m })
@@ -92,8 +99,11 @@ const handler = async (m, { conn, text, args, command, usedPrefix }) => {
                     return m.reply('ꕥ No se encontraron stickers para esos emojis.')
                 }
                 
-                // Enviar solo el primer resultado para evitar múltiples stickers
+                // Enviar solo el primer resultado
                 let result = res.results[0]
+                if (!result.url) throw new Error('No se encontró URL para el emoji combinado')
+                
+                // Para URL, pasar false como buffer y la URL como segundo parámetro
                 let stiker = await sticker(false, result.url, texto1, texto2)
                 await conn.sendFile(m.chat, stiker, null, { asSticker: true }, m)
                 await m.react('✔️')
@@ -104,7 +114,7 @@ const handler = async (m, { conn, text, args, command, usedPrefix }) => {
                 let textFinal = args.join(' ') || m.quoted?.text
                 if (!textFinal) return conn.reply(m.chat, `❀ Ingresa un texto para crear el sticker.`, m)
                 
-                let target = m.quoted ? await m.quoted.sender : m.sender
+                let target = m.quoted ? m.quoted.sender : m.sender
                 const pp = await conn.profilePictureUrl(target).catch((_) => 'https://telegra.ph/file/24fa902ead26340f3df2c.png')
                 
                 let nombre = target.split('@')[0]
@@ -154,8 +164,10 @@ const handler = async (m, { conn, text, args, command, usedPrefix }) => {
                     timeout: 30000
                 })
                 
+                if (!json.data?.result?.image) throw new Error('No se obtuvo imagen del servicio de quotes')
+                
                 const buffer = Buffer.from(json.data.result.image, 'base64')
-                const stiker = await sticker(buffer, false, texto1, texto2)
+                const stiker = await sticker(buffer, null, texto1, texto2)
                 
                 if (stiker) {
                     await conn.sendFile(m.chat, stiker, 'sticker.webp', '', m)
@@ -177,7 +189,7 @@ const handler = async (m, { conn, text, args, command, usedPrefix }) => {
                 
                 await m.react('🕒')
                 const stickerData = await m.quoted.download()
-                if (!stickerData) {
+                if (!stickerData || stickerData.length === 0) {
                     await m.react('✖️')
                     return m.reply('ꕥ No se pudo descargar el sticker.')
                 }
@@ -191,6 +203,7 @@ const handler = async (m, { conn, text, args, command, usedPrefix }) => {
                     await conn.sendMessage(m.chat, { sticker: exif }, { quoted: m })
                     await m.react('✔️')
                 } catch (e) {
+                    console.error('Error en addExif:', e)
                     await m.react('✖️')
                     m.reply('Error al modificar el sticker. Puede que sea un sticker animado que no soporta modificación.')
                 }
