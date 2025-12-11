@@ -16,14 +16,23 @@ let handler = async (m, { conn, usedPrefix }) => {
     // 1. Crear backup
     await conn.sendMessage(m.chat, { text: '💾 *Creando respaldo de seguridad...*' }, { quoted: m })
     
-    // Función para ejecutar comandos
-    const execCmd = (cmd) => new Promise((resolve, reject) => {
-      require('child_process').exec(cmd, { cwd: botDir }, (error, stdout, stderr) => {
-        if (error) reject(error)
-        else resolve({ stdout, stderr })
+    // Función para ejecutar comandos SIN require
+    const execCmd = (cmd) => {
+      return new Promise((resolve, reject) => {
+        // Usar import dinámico para child_process
+        import('child_process').then(child_process => {
+          child_process.exec(cmd, { cwd: botDir }, (error, stdout, stderr) => {
+            if (error) reject(error)
+            else resolve({ stdout, stderr })
+          })
+        }).catch(reject)
       })
-    })
+    }
 
+    // Importar fs de forma dinámica
+    const fs = await import('fs')
+    const path = await import('path')
+    
     // Crear directorio de backup
     await execCmd(`mkdir -p "${backupDir}"`)
     
@@ -32,7 +41,9 @@ let handler = async (m, { conn, usedPrefix }) => {
     for (const file of backupFiles) {
       try {
         await execCmd(`cp -r "${botDir}/${file}" "${backupDir}/${file}" 2>/dev/null || true`)
-      } catch (e) {}
+      } catch (e) {
+        console.log(`No se pudo respaldar ${file}:`, e.message)
+      }
     }
 
     // 2. Verificar cambios en GitHub
@@ -100,18 +111,28 @@ let handler = async (m, { conn, usedPrefix }) => {
       // 7. Restaurar backups
       await conn.sendMessage(m.chat, { text: '♻️ *Restaurando configuraciones...*' }, { quoted: m })
       
+      // Verificar si los backups existen antes de restaurar
+      const checkBackup = async (file) => {
+        try {
+          const { stdout } = await execCmd(`[ -e "${backupDir}/${file}" ] && echo "exists"`)
+          return stdout.includes('exists')
+        } catch {
+          return false
+        }
+      }
+      
       // Restaurar database.json si existe
-      if (await execCmd(`test -f "${backupDir}/database.json" && echo "exists"`).catch(() => {})) {
+      if (await checkBackup('database.json')) {
         await execCmd(`cp "${backupDir}/database.json" "${botDir}/database.json"`)
       }
       
       // Restaurar settings.js si existe
-      if (await execCmd(`test -f "${backupDir}/settings.js" && echo "exists"`).catch(() => {})) {
+      if (await checkBackup('settings.js')) {
         await execCmd(`cp "${backupDir}/settings.js" "${botDir}/settings.js"`)
       }
       
       // Restaurar sessions si existe
-      if (await execCmd(`test -d "${backupDir}/sessions" && echo "exists"`).catch(() => {})) {
+      if (await checkBackup('sessions')) {
         await execCmd(`rm -rf "${botDir}/sessions" 2>/dev/null || true`)
         await execCmd(`cp -r "${backupDir}/sessions" "${botDir}/"`)
       }
@@ -150,7 +171,9 @@ ${listaCambios.map((c, i) => `• ${c.substring(8)}`).join('\n')}
       setTimeout(async () => {
         try {
           await execCmd(`rm -rf "${backupDir}"`)
-        } catch (e) {}
+        } catch (e) {
+          console.log('No se pudo eliminar backup:', e.message)
+        }
       }, 60000) // Eliminar después de 1 minuto
 
     } catch (updateError) {
@@ -159,10 +182,24 @@ ${listaCambios.map((c, i) => `• ${c.substring(8)}`).join('\n')}
       
       // Intentar restaurar todo
       try {
-        await execCmd(`cp "${backupDir}/database.json" "${botDir}/database.json" 2>/dev/null || true`)
-        await execCmd(`cp "${backupDir}/settings.js" "${botDir}/settings.js" 2>/dev/null || true`)
-        await execCmd(`rm -rf "${botDir}/sessions" 2>/dev/null || true`)
-        await execCmd(`cp -r "${backupDir}/sessions" "${botDir}/" 2>/dev/null || true`)
+        // Primero verificar qué backups existen
+        const restoreFile = async (file) => {
+          try {
+            const exists = await checkBackup(file)
+            if (exists) {
+              if (file === 'sessions') {
+                await execCmd(`rm -rf "${botDir}/sessions" 2>/dev/null || true`)
+                await execCmd(`cp -r "${backupDir}/sessions" "${botDir}/"`)
+              } else {
+                await execCmd(`cp "${backupDir}/${file}" "${botDir}/${file}"`)
+              }
+            }
+          } catch (e) {}
+        }
+        
+        await restoreFile('database.json')
+        await restoreFile('settings.js')
+        await restoreFile('sessions')
         
         // Revertir cambios de git
         await execCmd('git reset --hard HEAD')
@@ -187,11 +224,27 @@ ${listaCambios.map((c, i) => `• ${c.substring(8)}`).join('\n')}
   }
 }
 
+// Función auxiliar para verificar si un backup existe
+async function checkBackup(file) {
+  const botDir = process.cwd()
+  const backupDir = `${botDir}/backup_update_${Date.now()}`
+  
+  return new Promise((resolve) => {
+    import('child_process').then(child_process => {
+      child_process.exec(`[ -e "${backupDir}/${file}" ] && echo "exists"`, 
+        { cwd: botDir }, 
+        (error, stdout) => {
+          resolve(!error && stdout.includes('exists'))
+        })
+    }).catch(() => resolve(false))
+  })
+}
+
 handler.help = ['actualizar', 'update', 'upgrade']
 handler.tags = ['owner']
 handler.command = ['actualizar', 'update', 'upgrade']
 handler.group = false
-handler.fernando = true
+handler.owner = true
 handler.admin = false
 handler.botAdmin = false
 
