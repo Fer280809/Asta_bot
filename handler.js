@@ -278,7 +278,13 @@ __dirname: ___dirname,
 __filename,
 user,
 chat,
-settings
+settings,
+isROwner,
+isOwner,
+isAdmin,
+isBotAdmin,
+isPrems,
+isFernando
 })
 } catch (err) {
 console.error(err)
@@ -323,7 +329,14 @@ continue
 if (typeof plugin !== "function") {
 continue
 }
-if ((usedPrefix = (match[0] || "")[0])) {
+
+// IMPORTANTE: Definir usedPrefix aquí antes de usarlo
+let usedPrefix = null
+if ((match && match[0] && match[0][0])) {
+usedPrefix = match[0][0]
+}
+
+if (usedPrefix) {
 const noPrefix = m.text.replace(usedPrefix, "")
 let [command, ...args] = noPrefix.trim().split(" ").filter(v => v)
 args = args || []
@@ -362,24 +375,44 @@ const botId = this.user.jid
 const primaryBotId = chat.primaryBot
 if (name !== "group-banchat.js" && chat?.isBanned && !isROwner) {
 if (!primaryBotId || primaryBotId === botId) {
-const aviso = `ꕥ El bot *${botname}* está desactivado en este grupo\n\n> ✦ Un *administrador* puede activarlo con el comando:\n> » *${usedPrefix}bot on*`.trim()
+// CORREGIDO: Usar conn.prefix en lugar de usedPrefix
+const aviso = `⚠️ El bot *${global.botname}* está desactivado en este grupo.\n\n> 🔹 Un *administrador* puede activarlo usando el comando:\n> » *${conn.prefix || global.prefix}bot on*`
 await m.reply(aviso)
 return
 }}
 if (m.text && user.banned && !isROwner) {
-const mensaje = `ꕥ Estas baneado/a, no puedes usar comandos en este bot!\n\n> ● *Razón ›* ${user.bannedReason}\n\n> ● Si este Bot es cuenta oficial y tienes evidencia que respalde que este mensaje es un error, puedes exponer tu caso con un moderador.`.trim()
+const mensaje = `🚫 *Acceso Denegado* 🚫\n⚡ Has sido *baneado/a* y no puedes usar comandos en este bot.\n\n> ⚡ *Razón:* ${user.bannedReason}\n> 🛡️ *Si crees que esto es un error*, presenta tu caso ante un *moderador* para revisión.`
 if (!primaryBotId || primaryBotId === botId) {
 m.reply(mensaje)
 return
 }}}
-if (!isOwners && !m.chat.endsWith('g.us') && !/code|p|ping|qr|estado|status|infobot|botinfo|report|reportar|invite|join|logout|suggest|help|menu/gim.test(m.text)) return
+if (settings.gponly && !isOwner && !m.chat.endsWith('g.us')) {
+const allowedCommands = ['code', 'p', 'ping', 'qr', 'estado', 'status', 'infobot', 'botinfo', 
+'report', 'reportar', 'invite', 'join', 'logout', 'suggest', 'help', 'menu']
+const isAllowed = allowedCommands.some(cmd => m.text.toLowerCase().includes(cmd))
+if (!isAllowed) return
+}
+
+// Sistema de mute
+if (m.isGroup && !isOwner && chat.mutes?.[m.sender]) {
+const muteData = chat.mutes[m.sender]
+if (muteData.expiresAt && Date.now() > muteData.expiresAt) {
+delete chat.mutes[m.sender]
+} else {
+try {
+await this.sendMessage(m.chat, { delete: m.key })
+} catch {}
+return
+}
+}
 
 // VERIFICACIÓN DE MODOADMIN CORREGIDA
-const adminMode = chat.modoadmin || false
-if (adminMode && m.isGroup && !isOwner && !isAdmin) {
-// Si está en modo admin y el comando requiere permisos especiales
-const isAdminCommand = plugin.botAdmin || plugin.admin
-if (isAdminCommand) {
+if (chat.modoadmin && m.isGroup) {
+// Si el modo admin está activado Y el comando requiere permisos especiales
+const isAdminCommand = plugin.botAdmin || plugin.admin || plugin.mods
+const isRegularUser = !isAdmin && !isOwner && !isROwner
+if (isAdminCommand && isRegularUser) {
+// Solo bloquear si es un comando que requiere admin y el usuario no lo es
 fail("admin", m, this)
 continue
 }
@@ -393,7 +426,7 @@ if (plugin.owner && !isOwner) {
 fail("owner", m, this)
 continue
 }
-if (plugin.fernando && !isFernando) {
+if (plugin.fernando && !isFernando && !isROwner) {
 fail("fernando", m, this)
 continue
 }
@@ -411,6 +444,14 @@ continue
 } 
 if (plugin.admin && !isAdmin) {
 fail("admin", m, this)
+continue
+}
+if (plugin.mods && !isAdmin && !isOwner) {
+fail("mods", m, this)
+continue
+}
+if (plugin.private && m.isGroup) {
+fail("private", m, this)
 continue
 }
 m.isCommand = true
@@ -472,19 +513,24 @@ console.log(m.message)
 
 global.dfail = (type, m, conn) => {
 const msg = {
-rowner: `『✦』El comando *${global.comando}* solo puede ser usado por los creadores del bot.`,
-owner: `『✦』El comando *${global.comando}* solo puede ser usado por los desarrolladores del bot.`,
-fernando: `『✦』El comando *${global.comando}* es exclusivo para Fernando.`,
-premium: `『✦』El comando *${global.comando}* solo puede ser usado por los usuarios premium.`,
-group: `『✦』El comando *${global.comando}* solo puede ser usado en grupos.`,
-admin: `『✦』El comando *${global.comando}* solo puede ser usado por los administradores del grupo.`,
-botAdmin: `『✦』Para ejecutar el comando *${global.comando}* debo ser administrador del grupo.`
+rowner: `💠 *Acceso denegado* 💠\nEl comando *${global.comando}* solo puede ser usado por los *creadores del bot*.`, 
+owner: `💠 *Acceso denegado* 💠\nEl comando *${global.comando}* solo puede ser usado por los *desarrolladores del bot*.`, 
+mods: `🛡️ *Permiso insuficiente* 🛡️\nEl comando *${global.comando}* solo puede ser usado por los *moderadores del bot*.`, 
+fernando: `🔐 *ACCESO RESTRINGIDO* 🔐\nEl comando *${global.comando}* es *exclusivo* para el desarrollador principal *Fernando*.\n\n> 🛡️ Solo Fernando puede ejecutar este comando.\n> 🔒 Acceso denegado para otros usuarios.`,
+premium: `⭐ *Exclusivo Premium* ⭐\nEl comando *${global.comando}* solo puede ser usado por *usuarios premium*.`, 
+group: `👥 *Solo en grupos* 👥\nEl comando *${global.comando}* solo puede ejecutarse dentro de un *grupo*.`,
+private: `📩 *Solo privado* 📩\nEl comando *${global.comando}* solo puede usarse en *chat privado* con el bot.`,
+admin: `⚠️ *Requiere permisos de admin* ⚠️\nEl comando *${global.comando}* solo puede ser usado por los *administradores del grupo*.`, 
+botAdmin: `🤖 *Necesito permisos* 🤖\nPara ejecutar *${global.comando}*, el bot debe ser *administrador del grupo*.`,
+restrict: `⛔ *Funcionalidad desactivada* ⛔\nEsta característica está *temporalmente deshabilitada*.`
 }[type]
-if (msg) return conn.reply(m.chat, msg, m).then(_ => m.react('✖️'))
+if (msg) {
+conn.reply(m.chat, msg, m).then(() => m.react('✖️')).catch(() => {})
+}
 }
 let file = global.__filename(import.meta.url, true)
 watchFile(file, async () => {
 unwatchFile(file)
-console.log(chalk.magenta("Se actualizo 'handler.js'"))
+console.log(chalk.magenta("Se actualizó 'handler.js'"))
 if (global.reloadHandler) console.log(await global.reloadHandler())
 })
