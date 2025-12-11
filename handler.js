@@ -191,169 +191,64 @@ await delay(time)
 if (m.isBaileys) return
 m.exp += Math.ceil(Math.random() * 10)
 
-// ============ DETECCIÓN MEJORADA DE ADMINS EN GRUPOS ============
+// ============ DETECCIÓN SIMPLIFICADA Y CONFIABLE DE ADMINS ============
 let isAdmin = false
 let isBotAdmin = false
-let groupMetadata = null
-
-// Inicializar participantes aquí para evitar errores
-let participants = []
 
 if (m.isGroup) {
 try {
-// Obtener metadata del grupo - MÉTODO PRINCIPAL
-groupMetadata = await this.groupMetadata(m.chat).catch(() => null)
-if (groupMetadata && groupMetadata.participants) {
-participants = groupMetadata.participants
-} else {
-// Método alternativo: intentar con fetchGroupMetadataFromWA
-try {
-if (this.fetchGroupMetadataFromWA) {
-const metadata = await this.fetchGroupMetadataFromWA(m.chat)
-participants = metadata?.participants || []
-}
-} catch (e) {}
-}
+// Método directo y confiable para obtener metadata
+const metadata = await this.groupMetadata(m.chat).catch(() => null)
+if (metadata && metadata.participants) {
+// Buscar el usuario en los participantes
+const userParticipant = metadata.participants.find(p => 
+p.id === m.sender || p.jid === m.sender || (p.id && p.id.split('@')[0] === senderNumber)
+)
 
-if (participants && participants.length > 0) {
-// Función para normalizar el JID
-const normalizeJid = (jid) => {
-if (!jid) return null
-if (jid.includes('@s.whatsapp.net')) return jid
-return jid + '@s.whatsapp.net'
-}
+// Buscar el bot en los participantes
+const botParticipant = metadata.participants.find(p => 
+p.id === this.user.jid || p.jid === this.user.jid
+)
 
-// Función para buscar participante
-const findParticipant = (targetJid) => {
-const normalizedTarget = normalizeJid(targetJid)
-if (!normalizedTarget) return null
-
-// Método 1: Buscar por ID exacto
-let participant = participants.find(p => {
-const pjid = normalizeJid(p.id || p.jid || p.userId)
-return pjid === normalizedTarget
-})
-
-// Método 2: Buscar por ID parcial (solo número)
-if (!participant) {
-const targetNumber = normalizedTarget.split('@')[0]
-participant = participants.find(p => {
-const pjid = normalizeJid(p.id || p.jid || p.userId)
-return pjid && pjid.includes(targetNumber)
-})
-}
-
-return participant
-}
-
-// Buscar usuario y bot
-const userParticipant = findParticipant(m.sender)
-const botParticipant = findParticipant(this.user.jid)
-
-// Función para verificar si es admin
-const checkIsAdmin = (participant) => {
-if (!participant) return false
-
-// Múltiples métodos para detectar admin
-// Método 1: Propiedad admin (booleano)
-if (participant.admin === true) return true
-
-// Método 2: Propiedad admin (string)
-if (typeof participant.admin === 'string') {
-const adminStr = participant.admin.toLowerCase()
-if (adminStr === 'admin' || adminStr === 'superadmin') return true
-}
-
-// Método 3: Propiedad type
-if (participant.type) {
-const typeStr = participant.type.toLowerCase()
-if (typeStr === 'admin' || typeStr === 'superadmin') return true
-}
-
-// Método 4: Propiedad isAdmin
-if (participant.isAdmin === true) return true
-
-// Método 5: Verificar en metadata alternativo
-if (participant.admin !== undefined && participant.admin !== false) {
-return Boolean(participant.admin)
-}
-
-return false
-}
-
-// Determinar si el usuario es admin
-isAdmin = checkIsAdmin(userParticipant)
-
-// Determinar si el bot es admin
-isBotAdmin = checkIsAdmin(botParticipant)
-
-// DEBUG: Mostrar información si está habilitado
-if (global.opts && global.opts.debug) {
-console.log('\n=== DEBUG ADMIN DETECTION ===')
-console.log('Chat ID:', m.chat)
-console.log('User:', m.sender)
-console.log('Bot:', this.user.jid)
-console.log('User Participant Found:', !!userParticipant)
+// Verificar si el usuario es admin
 if (userParticipant) {
-console.log('User Participant Data:', {
-admin: userParticipant.admin,
-type: userParticipant.type,
-isAdmin: userParticipant.isAdmin,
-id: userParticipant.id,
-jid: userParticipant.jid
-})
+// Método 1: Propiedad admin booleana
+if (userParticipant.admin === true) {
+isAdmin = true
+} 
+// Método 2: Propiedad admin como string
+else if (typeof userParticipant.admin === 'string') {
+isAdmin = userParticipant.admin.toLowerCase() === 'admin' || 
+userParticipant.admin.toLowerCase() === 'superadmin'
 }
-console.log('isAdmin Result:', isAdmin)
-console.log('Bot Participant Found:', !!botParticipant)
+// Método 3: Propiedad type
+else if (userParticipant.type) {
+isAdmin = userParticipant.type === 'admin' || userParticipant.type === 'superadmin'
+}
+}
+
+// Verificar si el bot es admin
 if (botParticipant) {
-console.log('Bot Participant Data:', {
-admin: botParticipant.admin,
-type: botParticipant.type,
-isAdmin: botParticipant.isAdmin,
-id: botParticipant.id,
-jid: botParticipant.jid
-})
-}
-console.log('isBotAdmin Result:', isBotAdmin)
-console.log('Total Participants:', participants.length)
-console.log('=============================\n')
+if (botParticipant.admin === true) {
+isBotAdmin = true
+} else if (typeof botParticipant.admin === 'string') {
+isBotAdmin = botParticipant.admin.toLowerCase() === 'admin' || 
+botParticipant.admin.toLowerCase() === 'superadmin'
+} else if (botParticipant.type) {
+isBotAdmin = botParticipant.type === 'admin' || botParticipant.type === 'superadmin'
 }
 }
-} catch (e) {
-console.error('Error en detección de administradores:', e.message)
-// En caso de error, usar valores conservadores
+}
+} catch (error) {
+console.error('Error en detección de admin:', error.message)
+// Valores por defecto seguros
 isAdmin = false
 isBotAdmin = false
 }
-} else {
-// Si no es grupo, no puede ser admin
-isAdmin = false
-isBotAdmin = false
 }
 
+// ============ PROCESAMIENTO DE COMANDOS ============
 const ___dirname = path.join(path.dirname(fileURLToPath(import.meta.url)), "./plugins")
-
-// AGREGAR UN COMMANDO DEBUG PARA TESTEAR
-if (m.text && (m.text.toLowerCase() === '.testadmin' || m.text.toLowerCase() === '!testadmin')) {
-const debugInfo = `🔍 *DEBUG ADMIN DETECTION*
-👤 *USUARIO:* ${m.sender}
-🤖 *BOT:* ${this.user.jid}
-📊 *EN GRUPO:* ${m.isGroup ? '✅' : '❌'}
-👑 *ES ADMIN:* ${isAdmin ? '✅' : '❌'}
-🤖 *BOT ES ADMIN:* ${isBotAdmin ? '✅' : '❌'}
-👑 *ES OWNER:* ${isOwner ? '✅' : '❌'}
-👑 *ES ROOT OWNER:* ${isROwner ? '✅' : '❌'}
-⭐ *ES PREMIUM:* ${isPrems ? '✅' : '❌'}
-🧙 *ES FERNANDO:* ${isFernando ? '✅' : '❌'}
-
-📋 *INFO GRUPO:*
-• Participantes: ${participants.length}
-• Modo Admin Activado: ${chat.modoadmin ? '✅' : '❌'}
-• Bot Baneado: ${chat.isBanned ? '✅' : '❌'}`
-await m.reply(debugInfo)
-return
-}
-
 for (const name in global.plugins) {
 const plugin = global.plugins[name]
 if (!plugin) continue
@@ -398,8 +293,6 @@ if (typeof plugin.before === "function") {
 if (await plugin.before.call(this, m, {
 match,
 conn: this,
-participants,
-groupMetadata,
 isROwner,
 isOwner,
 isAdmin,
@@ -419,9 +312,9 @@ if (typeof plugin !== "function") {
 continue
 }
 
-// IMPORTANTE: Definir usedPrefix aquí antes de usarlo
+// Definir usedPrefix
 let usedPrefix = null
-if ((match && match[0] && match[0][0])) {
+if (match && match[0] && match[0][0]) {
 usedPrefix = match[0][0]
 }
 
@@ -443,9 +336,11 @@ typeof plugin.command === "string" ?
 plugin.command === command : false
 global.comando = command
 
+// Verificaciones básicas
 if (!isOwners && settings.self) return
 if ((m.id.startsWith("NJX-") || (m.id.startsWith("BAE5") && m.id.length === 16) || (m.id.startsWith("B24E") && m.id.length === 20))) return
 
+// Verificación de bot primario
 if (global.db.data.chats[m.chat].primaryBot && global.db.data.chats[m.chat].primaryBot !== this.user.jid) {
 const primaryBotConn = global.conns.find(conn => conn.user.jid === global.db.data.chats[m.chat].primaryBot && conn.ws.socket && conn.ws.socket.readyState !== ws.CLOSED)
 const participants = m.isGroup ? (await this.groupMetadata(m.chat).catch(() => ({ participants: [] }))).participants : []
@@ -454,12 +349,13 @@ if (primaryBotConn && primaryBotInGroup || global.db.data.chats[m.chat].primaryB
 throw !1
 } else {
 global.db.data.chats[m.chat].primaryBot = null
-}} else {
-}
+}}
 
 if (!isAccept) continue
 m.plugin = name
 global.db.data.users[m.sender].commands++
+
+// Verificaciones de chat
 if (chat) {
 const botId = this.user.jid
 const primaryBotId = chat.primaryBot
@@ -475,6 +371,8 @@ if (!primaryBotId || primaryBotId === botId) {
 m.reply(mensaje)
 return
 }}}
+
+// Verificación gponly
 if (settings.gponly && !isOwner && !m.chat.endsWith('g.us')) {
 const allowedCommands = ['code', 'p', 'ping', 'qr', 'estado', 'status', 'infobot', 'botinfo', 
 'report', 'reportar', 'invite', 'join', 'logout', 'suggest', 'help', 'menu']
@@ -495,18 +393,21 @@ return
 }
 }
 
-// VERIFICACIÓN DE MODOADMIN CORREGIDA
+// ============ VERIFICACIÓN DE MODOADMIN CORREGIDA ============
+// SOLUCIÓN: Cuando modoadmin está activado, solo permitir comandos de admin a admins
+// pero permitir todos los comandos a owners
 if (chat.modoadmin && m.isGroup) {
-// Si el modo admin está activado Y el comando requiere permisos especiales
-const isAdminCommand = plugin.botAdmin || plugin.admin || plugin.mods
-const isRegularUser = !isAdmin && !isOwner && !isROwner
-if (isAdminCommand && isRegularUser) {
-// Solo bloquear si es un comando que requiere admin y el usuario no lo es
+// Si el usuario NO es admin y NO es owner, y el comando requiere admin/botAdmin
+const requiresAdminPerms = plugin.botAdmin || plugin.admin || plugin.mods
+if (requiresAdminPerms && !isAdmin && !isOwner) {
 fail("admin", m, this)
 continue
 }
+// NOTA: Si modoadmin está activado pero el comando NO requiere permisos de admin,
+// se permite a cualquier usuario (esto es intencional)
 }
 
+// ============ VERIFICACIÓN DE PERMISOS DE PLUGIN ============
 if (plugin.rowner && !isROwner) {
 fail("rowner", m, this)
 continue
@@ -543,6 +444,8 @@ if (plugin.private && m.isGroup) {
 fail("private", m, this)
 continue
 }
+
+// Ejecutar plugin
 m.isCommand = true
 m.exp += plugin.exp ? parseInt(plugin.exp) : 10
 let extra = {
@@ -554,8 +457,6 @@ args,
 command,
 text,
 conn: this,
-participants,
-groupMetadata,
 isROwner,
 isOwner,
 isAdmin,
