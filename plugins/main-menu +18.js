@@ -1,16 +1,17 @@
-import fetch from 'node-fetch'
-
-let handler = async (m, { conn, args }) => {
-let mentionedJid = await m.mentionedJid
-let userId = mentionedJid && mentionedJid[0] ? mentionedJid[0] : m.sender
-let totalreg = Object.keys(global.db.data.users).length
-let totalCommands = Object.values(global.plugins).filter((v) => v.help && v.tags).length
-    
-let txt = `̮
-╭─━━━━━━━━━━━━━━━─╮
+let handler = async (m, { conn, usedPrefix }) => {
+  let totalreg = Object.keys(global.db.data.users).length;
+  let totalCommands = Object.values(global.plugins).filter(
+    (v) => v.help && v.tags
+  ).length;
+  let libreria = 'Baileys';
+  let vs = '1.3';
+  let userId = m.sender;
+  
+  let infoText = `╭─━━━━━━━━━━━━━━━─╮
 │ 🎭 ¡Hola @${userId.split('@')[0]}! 💖
 ╰─━━━━━━━━━━━━━━━─╯
 
+Me llamo『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』⚡
 
 ╭─═⊰ 📡 𝐄𝐒𝐓𝐀𝐃𝐎 𝐀𝐂𝐓𝐈𝐕𝐎
 │ 🤖 Estado: ${(conn.user.jid == global.conn.user.jid ? '🟢 PREMIUM' : '🔗 prem-ʙᴏᴛ')}
@@ -24,7 +25,10 @@ let txt = `̮
 ╰───────────────╯
 
 
-*🤖 PON #code O #qr PARA HACERTE SUBBOT DEL ASTA-BOT-MD 📡*                                                                                                                                                                                                                                                           
+
+*🤖 PON #code O #qr PARA HACERTE SUBBOT DEL ASTA-BOT-MD 📡*
+
+
 
 ᰔᩚ *#𝑎𝑛𝑎𝑙* + <𝑚𝑒𝑛𝑐𝑖𝑜𝑛>
 > ✦ 𝐻𝑎𝑐𝑒𝑟 𝑢𝑛 𝑎𝑛𝑎𝑙
@@ -67,33 +71,41 @@ let txt = `̮
 ᰔᩚ *#𝑢𝑛𝑑𝑟𝑒𝑠𝑠 • #𝑒𝑛𝑐𝑢𝑒𝑟𝑎𝑟* + <𝑚𝑒𝑛𝑐𝑖𝑜𝑛>
 > ✦ 𝐷𝑒𝑠𝑛𝑢𝑑𝑎𝑟 𝑎 𝑎𝑙𝑔𝑢𝑖𝑒𝑛
 ᰔᩚ *#𝑦𝑢𝑟𝑖 • #𝑡𝑖𝑗𝑒𝑟𝑎𝑠* + <𝑚𝑒𝑛𝑐𝑖𝑜𝑛>
-> ✦ 𝐻𝑎𝑐𝑒𝑟 𝑡𝑖𝑗𝑒𝑟𝑎𝑠.
-`.trim()
-await conn.sendMessage(m.chat, { 
-text: txt,
-contextInfo: {
-mentionedJid: [userId],
-isForwarded: true,
-forwardedNewsletterMessageInfo: {
-newsletterJid: channelRD.id,
-serverMessageId: '',
-newsletterName: channelRD.name
-},
-externalAdReply: {
-title: botname,
-body: textbot,
-mediaType: 1,
-mediaUrl: redes,
-sourceUrl: redes,
-thumbnail: await (await fetch(banner)).buffer(),
-showAdAttribution: false,
-containsAutoReply: true,
-renderLargerThumbnail: true
-}}}, { quoted: m })
-}
+> ✦ 𝐻𝑎𝑐𝑒𝑟 𝑡𝑖𝑗𝑒𝑟𝑎𝑠. `;
 
-handler.help = ['menu']
-handler.tags = ['main']
+  let buttons = [
+      { buttonId: usedPrefix + 'menu', buttonText: { displayText: '📜 Menu' }, type: 1 },
+  ];
+  
+  // URL de la imagen o video (cambia por tu propia URL)
+  let mediaUrl = 'https://files.catbox.moe/lajq7h.jpg'; // Cambia esto por tu imagen
+  // let mediaUrl = 'https://example.com/video.mp4'; // O usa un video
+  
+  try {
+    // Intenta enviar con imagen
+    await conn.sendMessage(m.chat, {
+      image: { url: mediaUrl },
+      caption: infoText,
+      footer: "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』⚡",
+      buttons: buttons,
+      headerType: 4,
+      mentions: [userId]
+    }, { quoted: m });
+  } catch {
+    // Si falla, envía sin imagen (método alternativo)
+    let buttonMessage = {
+      text: infoText,
+      footer: "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』⚡",
+      buttons: buttons,
+      headerType: 1,
+      mentions: [userId]
+    };
+    await conn.sendMessage(m.chat, buttonMessage, { quoted: m });
+  }
+};
+
+handler.help = ['menu18', 'menu+', 'help18', 'help+']
+handler.tags = ['main'];
 handler.command = ['menu18', 'menu+', 'help18', 'help+'];
 
-export default handler
+export default handler;
