@@ -17,52 +17,84 @@ let handler = async (m, { conn, usedPrefix, text, command }) => {
     if (command === 'debugstatus') {
       let debug = `🔍 *DEBUG DE ESTADOS*\n\n`;
       const statusBroadcastId = 'status@broadcast';
-      const statusChat = conn.chats?.[statusBroadcastId];
-      const statusStore = conn.store?.messages?.[statusBroadcastId];
-
-      debug += `📦 *Estructuras disponibles:*\n`;
-      debug += `• status@broadcast en conn.chats: ${statusChat ? '✅' : '❌'}\n`;
-      debug += `• status@broadcast en conn.store: ${statusStore ? '✅' : '❌'}\n\n`;
-
-      let totalMsgs = 0;
-      let msgsArray = [];
-
-      if (statusChat && statusChat.messages) {
-        msgsArray = Array.isArray(statusChat.messages)
-          ? statusChat.messages
-          : Object.values(statusChat.messages);
-      } else if (statusStore) {
-        msgsArray = Array.isArray(statusStore)
-          ? statusStore
-          : Object.values(statusStore);
+      
+      // Formas alternativas de buscar estados
+      debug += `📦 *Fuentes de estados:*\n`;
+      
+      // 1. Buscar en chats
+      if (conn.chats) {
+        const statusChat = conn.chats[statusBroadcastId];
+        debug += `• conn.chats['status@broadcast']: ${statusChat ? '✅' : '❌'}\n`;
       }
       
-      totalMsgs = msgsArray.length;
-      debug += `📊 Mensajes de estados en caché: ${totalMsgs}\n\n`;
+      // 2. Buscar en store (forma más común)
+      if (conn.store) {
+        const hasMessages = conn.store.messages && conn.store.messages[statusBroadcastId];
+        debug += `• conn.store.messages['status@broadcast']: ${hasMessages ? '✅' : '❌'}\n`;
+      }
       
-      // Listar usuarios con estados
-      const userStatusCounts = {};
+      // 3. Buscar directamente en la conexión
+      if (conn.messages) {
+        const hasMessages = conn.messages[statusBroadcastId];
+        debug += `• conn.messages['status@broadcast']: ${hasMessages ? '✅' : '❌'}\n`;
+      }
       
-      msgsArray.forEach(msg => {
-          const participant = msg?.key?.participant || msg?.participant;
-          if (participant) {
+      debug += `\n`;
+
+      // Intentar encontrar mensajes de estados
+      let allStatusMsgs = [];
+      
+      // Método 1: Buscar en store
+      if (conn.store?.messages?.[statusBroadcastId]) {
+        const msgs = conn.store.messages[statusBroadcastId];
+        allStatusMsgs = Array.isArray(msgs) ? msgs : Object.values(msgs);
+      }
+      
+      // Método 2: Buscar en conn.messages
+      if (conn.messages?.[statusBroadcastId] && allStatusMsgs.length === 0) {
+        const msgs = conn.messages[statusBroadcastId];
+        allStatusMsgs = Array.isArray(msgs) ? msgs : Object.values(msgs);
+      }
+
+      debug += `📊 Mensajes de estados encontrados: ${allStatusMsgs.length}\n\n`;
+      
+      if (allStatusMsgs.length > 0) {
+        // Listar usuarios con estados
+        const userStatusCounts = {};
+        
+        allStatusMsgs.forEach((msg, index) => {
+          if (msg?.key) {
+            const participant = msg.key.participant || msg.key.remoteJid;
+            if (participant && participant.includes('@s.whatsapp.net')) {
               const userNumber = participant.split('@')[0];
               userStatusCounts[userNumber] = (userStatusCounts[userNumber] || 0) + 1;
+            }
           }
-      });
-      
-      debug += `👤 *Usuarios con estados (${Object.keys(userStatusCounts).length}):*\n`;
-      if (Object.keys(userStatusCounts).length > 0) {
+        });
+        
+        debug += `👤 *Usuarios con estados (${Object.keys(userStatusCounts).length}):*\n`;
+        if (Object.keys(userStatusCounts).length > 0) {
           const userList = Object.entries(userStatusCounts)
-              .sort((a, b) => b[1] - a[1]) // Ordenar por cantidad
-              .map(([num, count]) => `• ${num}: ${count} estado(s)`)
-              .slice(0, 15) // Mostrar solo los 15 más recientes/activos
-              .join('\n');
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 10)
+            .map(([num, count]) => `• ${num}: ${count} estado(s)`)
+            .join('\n');
           debug += userList;
-      } else {
-          debug += 'Ninguno';
+        } else {
+          debug += 'No se pudieron identificar usuarios';
+        }
+        
+        // Mostrar algunos ejemplos de mensajes
+        debug += `\n\n📝 *Ejemplos de mensajes encontrados (primeros 3):*\n`;
+        allStatusMsgs.slice(0, 3).forEach((msg, i) => {
+          debug += `${i + 1}. Tipo: ${Object.keys(msg.message || {})[0] || 'desconocido'}\n`;
+          if (msg.key?.participant) {
+            debug += `   De: ${msg.key.participant.split('@')[0]}\n`;
+          }
+        });
       }
-      debug += `\n\n_Para ver los tuyos: ${usedPrefix}${command.replace('debug', '')}_\n`;
+
+      debug += `\n\n_Para ver estados de alguien: ${usedPrefix}estado @usuario_`;
 
       return conn.reply(m.chat, debug, m);
     }
@@ -73,25 +105,26 @@ let handler = async (m, { conn, usedPrefix, text, command }) => {
     let downloaded = 0;
     let foundStatuses = [];
     const statusBroadcastId = 'status@broadcast';
+    const targetNumber = who.split('@')[0];
 
-    // 1. Búsqueda robusta de estados
+    // 1. Buscar estados en todas las fuentes posibles
     try {
-      const statusChat = conn.chats?.[statusBroadcastId];
-      const statusStore = conn.store?.messages?.[statusBroadcastId];
-      let msgs = [];
-
-      if (statusChat && statusChat.messages) {
-        msgs = Array.isArray(statusChat.messages)
-          ? statusChat.messages
-          : Object.values(statusChat.messages);
-      } else if (statusStore) {
-        msgs = Array.isArray(statusStore)
-          ? statusStore
-          : Object.values(statusStore);
+      // Fuente principal: store
+      if (conn.store?.messages?.[statusBroadcastId]) {
+        const msgs = conn.store.messages[statusBroadcastId];
+        foundStatuses = Array.isArray(msgs) ? msgs : Object.values(msgs);
       }
       
-      // Filtrar mensajes válidos con key
-      foundStatuses = msgs.filter(msg => msg && msg.key);
+      // Fuente alternativa: conn.messages
+      if (foundStatuses.length === 0 && conn.messages?.[statusBroadcastId]) {
+        const msgs = conn.messages[statusBroadcastId];
+        foundStatuses = Array.isArray(msgs) ? msgs : Object.values(msgs);
+      }
+
+      // Filtrar mensajes válidos
+      foundStatuses = foundStatuses.filter(msg => 
+        msg && msg.key && (msg.message || msg.msg)
+      );
 
     } catch (error) {
       console.error('❌ Error buscando estados:', error);
@@ -99,125 +132,181 @@ let handler = async (m, { conn, usedPrefix, text, command }) => {
 
     if (foundStatuses.length === 0) {
       await m.react('ℹ️');
-      return conn.reply(m.chat, `ℹ️ *No se encontraron estados en la caché del bot*.\n\n_El bot debe haber visto el estado para poder descargarlo._\n\nUsa *${usedPrefix}debugstatus* para más información`, m);
+      return conn.reply(m.chat, 
+        `ℹ️ *No se encontraron estados en caché.*\n\n` +
+        `_Para que el bot pueda ver estados, necesitas:_\n` +
+        `1. Asegurarte de que el bot sigue a la persona\n` +
+        `2. Que la persona tenga estados públicos o permitidos\n` +
+        `3. Esperar a que el bot actualice la caché\n\n` +
+        `Usa *${usedPrefix}debugstatus* para ver qué está almacenado`, 
+        m
+      );
     }
 
-    // 2. Filtrar por usuario objetivo
-    const targetNumber = who.split('@')[0];
+    // 2. Filtrar por usuario específico
     const userStatuses = foundStatuses.filter(status => {
-      const participant = status?.key?.participant || status?.participant;
+      const participant = status?.key?.participant;
       if (!participant) return false;
-
+      
       const msgNumber = participant.split('@')[0];
-      // Solo coincidencia exacta
-      return msgNumber === targetNumber; 
+      // Coincidencia exacta
+      return msgNumber === targetNumber;
     });
 
     if (userStatuses.length === 0) {
       await m.react('ℹ️');
-      return conn.reply(m.chat, `ℹ️ *No se encontraron estados de este usuario* (@${targetNumber}).\n\n📊 Estados totales en caché: ${foundStatuses.length}\n\nUsa *${usedPrefix}debugstatus* para ver todos los usuarios con estados`, m, { mentions: [who] });
+      return conn.reply(m.chat, 
+        `ℹ️ *No se encontraron estados de @${targetNumber}*\n\n` +
+        `📊 Estados totales en caché: ${foundStatuses.length}\n` +
+        `👤 Usuarios distintos: ${[...new Set(foundStatuses.map(s => s.key?.participant?.split('@')[0]).filter(Boolean))].length}\n\n` +
+        `Usa *${usedPrefix}debugstatus* para ver todos los usuarios`, 
+        m, { mentions: [who] }
+      );
     }
 
-    // 3. Descargar y enviar estados
-    for (let i = 0; i < userStatuses.length; i++) {
+    // 3. Procesar cada estado
+    for (let i = 0; i < Math.min(userStatuses.length, 10); i++) { // Limitar a 10 para no saturar
       try {
         const status = userStatuses[i];
-        const fullMsg = status.message || status.msg || status; 
-
+        const fullMsg = status.message || status.msg || {};
+        
+        // Determinar tipo de contenido
         let mediaType = null;
         let mediaContent = null;
-        let isTextOnly = true;
-
-        // Determinar el tipo de mensaje y su contenido
-        if (fullMsg.extendedTextMessage && fullMsg.extendedTextMessage.contextInfo?.quotedMessage) {
-            const quoted = fullMsg.extendedTextMessage.contextInfo.quotedMessage;
-            if (quoted.imageMessage) { mediaType = 'image'; mediaContent = quoted.imageMessage; isTextOnly = false; }
-            else if (quoted.videoMessage) { mediaType = 'video'; mediaContent = quoted.videoMessage; isTextOnly = false; }
-        } else if (fullMsg.imageMessage) {
-          mediaType = 'image'; mediaContent = fullMsg.imageMessage; isTextOnly = false;
+        
+        // Verificar tipos de mensaje
+        if (fullMsg.imageMessage) {
+          mediaType = 'image';
+          mediaContent = fullMsg.imageMessage;
         } else if (fullMsg.videoMessage) {
-          mediaType = 'video'; mediaContent = fullMsg.videoMessage; isTextOnly = false;
+          mediaType = 'video';
+          mediaContent = fullMsg.videoMessage;
         } else if (fullMsg.audioMessage) {
-          mediaType = 'audio'; mediaContent = fullMsg.audioMessage; isTextOnly = false;
+          mediaType = 'audio';
+          mediaContent = fullMsg.audioMessage;
+        } else if (fullMsg.extendedTextMessage) {
+          // Estados con texto pueden tener media adjunta
+          const quoted = fullMsg.extendedTextMessage.contextInfo?.quotedMessage;
+          if (quoted?.imageMessage) {
+            mediaType = 'image';
+            mediaContent = quoted.imageMessage;
+          } else if (quoted?.videoMessage) {
+            mediaType = 'video';
+            mediaContent = quoted.videoMessage;
+          } else {
+            // Es solo texto, saltar
+            continue;
+          }
+        } else {
+          // Tipo no soportado
+          continue;
         }
         
-        if (isTextOnly) {
-          // Si es solo texto, no hay nada que descargar, continuar al siguiente estado.
-          continue; 
+        if (!mediaContent) {
+          continue;
         }
 
-        console.log(`📥 Descargando ${mediaType} ${i + 1}/${userStatuses.length}`);
-
-        // **Punto Crítico: Descarga**
-        const stream = await downloadContentFromMessage(mediaContent, mediaType);
-        let buffer = Buffer.from([]);
-
-        for await (const chunk of stream) {
-          buffer = Buffer.concat([buffer, chunk]);
+        console.log(`📥 Descargando ${mediaType} ${i + 1}/${Math.min(userStatuses.length, 10)}`);
+        
+        // Descargar contenido
+        let buffer;
+        try {
+          const stream = await downloadContentFromMessage(mediaContent, mediaType);
+          const chunks = [];
+          
+          for await (const chunk of stream) {
+            chunks.push(chunk);
+          }
+          
+          buffer = Buffer.concat(chunks);
+          
+          if (!buffer || buffer.length === 0) {
+            throw new Error('Buffer vacío');
+          }
+        } catch (downloadErr) {
+          console.error(`❌ Error descargando ${mediaType}:`, downloadErr.message);
+          continue;
         }
-
-        if (buffer.length === 0) {
-            console.log(`⚠️ Buffer vacío para el estado ${i + 1}. Posible fallo de descarga.`);
-            continue;
-        }
-
-        // Enviar
-        const caption = mediaContent.caption || `💾 Estado ${mediaType === 'video' ? '📹' : mediaType === 'image' ? '📸' : '🎵'} de @${targetNumber}`;
-
+        
+        // Preparar para enviar
+        const caption = mediaContent.captionText || 
+                       mediaContent.caption || 
+                       `Estado ${mediaType} de @${targetNumber}\n📅 ${new Date().toLocaleString()}`;
+        
         const messageOptions = {
-            caption,
-            mentions: [who],
+          caption: caption,
+          mentions: [who],
         };
         
-        if (mediaType === 'video') {
-          await conn.sendMessage(m.chat, { video: buffer, ...messageOptions }, { quoted: m });
-        } else if (mediaType === 'image') {
-          await conn.sendMessage(m.chat, { image: buffer, ...messageOptions }, { quoted: m });
+        // Enviar según el tipo
+        if (mediaType === 'image') {
+          await conn.sendMessage(m.chat, { 
+            image: buffer,
+            ...messageOptions 
+          }, { quoted: m });
+          
+        } else if (mediaType === 'video') {
+          await conn.sendMessage(m.chat, { 
+            video: buffer,
+            ...messageOptions,
+            gifPlayback: mediaContent.gifPlayback || false
+          }, { quoted: m });
+          
         } else if (mediaType === 'audio') {
-           await conn.sendMessage(m.chat, { 
-               audio: buffer, 
-               mimetype: 'audio/ogg; codecs=opus', 
-               ptt: mediaContent.ptt || false,
-           }, { quoted: m });
+          await conn.sendMessage(m.chat, { 
+            audio: buffer,
+            mimetype: mediaContent.mimetype || 'audio/mp4',
+            ptt: mediaContent.ptt || false
+          }, { quoted: m });
         }
-
-        downloaded++;
-        await new Promise(resolve => setTimeout(resolve, 1500)); 
-      } catch (err) {
-        // Muestra la key para depuración si falla la descarga
-        const keyInfo = JSON.stringify(status.key);
-        console.error(`❌ ERROR DE DESCARGA en estado ${i + 1}. Key: ${keyInfo}. Error:`, err.message);
         
-        if (i === 0) {
-            await conn.reply(m.chat, `⚠️ Fallo la descarga del primer estado. Causa: ${err.message}\n\n*Key de mensaje para debug:* \`${keyInfo}\``, m);
+        downloaded++;
+        
+        // Pequeña pausa entre envíos
+        if (i < userStatuses.length - 1) {
+          await new Promise(resolve => setTimeout(resolve, 1000));
         }
+        
+      } catch (err) {
+        console.error(`❌ Error procesando estado ${i + 1}:`, err.message);
         continue;
       }
     }
 
-    await m.react(downloaded > 0 ? '✔️' : 'ℹ️');
-
+    // 4. Enviar resumen
+    await m.react(downloaded > 0 ? '✅' : 'ℹ️');
+    
     let response = `📊 *RESULTADO DE ESTADOS*\n\n`;
     response += `👤 Usuario: @${targetNumber}\n`;
-    response += `📱 Estados encontrados (Multimedia + Texto): ${userStatuses.length}\n`;
-    response += `✅ Descargados y Enviados: ${downloaded}\n`;
-
+    response += `🔍 Estados encontrados: ${userStatuses.length}\n`;
+    response += `✅ Descargados exitosamente: ${downloaded}\n`;
+    
     if (downloaded === 0 && userStatuses.length > 0) {
-      response += `\n⚠️ *Aviso:*\n• Los estados encontrados eran solo texto o el bot no pudo descargar el contenido multimedia (buffer vacío o error de key).`;
+      response += `\n⚠️ *Posibles razones:*\n`;
+      response += `• Los estados eran solo texto\n`;
+      response += `• Error de descarga (sin permisos, contenido eliminado)\n`;
+      response += `• Formato no soportado\n`;
     }
-
-    conn.reply(m.chat, response, m, { mentions: [who] });
+    
+    response += `\n💡 *Consejo:* Asegúrate de que el bot sigue a la persona y tiene acceso a sus estados.`;
+    
+    await conn.reply(m.chat, response, m, { mentions: [who] });
 
   } catch (e) {
-    await m.react('✖️');
+    await m.react('❌');
     console.error('❌ ERROR CRÍTICO:', e);
-    conn.reply(m.chat, `⚠️ *Error CRÍTICO inesperado*:\n\n\`\`\`${e.message}\n${e.stack?.slice(0, 300)}\`\`\``, m);
+    await conn.reply(m.chat, 
+      `⚠️ *Error inesperado:*\n\n\`\`\`${e.message}\`\`\`\n\n` +
+      `Usa *${usedPrefix}debugstatus* para diagnosticar problemas.`, 
+      m
+    );
   }
 };
 
-handler.help = ['estado @user', 'debugstatus'];
-handler.tags = ['tools'];
-handler.command = ['estado', 'estados', 'status2', 'estadowp', 'getstatus', 'debugstatus'];
+handler.help = ['estado @usuario', 'debugstatus'];
+handler.tags = ['herramientas', 'descargas'];
+handler.command = ['estado', 'estados', 'status', 'verestado', 'descargarestado', 'debugstatus'];
 handler.premium = false;
+handler.limit = true;
 
 export default handler;
