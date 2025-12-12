@@ -1,6 +1,6 @@
 let { downloadContentFromMessage } = (await import('@whiskeysockets/baileys'))
 
-let handler = async (m, { conn, usedPrefix, text, args }) => {
+let handler = async (m, { conn, usedPrefix, text }) => {
   try {
     await m.react('🕒')
     
@@ -17,128 +17,175 @@ let handler = async (m, { conn, usedPrefix, text, args }) => {
       return conn.reply(m.chat, `❀ Por favor, menciona a un usuario, responde a su mensaje o escribe su número.\n\n*Ejemplo:*\n• ${usedPrefix}estado @usuario\n• ${usedPrefix}estado 52xxxxxxxxxx\n• Responde a un mensaje del usuario`, m)
     }
 
-    // Obtener los estados del usuario desde el objeto de conexión
+    await conn.reply(m.chat, `🔍 Buscando estados de @${who.split('@')[0]}...\n\n⏳ Por favor espera...`, m, { mentions: [who] })
+
     let statuses = []
+    let downloaded = 0
     
     try {
-      // Intentar obtener estados de diferentes maneras
-      if (conn.fetchStatus) {
-        statuses = await conn.fetchStatus(who).catch(() => [])
-      }
-      
-      // Método alternativo: buscar en el store de estados
-      if ((!statuses || statuses.length === 0) && conn.store) {
-        const statusStore = conn.store.messages['status@broadcast']
-        if (statusStore) {
-          const userStatuses = Object.values(statusStore)
-            .filter(msg => msg.key?.participant === who)
-            .filter(msg => msg.messageTimestamp && (Date.now() - msg.messageTimestamp * 1000) < 86400000) // Estados de últimas 24h
-          statuses = userStatuses
+      // Método 1: Buscar en el store principal
+      if (conn.store?.messages) {
+        const statusBroadcast = conn.store.messages['status@broadcast']
+        if (statusBroadcast) {
+          console.log('📱 Buscando en store.messages...')
+          const msgs = Array.isArray(statusBroadcast) ? statusBroadcast : Object.values(statusBroadcast)
+          statuses = msgs.filter(msg => {
+            const participant = msg?.key?.participant || msg?.participant
+            const timestamp = msg?.messageTimestamp
+            const isRecent = timestamp && (Date.now() / 1000 - timestamp) < 86400 // 24 horas
+            return participant === who && isRecent
+          })
+          console.log(`✅ Encontrados ${statuses.length} estados en store`)
         }
       }
 
-      // Método alternativo 2: buscar directamente en mensajes
-      if ((!statuses || statuses.length === 0) && conn.chats) {
+      // Método 2: Buscar en chats
+      if (statuses.length === 0 && conn.chats) {
+        console.log('📱 Buscando en chats...')
         const statusChat = conn.chats['status@broadcast']
-        if (statusChat && statusChat.messages) {
-          const userStatuses = Object.values(statusChat.messages)
-            .filter(msg => msg.key?.participant === who)
-            .filter(msg => msg.messageTimestamp && (Date.now() - msg.messageTimestamp * 1000) < 86400000)
-          statuses = userStatuses
+        if (statusChat?.messages) {
+          const msgs = Array.isArray(statusChat.messages) ? statusChat.messages : Object.values(statusChat.messages)
+          statuses = msgs.filter(msg => {
+            const participant = msg?.key?.participant || msg?.participant
+            const timestamp = msg?.messageTimestamp
+            const isRecent = timestamp && (Date.now() / 1000 - timestamp) < 86400
+            return participant === who && isRecent
+          })
+          console.log(`✅ Encontrados ${statuses.length} estados en chats`)
         }
       }
-      
+
+      // Método 3: Buscar directamente con loadMessages
+      if (statuses.length === 0 && conn.loadMessages) {
+        console.log('📱 Intentando cargar mensajes...')
+        try {
+          const messages = await conn.loadMessages('status@broadcast', 50)
+          if (messages?.length) {
+            statuses = messages.filter(msg => {
+              const participant = msg?.key?.participant || msg?.participant
+              const timestamp = msg?.messageTimestamp
+              const isRecent = timestamp && (Date.now() / 1000 - timestamp) < 86400
+              return participant === who && isRecent
+            })
+            console.log(`✅ Encontrados ${statuses.length} estados con loadMessages`)
+          }
+        } catch (e) {
+          console.log('❌ Error en loadMessages:', e.message)
+        }
+      }
+
     } catch (error) {
-      console.error('Error obteniendo estados:', error)
+      console.error('❌ Error obteniendo estados:', error)
     }
     
     if (!statuses || statuses.length === 0) {
       await m.react('⚠️')
-      return conn.reply(m.chat, `⚠️ No se encontraron estados de @${who.split('@')[0]}.\n\n*Posibles razones:*\n• El usuario no tiene estados activos\n• Los estados expiraron (duran 24h)\n• No tienes permiso para ver sus estados\n• El bot no está suscrito a sus estados`, m, { mentions: [who] })
+      return conn.reply(m.chat, `⚠️ No se encontraron estados de @${who.split('@')[0]}.\n\n*Posibles razones:*\n• El usuario no tiene estados activos (últimas 24h)\n• El bot no puede acceder a sus estados\n• Necesitas ver sus estados primero desde WhatsApp\n• El usuario no te tiene agregado\n\n💡 *Tip:* Abre WhatsApp y revisa si puedes ver los estados de este usuario manualmente.`, m, { mentions: [who] })
     }
 
-    let downloaded = 0
+    console.log(`🎯 Procesando ${statuses.length} estados...`)
     
     // Descargar cada estado
-    for (let status of statuses) {
+    for (let i = 0; i < statuses.length; i++) {
       try {
-        // Obtener el mensaje del estado
-        let msg = status.message || status
-        let messageType = Object.keys(msg)[0]
-        let content = msg[messageType]
+        const status = statuses[i]
+        const msg = status.message || status
         
-        if (!content) continue
+        // Encontrar el tipo de mensaje
+        let messageType = null
+        let content = null
         
-        // Descargar contenido según el tipo
-        let stream
-        if (messageType === 'imageMessage') {
-          stream = await downloadContentFromMessage(content, 'image')
-        } else if (messageType === 'videoMessage') {
-          stream = await downloadContentFromMessage(content, 'video')
-        } else if (messageType === 'audioMessage') {
-          stream = await downloadContentFromMessage(content, 'audio')
-        } else {
+        for (let key of Object.keys(msg)) {
+          if (['imageMessage', 'videoMessage', 'audioMessage'].includes(key)) {
+            messageType = key
+            content = msg[key]
+            break
+          }
+        }
+        
+        if (!content || !messageType) {
+          console.log(`⚠️ Estado ${i + 1}: Sin contenido multimedia`)
           continue
         }
         
-        if (!stream) continue
+        console.log(`📥 Descargando estado ${i + 1}/${statuses.length} - Tipo: ${messageType}`)
+        
+        // Descargar contenido
+        const type = messageType.replace('Message', '')
+        let stream = await downloadContentFromMessage(content, type)
+        
+        if (!stream) {
+          console.log(`❌ Estado ${i + 1}: No se pudo crear stream`)
+          continue
+        }
         
         let buffer = Buffer.from([])
         for await (const chunk of stream) {
           buffer = Buffer.concat([buffer, chunk])
         }
 
-        // Enviar según el tipo de contenido
+        if (buffer.length === 0) {
+          console.log(`❌ Estado ${i + 1}: Buffer vacío`)
+          continue
+        }
+
+        console.log(`✅ Estado ${i + 1}: Descargado ${buffer.length} bytes`)
+
+        // Enviar según el tipo
+        const caption = content.caption || `${type === 'video' ? '📹' : type === 'image' ? '📸' : '🎵'} *Estado de @${who.split('@')[0]}*`
+        
         if (messageType === 'videoMessage') {
           await conn.sendMessage(m.chat, { 
             video: buffer, 
-            caption: content.caption || `📹 *Estado de @${who.split('@')[0]}*`,
+            caption,
             mentions: [who],
-            mimetype: 'video/mp4' 
+            mimetype: content.mimetype || 'video/mp4' 
           }, { quoted: m })
         } else if (messageType === 'imageMessage') {
           await conn.sendMessage(m.chat, { 
             image: buffer, 
-            caption: content.caption || `📸 *Estado de @${who.split('@')[0]}*`,
-            mentions: [who]
+            caption,
+            mentions: [who],
+            mimetype: content.mimetype || 'image/jpeg'
           }, { quoted: m })
         } else if (messageType === 'audioMessage') {
           await conn.sendMessage(m.chat, { 
             audio: buffer, 
-            mimetype: 'audio/ogg; codecs=opus', 
+            mimetype: content.mimetype || 'audio/ogg; codecs=opus', 
             ptt: content.ptt || false 
           }, { quoted: m })
         }
         
         downloaded++
+        console.log(`✅ Estado ${i + 1}: Enviado correctamente`)
         
-        // Pequeña pausa entre envíos para evitar spam
-        await new Promise(resolve => setTimeout(resolve, 1000))
+        // Pausa entre envíos
+        await new Promise(resolve => setTimeout(resolve, 1500))
         
       } catch (err) {
-        console.error(`Error descargando estado individual:`, err)
+        console.error(`❌ Error en estado ${i + 1}:`, err.message)
         continue
       }
     }
 
     if (downloaded === 0) {
       await m.react('⚠️')
-      return conn.reply(m.chat, `⚠️ No se pudo descargar ningún estado de @${who.split('@')[0]}.\n\n*Nota:* Los estados deben ser visibles para el bot y estar activos (menos de 24h).`, m, { mentions: [who] })
+      return conn.reply(m.chat, `⚠️ Se encontraron ${statuses.length} estado(s) pero no se pudieron descargar.\n\n*Esto puede pasar si:*\n• Los estados están cifrados\n• No tienes permiso de descarga\n• Hay problemas de conexión\n\n💡 Intenta de nuevo en unos momentos.`, m)
     }
 
     await m.react('✔️')
-    conn.reply(m.chat, `✅ Se descargaron *${downloaded}* estado(s) de @${who.split('@')[0]}`, m, { mentions: [who] })
+    conn.reply(m.chat, `✅ *Descarga completa*\n\n📊 Encontrados: ${statuses.length}\n✅ Descargados: ${downloaded}\n❌ Fallidos: ${statuses.length - downloaded}\n\n👤 Usuario: @${who.split('@')[0]}`, m, { mentions: [who] })
 
   } catch (e) {
     await m.react('✖️')
-    console.error('Error en comando de estados:', e)
-    conn.reply(m.chat, `⚠️ Se ha producido un problema al descargar los estados.\n> Usa *${usedPrefix}report* para informarlo.\n\n*Error:* ${e.message}`, m)
+    console.error('❌ Error crítico en comando de estados:', e)
+    conn.reply(m.chat, `⚠️ Error crítico al procesar estados.\n\n*Error:* ${e.message}\n\n> Usa *${usedPrefix}report* para reportar este problema.`, m)
   }
 }
 
-handler.help = ['estados @user', 'estados <número>']
+handler.help = ['estado @user', 'estado <número>']
 handler.tags = ['tools']
-handler.command = ['estados', 'status2', 'estadowp', 'getstatus']
+handler.command = ['estado', 'estados', 'status2', 'estadowp', 'getstatus']
 handler.premium = false
 
 export default handler
