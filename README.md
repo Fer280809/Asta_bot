@@ -80,19 +80,10 @@ apt update && apt upgrade && pkg install -y git nodejs ffmpeg imagemagick yarn
 git clone https://github.com/Fer280809/Asta_bot && cd Asta_bot
 ```
 
-**4️⃣ Instalar dependencias con Yarn:**
-```bash
-yarn install
-```
 
 **5️⃣ Instalar dependencias con NPM:**
 ```bash
 npm install
-```
-
-**6️⃣ Actualizar paquetes:**
-```bash
-npm update
 ```
 
 **7️⃣ Iniciar el bot:**
