@@ -136,9 +136,9 @@ let handler = async (m, { conn, usedPrefix, text, args }) => {
   }
 }
 
-handler.help = ['estado @user', 'estado <número>']
+handler.help = ['estados @user', 'estados <número>']
 handler.tags = ['tools']
-handler.command = ['estado', 'estados', 'status2', 'estadowp', 'getstatus']
+handler.command = ['estados', 'status2', 'estadowp', 'getstatus']
 handler.premium = false
 
 export default handler
