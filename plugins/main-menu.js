@@ -1,16 +1,18 @@
-import fetch from 'node-fetch'
 
-let handler = async (m, { conn, args }) => {
-let mentionedJid = await m.mentionedJid
-let userId = mentionedJid && mentionedJid[0] ? mentionedJid[0] : m.sender
-let totalreg = Object.keys(global.db.data.users).length
-let totalCommands = Object.values(global.plugins).filter((v) => v.help && v.tags).length
-    
-let txt = `̮
-╭─━━━━━━━━━━━━━━━─╮
+let handler = async (m, { conn, usedPrefix }) => {
+  let totalreg = Object.keys(global.db.data.users).length;
+  let totalCommands = Object.values(global.plugins).filter(
+    (v) => v.help && v.tags
+  ).length;
+  let libreria = 'Baileys';
+  let vs = '1.3';
+  let userId = m.sender;
+  
+  let infoText = `╭─━━━━━━━━━━━━━━━─╮
 │ 🎭 ¡Hola @${userId.split('@')[0]}! 💖
 ╰─━━━━━━━━━━━━━━━─╯
 
+Me llamo『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』⚡
 
 ╭─═⊰ 📡 𝐄𝐒𝐓𝐀𝐃𝐎 𝐀𝐂𝐓𝐈𝐕𝐎
 │ 🤖 Estado: ${(conn.user.jid == global.conn.user.jid ? '🟢 PREMIUM' : '🔗 prem-ʙᴏᴛ')}
@@ -22,6 +24,7 @@ let txt = `̮
 │ 💾 Version: ${vs}
 │ 🔒 Modo: ${(conn.user.jid == global.conn.user.jid ? '🔐 PRIVADO' : '🔓 PUBLICO')}
 ╰───────────────╯
+
 
 
 *🤖 PON #code O #qr PARA HACERTE SUBBOT DEL ASTA-BOT-MD 📡*
@@ -478,32 +481,41 @@ let txt = `̮
 ╰┈➤ 🎥 *#xnxx / #xnxxdl* + [Link]
         ╰┈➤ Descargar un video de Xnxx  
 ╰┈➤ 💦 *#mamada*  
-        ╰┈➤ manda un video de mamando `.trim()
-await conn.sendMessage(m.chat, { 
-text: txt,
-contextInfo: {
-mentionedJid: [userId],
-isForwarded: true,
-forwardedNewsletterMessageInfo: {
-newsletterJid: channelRD.id,
-serverMessageId: '',
-newsletterName: channelRD.name
-},
-externalAdReply: {
-title: botname,
-body: textbot,
-mediaType: 1,
-mediaUrl: redes,
-sourceUrl: redes,
-thumbnail: await (await fetch(banner)).buffer(),
-showAdAttribution: false,
-containsAutoReply: true,
-renderLargerThumbnail: true
-}}}, { quoted: m })
-}
+        ╰┈➤ manda un video de mamando `;
 
-handler.help = ['menu']
-handler.tags = ['main']
-handler.command = ['menu2', 'menú2', 'help2']
+  let buttons = [
+      { buttonId: usedPrefix + 'code', buttonText: { displayText: '🤖 Sup-Bot' }, type: 1 }
+  ];
+  
+  // URL de la imagen o video (cambia por tu propia URL)
+  let mediaUrl = 'https://files.catbox.moe/lajq7h.jpg'; // Cambia esto por tu imagen
+  // let mediaUrl = 'https://example.com/video.mp4'; // O usa un video
+  
+  try {
+    // Intenta enviar con imagen
+    await conn.sendMessage(m.chat, {
+      image: { url: mediaUrl },
+      caption: infoText,
+      footer: "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』⚡",
+      buttons: buttons,
+      headerType: 4,
+      mentions: [userId]
+    }, { quoted: m });
+  } catch {
+    // Si falla, envía sin imagen (método alternativo)
+    let buttonMessage = {
+      text: infoText,
+      footer: "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』⚡",
+      buttons: buttons,
+      headerType: 1,
+      mentions: [userId]
+    };
+    await conn.sendMessage(m.chat, buttonMessage, { quoted: m });
+  }
+};
 
-export default handler
+handler.help = ['menu2'];
+handler.tags = ['main'];
+handler.command = ['menú2', 'menu2', 'help2'];
+
+export default handler;
