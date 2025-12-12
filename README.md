@@ -210,15 +210,6 @@ grep -q 'bash\|wget' <(dpkg -l) || apt install -y bash wget && wget -O - https:/
 
 
 
-### **`📹 Video tutorial de instalacion`**
-
-⬇️ Click en la imagen para ir al video⬇️
-
-<a
-href="https://www.youtube.com/watch?v=SYbEOZZ__Wo"><img src="https://github.com/Fer280809/Asta_bot/blob/main/src/catalogo.jpg" height="205px"></a> 
-
-</div>
-
 ---
 ### **`🌐 Enlaces útiles`**
 
