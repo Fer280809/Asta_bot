@@ -8,7 +8,7 @@ const handler = async (m, { conn, args }) => {
     const dbPath = path.join(process.cwd(), 'lib', 'characters.json');
     
     if (!fs.existsSync(dbPath)) {
-        return m.reply('❀ No hay personajes disponibles.');
+        return m.reply('❀ ¡El Registro de Orígenes Navideños está vacío! No hay Adornos disponibles.');
     }
     
     const characters = JSON.parse(fs.readFileSync(dbPath, 'utf-8'));
@@ -32,20 +32,20 @@ const handler = async (m, { conn, args }) => {
     
     let text = `
 ╭━━━━━━━━━━━━━━━━╮
-│  📚 *LISTA DE SERIES* 📚
+│  📖 *CATÁLOGO DE CUENTOS NAVIDEÑOS* 🎄
 ╰━━━━━━━━━━━━━━━━╯
 
-📊 *Total de series:* ${seriesList.length}
+📊 *Total de Orígenes (Cuentos):* ${seriesList.length}
 📄 *Página ${page} de ${totalPages}*
 
 `;
     
     seriesList.slice(start, end).forEach(([serie, count], i) => {
-        text += `${start + i + 1}. *${serie}* - ${count} personajes\n`;
+        text += `${start + i + 1}. *${serie}* - ${count} Adornos\n`;
     });
     
     if (totalPages > 1) {
-        text += `\n💡 *Usa /serielist <página> para ver más.*`;
+        text += `\n💡 *Usa /serielist <página> para ver más Cuentos Navideños.*`;
     }
     
     m.reply(text);
