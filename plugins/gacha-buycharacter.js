@@ -6,7 +6,7 @@ import path from 'path';
 
 const handler = async (m, { conn, text }) => {
     if (!text) {
-        return m.reply('❌ *Uso correcto:* /buychar <nombre del personaje>');
+        return m.reply('❌ *Uso correcto:* /buychar <nombre del Adorno Navideño>');
     }
     
     const buyerId = m.sender;
@@ -25,7 +25,7 @@ const handler = async (m, { conn, text }) => {
             claimMessage: '✧ {user} ha reclamado a {character}!',
             lastRoll: 0,
             votes: {},
-            gachaCoins: 1000
+            gachaCoins: 1000 // Mantener el nombre de la variable, solo cambiar el texto
         };
     }
     
@@ -49,27 +49,30 @@ const handler = async (m, { conn, text }) => {
     }
     
     if (!found) {
-        return m.reply('❌ *No se encontró ese personaje en venta.*');
+        return m.reply('❌ *El Duende Vendedor no tiene ese Adorno Navideño en su tienda.*');
     }
     
     if (sellerId === buyerId) {
-        return m.reply('❌ *No puedes comprar tu propio personaje.*');
+        return m.reply('❌ *¡No puedes comprar tu propio Adorno Navideño! Ya está en tu árbol.*');
     }
     
     // Verificar si ya tiene el personaje
     const alreadyHas = users[buyerId].harem.find(c => c.id === found.id);
     if (alreadyHas) {
-        return m.reply('⚠️ *Ya tienes este personaje en tu harem.*');
+        return m.reply('⚠️ *¡Ya tienes este Adorno Navideño en tu Colección Festiva!*');
     }
     
     // Verificar fondos
-    if (users[buyerId].gachaCoins < found.salePrice) {
-        return m.reply(`❌ *No tienes suficientes GachaCoins.* Necesitas *$${found.salePrice}* pero solo tienes *$${users[buyerId].gachaCoins}*`);
+    const currentCoins = users[buyerId].gachaCoins;
+    const requiredPrice = found.salePrice;
+    
+    if (currentCoins < requiredPrice) {
+        return m.reply(`❌ *¡Te falta espíritu navideño (y Monedas de Jengibre)!* Necesitas *$${requiredPrice}* pero solo tienes *$${currentCoins}*`);
     }
     
     // Realizar transacción
-    users[buyerId].gachaCoins -= found.salePrice;
-    users[sellerId].gachaCoins = (users[sellerId].gachaCoins || 0) + found.salePrice;
+    users[buyerId].gachaCoins -= requiredPrice;
+    users[sellerId].gachaCoins = (users[sellerId].gachaCoins || 0) + requiredPrice;
     
     // Transferir personaje
     const charToTransfer = { ...found, forSale: false, salePrice: 0, claimedAt: Date.now() };
@@ -89,11 +92,11 @@ const handler = async (m, { conn, text }) => {
     const buyerName = await conn.getName(buyerId);
     const sellerName = await conn.getName(sellerId);
     
-    m.reply(`✅ *¡Compra exitosa!*\n\n*${buyerName}* ha comprado a *${found.name}* de *${sellerName}* por *$${found.salePrice}*`);
+    m.reply(`🎁 *¡Feliz Compra Navideña!*\n\n*${buyerName}* ha comprado el *Adorno Navideño* *${found.name}* de *${sellerName}* por *$${requiredPrice} Monedas de Jengibre*`);
     
     // Notificar al vendedor
     conn.sendMessage(sellerId, { 
-        text: `💰 *¡Venta realizada!*\n\n*${buyerName}* ha comprado tu personaje *${found.name}* por *$${found.salePrice}*` 
+        text: `💰 *¡Venta Navideña realizada!*\n\n*${buyerName}* ha comprado tu *Adorno Navideño* *${found.name}* y has recibido *$${requiredPrice} Monedas de Jengibre*` 
     });
 };
 
