@@ -6,7 +6,7 @@ import path from 'path';
 
 const handler = async (m, { conn, text }) => {
     if (!text) {
-        return m.reply('❌ *Uso correcto:* /removesale <nombre del personaje>');
+        return m.reply('❌ *Uso correcto:* /removesale <nombre del Adorno Navideño>');
     }
     
     const userId = m.sender;
@@ -18,7 +18,7 @@ const handler = async (m, { conn, text }) => {
     }
     
     if (!users[userId] || !users[userId].harem || users[userId].harem.length === 0) {
-        return m.reply('❌ *No tienes personajes en venta.*');
+        return m.reply('❌ *No tienes Adornos Navideños puestos en venta.*');
     }
     
     const charIndex = users[userId].harem.findIndex(c => 
@@ -26,7 +26,7 @@ const handler = async (m, { conn, text }) => {
     );
     
     if (charIndex === -1) {
-        return m.reply('❌ *No tienes ese personaje en venta.*');
+        return m.reply('❌ *Ese Adorno Navideño no está actualmente en tu Mercado de Ventas.*');
     }
     
     // Quitar de venta
@@ -35,7 +35,7 @@ const handler = async (m, { conn, text }) => {
     
     fs.writeFileSync(usersPath, JSON.stringify(users, null, 2), 'utf-8');
     
-    m.reply(`✅ *${users[userId].harem[charIndex].name}* ya no está en venta.`);
+    m.reply(`✅ *${users[userId].harem[charIndex].name}* ha sido retirado de la venta y regresado a tu Colección Festiva.`);
 };
 
 handler.help = ['removesale', 'removerventa'];
