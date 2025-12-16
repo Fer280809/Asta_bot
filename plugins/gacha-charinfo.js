@@ -5,13 +5,13 @@ import fs from 'fs';
 import path from 'path';
 
 const handler = async (m, { conn, text }) => {
-    if (!text) return m.reply('❌ *Ingresa el nombre del personaje.*');
+    if (!text) return m.reply('❌ *Ingresa el nombre del Adorno Navideño para ver su ficha.*');
     
     const dbPath = path.join(process.cwd(), 'lib', 'characters.json');
     const usersPath = path.join(process.cwd(), 'lib', 'gacha_users.json');
     
     if (!fs.existsSync(dbPath)) {
-        return m.reply('❀ No hay personajes disponibles.');
+        return m.reply('❀ ¡La Lista de Santa está vacía! No hay registros de Adornos disponibles.');
     }
     
     const characters = JSON.parse(fs.readFileSync(dbPath, 'utf-8'));
@@ -22,7 +22,7 @@ const handler = async (m, { conn, text }) => {
     );
     
     if (!found) {
-        return m.reply('❌ *No se encontró ese personaje.*');
+        return m.reply('❌ *No se encontró ese Adorno Navideño en el Registro de Santa.*');
     }
     
     // Contar propietarios
@@ -43,24 +43,24 @@ const handler = async (m, { conn, text }) => {
     
     const caption = `
 ╭━━━━━━━━━━━━━━━━╮
-│  ℹ️ *INFO DEL PERSONAJE* ℹ️
+│  🌟 *FICHA DEL ADORNO NAVIDEÑO* 🌟
 ╰━━━━━━━━━━━━━━━━╯
 
-┌─⊷ *DATOS BÁSICOS*
-│ 📛 *Nombre:* ${found.name}
-│ ⚧️ *Género:* ${found.gender}
-│ 📺 *Serie:* ${found.source}
-│ 💎 *Valor:* ${found.value}
-│ 🆔 *ID:* ${found.id}
+┌─⊷ *DETALLES FESTIVOS*
+│ 📛 *Nombre del Adorno:* ${found.name}
+│ ⚧️ *Decoración (Género):* ${found.gender}
+│ 📺 *Origen (Cuento/Serie):* ${found.source}
+│ 💎 *Rareza (Valor):* ${found.value}
+│ 🏷️ *ID del Catálogo:* ${found.id}
 └───────────────
 
-┌─⊷ *ESTADÍSTICAS*
-│ 👥 *Propietarios:* ${owners.length}
-│ 🗳️ *Votos totales:* ${totalVotes}
-│ 📊 *Estado:* ${found.status}
+┌─⊷ *ESTADÍSTICAS DEL ÁRBOL*
+│ 👥 *Árboles Decorados:* ${owners.length}
+│ 🗳️ *Deseos Pedidos (Votos):* ${totalVotes}
+│ 📊 *Condición del Regalo:* ${found.status}
 └───────────────`;
 
-    await conn.sendFile(m.chat, randomImg, 'character.jpg', caption, m);
+    await conn.sendFile(m.chat, randomImg, 'adorno_navideno.jpg', caption, m);
 };
 
 handler.help = ['charinfo', 'winfo', 'waifuinfo'];
