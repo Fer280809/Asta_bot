@@ -6,14 +6,14 @@ import path from 'path';
 
 const handler = async (m, { conn, text }) => {
     if (!m.mentionedJid || m.mentionedJid.length === 0) {
-        return m.reply('❌ *Uso correcto:* /giveallharem @usuario');
+        return m.reply('❌ *Uso correcto:* /giveallharem @AyudanteDestino');
     }
     
     const giverId = m.sender;
     const receiverId = m.mentionedJid[0];
     
     if (giverId === receiverId) {
-        return m.reply('❌ *No puedes regalarte personajes a ti mismo.*');
+        return m.reply('❌ *No puedes regalarte tu propia Colección Navideña.* ¡Ya la tienes!');
     }
     
     const usersPath = path.join(process.cwd(), 'lib', 'gacha_users.json');
@@ -25,11 +25,13 @@ const handler = async (m, { conn, text }) => {
     }
     
     if (!users[giverId] || !users[giverId].harem || users[giverId].harem.length === 0) {
-        return m.reply('❌ *No tienes personajes para regalar.*');
+        return m.reply('❌ *Tu árbol está vacío.* No tienes Adornos Navideños para donar.');
     }
     
+    const totalAdornos = users[giverId].harem.length;
+    
     // Confirmar acción
-    const confirmMsg = await m.reply(`⚠️ *¿Estás seguro de regalar TODOS tus ${users[giverId].harem.length} personajes?*\n\nResponde con *SI* para confirmar o *NO* para cancelar.\n\n⏰ Tienes 30 segundos.`);
+    const confirmMsg = await m.reply(`⚠️ *¡ALERTA FESTIVA!* ¿Estás seguro de donar *TODOS* tus ${totalAdornos} Adornos Navideños (harem)?\n\nResponde con *SI* para confirmar la GRAN DONACIÓN o *NO* para cancelar.\n\n⏰ Tienes 30 segundos.`);
     
     // Esperar respuesta
     const collector = conn.awaitMessages(m.chat, x => x.sender === m.sender, {
@@ -40,7 +42,7 @@ const handler = async (m, { conn, text }) => {
     collector.then(collected => {
         const response = collected[0];
         if (!response || response.text.toLowerCase() !== 'si') {
-            return m.reply('❌ *Operación cancelada.*');
+            return m.reply('❌ *Operación de Donación cancelada.* ¡Qué susto!');
         }
         
         // Inicializar receptor si no existe
@@ -48,14 +50,14 @@ const handler = async (m, { conn, text }) => {
             users[receiverId] = {
                 harem: [],
                 favorites: [],
-                claimMessage: '✧ {user} ha reclamado a {character}!',
+                // Usar el mensaje navideño predeterminado
+                claimMessage: '✨ *¡Feliz Navidad!* {user} ha añadido a {character} a su *Colección de Adornos Festivos* (Harem). ¡Qué gran regalo!', 
                 lastRoll: 0,
                 votes: {},
                 gachaCoins: 1000
             };
         }
         
-        const totalChars = users[giverId].harem.length;
         const characters = JSON.parse(fs.readFileSync(dbPath, 'utf-8'));
         
         // Transferir todos los personajes (evitar duplicados)
@@ -81,16 +83,16 @@ const handler = async (m, { conn, text }) => {
         
         conn.getName(giverId).then(giverName => {
             conn.getName(receiverId).then(receiverName => {
-                m.reply(`✅ *${giverName}* le ha regalado su harem completo (${totalChars} personajes) a *${receiverName}*! 🎁`);
+                m.reply(`✅ *¡Donación de Espíritu Navideño Exitosa!* *${giverName}* le ha regalado su Colección completa (${totalAdornos} Adornos) a *${receiverName}*! 🎁`);
                 
                 // Notificar al receptor
                 conn.sendMessage(receiverId, { 
-                    text: `🎁 *¡Regalo ENORME recibido!*\n\n*${giverName}* te ha regalado su harem completo de ${totalChars} personajes!` 
+                    text: `🎁 *¡Mega Regalo de Navidad recibido!*\n\n*${giverName}* te ha donado su Colección de ${totalAdornos} Adornos Navideños. ¡Que tengas un Feliz Árbol!` 
                 });
             });
         });
     }).catch(() => {
-        m.reply('❌ *Tiempo agotado. Operación cancelada.*');
+        m.reply('❌ *Tiempo agotado. La Gran Donación ha sido cancelada.*');
     });
 };
 
