@@ -1,36 +1,33 @@
-import fetch from 'node-fetch'
 
-let handler = async (m, { conn, args }) => {
-    let mentionedJid = await m.mentionedJid
-    let userId = mentionedJid && mentionedJid[0] ? mentionedJid[0] : m.sender
-    let totalreg = Object.keys(global.db.data.users).length
-    let totalCommands = Object.values(global.plugins).filter((v) => v.help && v.tags).length
-    
-
-    // AÑADE ESTAS 3 LÍNEAS:
-    let usedPrefix = '#'  // Prefix según tu index.js
-    let libreria = 'Baileys'  // O la librería que uses
-    let vs = '1.3'  // Versión de tu bot
-
-        let txt = `̮
-╭─━━━━━━━━━━━━━━━─╮
-│ 🎄 ¡Feliz Navidad @${userId.split('@')[0]}! 🎅
+let handler = async (m, { conn, usedPrefix }) => {
+  let totalreg = Object.keys(global.db.data.users).length;
+  let totalCommands = Object.values(global.plugins).filter(
+    (v) => v.help && v.tags
+  ).length;
+  let libreria = 'Baileys';
+  let vs = '1.3';
+  let userId = m.sender;
+  
+  let infoText = `╭─━━━━━━━━━━━━━━━─╮
+│ 🎅 ¡Hola @${userId.split('@')[0]}! 🎄
 ╰─━━━━━━━━━━━━━━━─╯
 
+Me llamo『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』🎁
 
-╭─═⊰ 🎄 𝐄𝐒𝐓𝐀𝐃𝐎 𝐍𝐀𝐕𝐈𝐃𝐄Ñ𝐎
-│ 🎅 Estado: ${(conn.user.jid == global.conn.user.jid ? '🟢 MODO NAVIDAD' : '🔗 ELFOS ACTIVOS')}
-│ 👥 Usuarios: 『${totalreg.toLocaleString()}』🔥
-│ 🎁 Comandos: 『${totalCommands}』✨
+╭─═⊰ 🎀 𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐂𝐈Ó𝐍 𝐍𝐀𝐕𝐈𝐃𝐄Ñ𝐀
+│ 🤖 Estado: ${(conn.user.jid == global.conn.user.jid ? '🟢 RENO MÁGICO' : '🔗 DUENDE AYUDANTE')}
+│ 👥 Usuarios: 『${totalreg.toLocaleString()}』🌟
+│ 🛠️ Comandos: 『${totalCommands}』✨
 │ 📅 Librería » ${libreria}
-│ 🌍 Servidor: Polo Norte 🎅
-│ 📡 Ping: Alegría Navideña ✅
+│ 🌍 Región: Polo Norte 🎅
+│ 📡 Ping: Alegre ✅
 │ 💾 Versión: ${vs}
-│ 🔒 Modo: ${(conn.user.jid == global.conn.user.jid ? '🔐 PRIVADO' : '🔓 PÚBLICO')}
+│ 🔒 Modo: ${(conn.user.jid == global.conn.user.jid ? '🔐 ELFO PRIVADO' : '🔓 TALLER PÚBLICO')}
 ╰───────────────╯
 
 
-*🤖 PON #code O #qr PARA HACERTE SUBBOT DEL ASTA-BOT-MD NAVIDEÑO 📡*
+
+*🤖 PON #code O #qr PARA HACERTE SUBBOT DEL ASTA-BOT-MD 📡*
 
 
 
@@ -95,6 +92,8 @@ let handler = async (m, { conn, args }) => {
 
 ╰┈➤ 🎵 *#tiktok / #tt* + [Link] / [busqueda]
         ╰┈➤ Descargar un video de TikTok  
+╰┈➤ 📱 #estados – Descarga estados de WhatsApp
+        ╰┈➤ Descarga estados de whatsapp
 ╰┈➤ 📂 *#mediafire / #mf* + [Link]
         ╰┈➤ Descargar un archivo de MediaFire  
 ╰┈➤ 📂 *#mega / #mg* + [Link]
@@ -482,37 +481,37 @@ let handler = async (m, { conn, args }) => {
 ╰┈➤ 🎥 *#xnxx / #xnxxdl* + [Link]
         ╰┈➤ Descargar un video de Xnxx  
 ╰┈➤ 💦 *#mamada*  
-        ╰┈➤ manda un video de mamando `.trim()
+        ╰┈➤ manda un video de mamando `;
 
-        let buttons = [
-                { buttonId: '#' + 'code', buttonText: { displayText: '🤖 Sup-Bot' }, type: 1 }
-        ];
-
-        // URL de la imagen o video (cambia por tu propia URL)
-        let mediaUrl = 'https://files.catbox.moe/lajq7h.jpg'; // Cambia esto por tu imagen
-        // let mediaUrl = 'https://example.com/video.mp4'; // O usa un video
-
-        try {
-                // Intenta enviar con imagen
-                await conn.sendMessage(m.chat, {
-                        image: { url: mediaUrl },
-                        caption: infoText,
-                        footer: "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』⚡",
-                        buttons: buttons,
-                        headerType: 4,
-                        mentions: [userId]
-                }, { quoted: m });
-        } catch {
-                // Si falla, envía sin imagen (método alternativo)
-                let buttonMessage = {
-                        text: infoText,
-                        footer: "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』⚡",
-                        buttons: buttons,
-                        headerType: 1,
-                        mentions: [userId]
-                };
-                await conn.sendMessage(m.chat, buttonMessage, { quoted: m });
-        }
+  let buttons = [
+      { buttonId: usedPrefix + 'code', buttonText: { displayText: '🤖 Sup-Bot' }, type: 1 }
+  ];
+  
+  // URL de la imagen o video (cambia por tu propia URL)
+  let mediaUrl = 'https://files.catbox.moe/lajq7h.jpg'; // Cambia esto por tu imagen
+  // let mediaUrl = 'https://example.com/video.mp4'; // O usa un video
+  
+  try {
+    // Intenta enviar con imagen
+    await conn.sendMessage(m.chat, {
+      image: { url: mediaUrl },
+      caption: infoText,
+      footer: "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』⚡",
+      buttons: buttons,
+      headerType: 4,
+      mentions: [userId]
+    }, { quoted: m });
+  } catch {
+    // Si falla, envía sin imagen (método alternativo)
+    let buttonMessage = {
+      text: infoText,
+      footer: "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』⚡",
+      buttons: buttons,
+      headerType: 1,
+      mentions: [userId]
+    };
+    await conn.sendMessage(m.chat, buttonMessage, { quoted: m });
+  }
 };
 
 handler.help = ['menu2'];
