@@ -6,21 +6,21 @@ import path from 'path';
 
 const handler = async (m, { conn, text }) => {
     if (!m.mentionedJid || m.mentionedJid.length === 0 || !text) {
-        return m.reply('❌ *Uso correcto:* /givechar @usuario <nombre del personaje>\n\n*Ejemplo:* /givechar @usuario Miku');
+        return m.reply('❌ *Uso correcto:* /givechar @usuario <nombre del Adorno Navideño>\n\n*Ejemplo:* /givechar @duende Ayumi');
     }
     
     const giverId = m.sender;
     const receiverId = m.mentionedJid[0];
     
     if (giverId === receiverId) {
-        return m.reply('❌ *No puedes regalarte personajes a ti mismo.*');
+        return m.reply('❌ *¡No puedes regalarte Adornos a ti mismo!* Ya están en tu árbol.');
     }
     
     // Extraer nombre del personaje
     const charName = text.replace(/@\d+/g, '').trim();
     
     if (!charName) {
-        return m.reply('❌ *Debes especificar el nombre del personaje.*');
+        return m.reply('❌ *Debes especificar el nombre del Adorno Navideño.*');
     }
     
     const usersPath = path.join(process.cwd(), 'lib', 'gacha_users.json');
@@ -32,7 +32,7 @@ const handler = async (m, { conn, text }) => {
     }
     
     if (!users[giverId] || !users[giverId].harem || users[giverId].harem.length === 0) {
-        return m.reply('❌ *No tienes personajes para regalar.*');
+        return m.reply('❌ *Tu caja de Adornos está vacía.* No tienes qué regalar.');
     }
     
     const charIndex = users[giverId].harem.findIndex(c => 
@@ -40,7 +40,7 @@ const handler = async (m, { conn, text }) => {
     );
     
     if (charIndex === -1) {
-        return m.reply('❌ *No tienes ese personaje en tu harem.*');
+        return m.reply('❌ *Ese Adorno Navideño no está en tu Colección Festiva (harem).*');
     }
     
     // Inicializar receptor si no existe
@@ -48,7 +48,8 @@ const handler = async (m, { conn, text }) => {
         users[receiverId] = {
             harem: [],
             favorites: [],
-            claimMessage: '✧ {user} ha reclamado a {character}!',
+            // Usar el mensaje navideño predeterminado
+            claimMessage: '✨ *¡Feliz Navidad!* {user} ha añadido a {character} a su *Colección de Adornos Festivos* (Harem). ¡Qué gran regalo!', 
             lastRoll: 0,
             votes: {},
             gachaCoins: 1000
@@ -60,14 +61,14 @@ const handler = async (m, { conn, text }) => {
     // Verificar si el receptor ya tiene el personaje
     const alreadyHas = users[receiverId].harem.find(c => c.id === char.id);
     if (alreadyHas) {
-        return m.reply('⚠️ *Ese usuario ya tiene este personaje.*');
+        return m.reply('⚠️ *¡Ese usuario ya tiene este Adorno Navideño!* Elfo duplicado.');
     }
     
-    // Transferir personaje
+    // Transferir personaje (Lógica del código intacta)
     users[receiverId].harem.push({ ...char, claimedAt: Date.now(), forSale: false, salePrice: 0 });
     users[giverId].harem.splice(charIndex, 1);
     
-    // Actualizar en DB principal
+    // Actualizar en DB principal (Lógica del código intacta)
     const characters = JSON.parse(fs.readFileSync(dbPath, 'utf-8'));
     const dbCharIndex = characters.findIndex(c => c.id === char.id);
     if (dbCharIndex !== -1) {
@@ -75,7 +76,7 @@ const handler = async (m, { conn, text }) => {
         fs.writeFileSync(dbPath, JSON.stringify(characters, null, 2), 'utf-8');
     }
     
-    // Eliminar de favoritos si está
+    // Eliminar de favoritos si está (Lógica del código intacta)
     users[giverId].favorites = users[giverId].favorites.filter(id => id !== char.id);
     
     fs.writeFileSync(usersPath, JSON.stringify(users, null, 2), 'utf-8');
@@ -83,11 +84,11 @@ const handler = async (m, { conn, text }) => {
     const giverName = await conn.getName(giverId);
     const receiverName = await conn.getName(receiverId);
     
-    m.reply(`✅ *${giverName}* le ha regalado *${char.name}* a *${receiverName}*! 🎁`);
+    m.reply(`✅ *¡Regalo Navideño Enviado!* *${giverName}* le ha regalado el Adorno *${char.name}* a *${receiverName}*! 🎁`);
     
     // Notificar al receptor
     conn.sendMessage(receiverId, { 
-        text: `🎁 *¡Regalo recibido!*\n\n*${giverName}* te ha regalado a *${char.name}*!` 
+        text: `🎁 *¡Un Adorno Navideño para tu árbol!*\n\n*${giverName}* te ha obsequiado a *${char.name}*!` 
     });
 };
 
