@@ -1,49 +1,73 @@
 // ============================================
-// plugins/gacha-rejecttrade.js
+// plugins/gacha-haremshop.js
 // ============================================
 import fs from 'fs';
 import path from 'path';
 
-const handler = async (m, { conn }) => {
-    const userId = m.sender;
+const handler = async (m, { conn, args }) => {
+    const usersPath = path.join(process.cwd(), 'lib', 'gacha_users.json');
     
-    if (!global.tradeRequests) {
-        return m.reply('❌ *No hay solicitudes de intercambio pendientes.*');
+    let users = {};
+    if (fs.existsSync(usersPath)) {
+        users = JSON.parse(fs.readFileSync(usersPath, 'utf-8'));
     }
     
-    // Buscar solicitud pendiente para este usuario
-    let tradeId = null;
-    let trade = null;
-    
-    for (const [id, data] of Object.entries(global.tradeRequests)) {
-        if (data.user2 === userId && Date.now() < data.expires) {
-            tradeId = id;
-            trade = data;
-            break;
+    // Obtener todos los personajes en venta
+    let forSale = [];
+    for (const [userId, userData] of Object.entries(users)) {
+        if (userData.harem) {
+            userData.harem.forEach(char => {
+                if (char.forSale) {
+                    forSale.push({
+                        ...char,
+                        ownerId: userId
+                    });
+                }
+            });
         }
     }
     
-    if (!trade) {
-        return m.reply('❌ *No tienes solicitudes de intercambio pendientes o han expirado.*');
+    if (forSale.length === 0) {
+        return m.reply('🏪 *¡El Mercado de Adornos está vacío!* No hay regalos en venta actualmente.');
     }
     
-    const user1Name = await conn.getName(trade.user1);
-    const user2Name = await conn.getName(trade.user2);
+    const page = parseInt(args[0]) || 1;
+    const perPage = 10;
+    const start = (page - 1) * perPage;
+    const end = start + perPage;
+    const totalPages = Math.ceil(forSale.length / perPage);
     
-    m.reply(`❌ *Intercambio rechazado.*`);
+    let text = `
+╭━━━━━━━━━━━━━━━━╮
+│  🏪 *MERCADO DE ADORNOS NAVIDEÑOS* 🎁
+╰━━━━━━━━━━━━━━━━╯
+
+📊 *Total de Adornos en Venta:* ${forSale.length}
+📄 *Página ${page} de ${totalPages}*
+
+`;
     
-    // Notificar al otro usuario
-    conn.sendMessage(trade.user1, { 
-        text: `❌ *Intercambio rechazado*\n\n*${user2Name}* rechazó tu solicitud de intercambio.` 
-    });
+    for (let i = start; i < end && i < forSale.length; i++) {
+        const char = forSale[i];
+        const ownerName = await conn.getName(char.ownerId);
+        text += `
+┌─⊷ ${i + 1}. *${char.name}*
+│ 📺 Origen: ${char.source}
+│ 💎 Rareza (Valor Base): ${char.value}
+│ 💰 Precio: $${char.salePrice} Monedas de Jengibre
+│ 👤 Elfo Vendedor: ${ownerName}
+└───────────────
+`;
+    }
     
-    // Eliminar solicitud
-    delete global.tradeRequests[tradeId];
+    text += `\n💡 *Usa /buychar <nombre> para llevarte un Adorno a tu árbol.*`;
+    
+    m.reply(text);
 };
 
-handler.help = ['rejecttrade'];
+handler.help = ['haremshop', 'tiendawaifus', 'wshop'];
 handler.tags = ['gacha'];
-handler.command = ['rejecttrade', 'rechazarintercambio'];
+handler.command = ['haremshop', 'tiendawaifus', 'wshop'];
 handler.group = true;
 
 export default handler;
