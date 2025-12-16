@@ -10,13 +10,13 @@ const handler = async (m, { conn }) => {
     const dbPath = path.join(process.cwd(), 'lib', 'characters.json');
     
     if (!m.quoted) {
-        return m.reply('❌ *Debes citar el mensaje del personaje que quieres reclamar.*');
+        return m.reply('❌ *¡Ho-Ho-Ho! Debes citar el mensaje del Regalo Secreto que quieres abrir y reclamar.*');
     }
     
     const quotedId = m.quoted.id;
     
     if (!global.tempCharacters || !global.tempCharacters[quotedId]) {
-        return m.reply('❌ *Este personaje ya no está disponible o ha expirado.*');
+        return m.reply('❌ *¡Oops! Este Regalo Secreto ya fue reclamado o se lo llevó un duende. ¡Intenta con otro!*');
     }
     
     const tempData = global.tempCharacters[quotedId];
@@ -24,7 +24,7 @@ const handler = async (m, { conn }) => {
     // Verificar si expiró
     if (Date.now() > tempData.expires) {
         delete global.tempCharacters[quotedId];
-        return m.reply('⏰ *Este personaje ya expiró. Usa /roll para obtener otro.*');
+        return m.reply('⏰ *¡Se acabó el tiempo! Este Regalo Secreto se congeló. Usa /roll para que Santa te dé otro.*');
     }
     
     // Cargar usuarios
@@ -37,7 +37,7 @@ const handler = async (m, { conn }) => {
         users[userId] = {
             harem: [],
             favorites: [],
-            claimMessage: '✧ {user} ha reclamado a {character}!',
+            claimMessage: '✨ *¡Feliz Navidad!* {user} ha añadido a {character} a su *Colección de Adornos Festivos* (Harem). ¡Qué gran regalo!',
             lastRoll: 0,
             votes: {},
             gachaCoins: 1000
@@ -47,7 +47,7 @@ const handler = async (m, { conn }) => {
     // Verificar si ya tiene el personaje
     const alreadyHas = users[userId].harem.find(c => c.id === tempData.character.id);
     if (alreadyHas) {
-        return m.reply('⚠️ *Ya tienes este personaje en tu harem.*');
+        return m.reply('⚠️ *¡Santa dice que ya tienes este Adorno Navideño en tu colección!* No seas avaricioso.');
     }
     
     // Cargar y actualizar personaje en DB
@@ -56,7 +56,7 @@ const handler = async (m, { conn }) => {
     
     if (charIndex !== -1) {
         characters[charIndex].user = userId;
-        characters[charIndex].status = 'Reclamado';
+        characters[charIndex].status = 'Reclamado (Regalo Abierto)';
         fs.writeFileSync(dbPath, JSON.stringify(characters, null, 2), 'utf-8');
     }
     
