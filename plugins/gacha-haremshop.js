@@ -28,7 +28,7 @@ const handler = async (m, { conn, args }) => {
     }
     
     if (forSale.length === 0) {
-        return m.reply('🏪 *No hay personajes en venta actualmente.*');
+        return m.reply('🏪 *¡El Mercado de Adornos está vacío!* No hay regalos en venta actualmente.');
     }
     
     const page = parseInt(args[0]) || 1;
@@ -39,10 +39,10 @@ const handler = async (m, { conn, args }) => {
     
     let text = `
 ╭━━━━━━━━━━━━━━━━╮
-│  🏪 *TIENDA DE PERSONAJES* 🏪
+│  🏪 *MERCADO DE ADORNOS NAVIDEÑOS* 🎁
 ╰━━━━━━━━━━━━━━━━╯
 
-📊 *Total en venta:* ${forSale.length}
+📊 *Total de Adornos en Venta:* ${forSale.length}
 📄 *Página ${page} de ${totalPages}*
 
 `;
@@ -52,15 +52,15 @@ const handler = async (m, { conn, args }) => {
         const ownerName = await conn.getName(char.ownerId);
         text += `
 ┌─⊷ ${i + 1}. *${char.name}*
-│ 📺 ${char.source}
-│ 💎 Valor base: ${char.value}
-│ 💰 Precio: $${char.salePrice}
-│ 👤 Vendedor: ${ownerName}
+│ 📺 Origen: ${char.source}
+│ 💎 Rareza (Valor Base): ${char.value}
+│ 💰 Precio: $${char.salePrice} Monedas de Jengibre
+│ 👤 Elfo Vendedor: ${ownerName}
 └───────────────
 `;
     }
     
-    text += `\n💡 *Usa /buychar <nombre> para comprar un personaje*`;
+    text += `\n💡 *Usa /buychar <nombre> para llevarte un Adorno a tu árbol.*`;
     
     m.reply(text);
 };
