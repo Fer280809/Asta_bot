@@ -9,13 +9,13 @@ const handler = async (m, { conn }) => {
     const dbPath = path.join(process.cwd(), 'lib', 'characters.json');
     
     if (!fs.existsSync(usersPath) || !fs.existsSync(dbPath)) {
-        return m.reply('❀ No hay datos disponibles.');
+        return m.reply('❀ ¡El Registro de Deseos de Navidad está vacío! No hay datos disponibles.');
     }
     
     const users = JSON.parse(fs.readFileSync(usersPath, 'utf-8'));
     const characters = JSON.parse(fs.readFileSync(dbPath, 'utf-8'));
     
-    // Contar favoritos por personaje
+    // Contar favoritos por personaje (Contar Deseos)
     const favCounts = {};
     
     for (const [userId, userData] of Object.entries(users)) {
@@ -38,30 +38,30 @@ const handler = async (m, { conn }) => {
         }
     }
     
-    // Ordenar por cantidad de favoritos
+    // Ordenar por cantidad de deseos (favoritos)
     favChars.sort((a, b) => b.favCount - a.favCount);
     
     const topFavs = favChars.slice(0, 20);
     
     if (topFavs.length === 0) {
-        return m.reply('📭 *Aún no hay personajes favoritos.*');
+        return m.reply('📭 *¡Aún no hay Deseos de Navidad registrados!* Nadie ha marcado un favorito.');
     }
     
     let text = `
 ╭━━━━━━━━━━━━━━━━╮
-│  ⭐ *TOP FAVORITOS* ⭐
+│  ✨ *TOP 20 ADORNOS MÁS DESEADOS* ✨
 ╰━━━━━━━━━━━━━━━━╯
 
-📊 *Los personajes más queridos*
+📊 *Los Adornos Navideños más pedidos y queridos por la comunidad*
 
 `;
     
     topFavs.forEach((char, i) => {
         text += `
 ${i + 1}. *${char.name}*
-   📺 ${char.source}
-   ⭐ Favoritos: ${char.favCount}
-   💎 Valor: ${char.value}
+   📺 Origen: ${char.source}
+   ❤️ Deseos (Favoritos): ${char.favCount}
+   💎 Rareza: ${char.value}
 `;
     });
     
