@@ -11,18 +11,18 @@ async function generarBienvenida({ conn, userId, groupMetadata, chat }) {
         .replace(/{desc}/g, `${groupMetadata.desc || 'Sin descripción'}`)
 
     const caption = `
-╭━〔👑 *ASTA-BOT 👑 〕* 
- ┋ 
- ┋「 🎉 *¡BIENVENIDO/A! 👋 」* 
- ┋ 
- ┋ 「 *${groupMetadata.subject}* 」 
- ┋ 
- ╰━★ 「 ${username} 」 
- *╭━━━━━━ * 
- ┋❖ Ve la descripcion para mas info
- ┋❀ Espero que te la lleves bien * 
- ┋❖ Ahora somos ${groupSize} miembros
- ┗━━━━━━━━━━━━━━━┅ ⳹
+╭━〔🎅 ASTA-BOT NAVIDEÑO 🎄 〕─╮
+┋
+┋「 🎁 ¡BIENVENIDO/A! 🦌 」
+┋
+┋ 「 *🎄 ${groupMetadata.subject} 🎄* 」
+┋
+╰━★ 「 🎀 ${username} 🎀 」
+╭━━━━━━━━━━
+┋🎶 Revisa la descripción para sorpresas navideñas
+┋✨ Que la magia de Santa llene tu corazón
+┋🦌 Ahora somos ${groupSize} renos en el trineo
+┗━━━━━━━━━━━━━━━━━━━━━🎅
 `
     return { pp, caption, mentions: [userId] }
 }
@@ -37,18 +37,20 @@ async function generarDespedida({ conn, userId, groupMetadata, chat }) {
         .replace(/{desc}/g, `${groupMetadata.desc || 'Sin descripción'}`)
 
     const caption = `
-╭━〔👑 *ASTA-BOT 👑 〕* 
- ┋ 
- ┋「 😢 *¡ADIOS! 👋 」* 
- ┋ 
- ┋ 「 *${groupMetadata.subject}* 」 
- ┋ 
- ╰━★ 「 ${username} 」 
- *╭━━━━━━ * 
- ┋❖ Un miembro menos 😢
- ┋❀ Te extrañaremos en el grupo * 
- ┋❖ Ahora somos ${groupSize} miembros
- ┗━━━━━━━━━━━━━━━┅ ⳹
+╭━〔🎅 ASTA-BOT NAVIDEÑO 🎄 〕─╮
+┋
+┋「 ❄️ ¡ADIÓS! 🎁 」
+┋
+┋ 「 *🎄 ${groupMetadata.subject} 🎄* 」
+┋
+╰━★ 「 🎀 ${username} 🎀 」
+╭━━━━━━━━━━
+┋🎶 Un duende navideño menos...
+┋✨ Pero tu espíritu festivo siempre brillará aquí
+┋🦌 Ahora somos ${groupSize} en la fiesta
+┗━━━━━━━━━━━━━━━━━━━━━🎅
+
+¡Feliz Navidad y Próspero Año Nuevo! 🎄🌟
 `
     return { pp, caption, mentions: [userId] }
 }
