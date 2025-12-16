@@ -6,7 +6,7 @@ import path from 'path';
 
 const handler = async (m, { conn, text }) => {
     if (!text) {
-        return m.reply('❌ *Uso correcto:* /delwaifu <nombre del personaje>');
+        return m.reply('❌ *Uso correcto:* /delwaifu <nombre del Adorno Navideño>');
     }
     
     const userId = m.sender;
@@ -19,7 +19,7 @@ const handler = async (m, { conn, text }) => {
     }
     
     if (!users[userId] || !users[userId].harem || users[userId].harem.length === 0) {
-        return m.reply('❌ *No tienes personajes para eliminar.*');
+        return m.reply('❌ *Tu árbol está vacío.* No tienes Adornos Navideños para guardar.');
     }
     
     const charIndex = users[userId].harem.findIndex(c => 
@@ -27,7 +27,7 @@ const handler = async (m, { conn, text }) => {
     );
     
     if (charIndex === -1) {
-        return m.reply('❌ *No tienes ese personaje en tu harem.*');
+        return m.reply('❌ *Ese Adorno Navideño no está colgado en tu árbol (harem).*');
     }
     
     const char = users[userId].harem[charIndex];
@@ -38,7 +38,7 @@ const handler = async (m, { conn, text }) => {
     const dbCharIndex = characters.findIndex(c => c.id === char.id);
     if (dbCharIndex !== -1) {
         characters[dbCharIndex].user = null;
-        characters[dbCharIndex].status = 'Libre';
+        characters[dbCharIndex].status = 'Libre (Devuelto al Taller)';
         fs.writeFileSync(dbPath, JSON.stringify(characters, null, 2), 'utf-8');
     }
     
@@ -50,7 +50,7 @@ const handler = async (m, { conn, text }) => {
     
     fs.writeFileSync(usersPath, JSON.stringify(users, null, 2), 'utf-8');
     
-    m.reply(`✅ *${charName}* ha sido eliminado de tu harem.`);
+    m.reply(`✅ *${charName}* ha sido descolgado y guardado en la caja. (Eliminado de tu harem).`);
 };
 
 handler.help = ['deletewaifu', 'delwaifu', 'delchar'];
