@@ -202,7 +202,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
 
     // Comando play principal
     if (!text?.trim()) {
-        return conn.reply(m.chat, `❗ Ingresa el nombre de una canción o video.\n\n📝 Ejemplo: *${usedPrefix + command} Bad Bunny Tití Me Preguntó*`, m)
+        return conn.reply(m.chat, `🎄 ¡Falta el nombre de la canción o video!\n\n🎅 Ejemplo navideño: *${usedPrefix + command} Villancicos de Navidad*`, m)
     }
 
     await m.react('🔍')
@@ -221,19 +221,19 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
         const cleanTitle = title.substring(0, 100)
         const cleanAuthor = author.name.substring(0, 50)
 
-        const body = `╭━━━━━━━━━━━━━╮
-│ 🎵 *YouTube Play*
-╰━━━━━━━━━━━━━╯
+        const body = `╭━━━━━━❄️━━━━━━╮
+│ 🎄 *YouTube Navideño*
+╰━━━━━━❄️━━━━━━╯
 
-📹 *${cleanTitle}*
+🎁 *${cleanTitle}*
 
-👤 Canal: ${cleanAuthor}
-👁️ Vistas: ${vistas}
-⏱️ Duración: ${timestamp}
-📅 Publicado: ${ago}
+🎅 Canal: ${cleanAuthor}
+🌟 Vistas: ${vistas}
+⛄ Duración: ${timestamp}
+🕯️ Publicado: ${ago}
 🔗 Link: ${url}
 
-*Elige una opción:*`
+*Elige tu regalo musical:*`
 
         const buttons = [
             { buttonId: `${usedPrefix}ytmp3 ${url}`, buttonText: { displayText: '🎧 Audio' } },
@@ -247,7 +247,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
             await conn.sendMessage(m.chat, {
                 image: { url: thumbnail },
                 caption: body,
-                footer: `『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』⚡`,
+                footer: `『🎅 Asta-Bot Navideño 🎄』`,
                 buttons: buttons,
                 viewOnce: true,
                 headerType: 4
@@ -256,7 +256,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
         } catch (e1) {
             try {
                 // Método 2: sendButton
-                await conn.sendButton(m.chat, body, `『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』⚡`, thumbnail, buttons, m)
+                await conn.sendButton(m.chat, body, `『🎅 Asta-Bot Navideño 🎄』`, thumbnail, buttons, m)
 
             } catch (e2) {
                 try {
@@ -280,7 +280,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
 
 async function handleDownload(m, conn, text, command, usedPrefix) {
     if (!text?.trim()) {
-        return conn.reply(m.chat, `❌ Ingresa una URL o nombre.\n\n📝 Ejemplo: *${usedPrefix + command} Bad Bunny*`, m)
+        return conn.reply(m.chat, `🎅 ¡Falta la URL o nombre!\n\n🌟 Ejemplo: *${usedPrefix + command} Villancicos*`, m)
     }
 
     await m.react('⏳')
@@ -317,16 +317,16 @@ async function handleDownload(m, conn, text, command, usedPrefix) {
 
         // YTMP3 - Audio (como nota de voz)
         if (command === 'ytmp3') {
-            await conn.reply(m.chat, `╭━━━━━━━━━━━━━╮
-│ ⏳ *DESCARGANDO...*
-╰━━━━━━━━━━━━━╯
+            await conn.reply(m.chat, `╭━━━━━━🎁━━━━━━╮
+│ 🎄 *DESCARGANDO...*
+╰━━━━━━🎁━━━━━━╯
 
-🎵 *${title}*
+🎶 *${title}*
 
-⚡ _Procesando audio..._
-⌛ _Espera un momento..._
+🌟 _Preparando tu audio navideño..._
+⛄ _El elfo está trabajando..._
 
-*『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』*`, m)
+*『🎅 Asta-Bot Navideño 🎄』*`, m)
 
             const dl = await downloadWithFallback(url, 'audio')
             if (!dl.status) throw dl.error || '❌ Error al descargar'
@@ -338,8 +338,8 @@ async function handleDownload(m, conn, text, command, usedPrefix) {
                 key: { fromMe: false, participant: "0@s.whatsapp.net" },
                 message: {
                     documentMessage: {
-                        title: `🎵「 ${title} 」⚡`,
-                        fileName: `Descargas Asta-Bot`,
+                        title: `🎵「 ${title} 」🎄`,
+                        fileName: `Descargas Asta-Bot Navideño`,
                         jpegThumbnail: thumbResized
                     }
                 }
@@ -350,7 +350,7 @@ async function handleDownload(m, conn, text, command, usedPrefix) {
                     document: { url: dl.result.download },
                     mimetype: 'audio/mpeg',
                     fileName: `${title}.mp3`,
-                    caption: `🎵 *${title}*\n📦 ${formatSize(size)}\n👤 ${author}`,
+                    caption: `🎵 *${title}*\n📦 ${formatSize(size)}\n🎅 ${author}`,
                     jpegThumbnail: thumbResized
                 }, { quoted: fkontak })
             } else {
@@ -403,16 +403,16 @@ async function handleDownload(m, conn, text, command, usedPrefix) {
 
         // YTMP4 - Video
         if (command === 'ytmp4') {
-            await conn.reply(m.chat, `╭━━━━━━━━━━━━━╮
-│ ⏳ *DESCARGANDO...*
-╰━━━━━━━━━━━━━╯
+            await conn.reply(m.chat, `╭━━━━━━❄️━━━━━━╮
+│ 🎬 *DESCARGANDO...*
+╰━━━━━━❄️━━━━━━╯
 
-📹 *${title}*
+🎬 *${title}*
 
-⚡ _Procesando video..._
-🎬 _Puede tardar unos minutos..._
+🌟 _Preparando tu video navideño..._
+🎅 _Los renos están cargando..._
 
-*『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』*`, m)
+*『🎅 Asta-Bot Navideño 🎄』*`, m)
 
             const dl = await downloadWithFallback(url, 'video')
             if (!dl.status) throw dl.error || '❌ Error al descargar'
@@ -424,15 +424,15 @@ async function handleDownload(m, conn, text, command, usedPrefix) {
                 key: { fromMe: false, participant: "0@s.whatsapp.net" },
                 message: {
                     documentMessage: {
-                        title: `🎬「 ${title} 」⚡`,
-                        fileName: `Descargas Asta-Bot`,
+                        title: `🎬「 ${title} 」🎄`,
+                        fileName: `Descargas Asta-Bot Navideño`,
                         jpegThumbnail: thumbResized
                     }
                 }
             }
 
             if (size > 200 * 1024 * 1024) {
-                throw `📦 Video muy grande (${formatSize(size)}).\n\n💡 Usa: *${usedPrefix}ytmp4doc ${url}*`
+                throw `🎅 ¡Video muy grande (${formatSize(size)})!\n\n🌟 Usa el regalo especial: *${usedPrefix}ytmp4doc ${url}*`
             }
 
             await conn.sendMessage(m.chat, {
@@ -448,17 +448,17 @@ async function handleDownload(m, conn, text, command, usedPrefix) {
 
         // YTMP3DOC - Audio como documento
         if (command === 'ytmp3doc') {
-            await conn.reply(m.chat, `╭━━━━━━━━━━━━━╮
-│ 💿 *DESCARGANDO...*
-╰━━━━━━━━━━━━━╯
+            await conn.reply(m.chat, `╭━━━━━━🎄━━━━━━╮
+│ 📦 *DESCARGANDO...*
+╰━━━━━━🎄━━━━━━╯
 
 🎵 *${title}*
 
-📄 _Formato: Documento MP3_
-⚡ _Procesando audio..._
-⏳ _Aguarda un momento..._
+🎁 _Formato: Regalo MP3_
+🌟 _Embalando tu audio..._
+⛄ _Santa está revisando la lista..._
 
-*『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』*`, m)
+*『🎅 Asta-Bot Navideño 🎄』*`, m)
 
             const dl = await downloadWithFallback(url, 'audio')
             if (!dl.status) throw dl.error || '❌ Error al descargar'
@@ -469,8 +469,8 @@ async function handleDownload(m, conn, text, command, usedPrefix) {
                 key: { fromMe: false, participant: "0@s.whatsapp.net" },
                 message: {
                     documentMessage: {
-                        title: `👑「 ${title} 」📿`,
-                        fileName: `Descargas Asta-Bot`,
+                        title: `🎁「 ${title} 」🎅`,
+                        fileName: `Descargas Asta-Bot Navideño`,
                         jpegThumbnail: thumbResized
                     }
                 }
@@ -490,17 +490,17 @@ async function handleDownload(m, conn, text, command, usedPrefix) {
 
         // YTMP4DOC - Video como documento
         if (command === 'ytmp4doc') {
-            await conn.reply(m.chat, `╭━━━━━━━━━━━━━╮
+            await conn.reply(m.chat, `╭━━━━━━🌟━━━━━━╮
 │ 🎥 *DESCARGANDO...*
-╰━━━━━━━━━━━━━╯
+╰━━━━━━🌟━━━━━━╯
 
-📹 *${title}*
+🎬 *${title}*
 
-📄 _Formato: Documento MP4_
-⚡ _Procesando video..._
-⏳ _Archivos grandes pueden tardar..._
+🎁 _Formato: Regalo MP4_
+🌟 _Preparando tu video especial..._
+🎅 _Los duendes están trabajando..._
 
-*『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』*`, m)
+*『🎅 Asta-Bot Navideño 🎄』*`, m)
 
             const dl = await downloadWithFallback(url, 'video')
             if (!dl.status) throw dl.error || '❌ Error al descargar'
@@ -508,15 +508,15 @@ async function handleDownload(m, conn, text, command, usedPrefix) {
             const size = await getSize(dl.result.download)
 
             if (size > 600 * 1024 * 1024) {
-                throw `📦 Video muy grande (${formatSize(size)}).\n\n⚠️ El archivo supera los 600 MB, no puedo enviarlo.`
+                throw `🎅 ¡Demasiado grande (${formatSize(size)})!\n\n⛄ Ni Santa podría llevar este paquete (más de 600 MB).`
             }
 
             const fkontak = {
                 key: { fromMe: false, participant: "0@s.whatsapp.net" },
                 message: {
                     documentMessage: {
-                        title: `🎬「 ${title} 」⚡`,
-                        fileName: `Descargas Asta-Bot`,
+                        title: `🎬「 ${title} 」🎄`,
+                        fileName: `Descargas Asta-Bot Navideño`,
                         jpegThumbnail: thumbResized
                     }
                 }
