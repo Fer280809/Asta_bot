@@ -1,4 +1,3 @@
-
 let handler = async (m, { conn, usedPrefix }) => {
   let totalreg = Object.keys(global.db.data.users).length;
   let totalCommands = Object.values(global.plugins).filter(
@@ -7,12 +6,14 @@ let handler = async (m, { conn, usedPrefix }) => {
   let libreria = 'Baileys';
   let vs = '1.3';
   let userId = m.sender;
-  
-  let infoText = `╭─━━━━━━━━━━━━━━━─╮
-│ 🎅 ¡Hola @${userId.split('@')[0]}! 🎄
+
+  let infoText = `╭ *¡FELIZ NAVIDAD!* 🎄
+
+╭─━━━━━━━━━━━━━━━─╮
+│ 🎁 ¡Hola @${userId.split('@')[0]}! 🌟
 ╰─━━━━━━━━━━━━━━━─╯
 
-Me llamo『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』🎁
+Me llamo『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』🎅
 
 ╭─═⊰ 🎀 𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐂𝐈Ó𝐍 𝐍𝐀𝐕𝐈𝐃𝐄Ñ𝐀
 │ 🤖 Estado: ${(conn.user.jid == global.conn.user.jid ? '🟢 RENO MÁGICO' : '🔗 DUENDE AYUDANTE')}
@@ -30,8 +31,7 @@ Me llamo『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』🎁
 *🤖 PON #code O #qr PARA HACERTE SUBBOT DEL ASTA-BOT-MD 📡*
 
 
-
-┏━━━━━━━━━━━━━━┓
+━━━━━━━━━━━━━━┓
 *💰 ECONOMY*  
 ┗━━━━━━━━━━━━━━┛
 ╰┈➤ ✿ Comandos de *Economía* para ganar dinero.  
@@ -481,18 +481,15 @@ Me llamo『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』🎁
 ╰┈➤ 🎥 *#xnxx / #xnxxdl* + [Link]
         ╰┈➤ Descargar un video de Xnxx  
 ╰┈➤ 💦 *#mamada*  
-        ╰┈➤ manda un video de mamando `;
+        ╰┈➤ manda un video de mamando`;
 
   let buttons = [
       { buttonId: usedPrefix + 'code', buttonText: { displayText: '🤖 Sup-Bot' }, type: 1 }
   ];
-  
-  // URL de la imagen o video (cambia por tu propia URL)
-  let mediaUrl = 'https://files.catbox.moe/lajq7h.jpg'; // Cambia esto por tu imagen
-  // let mediaUrl = 'https://example.com/video.mp4'; // O usa un video
-  
+
+  let mediaUrl = 'https://files.catbox.moe/lajq7h.jpg';
+
   try {
-    // Intenta enviar con imagen
     await conn.sendMessage(m.chat, {
       image: { url: mediaUrl },
       caption: infoText,
@@ -502,7 +499,6 @@ Me llamo『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』🎁
       mentions: [userId]
     }, { quoted: m });
   } catch {
-    // Si falla, envía sin imagen (método alternativo)
     let buttonMessage = {
       text: infoText,
       footer: "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』⚡",
