@@ -6,18 +6,18 @@ import path from 'path';
 
 const handler = async (m, { conn, text }) => {
     if (!text || !text.includes('/')) {
-        return m.reply('❌ *Uso correcto:* /trade <Tu personaje> / <Personaje del otro>\n\n*Ejemplo:* /trade Miku / Asuna\n\n*Nota:* Cita el mensaje del usuario con quien quieres intercambiar.');
+        return m.reply('❌ *Uso correcto (Intercambio de Adornos):* /trade <Tu Adorno> / <Adorno del otro>\n\n*Ejemplo:* /trade Rodolfo / Miku\n\n*Nota:* Cita el mensaje del Ayudante (usuario) con quien quieres intercambiar.');
     }
     
     if (!m.quoted) {
-        return m.reply('❌ *Debes citar el mensaje del usuario con quien quieres intercambiar.*');
+        return m.reply('❌ *Debes citar el mensaje del usuario con quien quieres intercambiar Adornos.*');
     }
     
     const user1 = m.sender;
     const user2 = m.quoted.sender;
     
     if (user1 === user2) {
-        return m.reply('❌ *No puedes intercambiar contigo mismo.*');
+        return m.reply('❌ *¡No puedes intercambiar Adornos contigo mismo!*');
     }
     
     const [char1Name, char2Name] = text.split('/').map(s => s.trim());
@@ -30,11 +30,11 @@ const handler = async (m, { conn, text }) => {
     }
     
     if (!users[user1] || !users[user1].harem || users[user1].harem.length === 0) {
-        return m.reply('❌ *No tienes personajes para intercambiar.*');
+        return m.reply('❌ *Tu Colección de Adornos está vacía. No tienes nada que intercambiar.*');
     }
     
     if (!users[user2] || !users[user2].harem || users[user2].harem.length === 0) {
-        return m.reply('❌ *El otro usuario no tiene personajes.*');
+        return m.reply('❌ *El otro Ayudante no tiene Adornos en su Colección.*');
     }
     
     // Buscar personajes
@@ -47,17 +47,17 @@ const handler = async (m, { conn, text }) => {
     );
     
     if (char1Index === -1) {
-        return m.reply(`❌ *No tienes el personaje "${char1Name}"*`);
+        return m.reply(`❌ *No tienes el Adorno Navideño "${char1Name}"*`);
     }
     
     if (char2Index === -1) {
-        return m.reply(`❌ *El otro usuario no tiene el personaje "${char2Name}"*`);
+        return m.reply(`❌ *El otro Ayudante no tiene el Adorno Navideño "${char2Name}"*`);
     }
     
     const char1 = users[user1].harem[char1Index];
     const char2 = users[user2].harem[char2Index];
     
-    // Guardar solicitud de intercambio
+    // Guardar solicitud de intercambio (Lógica intacta)
     global.tradeRequests = global.tradeRequests || {};
     const tradeId = `${user1}_${user2}_${Date.now()}`;
     
@@ -77,30 +77,30 @@ const handler = async (m, { conn, text }) => {
     
     const tradeMsg = `
 ╭━━━━━━━━━━━━━━━━╮
-│  🔄 *SOLICITUD DE INTERCAMBIO* 🔄
+│  🎄 *SOLICITUD DE INTERCAMBIO FESTIVO* 🎁
 ╰━━━━━━━━━━━━━━━━╯
 
-*${user1Name}* quiere intercambiar:
+*${user1Name}* quiere intercambiar el Adorno:
 ┌─⊷ *${char1.name}*
-│ 📺 ${char1.source}
-│ 💎 Valor: ${char1.value}
+│ 📺 Origen: ${char1.source}
+│ 💎 Rareza: ${char1.value}
 └───────────────
 
-Por el personaje de *${user2Name}*:
+Por el Adorno de *${user2Name}*:
 ┌─⊷ *${char2.name}*
-│ 📺 ${char2.source}
-│ 💎 Valor: ${char2.value}
+│ 📺 Origen: ${char2.source}
+│ 💎 Rareza: ${char2.value}
 └───────────────
 
 *@${user2.split('@')[0]}* responde con:
-✅ */accepttrade* para aceptar
-❌ */rejecttrade* para rechazar
+✅ */accepttrade* para aceptar el intercambio de regalos
+❌ */rejecttrade* para rechazar la oferta
 
-⏰ *Expira en 5 minutos*`;
+⏰ *La oferta de intercambio expira en 5 minutos*`;
 
     await conn.sendMessage(m.chat, { text: tradeMsg, mentions: [user2] }, { quoted: m });
     
-    // Limpiar después de 5 minutos
+    // Limpiar después de 5 minutos (Lógica intacta)
     setTimeout(() => {
         if (global.tradeRequests && global.tradeRequests[tradeId]) {
             delete global.tradeRequests[tradeId];
