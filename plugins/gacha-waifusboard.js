@@ -8,12 +8,12 @@ const handler = async (m, { conn, args }) => {
     const dbPath = path.join(process.cwd(), 'lib', 'characters.json');
     
     if (!fs.existsSync(dbPath)) {
-        return m.reply('❀ No hay personajes disponibles.');
+        return m.reply('❀ ¡El Registro de Adornos está vacío! No hay Adornos para clasificar.');
     }
     
     const characters = JSON.parse(fs.readFileSync(dbPath, 'utf-8'));
     
-    // Ordenar por valor
+    // Ordenar por valor (Lógica intacta)
     const sortedChars = characters.sort((a, b) => parseInt(b.value) - parseInt(a.value));
     
     const limit = parseInt(args[0]) || 20;
@@ -21,19 +21,19 @@ const handler = async (m, { conn, args }) => {
     
     let text = `
 ╭━━━━━━━━━━━━━━━━╮
-│  🏆 *TOP ${limit} PERSONAJES* 🏆
+│  🌟 *TOP ${limit} ADORNOS NAVIDEÑOS* 🏆
 ╰━━━━━━━━━━━━━━━━╯
 
-📊 *Por valor más alto*
+📊 *Clasificados por Rareza (Valor más alto)*
 
 `;
     
     topChars.forEach((char, i) => {
         text += `
 ${i + 1}. *${char.name}*
-   📺 ${char.source}
-   💎 Valor: ${char.value}
-   🗳️ Votos: ${char.votes || 0}
+   📺 Origen: ${char.source}
+   💎 Rareza: ${char.value}
+   🗳️ Deseos Registrados: ${char.votes || 0}
 `;
     });
     
