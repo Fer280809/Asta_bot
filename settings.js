@@ -37,8 +37,8 @@ global.dev = "Powered By 𝕱𝖊𝖗𝖓𝖆𝖓𝖉𝖔"
 global.author = "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』 • Powered By 𝕱𝖊𝖗𝖓𝖆𝖓𝖉𝖔"
 global.etiqueta = "𝕱𝖊𝖗𝖓𝖆𝖓𝖉𝖔"
 global.currency = "¥enes"
-global.banner = "https://files.catbox.moe/lajq7h.jpg"
-global.icono = "https://files.catbox.moe/lajq7h.jpg"
+global.banner = "https://files.catbox.moe/nqvhaq.jpg"
+global.icono = "https://files.catbox.moe/nqvhaq.jpg"
 global.catalogo = fs.readFileSync('./lib/catalogo.jpg')
 
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
@@ -46,7 +46,7 @@ global.catalogo = fs.readFileSync('./lib/catalogo.jpg')
 global.group = "https://chat.whatsapp.com/BfCKeP10yZZ9ancsGy1Eh9"
 global.community = "https://chat.whatsapp.com/KKwDZn5vDAE6MhZFAcVQeO"
 global.channel = "https://whatsapp.com/channel/0029Vb64nWqLo4hb8cuxe23n"
-global.github = "https://github.com/Fer280809/Asta-bot"
+global.github = "https://github.com/Fer280809/Asta_bot"
 global.gmail = "fer2809fl@gmail.com"
 global.ch = {
 ch1: "120363399175402285@newsletter"
