@@ -8,23 +8,23 @@ let totalCommands = Object.values(global.plugins).filter((v) => v.help && v.tags
     
 let txt = `̮
 ╭─━━━━━━━━━━━━━━━─╮
-│ 🎭 ¡Hola @${userId.split('@')[0]}! 💖
+│ 🎄 ¡Feliz Navidad @${userId.split('@')[0]}! 🎅
 ╰─━━━━━━━━━━━━━━━─╯
 
 
-╭─═⊰ 📡 𝐄𝐒𝐓𝐀𝐃𝐎 𝐀𝐂𝐓𝐈𝐕𝐎
-│ 🤖 Estado: ${(conn.user.jid == global.conn.user.jid ? '🟢 PREMIUM' : '🔗 prem-ʙᴏᴛ')}
-│ 👥 Users: 『${totalreg.toLocaleString()}』🔥
-│ 🛠️ Comandos: 『${totalCommands}』⚙️
+╭─═⊰ 🎄 𝐄𝐒𝐓𝐀𝐃𝐎 𝐍𝐀𝐕𝐈𝐃𝐄Ñ𝐎
+│ 🎅 Estado: ${(conn.user.jid == global.conn.user.jid ? '🟢 MODO NAVIDAD' : '🔗 ELFOS ACTIVOS')}
+│ 👥 Usuarios: 『${totalreg.toLocaleString()}』🔥
+│ 🎁 Comandos: 『${totalCommands}』✨
 │ 📅 Librería » ${libreria}
-│ 🌍 Servidor: México 🇲🇽
-│ 📡 Ping: Online ✅
-│ 💾 Version: ${vs}
-│ 🔒 Modo: ${(conn.user.jid == global.conn.user.jid ? '🔐 PRIVADO' : '🔓 PUBLICO')}
+│ 🌍 Servidor: Polo Norte 🎅
+│ 📡 Ping: Alegría Navideña ✅
+│ 💾 Versión: ${vs}
+│ 🔒 Modo: ${(conn.user.jid == global.conn.user.jid ? '🔐 PRIVADO' : '🔓 PÚBLICO')}
 ╰───────────────╯
 
 
-*🤖 PON #code O #qr PARA HACERTE SUBBOT DEL ASTA-BOT-MD 📡*
+*🤖 PON #code O #qr PARA HACERTE SUBBOT DEL ASTA-BOT-MD NAVIDEÑO 📡*
 
 
 
