@@ -1,35 +1,121 @@
-
+// main-menu.js - Sistema de temas festivos (VERSIÓN FINAL)
 let handler = async (m, { conn, usedPrefix }) => {
   let totalreg = Object.keys(global.db.data.users).length;
   let totalCommands = Object.values(global.plugins).filter(
     (v) => v.help && v.tags
   ).length;
-  let libreria = 'Baileys';
-  let vs = '1.3';
   let userId = m.sender;
   
-  let infoText = `╭─━━━━━━━━━━━━━━━─╮
-│ 🎭 ¡Hola @${userId.split('@')[0]}! 💖
-╰─━━━━━━━━━━━━━━━─╯
+  // ==============================================
+  // SISTEMA DE TEMAS FESTIVOS
+  // ==============================================
+  
+  function getFestiveTheme() {
+    const now = new Date();
+    const month = now.getMonth() + 1;
+    const day = now.getDate();
+    
+    // Navidad
+    if (month === 12 && day >= 1 && day <= 26) {
+      return {
+        name: 'navidad',
+        icon: '🎄',
+        bgEmoji: '❄️',
+        title: '𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 🎄',
+        greeting: '🎅 ¡Feliz Navidad!',
+        specialText: '🎁 *Temporada Navideña* 🎁',
+        colors: { primary: '🎄', secondary: '❄️', accent: '🎅', gift: '🎁', star: '⭐' },
+        banner: 'https://files.catbox.moe/lajq7h.jpg',
+        footerEmoji: '🦌'
+      };
+    }
+    
+    // Año Nuevo
+    if ((month === 12 && day >= 27) || (month === 1 && day <= 5)) {
+      return {
+        name: 'año_nuevo',
+        icon: '🎆',
+        bgEmoji: '✨',
+        title: '𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 🎆',
+        greeting: '✨ ¡Feliz Año Nuevo!',
+        specialText: '🥂 *Próspero Año Nuevo* 🥂',
+        colors: { primary: '🎆', secondary: '✨', accent: '🥂', gift: '🎇', star: '🌟' },
+        banner: 'https://files.catbox.moe/lajq7h.jpg',
+        footerEmoji: '⏳'
+      };
+    }
+    
+    // San Valentín
+    if (month === 2 && day >= 10 && day <= 15) {
+      return {
+        name: 'san_valentin',
+        icon: '❤️',
+        bgEmoji: '💘',
+        title: '𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 ❤️',
+        greeting: '💝 ¡Feliz San Valentín!',
+        specialText: '💞 *Día del Amor* 💞',
+        colors: { primary: '❤️', secondary: '💖', accent: '💝', gift: '💌', star: '💫' },
+        banner: 'https://files.catbox.moe/lajq7h.jpg',
+        footerEmoji: '💑'
+      };
+    }
+    
+    // Halloween
+    if (month === 10 && day >= 25 && day <= 31) {
+      return {
+        name: 'halloween',
+        icon: '🎃',
+        bgEmoji: '👻',
+        title: '𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 🎃',
+        greeting: '👻 ¡Feliz Halloween!',
+        specialText: '🦇 *Noche de Brujas* 🦇',
+        colors: { primary: '🎃', secondary: '🕷️', accent: '👻', gift: '🍬', star: '🕸️' },
+        banner: 'https://files.catbox.moe/lajq7h.jpg',
+        footerEmoji: '🦇'
+      };
+    }
+    
+    // Tema normal
+    return {
+      name: 'normal',
+      icon: '⚡',
+      bgEmoji: '✨',
+      title: '𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 ⚡',
+      greeting: '🎭 ¡Hola!',
+      specialText: null,
+      colors: { primary: '⚡', secondary: '✨', accent: '🎭', gift: '💎', star: '⭐' },
+      banner: 'https://files.catbox.moe/lajq7h.jpg',
+      footerEmoji: '🤖'
+    };
+  }
+  
+  const theme = getFestiveTheme();
+  
+  // ==============================================
+  // CONSTRUCCIÓN DEL TEXTO FINAL
+  // ==============================================
+  
+  let header = `
+${theme.bgEmoji.repeat(3)} ${theme.title} ${theme.bgEmoji.repeat(3)}
 
-Me llamo『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』⚡
-
-╭─═⊰ 📡 𝐄𝐒𝐓𝐀𝐃𝐎 𝐀𝐂𝐓𝐈𝐕𝐎
-│ 🤖 Estado: ${(conn.user.jid == global.conn.user.jid ? '🟢 PREMIUM' : '🔗 prem-ʙᴏᴛ')}
-│ 👥 Users: 『${totalreg.toLocaleString()}』🔥
-│ 🛠️ Comandos: 『${totalCommands}』⚙️
-│ 📅 Librería » ${libreria}
-│ 🌍 Servidor: México 🇲🇽
-│ 📡 Ping: Online ✅
-│ 💾 Version: ${vs}
-│ 🔒 Modo: ${(conn.user.jid == global.conn.user.jid ? '🔐 PRIVADO' : '🔓 PUBLICO')}
-╰───────────────╯
-
-
-
-*🤖 PON #code O #qr PARA HACERTE SUBBOT DEL ASTA-BOT-MD 📡*
-
-
+${theme.greeting} @${userId.split('@')[0]}! ${theme.colors.accent}
+`;
+  
+  if (theme.specialText) {
+    header += `\n${theme.specialText}\n`;
+  }
+  
+  let statusInfo = `
+${theme.colors.star} *ESTADO* ${theme.colors.star}
+${theme.colors.primary} Estado: ${(conn.user.jid == global.conn.user.jid ? '🟢 PREMIUM' : '🔗 SUB-BOT')}
+${theme.colors.secondary} Usuarios: ${totalreg.toLocaleString()}
+${theme.colors.accent} Comandos: ${totalCommands}
+${theme.colors.gift} Versión: 1.3
+${theme.colors.star} Tema: ${theme.name.toUpperCase()} ${theme.icon}
+`;
+  
+  let commandsSection = `
+${theme.icon} *MENÚ PRINCIPAL* ${theme.icon}
 
 ┏━━━━━━━━━━━━━━┓
 *💰 ECONOMY*  
@@ -482,30 +568,40 @@ Me llamo『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』⚡
         ╰┈➤ Descargar un video de Xnxx  
 ╰┈➤ 💦 *#mamada*  
         ╰┈➤ manda un video de mamando `;
-
-  let buttons = [
-      { buttonId: usedPrefix + 'code', buttonText: { displayText: '🤖 Sup-Bot' }, type: 1 }
-  ];
   
-  // URL de la imagen o video (cambia por tu propia URL)
-  let mediaUrl = 'https://files.catbox.moe/lajq7h.jpg'; // Cambia esto por tu imagen
-  // let mediaUrl = 'https://example.com/video.mp4'; // O usa un video
+  let infoText = header + statusInfo + commandsSection;
+
+  // ==============================================
+  // BOTONES
+  // ==============================================
+  
+  let buttons = [
+    { 
+      buttonId: usedPrefix + 'code', 
+      buttonText: { 
+        displayText: `${theme.colors.primary} Sub-Bot` 
+      }, 
+      type: 1 
+    }
+  ];
+
+  // ==============================================
+  // ENVÍO
+  // ==============================================
   
   try {
-    // Intenta enviar con imagen
     await conn.sendMessage(m.chat, {
-      image: { url: mediaUrl },
+      image: { url: theme.banner },
       caption: infoText,
-      footer: "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』⚡",
+      footer: `${theme.title} • ${theme.name.toUpperCase()}`,
       buttons: buttons,
       headerType: 4,
       mentions: [userId]
     }, { quoted: m });
   } catch {
-    // Si falla, envía sin imagen (método alternativo)
     let buttonMessage = {
       text: infoText,
-      footer: "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』⚡",
+      footer: `${theme.title} • ${theme.name.toUpperCase()}`,
       buttons: buttons,
       headerType: 1,
       mentions: [userId]
@@ -513,6 +609,10 @@ Me llamo『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』⚡
     await conn.sendMessage(m.chat, buttonMessage, { quoted: m });
   }
 };
+
+// ==============================================
+// CONFIGURACIÓN
+// ==============================================
 
 handler.help = ['menu2'];
 handler.tags = ['main'];
