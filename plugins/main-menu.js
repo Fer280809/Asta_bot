@@ -574,7 +574,7 @@ ${theme.icon} *MENÚ PRINCIPAL* ${theme.icon}
   // ==============================================
   // BOTONES
   // ==============================================
-  
+
   let buttons = [
     { 
       buttonId: usedPrefix + 'code', 
@@ -584,9 +584,13 @@ ${theme.icon} *MENÚ PRINCIPAL* ${theme.icon}
       type: 1 
     }
   ];
-// let buttons = [
-// { buttonId: usedPrefix + 'code', buttonText: { displayText: '🤖 Sup-Bot' }, type: 1 }
-// ];
+  //==============================================
+  // BOTONES ORIGINALES SIN CAMBIOS
+  //==============================================
+  // let buttons = [
+  // { buttonId: usedPrefix + 'code', buttonText: { displayText: '🤖 Sup-Bot' }, type: 1 }
+  // ];
+  
   // ==============================================
   // ENVÍO
   // ==============================================
