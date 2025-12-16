@@ -8,43 +8,45 @@ let handler = async (m, { conn, usedPrefix }) => {
   let userId = m.sender;
   
   let infoText = `╭─━━━━━━━━━━━━━━━─╮
-│ 🎭 ¡Hola @${userId.split('@')[0]}! 💖
+│ 🎄 ¡Feliz Navidad @${userId.split('@')[0]}! 🎅
 ╰─━━━━━━━━━━━━━━━─╯
 
-Me llamo『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』⚡
+Me llamo『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 𝓝𝓪𝓿𝓲𝓭𝓪𝓭 』🎁
 
-╭─═⊰ 📡 𝐄𝐒𝐓𝐀𝐃𝐎 𝐀𝐂𝐓𝐈𝐕𝐎
-│ 🤖 Estado: ${(conn.user.jid == global.conn.user.jid ? '🟢 PREMIUM' : '🔗 prem-ʙᴏᴛ')}
-│ 👥 Users: 『${totalreg.toLocaleString()}』🔥
-│ 🛠️ Comandos: 『${totalCommands}』⚙️
+╭─═⊰ 🎄 𝐄𝐒𝐓𝐀𝐃𝐎 𝐍𝐀𝐕𝐈𝐃𝐄Ñ𝐎
+│ 🎅 Estado: ${(conn.user.jid == global.conn.user.jid ? '🟢 MODO NAVIDAD' : '🔗 ELFOS ACTIVOS')}
+│ 👥 Usuarios: 『${totalreg.toLocaleString()}』🔥
+│ 🎁 Comandos: 『${totalCommands}』✨
 │ 📅 Librería » ${libreria}
-│ 🌍 Servidor: México 🇲🇽
-│ 📡 Ping: Online ✅
-│ 💾 Version: ${vs}
-│ 🔒 Modo: ${(conn.user.jid == global.conn.user.jid ? '🔐 PRIVADO' : '🔓 PUBLICO')}
+│ 🌍 Servidor: Polo Norte 🎅
+│ 📡 Ping: Alegría Navideña ✅
+│ 💾 Versión: ${vs}
+│ 🔒 Modo: ${(conn.user.jid == global.conn.user.jid ? '🔐 PRIVADO' : '🔓 PÚBLICO')}
 ╰───────────────╯
 
-*Creador 𝕱𝖊𝖗𝖓𝖆𝖓𝖉𝖔 👑*
+*Creador 𝕱𝖊𝖗𝖓𝖆𝖓𝖉𝖔 👑 con espíritu navideño 🎄*
 Selecciona una opción:`;
 
   let buttons = [
-    { buttonId: usedPrefix + 'menu2', buttonText: { displayText: '📜 Menú' }, type: 1 },
-    { buttonId: usedPrefix + 'nuevos', buttonText: { displayText: '📌 Actualizaciones' }, type: 1 },
-    { buttonId: usedPrefix + 'code', buttonText: { displayText: '🤖 Sup-Bot' }, type: 1 },
-    { buttonId: usedPrefix + 'creador', buttonText: { displayText: '👑 CREADOR' }, type: 1 },
-    { buttonId: usedPrefix + 'menu+', buttonText: { displayText: '➕ Menu +18' }, type: 1 }
+    { buttonId: usedPrefix + 'menu2', buttonText: { displayText: '🎄 Menú Navideño' }, type: 1 },
+    { buttonId: usedPrefix + 'nuevos', buttonText: { displayText: '🎁 Novedades' }, type: 1 },
+    { buttonId: usedPrefix + 'code', buttonText: { displayText: '🤖 Ayuda Santa' }, type: 1 },
+    { buttonId: usedPrefix + 'creador', buttonText: { displayText: '🎅 CREADOR' }, type: 1 },
+    { buttonId: usedPrefix + 'menu+', buttonText: { displayText: '🍪 Galletas +' }, type: 1 }
   ];
   
-  // URL de la imagen o video (cambia por tu propia URL)
-  let mediaUrl = 'https://files.catbox.moe/lajq7h.jpg'; // Cambia esto por tu imagen
-  // let mediaUrl = 'https://example.com/video.mp4'; // O usa un video
+  // URL de imagen navideña (recomiendo cambiarla por una imagen navideña)
+  let mediaUrl = 'https://files.catbox.moe/lajq7h.jpg'; // Cambia esto por una imagen navideña
+  // Sugerencias de imágenes navideñas gratuitas:
+  // https://images.unsplash.com/photo-1547716750-5c2e2c2b9d81 (Navidad)
+  // https://images.unsplash.com/photo-1512389142860-9c449e58a543 (Árbol navideño)
   
   try {
     // Intenta enviar con imagen
     await conn.sendMessage(m.chat, {
       image: { url: mediaUrl },
       caption: infoText,
-      footer: "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』⚡",
+      footer: "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 𝓝𝓪𝓿𝓲𝓭𝓪𝓭』🎄 ¡Felices Fiestas!",
       buttons: buttons,
       headerType: 4,
       mentions: [userId]
@@ -53,7 +55,7 @@ Selecciona una opción:`;
     // Si falla, envía sin imagen (método alternativo)
     let buttonMessage = {
       text: infoText,
-      footer: "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』⚡",
+      footer: "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 𝓝𝓪𝓿𝓲𝓭𝓪𝓭』🎄 ¡Que la magia te acompañe!",
       buttons: buttons,
       headerType: 1,
       mentions: [userId]
