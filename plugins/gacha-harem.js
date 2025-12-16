@@ -23,7 +23,7 @@ const handler = async (m, { conn, args }) => {
     }
     
     if (!users[targetUser] || !users[targetUser].harem || users[targetUser].harem.length === 0) {
-        return m.reply('📭 *Este usuario no tiene personajes reclamados.*');
+        return m.reply('📭 *Este usuario no ha colgado ningún Adorno Navideño en su árbol.*');
     }
     
     const userName = await conn.getName(targetUser);
@@ -35,28 +35,29 @@ const handler = async (m, { conn, args }) => {
     
     let text = `
 ╭━━━━━━━━━━━━━━━━╮
-│  💖 *HAREM DE ${userName.toUpperCase()}* 💖
+│  🎄 *COLECCIÓN FESTIVA DE ${userName.toUpperCase()}* 🎁
 ╰━━━━━━━━━━━━━━━━╯
 
-📊 *Total de personajes:* ${users[targetUser].harem.length}
+📊 *Total de Adornos:* ${users[targetUser].harem.length}
 📄 *Página ${page} de ${totalPages}*
 
 `;
     
     users[targetUser].harem.slice(start, end).forEach((char, i) => {
         const isFav = users[targetUser].favorites.includes(char.id);
-        const forSale = char.forSale ? `🏪 En venta: $${char.salePrice}` : '';
+        // Cambiamos el texto "En venta" y "Valor"
+        const forSale = char.forSale ? `🏪 En Tienda: $${char.salePrice} Monedas de Jengibre` : '';
         text += `
-┌─⊷ ${start + i + 1}. *${char.name}* ${isFav ? '⭐' : ''}
-│ 📺 ${char.source}
-│ 💎 Valor: ${char.value}
+┌─⊷ ${start + i + 1}. *${char.name}* ${isFav ? '🌟 FAVORITO' : ''}
+│ 📺 Origen: ${char.source}
+│ 💎 Rareza (Valor): ${char.value}
 ${forSale ? `│ ${forSale}` : ''}
 └───────────────
 `;
     });
     
     if (totalPages > 1) {
-        text += `\n💡 *Usa el comando con el número de página para ver más.*`;
+        text += `\n💡 *Usa el comando con el número de página para ver el resto de los Adornos.*`;
     }
     
     m.reply(text);
