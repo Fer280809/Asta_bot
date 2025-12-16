@@ -8,7 +8,7 @@ const handler = async (m, { conn }) => {
     const userId = m.sender;
     
     if (!global.tradeRequests) {
-        return m.reply('❌ *No hay solicitudes de intercambio pendientes.*');
+        return m.reply('❌ *¡El trineo está vacío! No hay intercambios de regalos pendientes.*');
     }
     
     // Buscar solicitud pendiente para este usuario
@@ -24,7 +24,7 @@ const handler = async (m, { conn }) => {
     }
     
     if (!trade) {
-        return m.reply('❌ *No tienes solicitudes de intercambio pendientes o han expirado.*');
+        return m.reply('❌ *¡Vaya! No tienes solicitudes de intercambio de regalos pendientes o ya se han derretido (expirado).*');
     }
     
     const usersPath = path.join(process.cwd(), 'lib', 'gacha_users.json');
@@ -35,7 +35,7 @@ const handler = async (m, { conn }) => {
     const char1 = users[trade.user1].harem[trade.char1Index];
     const char2 = users[trade.user2].harem[trade.char2Index];
     
-    // Intercambiar personajes
+    // Intercambiar personajes (¡Intercambiar regalos!)
     users[trade.user1].harem[trade.char1Index] = { ...char2, claimedAt: Date.now() };
     users[trade.user2].harem[trade.char2Index] = { ...char1, claimedAt: Date.now() };
     
@@ -53,11 +53,11 @@ const handler = async (m, { conn }) => {
     const user1Name = await conn.getName(trade.user1);
     const user2Name = await conn.getName(trade.user2);
     
-    m.reply(`✅ *¡Intercambio exitoso!*\n\n*${user1Name}* recibió a *${char2.name}*\n*${user2Name}* recibió a *${char1.name}*`);
+    m.reply(`🎁 *¡Éxito Navideño! Intercambio de Regalos completado.*\n\n*${user1Name}* desempacó a *${char2.name}*\n*${user2Name}* desempacó a *${char1.name}*`);
     
     // Notificar al otro usuario
     conn.sendMessage(trade.user1, { 
-        text: `✅ *¡Intercambio aceptado!*\n\n*${user2Name}* aceptó el intercambio. Ahora tienes a *${char2.name}*` 
+        text: `✅ *¡Tu Oferta de Regalo fue aceptada!*\n\n*${user2Name}* aceptó el intercambio. ¡Ahora tienes a *${char2.name}* en tu Colección Navideña!` 
     });
     
     // Eliminar solicitud
