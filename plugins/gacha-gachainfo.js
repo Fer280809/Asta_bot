@@ -17,7 +17,8 @@ const handler = async (m, { conn }) => {
         users[userId] = {
             harem: [],
             favorites: [],
-            claimMessage: '✧ {user} ha reclamado a {character}!',
+            // Usar el mensaje navideño predeterminado
+            claimMessage: '✨ *¡Feliz Navidad!* {user} ha añadido a {character} a su *Colección de Adornos Festivos* (Harem). ¡Qué gran regalo!', 
             lastRoll: 0,
             votes: {},
             gachaCoins: 1000
@@ -39,24 +40,24 @@ const handler = async (m, { conn }) => {
     
     const text = `
 ╭━━━━━━━━━━━━━━━━╮
-│  📊 *INFO DE ${userName.toUpperCase()}* 📊
+│  🎅 *FICHA DE ${userName.toUpperCase()}* 🎁
 ╰━━━━━━━━━━━━━━━━╯
 
-┌─⊷ *ESTADÍSTICAS*
-│ 👤 *Usuario:* ${userName}
-│ 💖 *Personajes:* ${user.harem.length}
-│ ⭐ *Favoritos:* ${user.favorites.length}
-│ 💰 *GachaCoins:* ${user.gachaCoins}
-│ 🏪 *En venta:* ${forSale}
-│ 💎 *Valor total:* ${totalValue}
+┌─⊷ *INVENTARIO FESTIVO*
+│ 👤 *Ayudante:* ${userName}
+│ 💖 *Adornos (Colección):* ${user.harem.length}
+│ ⭐ *Favoritos de Santa:* ${user.favorites.length}
+│ 💰 *Monedas de Jengibre:* ${user.gachaCoins}
+│ 🏪 *Puestos en Venta:* ${forSale}
+│ 💎 *Valor Total del Tesoro:* ${totalValue}
 └───────────────
 
-┌─⊷ *ACTIVIDAD*
-│ 🎲 *Último roll:* ${lastRollTime}
-│ 🗳️ *Votos dados:* ${Object.keys(user.votes).length}
+┌─⊷ *ACTIVIDAD NAVIDEÑA*
+│ 🎲 *Última Tirada de Regalo:* ${lastRollTime}
+│ 🗳️ *Deseos Registrados (Votos):* ${Object.keys(user.votes).length}
 └───────────────
 
-💬 *Mensaje de claim:* ${user.claimMessage}`;
+💬 *Anuncio de Regalo (Claim):* ${user.claimMessage}`;
 
     m.reply(text);
 };
