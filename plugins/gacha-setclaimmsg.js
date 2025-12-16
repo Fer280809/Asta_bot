@@ -6,7 +6,7 @@ import path from 'path';
 
 const handler = async (m, { conn, text }) => {
     if (!text) {
-        return m.reply('❌ *Uso correcto:* /setclaim <mensaje>\n\n*Variables disponibles:*\n{user} - Nombre del usuario\n{character} - Nombre del personaje\n\n*Ejemplo:* /setclaim 🌸 {user} ha conquistado a {character}! 🌸');
+        return m.reply('❌ *Uso correcto:* /setclaim <mensaje>\n\n*Variables disponibles para tu Anuncio de Regalo:*\n{user} - Nombre del Ayudante (usuario)\n{character} - Nombre del Adorno Navideño (personaje)\n\n*Ejemplo:* /setclaim 🔔 ¡{user} ha colgado al Adorno {character} en el pino! 🔔');
     }
     
     const userId = m.sender;
@@ -21,7 +21,8 @@ const handler = async (m, { conn, text }) => {
         users[userId] = {
             harem: [],
             favorites: [],
-            claimMessage: '✧ {user} ha reclamado a {character}!',
+            // Usar el mensaje navideño predeterminado
+            claimMessage: '✨ *¡Feliz Navidad!* {user} ha añadido a {character} a su *Colección de Adornos Festivos* (Harem). ¡Qué gran regalo!', 
             lastRoll: 0,
             votes: {},
             gachaCoins: 1000
@@ -36,7 +37,7 @@ const handler = async (m, { conn, text }) => {
         .replace('{user}', userName)
         .replace('{character}', 'Ejemplo');
     
-    m.reply(`✅ *Mensaje de claim actualizado!*\n\n*Vista previa:*\n${preview}`);
+    m.reply(`✅ *¡Anuncio de Regalo (Claim) personalizado guardado!* \n\n*Vista previa:*\n${preview}`);
 };
 
 handler.help = ['setclaimmsg', 'setclaim'];
