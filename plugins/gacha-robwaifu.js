@@ -6,14 +6,14 @@ import path from 'path';
 
 const handler = async (m, { conn, text }) => {
     if (!m.mentionedJid || m.mentionedJid.length === 0) {
-        return m.reply('❌ *Uso correcto:* /robwaifu @usuario');
+        return m.reply('❌ *Uso correcto (Intento del Grinch):* /robwaifu @usuario');
     }
     
     const robberId = m.sender;
     const victimId = m.mentionedJid[0];
     
     if (robberId === victimId) {
-        return m.reply('❌ *No puedes robarte a ti mismo.*');
+        return m.reply('❌ *¡No puedes robar tus propios Adornos Navideños!*');
     }
     
     const usersPath = path.join(process.cwd(), 'lib', 'gacha_users.json');
@@ -25,7 +25,7 @@ const handler = async (m, { conn, text }) => {
     }
     
     if (!users[victimId] || !users[victimId].harem || users[victimId].harem.length === 0) {
-        return m.reply('❌ *Ese usuario no tiene personajes para robar.*');
+        return m.reply('❌ *¡Ese árbol ya está vacío!* No tiene Adornos para robar.');
     }
     
     // Inicializar ladrón si no existe
@@ -33,7 +33,8 @@ const handler = async (m, { conn, text }) => {
         users[robberId] = {
             harem: [],
             favorites: [],
-            claimMessage: '✧ {user} ha reclamado a {character}!',
+            // Usar el mensaje navideño predeterminado
+            claimMessage: '✨ *¡Feliz Navidad!* {user} ha añadido a {character} a su *Colección de Adornos Festivos* (Harem). ¡Qué gran regalo!',
             lastRoll: 0,
             votes: {},
             gachaCoins: 1000
@@ -46,7 +47,7 @@ const handler = async (m, { conn, text }) => {
     
     if (users[robberId].lastRob && (now - users[robberId].lastRob) < cooldown) {
         const remaining = Math.ceil((cooldown - (now - users[robberId].lastRob)) / 3600000);
-        return m.reply(`⏰ *Debes esperar ${remaining} horas para robar nuevamente.*`);
+        return m.reply(`⏰ *El Grinch está cansado.* Debes esperar ${remaining} horas para intentar robar Adornos de nuevo.`);
     }
     
     // Probabilidad de éxito: 30%
@@ -55,10 +56,10 @@ const handler = async (m, { conn, text }) => {
     if (!success) {
         users[robberId].lastRob = now;
         fs.writeFileSync(usersPath, JSON.stringify(users, null, 2), 'utf-8');
-        return m.reply('❌ *¡Intento de robo fallido!* Fuiste descubierto.');
+        return m.reply('❌ *¡Intento del Grinch fallido!* Te atraparon los Duendes de Seguridad.');
     }
     
-    // Seleccionar personaje aleatorio
+    // Seleccionar personaje aleatorio (Lógica intacta)
     const randomIndex = Math.floor(Math.random() * users[victimId].harem.length);
     const stolenChar = users[victimId].harem[randomIndex];
     
@@ -67,14 +68,14 @@ const handler = async (m, { conn, text }) => {
     if (alreadyHas) {
         users[robberId].lastRob = now;
         fs.writeFileSync(usersPath, JSON.stringify(users, null, 2), 'utf-8');
-        return m.reply('⚠️ *Robaste un personaje que ya tenías. No se agregó a tu harem.*');
+        return m.reply('⚠️ *Robaste un Adorno que ya tenías.* No se agregó a tu Colección.');
     }
     
-    // Transferir personaje
+    // Transferir personaje (Lógica intacta)
     users[robberId].harem.push({ ...stolenChar, claimedAt: now, forSale: false, salePrice: 0 });
     users[victimId].harem.splice(randomIndex, 1);
     
-    // Actualizar en DB principal
+    // Actualizar en DB principal (Lógica intacta)
     const characters = JSON.parse(fs.readFileSync(dbPath, 'utf-8'));
     const dbCharIndex = characters.findIndex(c => c.id === stolenChar.id);
     if (dbCharIndex !== -1) {
@@ -82,7 +83,7 @@ const handler = async (m, { conn, text }) => {
         fs.writeFileSync(dbPath, JSON.stringify(characters, null, 2), 'utf-8');
     }
     
-    // Eliminar de favoritos de la víctima
+    // Eliminar de favoritos de la víctima (Lógica intacta)
     users[victimId].favorites = users[victimId].favorites.filter(id => id !== stolenChar.id);
     
     users[robberId].lastRob = now;
@@ -92,11 +93,11 @@ const handler = async (m, { conn, text }) => {
     const robberName = await conn.getName(robberId);
     const victimName = await conn.getName(victimId);
     
-    m.reply(`🏴‍☠️ *¡Robo exitoso!*\n\n*${robberName}* le robó *${stolenChar.name}* a *${victimName}*!`);
+    m.reply(`🎄 *¡EL ROBO DEL GRINCH FUE EXITOSO!*\n\n*${robberName}* le robó el Adorno *${stolenChar.name}* a *${victimName}*!`);
     
     // Notificar a la víctima
     conn.sendMessage(victimId, { 
-        text: `🏴‍☠️ *¡Fuiste robado!*\n\n*${robberName}* te robó a *${stolenChar.name}*!` 
+        text: `🚨 *¡UN ADORNO DESAPARECIÓ!*\n\n*${robberName}* te robó el Adorno *${stolenChar.name}* de tu árbol!` 
     });
 };
 
