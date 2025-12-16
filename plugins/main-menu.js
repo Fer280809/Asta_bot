@@ -477,31 +477,40 @@ let txt = `̮
         ╰┈➤ Descargar un video de Xnxx  
 ╰┈➤ 💦 *#mamada*  
         ╰┈➤ manda un video de mamando `.trim()
-await conn.sendMessage(m.chat, { 
-text: txt,
-contextInfo: {
-mentionedJid: [userId],
-isForwarded: true,
-forwardedNewsletterMessageInfo: {
-newsletterJid: channelRD.id,
-serverMessageId: '',
-newsletterName: channelRD.name
-},
-externalAdReply: {
-title: botname,
-body: textbot,
-mediaType: 1,
-mediaUrl: redes,
-sourceUrl: redes,
-thumbnail: await (await fetch(banner)).buffer(),
-showAdAttribution: false,
-containsAutoReply: true,
-renderLargerThumbnail: true
-}}}, { quoted: m })
-}
 
-handler.help = ['menu']
-handler.tags = ['main']
-handler.command = ['menu2', 'menú2', 'help2']
+          let buttons = [
+      { buttonId: usedPrefix + 'code', buttonText: { displayText: '🤖 Sup-Bot' }, type: 1 }
+  ];
+  
+  // URL de la imagen o video (cambia por tu propia URL)
+  let mediaUrl = 'https://files.catbox.moe/lajq7h.jpg'; // Cambia esto por tu imagen
+  // let mediaUrl = 'https://example.com/video.mp4'; // O usa un video
+  
+  try {
+    // Intenta enviar con imagen
+    await conn.sendMessage(m.chat, {
+      image: { url: mediaUrl },
+      caption: infoText,
+      footer: "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』⚡",
+      buttons: buttons,
+      headerType: 4,
+      mentions: [userId]
+    }, { quoted: m });
+  } catch {
+    // Si falla, envía sin imagen (método alternativo)
+    let buttonMessage = {
+      text: infoText,
+      footer: "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』⚡",
+      buttons: buttons,
+      headerType: 1,
+      mentions: [userId]
+    };
+    await conn.sendMessage(m.chat, buttonMessage, { quoted: m });
+  }
+};
 
-export default handler
+handler.help = ['menu2'];
+handler.tags = ['main'];
+handler.command = ['menú2', 'menu2', 'help2'];
+
+export default handler;
