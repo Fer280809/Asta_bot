@@ -1,63 +1,70 @@
 <h1 align="center">👑『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』👑</h1>
 
 <p align="center">
- <img src= "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgwEyPc2ZcSJLv1nKjMoNcqTD_PZl1Zk9ujraVrJSEw_efKhnurC6XGA6VOj73W-ygzfgfou1-g_3EzCX41BCiLXPvTjcIUy4BL78F9l9MuQlWAIg4E3DjO-Kx-qO-yIIhkOyeYaqDeyx8MW4EusFhzDUqID_Pk2RRUWhDfHErCquK71DBo9v4BhRjtXBNt/s736/b63bb3b9-7464-494f-937f-9aa4394cb124.jpg">
+ <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgwEyPc2ZcSJLv1nKjMoNcqTD_PZl1Zk9ujraVrJSEw_efKhnurC6XGA6VOj73W-ygzfgfou1-g_3EzCX41BCiLXPvTjcIUy4BL78F9l9MuQlWAIg4E3DjO-Kx-qO-yIIhkOyeYaqDeyx8MW4EusFhzDUqID_Pk2RRUWhDfHErCquK71DBo9v4BhRjtXBNt/s736/b63bb3b9-7464-494f-937f-9aa4394cb124.jpg" alt="Asta-Bot" width="350">
 </p>
 
 <div align="center">
   <h2>
     <a href="#">
-      <img src="https://readme-typing-svg.herokuapp.com?font=Russo+One&weight=700&size=30&duration=4000&pause=1000&color=00FF00&width=435&center=true&vCenter=true&random=false&width=435&lines=✨+ESTE+ES+EL+MEJOR+BOT+DE+WHATSAPP+✨;🔥+ASTA-BOT+PREMIUM+🔥;💫+VELOCIDAD+Y+ESTABILIDAD+💫" alt="Typing SVG" />
+      <img src="https://readme-typing-svg.herokuapp.com?font=Russo+One&weight=700&size=30&duration=4000&pause=1000&color=00FF00&width=435&center=true&vCenter=true&random=false&width=435&lines=✨+ESTE+ES+EL+MEJOR+BOT+DE+WHATSAPP+✨;🔥+ASTA-BOT+PREMIUM+🔥;💫+VELOCIDAD+Y+ESTABILIDAD+💫" alt="Typing SVG">
     </a>
   </h2>
 </div>
 
 <h1 align="center">🌟 ¡SI ME DAS UNA ESTRELLA ME AYUDARÍA MUCHO! 🌟</h1>
 
+---
 
-### **`⚠️ Información importante`**
+## ⚠️ Información importante
 
 <details>
- <summary><b>🔱 Info • Bot</b></summary>
+<summary><b>🔱 Info • Bot</b></summary>
 
 * Este proyecto **no está afiliado de ninguna manera** con `WhatsApp`, `Inc. WhatsApp` es una marca registrada de `WhatsApp LLC`, y este bot es un **desarrollo independiente** que **no tiene ninguna relación oficial con la compañía**.
 </details>
 
+---
+
+## 🚀 Funcionalidades Principales
+
 <details>
- <summary><b>🚀 Funcionalidades Principales</b></summary>
+<summary><b>Ver todas las funcionalidades</b></summary>
 
 > Bot en desarrollo. Si presenta alguna falla, reportar al creador para darle una solución óptima.
 
-- [x] 🎙️ Interacción con voz y texto
-- [x] ⚙️ Configuración de grupo avanzada
-- [x] 🛡️ Protección: antidelete, antilink, antispam, etc.
-- [x] 🎉 Bienvenida personalizada con imágenes
-- [x] 🎯 Juegos interactivos: tictactoe, mate, etc.
-- [x] 🤖 Chatbot inteligente (simsimi)
-- [x] 💬 Sistema de autoresponder personalizable
-- [x] 🔥 Crear stickers HD de image/video/gif/url
-- [x] 👾 SubBot multidispositivo (Jadibot)
-- [x] 🔎 Buscador Google optimizado
-- [x] ⚔️ Juego RPG con niveles y misiones
-- [x] 🎨 Editor de imágenes para personalización
-- [x] 📲 Descarga de música y video de YouTube en alta calidad
-- [ ] 💎 Más funciones premium en desarrollo...
-
+- ✅ 🎙️ Interacción con voz y texto
+- ✅ ⚙️ Configuración de grupo avanzada
+- ✅ 🛡️ Protección: antidelete, antilink, antispam, etc.
+- ✅ 🎉 Bienvenida personalizada con imágenes
+- ✅ 🎯 Juegos interactivos: tictactoe, mate, etc.
+- ✅ 🤖 Chatbot inteligente (simsimi)
+- ✅ 💬 Sistema de autoresponder personalizable
+- ✅ 🔥 Crear stickers HD de image/video/gif/url
+- ✅ 👾 SubBot multidispositivo (Jadibot)
+- ✅ 🔎 Buscador Google optimizado
+- ✅ ⚔️ Juego RPG con niveles y misiones
+- ✅ 🎨 Editor de imágenes para personalización
+- ✅ 📲 Descarga de música y video de YouTube en alta calidad
+- 🔄 💎 Más funciones premium en desarrollo...
 </details>
-
 
 ---
 
-### **`⬇️ Click en la imagen para descargar termux ⬇️`**
+## ⬇️ Instalación
+
+### **Click en la imagen para descargar Termux**
 <a href="https://www.mediafire.com/file/pa3r4x9cat0rrq0/F-Droid.apk/file" target="_blank">
     <img src="https://qu.ax/finc.jpg" alt="F-Droid" style="height:125px;">
 </a>
 
 <div align="center">
-  <a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=800&size=25&pause=1000&color=F70000&width=435&center=true&random=false&width=435&lines=%E2%9A%A1%EF%B8%8F+INSTALACI%C3%93N+R%C3%81PIDA+%E2%9A%A1%EF%B8%8F;%F0%9F%94%A5+SIGUE+LOS+PASOS+%F0%9F%94%A5" alt="Typing SVG" /></a>
+  <a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=800&size=25&pause=1000&color=F70000&width=435&center=true&random=false&width=435&lines=%E2%9A%A1%EF%B8%8F+INSTALACI%C3%93N+R%C3%81PIDA+%E2%9A%A1%EF%B8%8F;%F0%9F%94%A5+SIGUE+LOS+PASOS+%F0%9F%94%A5" alt="Typing SVG"></a>
 </div>
 
-### **`🛠️ Instalación por Termux`**
+---
+
+## 🛠️ Instalación por Termux
 
 <details>
 <summary><b>📋 Instalación Manual - Click para ver los Comandos</b></summary>
@@ -81,13 +88,12 @@ apt update && apt upgrade && pkg install -y git nodejs ffmpeg imagemagick yarn
 git clone https://github.com/Fer280809/Asta_bot && cd Asta_bot
 ```
 
-
-**5️⃣ Instalar dependencias con NPM:**
+**4️⃣ Instalar dependencias con NPM:**
 ```bash
 npm install
 ```
 
-**7️⃣ Iniciar el bot:**
+**5️⃣ Iniciar el bot:**
 ```bash
 npm start
 ```
@@ -139,8 +145,12 @@ cd && cd Asta_bot && rm -rf sessions/Principal && npm run code
 
 </details>
 
+---
+
+## 🜸 Mantener el Bot activo 24/7
+
 <details>
-<summary><b>🜸 Comandos para mantener el Bot activo 24/7</b></summary>
+<summary><b>Ver comandos para PM2</b></summary>
 
 ### **⚡ Mantener el Bot siempre activo con PM2**
 
@@ -187,8 +197,12 @@ pm2 list
 
 </details>
 
+---
+
+## ❀ Actualizar Asta-Bot
+
 <details>
-<summary><b>❀ Actualizar Asta-Bot</b></summary>
+<summary><b>Ver proceso de actualización</b></summary>
 
 ### **🔄 Actualización Automática**
 
@@ -205,18 +219,20 @@ grep -q 'bash\|wget' <(dpkg -l) || apt install -y bash wget && wget -O - https:/
 
 </details>
 
+---
 
-📢 EL BOT SE ACTUALIZA CADA SEMANA O MES Y SE LE HACE MANTENIMIENTO EN ESTE REPOSITORIO
+## 📢 Información de Actualizaciones
 
-
+**EL BOT SE ACTUALIZA CADA SEMANA O MES Y SE LE HACE MANTENIMIENTO EN ESTE REPOSITORIO**
 
 ---
-### **`🌐 Enlaces útiles`**
+
+## 🌐 Enlaces útiles
 
 <details>
- <summary><b>🚀 Enlaces Oficiales </b></summary>
+<summary><b>🚀 Enlaces Oficiales</b></summary>
 
- * ⭐ Canal Oficial  [`¡ÚNETE AHORA!`](https://whatsapp.com/channel/0029VbAoYE99hXF1wm3zmQ21)
+* ⭐ Canal Oficial  [`¡ÚNETE AHORA!`](https://whatsapp.com/channel/0029VbAoYE99hXF1wm3zmQ21)
 * 💫 Grupo Oficial [`¡ÚNETE AHORA!`](https://chat.whatsapp.com/BfCKeP10yZZ9ancsGy1Eh9?mode=hqrt1)
 * 🌟 Comunidad Oficial [`¡ÚNETE AHORA!`](https://chat.whatsapp.com/KKwDZn5vDAE6MhZFAcVQeO)
 </details>
@@ -224,35 +240,62 @@ grep -q 'bash\|wget' <(dpkg -l) || apt install -y bash wget && wget -O - https:/
 <details>
 <summary><b>☎️ Contactos Directos</b></summary>
 
-* 📲 WhatsApp: [`CONTÁCTANOS`](https:/Wa.me/524181450063)
+* 📲 WhatsApp: [`CONTÁCTANOS`](https://wa.me/524181450063)
 * 🔥 Solicita bot oficial: [`CONTÁCTANOS`](https://wa.me/524181450063)
 </details>
 
+---
+
+## 👑 CREADOR DEL BOT
 
 <div align="center">
-  <h2>👑 CREADOR DEL BOT 👑</h2>
   <a href="https://github.com/Fer280809">
     <img src="https://github.com/Fer280809.png" width="250" height="250" alt="𝕱𝖊𝖗𝖓𝖆𝖓𝖉𝖔" style="border-radius: 50%; border: 5px solid gold; box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);">
   </a>
   <h3>𝕱𝖊𝖗𝖓𝖆𝖓𝖉𝖔</h3>
   <a href="https://github.com/Fer280809">
-    <img src="https://img.shields.io/badge/GitHub-%23121011.svg?style=for-the-badge&logo=github&logoColor=white">
+    <img src="https://img.shields.io/badge/GitHub-%23121011.svg?style=for-the-badge&logo=github&logoColor=white" alt="GitHub">
   </a>
 </div>
 
-### **`🌟 Colaboradores Destacados`**
+---
+
+## 🌟 Colaboradores Destacados
+
 <a href="https://github.com/Fer280809/Asta_bot/graphs/contributors">
-<img src="https://contrib.rocks/image?repo=Fer280809/Asta_bot" /> 
+  <img src="https://contrib.rocks/image?repo=Fer280809/Asta_bot" alt="Colaboradores">
 </a>
 
-### **`🙏 Créditos`**
-</a>
+---
+
+## 🙏 Créditos
+
 <a href="https://github.com/ScriptNex" style="display:inline-block; margin-right: 10px; text-decoration: none;">
-    <img src="https://github.com/ScriptNex.png" width="130" height="130" alt="Neykoor💜" style="border-radius: 50%;"/>
+    <img src="https://github.com/ScriptNex.png" width="130" height="130" alt="Neykoor💜" style="border-radius: 50%;">
 </a>
 
-<h1 align="center">⚡ EL BOT SE ACTUALIZA CADA DOS SEMANAS O CUANDO SE NESESITA ⚡</h1>
+---
+
+<h1 align="center">⚡ EL BOT SE ACTUALIZA CADA DOS SEMANAS O CUANDO SE NECESITA ⚡</h1>
 
 <div align="center">
-  <a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.herokuapp.com?font=Russo+One&weight=800&size=28&pause=1000&color=F7DE00&width=650&center=true&vCenter=true&random=false&width=650&lines=%F0%9F%94%A5+MANT%C3%89N+TU+BOT+SIEMPRE+ACTUALIZADO+%F0%9F%94%A5;%E2%AD%90+NUEVAS+FUNCIONES+CADA+SEMANA+%E2%AD%90;%F0%9F%9A%80+S%C3%8DGUENOS+EN+EL+CANAL+PARA+NOVEDADES+%F0%9F%9A%80" alt="Typing SVG" /></a>
+  <a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.herokuapp.com?font=Russo+One&weight=800&size=28&pause=1000&color=F7DE00&width=650&center=true&vCenter=true&random=false&width=650&lines=%F0%9F%94%A5+MANT%C3%89N+TU+BOT+SIEMPRE+ACTUALIZADO+%F0%9F%94%A5;%E2%AD%90+NUEVAS+FUNCIONES+CADA+SEMANA+%E2%AD%90;%F0%9F%9A%80+S%C3%8DGUENOS+EN+EL+CANAL+PARA+NOVEDADES+%F0%9F%9A%80" alt="Typing SVG"></a>
+</div>
+
+---
+
+## 📝 Notas Finales
+
+- ⭐ **Dale una estrella al repositorio** si te gusta el proyecto
+- 🐛 **Reporta bugs** en los issues de GitHub
+- 💡 **Sugiere nuevas funciones** en el grupo de WhatsApp
+- 🔄 **Mantén tu bot actualizado** para mejores funciones
+
+<div align="center">
+  <h3>¡Disfruta usando Asta-Bot! 👑</h3>
+</div>
+
+---
+<div align="center">
+  <sub>Creado con ❤️ por <a href="https://github.com/Fer280809">Fernando</a></sub>
 </div>
