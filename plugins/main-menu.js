@@ -1,12 +1,18 @@
 import fetch from 'node-fetch'
 
 let handler = async (m, { conn, args }) => {
-let mentionedJid = await m.mentionedJid
-let userId = mentionedJid && mentionedJid[0] ? mentionedJid[0] : m.sender
-let totalreg = Object.keys(global.db.data.users).length
-let totalCommands = Object.values(global.plugins).filter((v) => v.help && v.tags).length
+    let mentionedJid = await m.mentionedJid
+    let userId = mentionedJid && mentionedJid[0] ? mentionedJid[0] : m.sender
+    let totalreg = Object.keys(global.db.data.users).length
+    let totalCommands = Object.values(global.plugins).filter((v) => v.help && v.tags).length
     
-let txt = `̮
+
+    // AÑADE ESTAS 3 LÍNEAS:
+    let usedPrefix = '#'  // Prefix según tu index.js
+    let libreria = 'Baileys'  // O la librería que uses
+    let vs = '1.3'  // Versión de tu bot
+
+        let txt = `̮
 ╭─━━━━━━━━━━━━━━━─╮
 │ 🎄 ¡Feliz Navidad @${userId.split('@')[0]}! 🎅
 ╰─━━━━━━━━━━━━━━━─╯
@@ -478,35 +484,35 @@ let txt = `̮
 ╰┈➤ 💦 *#mamada*  
         ╰┈➤ manda un video de mamando `.trim()
 
-          let buttons = [
-      { buttonId: usedPrefix + 'code', buttonText: { displayText: '🤖 Sup-Bot' }, type: 1 }
-  ];
-  
-  // URL de la imagen o video (cambia por tu propia URL)
-  let mediaUrl = 'https://files.catbox.moe/lajq7h.jpg'; // Cambia esto por tu imagen
-  // let mediaUrl = 'https://example.com/video.mp4'; // O usa un video
-  
-  try {
-    // Intenta enviar con imagen
-    await conn.sendMessage(m.chat, {
-      image: { url: mediaUrl },
-      caption: infoText,
-      footer: "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』⚡",
-      buttons: buttons,
-      headerType: 4,
-      mentions: [userId]
-    }, { quoted: m });
-  } catch {
-    // Si falla, envía sin imagen (método alternativo)
-    let buttonMessage = {
-      text: infoText,
-      footer: "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』⚡",
-      buttons: buttons,
-      headerType: 1,
-      mentions: [userId]
-    };
-    await conn.sendMessage(m.chat, buttonMessage, { quoted: m });
-  }
+        let buttons = [
+                { buttonId: '#' + 'code', buttonText: { displayText: '🤖 Sup-Bot' }, type: 1 }
+        ];
+
+        // URL de la imagen o video (cambia por tu propia URL)
+        let mediaUrl = 'https://files.catbox.moe/lajq7h.jpg'; // Cambia esto por tu imagen
+        // let mediaUrl = 'https://example.com/video.mp4'; // O usa un video
+
+        try {
+                // Intenta enviar con imagen
+                await conn.sendMessage(m.chat, {
+                        image: { url: mediaUrl },
+                        caption: infoText,
+                        footer: "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』⚡",
+                        buttons: buttons,
+                        headerType: 4,
+                        mentions: [userId]
+                }, { quoted: m });
+        } catch {
+                // Si falla, envía sin imagen (método alternativo)
+                let buttonMessage = {
+                        text: infoText,
+                        footer: "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』⚡",
+                        buttons: buttons,
+                        headerType: 1,
+                        mentions: [userId]
+                };
+                await conn.sendMessage(m.chat, buttonMessage, { quoted: m });
+        }
 };
 
 handler.help = ['menu2'];
