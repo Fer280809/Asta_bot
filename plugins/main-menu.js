@@ -584,7 +584,9 @@ ${theme.icon} *MENÚ PRINCIPAL* ${theme.icon}
       type: 1 
     }
   ];
-
+// let buttons = [
+// { buttonId: usedPrefix + 'code', buttonText: { displayText: '🤖 Sup-Bot' }, type: 1 }
+// ];
   // ==============================================
   // ENVÍO
   // ==============================================
