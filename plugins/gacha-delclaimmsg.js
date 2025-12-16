@@ -14,13 +14,14 @@ const handler = async (m, { conn }) => {
     }
     
     if (!users[userId]) {
-        return m.reply('❌ *No tienes un perfil creado.*');
+        return m.reply('❌ *¡Santa no tiene registro de tu perfil!* No tienes un perfil creado.');
     }
     
-    users[userId].claimMessage = '✧ {user} ha reclamado a {character}!';
+    // El mensaje de reclamo predeterminado debe ser el nuevo (navideño)
+    users[userId].claimMessage = '✨ *¡Feliz Navidad!* {user} ha añadido a {character} a su *Colección de Adornos Festivos* (Harem). ¡Qué gran regalo!';
     fs.writeFileSync(usersPath, JSON.stringify(users, null, 2), 'utf-8');
     
-    m.reply('✅ *Mensaje de claim restablecido al predeterminado.*');
+    m.reply('✅ *El Anuncio de Regalo (Claim) ha sido restablecido al mensaje predeterminado de Navidad.*');
 };
 
 handler.help = ['delclaimmsg'];
