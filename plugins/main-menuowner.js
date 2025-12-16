@@ -1,5 +1,3 @@
-import moment from 'moment-timezone'
-
 let handler = async (m, { conn, args }) => {
     // Evitar envío duplicado
     if (m.id.startsWith('NJX-') || (m.id.startsWith('BAE5') && m.id.length === 16) || (m.id.startsWith('B24E') && m.id.length === 20)) {
@@ -14,41 +12,41 @@ let handler = async (m, { conn, args }) => {
     let totalreg = Object.keys(global.db.data.users).length
     let totalCommands = Object.values(global.plugins).filter((v) => v.help && v.tags).length
     
-    // URL de la imagen del menú
-    let menuImage = 'https://files.catbox.moe/lajq7h.jpg'
+    // URL de la imagen del menú navideña
+    let menuImage = 'https://files.catbox.moe/lajq7h.jpg' // Cambia por una imagen navideña
     
-    let txt = `🌟⭐ *${botname}* ⭐🌟
+    let txt = `🎄🎅 *${botname} NAVIDEÑO* 🎁🌟
    
 ╭─━━━━━━━━━━━━━━━─╮
-│ 🎭 ¡Hola @${userId.split('@')[0]}! 💖
+│ 🎄 ¡Feliz Navidad @${userId.split('@')[0]}! 🎅
 ╰─━━━━━━━━━━━━━━━─╯
 
-╭─═⊰ 📡 𝐄𝐒𝐓𝐀𝐃𝐎 𝐀𝐂𝐓𝐈𝐕𝐎
-│ 🤖 Estado: ${(conn.user.jid == global.conn.user.jid ? '🟢 PREMIUM ' : '🔗 prem-ʙᴏᴛ')}
+╭─═⊰ 🎄 𝐄𝐒𝐓𝐀𝐃𝐎 𝐍𝐀𝐕𝐈𝐃𝐄Ñ𝐎
+│ 🎅 Estado: ${(conn.user.jid == global.conn.user.jid ? '🟢 MODO NAVIDAD ' : '🔗 ELFOS ACTIVOS')}
 │ ⚡ Activo: 『${uptime}』
-│ 👥 Users: 『${totalreg}』🔥
-│ 🛠️ Comandos: 『${totalCommands}』⚙️
+│ 👥 Usuarios: 『${totalreg}』🔥
+│ 🎁 Comandos: 『${totalCommands}』✨
 │ 📅 Fecha: ${moment().tz('America/Mexico_City').format('DD/MM/YYYY')}
 │ 🕐 Hora: ${moment().tz('America/Mexico_City').format('HH:mm:ss')}
-│ 🌍 Servidor: México 🇲🇽
-│ 📡 Ping: Online ✅
+│ 🌍 Servidor: Polo Norte 🎅
+│ 📡 Ping: Alegría Navideña ✅
 │ 💾 Memoria: Estable 📊
 │ 🔒 Modo: Privado 🔐
 ╰───────────────╯                                                                                                                                                                                                                                                                                                                                                                                                                    
 
-═══ COMANDOS DE OWNER ═══
+═══ COMANDOS DE SANTA 🎅 ═══
 
-🔑 *GESTIÓN OWNERS*
+🔑 *GESTIÓN DE SANTA*
 • #addowner • #delowner
 • #codigo
 
-💾 *ARCHIVOS*
+💾 *REGALOS DIGITALES*
 • #backup • #copia
 • #cleanfiles • #dsowner
 • #cleartmp • #vaciartmp
 • #deletefile
 
-💰 *ECONOMÍA*
+💰 *ECONOMÍA NAVIDEÑA*
 • #addcoins • #añadircoin
 • #userpremium • #addprem
 • #delprem • #remove
@@ -57,17 +55,17 @@ let handler = async (m, { conn, args }) => {
 • #deletedatauser • #resetuser
 • #removexp • #quitarxp
 
-📢 *COMUNICACIÓN*
+📢 *COMUNICACIÓN NAVIDEÑA*
 • #bcgc • #let
 • #reunion • #meeting
 
-🚫 *SISTEMA DE BANEOS*
+🚫 *LISTA DE CARBÓN 🎅*
 ┌─ 🔐 Solo Fernando:
 │ • #banned [usuario] [tiempo] [razón]
 │ • #unban [usuario]
 ├─ 👥 Todos los usuarios:
 │ • #horaban
-└─ 👑 Owners:
+└─ 👑 Santa:
   • #checkban [usuario]
   • #banlist
   • #block [usuario]
@@ -81,20 +79,20 @@ let handler = async (m, { conn, args }) => {
 • #unban @user
 • #horaban (ver tu tiempo de baneo)
 
-🤖 *ADMIN AUTO*
+🤖 *ELFOS AUTOMÁTICOS*
 • #autoadmin
 
-👥 *GRUPOS*
+👥 *GRUPOS NAVIDEÑOS*
 • #newgc • #creargc
 • #grouplist • #listgroup
 • #join • #invite
 • #leave • #salir
 
-🌐 *WEB*
+🌐 *WEB DEL TRINEO*
 • #get • #fetch
 • #plugin • #getplugin
 
-⚙️ *CONFIGURACIÓN*
+⚙️ *CONFIGURACIÓN NAVIDEÑA*
 • #prefix • #resetprefix
 • #reiniciar • #restart
 • #setbanner • #setavatar
@@ -103,7 +101,7 @@ let handler = async (m, { conn, args }) => {
 • #setbio2 • #setstatus2
 • #update
 
-💾 *COMANDOS CUSTOM*
+💾 *COMANDOS ESPECIALES*
 • #addcmd • #setcmd
 • #delcmd • #cmdlist
 • #listcmd • #editarplugin
@@ -112,10 +110,10 @@ let handler = async (m, { conn, args }) => {
 • #descargarplugins • #descargarplugin 
 
 ╭────────────────────
-│ ✨ Usa con responsabilidad
-│ 🔒 Sistema de baneos mejorado
+│ ✨ Usa con espíritu navideño
+│ 🔒 Sistema de lista de carbón mejorado
 │ ⏱️ Soporta baneos temporales
-╰────── 👑 OWNER 👑
+╰────── 🎅 SANTA 👑
 `
 
     try {
