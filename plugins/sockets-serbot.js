@@ -21,30 +21,37 @@ let drm2 = ""
 // Imagen para el QR y CODE
 const imagenSerBot = 'https://files.catbox.moe/gptlxc.jpg'
 
-let rtx = `╭─〔 💻 𝘼𝙎𝙏𝘼 𝘽𝙊𝙏 • 𝙈𝙊𝘿𝙊 𝙌𝙍 〕─╮
+let rtx = `
+╭─〔🎅 𝘼𝙎𝙏𝘼 𝘽𝙊𝙏 • 𝙈𝙊𝘿𝙊 𝙌𝙍 🎄〕─╮
 │
+│  🎁 *¡Regalo Navideño de Asta Bot!* 🎁
 │  📲 Escanea este *QR* desde otro celular o PC
-│  para convertirte en un *Sub-Bot Temporal* de Asta.
+│  para convertirte en un *Sub-Bot Temporal*
 │
+│  🦌 **Instrucciones Mágicas:**
 │  1️⃣  Pulsa los ⋮ tres puntos arriba a la derecha
 │  2️⃣  Ve a *Dispositivos vinculados*
-│  3️⃣  Escanea el QR y ¡listo! ⚡
+│  3️⃣  Escanea el QR y ¡Feliz Navidad! ⭐
 │
-│  ⏳  *Expira en 45 segundos.*
-╰───────────────────────`
+│  ⛄ *Expira en 45 segundos.*
+│  🎶 *¡Que la magia navideña comience!*
+╰─────────────────────────❄️`
 
-let rtx2 = `╭─[ 💻 𝘼𝙎𝙏𝘼 𝘽𝙊𝙏 • 𝙈𝙊𝘿𝙊 𝘾𝙊𝘿𝙀 ]─╮
+let rtx2 = `
+╭─[🎄 𝘼𝙎𝙏𝘼 𝘽𝙊𝙏 • 𝙈𝙊𝘿𝙊 𝘾𝙊𝘿𝙀 🎅]─╮
 │
-│  🧠  Este es el *Modo CODE* de Asta Bot.
-│  Escanea el *QR* desde otro celular o PC
-│  para convertirte en un *Sub-Bot Temporal*.
+│  🧣 *Modo CODE Navideño de Asta Bot*
+│  ✨ Escanea el *QR* desde otro celular o PC
+│  para unirte a la *Magia Temporal*
 │
+│  🎄 **Pasos Navideños:**
 │  1️⃣  Pulsa los ⋮ tres puntos arriba a la derecha
 │  2️⃣  Entra en *Dispositivos vinculados*
-│  3️⃣  Escanea el QR y ¡listo! ⚡
+│  3️⃣  Escanea el QR y ¡a celebrar! 🎉
 │
-│  ⏳  *Expira en 45 segundos.*
-╰────────────────────────╯`
+│  🕯️ *Expira en 45 segundos.*'
+│  🌟 *¡Felices fiestas!*
+╰───────────────────────────🎁 `
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
