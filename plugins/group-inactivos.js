@@ -1,61 +1,94 @@
 import { areJidsSameUser } from '@whiskeysockets/baileys'
 
-var handler = async (m, { conn, text, participants, args, command }) => {
-try {
-let member = participants.map(u => u.id)
-if (!text) {
-var sum = member.length
-} else {
-var sum = text
-}
-var total = 0
-var sider = []
-for (let i = 0; i < sum; i++) {
-let users = m.isGroup ? participants.find(u => u.id == member[i]) : {}
-if ((typeof global.db.data.users[member[i]] == 'undefined' || global.db.data.users[member[i]].chat == 0) && !users.isAdmin && !users.isSuperAdmin) {
-if (typeof global.db.data.users[member[i]] !== 'undefined') {
-if (global.db.data.users[member[i]].whitelist == false) {
-total++
-sider.push(member[i])
-}} else {
-total++
-sider.push(member[i])
-}}}
-const delay = time => new Promise(res => setTimeout(res, time))
-switch (command) {
-case 'inactivos': case 'fantasmas': {
-if (total == 0) return conn.reply(m.chat, `ꕥ Este grupo es activo, no tiene fantasmas.`, m)
-m.reply(`❀ *Revisión de inactivos*\n\n✦ *Lista de fantasmas*\n${sider.map(v => '@' + v.replace(/@.+/, '')).join('\n')}\n\n> ✰ NOTA: Esto no es al 100% acertado, el bot inicia el conteo de mensajes a partir del momento que se activa en este grupo.`, null, { mentions: sider })
-break
-}
-case 'kickinactivos': case 'kickfantasmas': {
-if (total == 0) return conn.reply(m.chat, `ꕥ Este grupo es activo no tiene fantasmas.`, m)
-await m.reply(`❀ *Eliminación de inactivos*\n\n✦ *Lista de fantasmas*\n${sider.map(v => '@' + v.replace(/@.+/, '')).join('\n')}\n\n> ✰ Nota: El bot eliminara a los usuarios de la lista mencionada cada 10 segundos.`, null, { mentions: sider })
-await delay(1 * 10000)
-let chat = global.db.data.chats[m.chat]
-chat.welcome = false
-try {
-let users = m.mentionedJid.filter(u => !areJidsSameUser(u, conn.user.id))
-let kickedGhost = sider.map(v => v.id).filter(v => v !== conn.user.jid)
-for (let user of users)
-if (user.endsWith('@s.whatsapp.net') && !(participants.find(v => areJidsSameUser(v.id, user)) || { admin: true }).admin) {
-let res = await conn.groupParticipantsUpdate(m.chat, [user], 'remove')
-kickedGhost.concat(res)
-await delay(1 * 10000)
-}} finally {
-chat.welcome = true
-}
-break
-}}} catch (e) {
-m.reply(`⚠︎ Se ha producido un problema.\n> Usa *${usedPrefix}report* para informarlo.\n\n${e.message}`)
-}}
+var handler = async (m, { conn, text, participants, args, command, usedPrefix }) => {
+    try {
+        let member = participants.map(u => u.id)
+        let total = 0
+        let sider = []
 
+        // 1. Lógica de búsqueda de inactivos
+        for (let i = 0; i < member.length; i++) {
+            let user = participants.find(u => u.id == member[i])
+            if (!user) continue
+
+            // Filtros: No admin, no bot, no mensajes registrados, no whitelist
+            if ((typeof global.db.data.users[member[i]] == 'undefined' || global.db.data.users[member[i]].chat == 0) && 
+                !user.admin && !user.isSuperAdmin && member[i] !== conn.user.jid) {
+                
+                if (typeof global.db.data.users[member[i]] !== 'undefined') {
+                    if (global.db.data.users[member[i]].whitelist == false) {
+                        total++
+                        sider.push(member[i])
+                    }
+                } else {
+                    total++
+                    sider.push(member[i])
+                }
+            }
+        }
+
+        // 2. Si no hay fantasmas
+        if (total == 0) return conn.reply(m.chat, `✨ *¡Felicidades!* Este grupo está lleno de espíritu navideño. No hay elfos inactivos.`, m)
+
+        // 3. Si el comando es para listar (Fantasmas/Inactivos)
+        if (command === 'fantasmas' || command === 'inactivos') {
+            const menciones = sider.map(v => '@' + v.replace(/@.+/, ''))
+            const texto = `
+❄️ *REVISIÓN DEL TALLER* ❄️
+━━━━━━━━━━━━━━━━━━━━━━━
+Se han detectado *${total}* elfos que no han ayudado en la fabricación de juguetes (inactivos).
+
+📝 *LISTA NEGRA:*
+${menciones.join('\n')}
+
+⚠️ *Nota:* El conteo es desde que el bot llegó al grupo.
+━━━━━━━━━━━━━━━━━━━━━━━`.trim()
+
+            // Enviar mensaje con botón para eliminar
+            return await conn.sendMessage(m.chat, {
+                text: texto,
+                footer: "Navidad 2024 • Asta-Bot",
+                mentions: sider,
+                buttons: [
+                    { 
+                        buttonId: `${usedPrefix}kickfantasmas`, 
+                        buttonText: { displayText: '🚀 Expulsar de la Villa' }, 
+                        type: 1 
+                    }
+                ],
+                headerType: 1
+            }, { quoted: m })
+        }
+
+        // 4. Lógica de eliminación (Se activa al pulsar el botón)
+        if (command === 'kickfantasmas') {
+            await m.reply(`📦 *Iniciando mudanza...*\nLos fantasmas serán eliminados cada 5 segundos para evitar spam.`)
+            
+            let chat = global.db.data.chats[m.chat]
+            chat.welcome = false // Apagar bienvenidas temporalmente
+
+            try {
+                for (let user of sider) {
+                    await conn.groupParticipantsUpdate(m.chat, [user], 'remove')
+                    await new Promise(res => setTimeout(res, 5000)) // Pausa de 5 segundos
+                }
+                await m.reply('✅ *Limpieza terminada.* La chimenea quedó impecable.')
+            } finally {
+                chat.welcome = true // Reactivar bienvenidas
+            }
+        }
+
+    } catch (e) {
+        console.log(e)
+        m.reply(`⚠️ *Error en la nieve:* ${e.message}`)
+    }
+}
+
+handler.help = ['fantasmas']
 handler.tags = ['grupo']
-handler.command = ['inactivos', 'fantasmas', 'kickinactivos', 'kickfantasmas']
+handler.command = ['inactivos', 'fantasmas', 'kickfantasmas'] // kickfantasmas queda oculto para el botón
 handler.group = true
-handler.botAdmin = true
 handler.admin = true
+handler.botAdmin = true
 
 export default handler
-
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
