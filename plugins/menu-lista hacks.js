@@ -1,116 +1,92 @@
 let handler = async (m, { conn, usedPrefix }) => {
-  let totalreg = Object.keys(global.db.data.users).length;
-  let totalCommands = Object.values(global.plugins).filter(
-    (v) => v.help && v.tags
-  ).length;
-  let libreria = 'Baileys';
-  let vs = '2.0.0';
-  let userId = m.sender;
+  try {
+    console.log('🔍 Comando hack ejecutado por:', m.sender);
+    
+    let totalreg = Object.keys(global.db.data.users || {}).length;
+    let totalCommands = Object.values(global.plugins || {}).filter(
+      (v) => v && v.help && v.tags
+    ).length;
+    
+    console.log('📊 Datos obtenidos:', { totalreg, totalCommands });
+    
+    let libreria = 'Baileys';
+    let vs = '2.0.0';
+    let userId = m.sender;
+    let username = userId.split('@')[0];
 
-  let infoText = `╭─━━━━━━━━━━━━━━━─╮
-│ 🎭 ¡Hola @${userId.split('@')[0]}! 💖
+    // Texto simple primero para verificar
+    let testMessage = `🎭 ¡Hola @${username}! Este es un mensaje de prueba.`;
+    
+    console.log('📤 Enviando mensaje de prueba...');
+    await conn.sendMessage(m.chat, { 
+      text: testMessage,
+      mentions: [userId]
+    }, { quoted: m });
+    
+    console.log('✅ Mensaje de prueba enviado');
+    
+    // Ahora intentar con lista
+    let infoText = `╭─━━━━━━━━━━━━━━━─╮
+│ 🎭 ¡Hola @${username}! 💖
 ╰─━━━━━━━━━━━━━━━─╯
 ╭─═⊰ 📡 𝐄𝐒𝐓𝐀𝐃𝐎 𝐀𝐂𝐓𝐈𝐕𝐎
-│ 🤖 Estado: ${(conn.user.jid == global.conn.user.jid ? '🟢 PREMIUM' : '🔗 prem-ʙᴏᴛ')}
-│ 👥 Users: 『${totalreg.toLocaleString()}』🔥
+│ 🤖 Estado: ${(conn.user?.jid == global.conn?.user?.jid ? '🟢 PREMIUM' : '🔗 prem-ʙᴏᴛ')}
+│ 👥 Users: 『${totalreg}』🔥
 │ 🛠️ Comandos: 『${totalCommands}』⚙️
 │ 📅 Librería » ${libreria}
 │ 🌍 Servidor: México 🇲🇽
 │ 📡 Ping: Online ✅
 │ 💾 Version: ${vs}
-│ 🔒 Modo: ${(conn.user.jid == global.conn.user.jid ? '🔐 PRIVADO' : '🔓 PUBLICO')}
+│ 🔒 Modo: ${(conn.user?.jid == global.conn?.user?.jid ? '🔐 PRIVADO' : '🔓 PUBLICO')}
 ╰───────────────╯
 🌟 *Bienvenido a AstaBot!*`;
 
-  let sections = [
-    {
-      title: "📌 COMANDOS HACKER",
-      rows: [
-        { title: "🔎 IANS", rowId: `${usedPrefix}IANS`, description: "Herramienta de búsqueda avanzada" },
-        { title: "🕵️ Argus", rowId: `${usedPrefix}argus`, description: "Ver la velocidad del bot" },
-        { title: "⚙️ MatrixPDF", rowId: `${usedPrefix}matrixpdf`, description: "Descargar PDF malicioso" },
-        { title: "🦠 Virus PC", rowId: `${usedPrefix}viruspc`, description: "Virus para pc" }
-      ]
-    },
-    {
-      title: "📌 PRÓXIMAMENTE",
-      rows: [
-        { title: "📊 Dataminer", rowId: `${usedPrefix}dataminer`, description: "En desarrollo" },
-        { title: "🔐 Cipher", rowId: `${usedPrefix}cipher`, description: "En desarrollo" },
-        { title: "🌐 Netscan", rowId: `${usedPrefix}netscan`, description: "En desarrollo" }
-      ]
-    }
-  ];
-
-  // OPCIÓN 1: Lista CON imagen (headerType: 1 para imagen)
-  let listMessageWithImage = {
-    text: infoText,
-    footer: "AstaBot ⚡ | Selecciona un comando",
-    title: "🎭 ASTABOT - MENÚ HACKER",
-    buttonText: "VER COMANDOS 📋",
-    sections: sections,
-    headerType: 1,
-    // Puedes agregar imagen aquí si quieres
-    // image: { url: 'https://files.catbox.moe/wrwuls.png' }
-  };
-
-  // OPCIÓN 2: Lista SIN imagen
-  let listMessage = {
-    text: infoText,
-    footer: "AstaBot ⚡ | Selecciona un comando",
-    title: "🎭 ASTABOT - MENÚ HACKER",
-    buttonText: "VER COMANDOS 📋",
-    sections: sections
-  };
-
-  // Intentar enviar
-  try {
-    // Enviar la lista directamente
-    await conn.sendMessage(m.chat, listMessage, { 
-      quoted: m,
-      mentions: [userId]
-    });
+    console.log('📋 Preparando lista...');
     
-  } catch (error) {
-    console.error("Error lista:", error);
-    
-    // Si falla, probar método alternativo
-    try {
-      // Método alternativo usando template messages
-      let template = {
-        text: infoText,
-        templateButtons: [
-          { index: 1, urlButton: { displayText: '🔗 GitHub', url: 'https://github.com' } },
-          { index: 1, quickReplyButton: { displayText: `🔎 IANS`, id: `${usedPrefix}IANS` } },
-          { index: 2, quickReplyButton: { displayText: `🕵️ Argus`, id: `${usedPrefix}argus` } },
-          { index: 3, quickReplyButton: { displayText: `⚙️ MatrixPDF`, id: `${usedPrefix}matrixpdf` } },
-          { index: 4, quickReplyButton: { displayText: `🦠 Virus PC`, id: `${usedPrefix}viruspc` } }
+    // Crear lista simple
+    const listMessage = {
+      text: infoText,
+      footer: "AstaBot ⚡",
+      title: "🎭 ASTABOT MENÚ",
+      buttonText: "📋 VER COMANDOS",
+      sections: [{
+        title: "🔧 COMANDOS HACKER",
+        rows: [
+          {
+            title: "🔎 IANS",
+            description: "Búsqueda avanzada",
+            rowId: `${usedPrefix || '.'}IANS`
+          },
+          {
+            title: "🕵️ Argus",
+            description: "Ver velocidad del bot",
+            rowId: `${usedPrefix || '.'}argus`
+          }
         ]
-      };
-      
-      await conn.sendMessage(m.chat, template, { quoted: m });
-      
-    } catch (err2) {
-      console.error("Error template:", err2);
-      
-      // Último fallback
+      }]
+    };
+
+    console.log('📤 Intentando enviar lista...');
+    await conn.sendMessage(m.chat, listMessage, { quoted: m });
+    console.log('✅ Lista enviada (se espera)');
+
+  } catch (error) {
+    console.error('❌ ERROR CRÍTICO:', error);
+    console.error('📌 Error stack:', error.stack);
+    
+    // Intentar enviar al menos un mensaje de error
+    try {
       await conn.sendMessage(m.chat, { 
-        text: `${infoText}\n\n` +
-              "*Usa:*\n" +
-              `• ${usedPrefix}IANS\n` +
-              `• ${usedPrefix}argus\n` +
-              `• ${usedPrefix}matrixpdf\n` +
-              `• ${usedPrefix}viruspc\n` +
-              `• ${usedPrefix}dataminer\n` +
-              `• ${usedPrefix}cipher`,
-        mentions: [userId]
+        text: `❌ Error: ${error.message || 'Error desconocido'}\n\nEl comando no funcionó correctamente.`
       }, { quoted: m });
+    } catch (e) {
+      console.error('No se pudo enviar mensaje de error:', e);
     }
   }
 };
 
-handler.help = ['haks', 'haker', 'hack'];
+handler.help = ['haks', 'hacker', 'hack'];
 handler.tags = ['main'];
-handler.command = ['haks', 'haker', 'hack', 'hacks'];
+handler.command = /^(haks|hacker|hack|hacks)$/i;
 
 export default handler;
