@@ -439,15 +439,15 @@ export async function handler(chatUpdate) {
 
     global.dfail = (type, m, conn) => {
         const msg = {
-            rowner: `💠 *Acceso denegado* 💠\nEl comando *${comando}* solo puede ser usado por los *creadores del bot*.`,
-            owner: `💠 *Acceso denegado* 💠\nEl comando *${comando}* solo puede ser usado por los *desarrolladores del bot*.`,
-            mods: `🛡️ *Permiso insuficiente* 🛡️\nEl comando *${comando}* solo puede ser usado por los *moderadores del bot*.`,
-            premium: `⭐ *Exclusivo Premium* ⭐\nEl comando *${comando}* solo puede ser usado por *usuarios premium*.`,
-            group: `👥 *Solo en grupos* 👥\nEl comando *${comando}* solo puede ejecutarse dentro de un *grupo*.`,
-            private: `📩 *Solo privado* 📩\nEl comando *${comando}* solo puede usarse en *chat privado* con el bot.`,
-            admin: `⚠️ *Requiere permisos de admin* ⚠️\nEl comando *${comando}* solo puede ser usado por los *administradores del grupo*.`,
-            botAdmin: `🤖 *Necesito permisos* 🤖\nPara ejecutar *${comando}*, el bot debe ser *administrador del grupo*.`,
-            restrict: `⛔ *Funcionalidad desactivada* ⛔\nEsta característica está *temporalmente deshabilitada*.`
+            rowner: `🎅 *¡ACCESO DENEGADO!*\n\nEste comando es exclusivo para los creadores del bot.\n\n🎄 ¡Feliz Navidad! 🎁`,
+            owner: `🎁 *¡RESERVADO PARA SANTA!.*\n\nSolo los desarrolladores del bot pueden usar este comando.\n\n🦌 ¡Solo para la lista buena! ❄️.`,
+            mods: `⛄ *¡PERMISO INSUFICIENTE!.*\n\nNecesitas ser moderador del bot para usar este comando.\n\n❄️ ¡Vuelve cuando seas un reno! 🦌`,
+            premium: `✨ *¡EXCLUSIVO PREMIUM!*\n\nEste comando está reservado para usuarios premium.\n\n🎁 ¡Santa te espera! 🎅`,
+            group: `🏭 *¡SOLO EN TALLERES!*\n\nEste comando solo funciona en grupos.\n\n🛠️ ¡Únete a un taller! 🔨`,
+            private: `✉️ *¡SOLO EN CARTAS!*\n\nEste comando solo se puede usar en chat privado.\n\n📮 ¡Escribe a Santa! 🎅`,
+            admin: `🎄 *¡ELFO MAYOR REQUERIDO!*\n\nNecesitas ser administrador del grupo.\n\n🧝 ¡Pídele a Santa el ascenso! ⭐`,
+            botAdmin: `🎅 *¡SANTA NECESITA PODERES!*\n\nEl bot debe ser administrador del grupo.\n\n🧝‍♂️ ¡Hazme supervisor! 🔑`,
+            restrict: ` *¡REGALO CONGELADO!*\n\nEsta función está temporalmente deshabilitada.\n\n🛷 ¡Vuelve en Año Nuevo! ⏳`
         } [type]
         if (msg) return conn.reply(m.chat, msg, m, rcanal).then(_ => m.react('✖️'))
     }
