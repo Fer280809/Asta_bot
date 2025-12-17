@@ -6,7 +6,7 @@ let handler = async (m, { conn, usedPrefix }) => {
   let libreria = 'Baileys';
   let vs = '2.0.0';
   let userId = m.sender;
-  
+
   let infoText = `╭─━━━━━━━━━━━━━━━─╮
 │ 🎭 ¡Hola @${userId.split('@')[0]}! 💖
 ╰─━━━━━━━━━━━━━━━─╯
@@ -22,110 +22,38 @@ let handler = async (m, { conn, usedPrefix }) => {
 ╰───────────────╯
 🌟 *Bienvenido a AstaBot!*`;
 
-  let sections = [
-    {
-      title: "📌 Comandos principales",
-      rows: [
-        { 
-          title: "🔎 IANS", 
-          description: "Herramienta de búsqueda avanzada",
-          rowId: usedPrefix + 'IANS'
-        },
-        { 
-          title: "🕵️ Argus", 
-          description: "Ver la velocidad del bot",
-          rowId: usedPrefix + 'argus'
-        },
-        { 
-          title: "⚙️ MatrixPDF", 
-          description: "Descargar PDF malicioso",
-          rowId: usedPrefix + 'matrixpdf'
-        },
-        { 
-          title: "🦠 Virus pc", 
-          description: "Virus para pc",
-          rowId: usedPrefix + 'viruspc'
-        },
-        { 
-          title: "Próximamente", 
-          description: "Próximamente - ",
-          rowId: usedPrefix + 'cipher'
-        },
-        { 
-          title: "Próximamente", 
-          description: "Próximamente - ",
-          rowId: usedPrefix + 'netscan'
-        },
-        { 
-          title: "Próximamente", 
-          description: "Próximamente ",
-          rowId: usedPrefix + 'dataminer'
-        },
-        { 
-          title: "Próximamente", 
-          description: "Próximamente",
-          rowId: usedPrefix + 'Próximamente'
-        },
-        { 
-          title: "Próximamente", 
-          description: "Próximamente",
-          rowId: usedPrefix + 'Próximamente'
-        },
-        { 
-          title: "Próximamente", 
-          description: "Próximamente",
-          rowId: usedPrefix + 'Próximamente'
-        },
-        { 
-          title: "Próximamente", 
-          description: "Próximamente",
-          rowId: usedPrefix + 'Próximamente'
-        },
-        { 
-          title: "Próximamente", 
-          description: "Próximamente",
-          rowId: usedPrefix + 'Próximamente'
-        },
-        { 
-          title: "Próximamente", 
-          description: "Próximamente",
-          rowId: usedPrefix + 'Próximamente'
-        },
-        { 
-          title: "Próximamente", 
-          description: "Próximamente",
-          rowId: usedPrefix + 'Próximamente'
-        }
-      ]
-    }
-  ];
-  
-  // URL de la imagen o video (puedes cambiarla por tu propia URL)
-  let mediaUrl = 'https://files.catbox.moe/wrwuls.png'; // Cambia esto por tu imagen
-  // let mediaUrl = 'https://example.com/video.mp4'; // O usa un video
-  
+  let sections = [{
+    title: "📌 Comandos principales",
+    rows: [
+      { title: "🔎 IANS", rowId: `${usedPrefix}IANS`, description: "Herramienta de búsqueda avanzada" },
+      { title: "🕵️ Argus", rowId: `${usedPrefix}argus`, description: "Ver la velocidad del bot" },
+      { title: "⚙️ MatrixPDF", rowId: `${usedPrefix}matrixpdf`, description: "Descargar PDF malicioso" },
+      { title: "🦠 Virus pc", rowId: `${usedPrefix}viruspc`, description: "Virus para pc" },
+      { title: "Próximamente", rowId: `${usedPrefix}cipher`, description: "Próximamente" },
+      { title: "Próximamente", rowId: `${usedPrefix}netscan`, description: "Próximamente" },
+      { title: "Próximamente", rowId: `${usedPrefix}dataminer`, description: "Próximamente" },
+      { title: "Próximamente", rowId: `${usedPrefix}Próximamente`, description: "Próximamente" }
+    ]
+  }];
+
   let listMessage = {
     text: infoText,
     footer: "AstaBot ⚡",
-    title: "Selecciona una opción",
-    buttonText: "Abrir menú 📋",
-    sections,
-    mentions: [userId]
+    title: "🎭 *ASTABOT - MENÚ PRINCIPAL* 🎭",
+    buttonText: "📋 ABRIR MENÚ",
+    sections
   };
-  
+
   try {
-    // Enviar con imagen
-    await conn.sendMessage(m.chat, {
-      image: { url: mediaUrl },
-      caption: infoText,
-      footer: "AstaBot ⚡",
-      buttonText: "Abrir menú 📋",
-      sections: sections,
+    // Intentar enviar como lista interactiva
+    await conn.sendMessage(m.chat, listMessage, { quoted: m, mentions: [userId] });
+  } catch (error) {
+    console.error(error);
+    // Fallback: enviar como mensaje normal
+    await conn.sendMessage(m.chat, { 
+      text: infoText + "\n\n" + sections[0].rows.map(r => `➤ ${r.title}: ${usedPrefix}${r.title.toLowerCase()}`).join('\n'),
       mentions: [userId]
     }, { quoted: m });
-  } catch {
-    // Si falla, enviar sin imagen
-    await conn.sendMessage(m.chat, listMessage, { quoted: m });
   }
 };
 
