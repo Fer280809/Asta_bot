@@ -200,6 +200,8 @@ pm2 list
 
 </details>
 
+---
+
 <details>
 <summary><b>❀ Actualizar Asta-Bot</b></summary>
 
