@@ -540,7 +540,7 @@ ${currentMenu.body}
     if (currentIndex < totalCategories - 1) {
         buttons.push({ buttonId: `${usedPrefix}menu2 ${currentIndex + 1}`, buttonText: { displayText: 'Siguiente ▶️' }, type: 1 });
     }
-    buttons.push({ buttonId: `${usedPrefix}code`, buttonText: { displayText: '🤖 Sup-Bot' }, type: 1 });
+    buttons.push({ buttonId: `${usedPrefix}code`, buttonText: { displayText: '🤖 Sub-Bot' }, type: 1 });
 
     // 4. Lógica de "Mensaje Maestro" (Igual que en tu comando Update)
     let mediaUrl = 'https://files.catbox.moe/lajq7h.jpg';
