@@ -1,96 +1,275 @@
-<h1 align="center">🎄『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙: 𝖃𝖒𝖆𝖘 𝕰𝖉𝖎𝖙𝖎𝖔𝖓 』🎄</h1>
+<h1 align="center">👑『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』👑</h1>
 
 <p align="center">
- <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgwEyPc2ZcSJLv1nKjMoNcqTD_PZl1Zk9ujraVrJSEw_efKhnurC6XGA6VOj73W-ygzfgfou1-g_3EzCX41BCiLXPvTjcIUy4BL78F9l9MuQlWAIg4E3DjO-Kx-qO-yIIhkOyeYaqDeyx8MW4EusFhzDUqID_Pk2RRUWhDfHErCquK71DBo9v4BhRjtXBNt/s736/b63bb3b9-7464-494f-937f-9aa4394cb124.jpg" alt="Asta-Bot" width="450">
+ <img src= "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgwEyPc2ZcSJLv1nKjMoNcqTD_PZl1Zk9ujraVrJSEw_efKhnurC6XGA6VOj73W-ygzfgfou1-g_3EzCX41BCiLXPvTjcIUy4BL78F9l9MuQlWAIg4E3DjO-Kx-qO-yIIhkOyeYaqDeyx8MW4EusFhzDUqID_Pk2RRUWhDfHErCquK71DBo9v4BhRjtXBNt/s736/b63bb3b9-7464-494f-937f-9aa4394cb124.jpg">
 </p>
 
 <div align="center">
-  <img src="https://readme-typing-svg.herokuapp.com?font=Russo+One&weight=700&size=30&duration=4000&pause=1000&color=F70000&width=500&center=true&vCenter=true&lines=🎁+BIENVENIDOS+AL+TALLER+DE+ASTA+🎁;🎄+EDICIÓN+ESPECIAL+NAVIDAD+🎄;❄️+POTENCIA+Y+MAGIA+24/7+❄️" alt="Typing SVG">
+  <h2>
+    <a href="#">
+      <img src="https://readme-typing-svg.herokuapp.com?font=Russo+One&weight=700&size=30&duration=4000&pause=1000&color=00FF00&width=435&center=true&vCenter=true&random=false&width=435&lines=✨+ESTE+ES+EL+MEJOR+BOT+DE+WHATSAPP+✨;🔥+ASTA-BOT+PREMIUM+🔥;💫+VELOCIDAD+Y+ESTABILIDAD+💫" alt="Typing SVG" />
+    </a>
+  </h2>
 </div>
 
+<h1 align="center">🌟 ¡SI ME DAS UNA ESTRELLA ME AYUDARÍA MUCHO! 🌟</h1>
+
+
+### **`⚠️ Información importante`**
+
+<details>
+ <summary><b>🔱 Info • Bot</b></summary>
+
+* Este proyecto **no está afiliado de ninguna manera** con `WhatsApp`, `Inc. WhatsApp` es una marca registrada de `WhatsApp LLC`, y este bot es un **desarrollo independiente** que **no tiene ninguna relación oficial con la compañía**.
+</details>
+
+<details>
+ <summary><b>🚀 Funcionalidades Principales</b></summary>
+
+> Bot en desarrollo. Si presenta alguna falla, reportar al creador para darle una solución óptima.
+
+- [x] 🎙️ Interacción con voz y texto
+- [x] ⚙️ Configuración de grupo avanzada
+- [x] 🛡️ Protección: antidelete, antilink, antispam, etc.
+- [x] 🎉 Bienvenida personalizada con imágenes
+- [x] 🎯 Juegos interactivos: tictactoe, mate, etc.
+- [x] 🤖 Chatbot inteligente (simsimi)
+- [x] 💬 Sistema de autoresponder personalizable
+- [x] 🔥 Crear stickers HD de image/video/gif/url
+- [x] 👾 SubBot multidispositivo (Jadibot)
+- [x] 🔎 Buscador Google optimizado
+- [x] ⚔️ Juego RPG con niveles y misiones
+- [x] 🎨 Editor de imágenes para personalización
+- [x] 📲 Descarga de música y video de YouTube en alta calidad
+- [ ] 💎 Más funciones premium en desarrollo...
+
+</details>
+
+
 ---
 
-## ❄️ ESTADO DE LA VILLA
-* **Versión:** 4.5.0 (Navidad 2024-2025)
-* **Desarrollador:** Fernando
-* **Soporte:** [Click aquí](https://wa.me/524181450063)
+### **`⬇️ Click en la imagen para descargar termux ⬇️`**
+<a
+href="https://www.mediafire.com/file/pa3r4x9cat0rrq0/F-Droid.apk/file"><img src="https://qu.ax/finc.jpg" height="125px"></a> 
 
----
+<div align="center">
+  <a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=800&size=25&pause=1000&color=F70000&width=435&center=true&random=false&width=435&lines=%E2%9A%A1%EF%B8%8F+INSTALACI%C3%93N+R%C3%81PIDA+%E2%9A%A1%EF%B8%8F;%F0%9F%94%A5+SIGUE+LOS+PASOS+%F0%9F%94%A5" alt="Typing SVG" /></a>
+</div>
 
-## 🛠️ INSTALACIÓN EN TERMUX (PASO A PASO)
+### **`🛠️ Instalación por Termux`**
 
-> [!IMPORTANT]
-> Copia y pega cada bloque de código de forma individual para asegurar una instalación correcta.
+<details>
+<summary><b>📋 Instalación Manual - Click para ver los Comandos</b></summary>
 
-### 1️⃣ Configuración de Almacenamiento
+### **🔰 Instalación paso a paso**
+
+> **Nota:** Copie y pegue los comandos en Termux uno por uno.
+
+**1️⃣ Otorgar permisos de almacenamiento:**
 ```bash
 termux-setup-storage
+```
 
-2️⃣ Instalación de Entorno y Librerías
-apt update && apt upgrade -y && pkg install -y git nodejs ffmpeg imagemagick yarn
+**2️⃣ Actualizar paquetes e instalar dependencias:**
+```bash
+apt update && apt upgrade && pkg install -y git nodejs ffmpeg imagemagick yarn
+```
 
-3️⃣ Clonar Repositorio y Entrar a la Carpeta
-git clone [https://github.com/Fer280809/Asta_bot](https://github.com/Fer280809/Asta_bot) && cd Asta_bot
+**3️⃣ Clonar el repositorio:**
+```bash
+git clone https://github.com/Fer280809/Asta_bot && cd Asta_bot
+```
 
-4️⃣ Instalación de Paquetes (NPM)
+**4️⃣ Instalar dependencias con Yarn:**
+```bash
+yarn install
+```
+
+**5️⃣ Instalar dependencias con NPM:**
+```bash
 npm install
+```
 
-5️⃣ Iniciar el Bot (Escaneo QR)
+**6️⃣ Actualizar paquetes:**
+```bash
+npm update
+```
+
+**7️⃣ Iniciar el bot:**
+```bash
 npm start
+```
 
-🕯️ MANTENER EL BOT ACTIVO (MODO 24/7)
-Para que el bot no se apague al cerrar Termux, usa PM2:
-Instalación y encendido:
+> **Importante:** Si aparece **(Y/I/N/O/D/Z) [default=N] ?** use la letra **"y"** y luego **"ENTER"** para continuar con la instalación.
+
+---
+
+### **🔄 Reactivar el Bot (si se detiene)**
+
+Si después de instalar el bot Termux se detiene (pantalla en blanco, pérdida de Internet, reinicio del dispositivo), sigue estos pasos:
+```bash
+cd && cd Asta_bot && npm start
+```
+
+---
+
+### **👑 Volverte Owner del Bot**
+
+Si deseas agregar tu número a la lista de owners del bot:
+```bash
+cd && cd Asta_bot && nano settings.js
+```
+
+> Busca la sección de `global.owner` y agrega tu número. Luego presiona `CTRL + X`, luego `Y` y `ENTER` para guardar.
+
+---
+
+### **🔐 Obtener nuevo código QR**
+
+Si necesitas escanear un nuevo código QR:
+
+**1️⃣ Detener el bot:**
+> Presiona `CTRL + Z` hasta que aparezca: `Asta_bot $`
+
+**2️⃣ Ejecutar comando:**
+```bash
+cd && cd Asta_bot && rm -rf sessions/Principal && npm run qr
+```
+
+---
+
+### **📱 Obtener nuevo código de teléfono**
+
+Si prefieres vincular por código de teléfono:
+```bash
+cd && cd Asta_bot && rm -rf sessions/Principal && npm run code
+```
+
+</details>
+
+<details>
+<summary><b>🜸 Comandos para mantener el Bot activo 24/7</b></summary>
+
+### **⚡ Mantener el Bot siempre activo con PM2**
+
+> **Ejecutar estos comandos dentro de la carpeta Asta_bot**
+
+**Activar Wake Lock e instalar PM2:**
+```bash
 termux-wake-lock && npm i -g pm2 && pm2 start index.js && pm2 save && pm2 logs
+```
 
-Comandos de Consola PM2:
-pm2 stop index     # Detener el bot
-pm2 start index    # Reanudar el bot
-pm2 restart index  # Reiniciar el bot
-pm2 delete index   # Eliminar proceso
+---
 
-🔄 ACTUALIZACIÓN RÁPIDA
-Si ya tienes el bot pero quieres la última versión navideña:
-cd ~/Asta_bot && git pull && npm install && npm start
+#### 📋 Opciones Disponibles con PM2
 
-🛡️ GESTIÓN DE CREDENCIALES
-Vincular nuevo número (Code):
-rm -rf sessions/Principal && npm run code
+**🗑️ Eliminar proceso del bot:**
+```bash
+pm2 delete index
+```
 
-Vincular nuevo QR:
-rm -rf sessions/Principal && npm run qr
+**📊 Ver logs del bot:**
+```bash
+pm2 logs
+```
 
-Editar Propietarios (Owner):
-nano settings.js
+**⏸️ Detener el bot:**
+```bash
+pm2 stop index
+```
 
-📢 COMUNIDAD Y SOPORTE
-<div align="center">
-| RECURSO | ENLACE |
-|---|---|
-| ✨ Canal Oficial | Únete aquí |
-| 💫 Grupo de Soporte | Únete aquí |
-| 🎁 Solicitar Bot | WhatsApp |
+**▶️ Iniciar el bot nuevamente:**
+```bash
+pm2 start index
+```
+
+**🔄 Reiniciar el bot:**
+```bash
+pm2 restart index
+```
+
+**📋 Ver lista de procesos:**
+```bash
+pm2 list
+```
+
+</details>
+
+<details>
+<summary><b>❀ Actualizar Asta-Bot</b></summary>
+
+### **🔄 Actualización Automática**
+
+> **Nota:** Este método actualizará el bot a la última versión. Se conservará la base de datos, pero será necesario volver a vincular el bot.
+
+**Comando de actualización automática:**
+```bash
+grep -q 'bash\|wget' <(dpkg -l) || apt install -y bash wget && wget -O - https://raw.githubusercontent.com/Fer280809/Asta_bot/main/termux.sh | bash
+```
+
+> Este comando realiza un respaldo automático de tu `database.json` y lo integra a la nueva versión.
+
+**⚠️ Importante:** Después de actualizar, deberás volver a escanear el código QR o usar el código de teléfono para vincular nuevamente el bot.
+
+</details>
+
+
+📢 EL BOT SE ACTUALIZA CADA SEMANA O MES Y SE LE HACE MANTENIMIENTO EN ESTE REPOSITORIO
+
+
+
+### **`📹 Video tutorial de instalacion`**
+
+⬇️ Click en la imagen para ir al video⬇️
+
+<a
+href="https://www.youtube.com/watch?v=SYbEOZZ__Wo"><img src="https://github.com/Fer280809/Asta_bot/blob/main/src/catalogo.jpg" height="205px"></a> 
+
 </div>
-👑 LÍDER DEL TALLER
+
+---
+### **`🌐 Enlaces útiles`**
+
+<details>
+ <summary><b>🚀 Enlaces Oficiales </b></summary>
+
+ * ⭐ Canal Oficial  [`¡ÚNETE AHORA!`](https://whatsapp.com/channel/0029VbAoYE99hXF1wm3zmQ21)
+* 💫 Grupo Oficial [`¡ÚNETE AHORA!`](https://chat.whatsapp.com/JONU3lLJhCf0JgCuL13gwk)
+* 🌟 Comunidad Oficial [`¡ÚNETE AHORA!`](https://chat.whatsapp.com/KKwDZn5vDAE6MhZFAcVQeO)
+</details>
+
+<details>
+<summary><b>☎️ Contactos Directos</b></summary>
+
+* 📲 WhatsApp: [`CONTÁCTANOS`](https:/Wa.me/524181450063)
+* 🔥 Solicita bot oficial: [`CONTÁCTANOS`](https://wa.me/524181450063)
+</details>
+
+
 <div align="center">
-<a href="https://github.com/Fer280809">
-<img src="https://github.com/Fer280809.png" width="150" height="150" style="border-radius: 50%; border: 4px solid #008000;">
-</a>
-<h3>𝕱𝖊𝖗𝖓𝖆𝖓𝖉𝖔</h3>
-<p><i>"Creando magia línea por línea"</i></p>
+  <h2>👑 CREADOR DEL BOT 👑</h2>
+  <a href="https://github.com/Fer280809">
+    <img src="https://github.com/Fer280809.png" width="250" height="250" alt="𝕱𝖊𝖗𝖓𝖆𝖓𝖉𝖔" style="border-radius: 50%; border: 5px solid gold; box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);">
+  </a>
+  <h3>𝕱𝖊𝖗𝖓𝖆𝖓𝖉𝖔</h3>
+  <a href="https://github.com/Fer280809">
+    <img src="https://img.shields.io/badge/GitHub-%23121011.svg?style=for-the-badge&logo=github&logoColor=white">
+  </a>
 </div>
-🙏 CRÉDITOS Y COLABORADORES
-<div align="center">
+
+### **`🌟 Colaboradores Destacados`**
 <a href="https://github.com/Fer280809/Asta_bot/graphs/contributors">
-<img src="https://contrib.rocks/image?repo=Fer280809/Asta_bot" alt="Colaboradores">
+<img src="https://contrib.rocks/image?repo=Fer280809/Asta_bot" /> 
 </a>
 
+### **`🙏 Créditos`**
+</a>
+<a href="https://github.com/ScriptNex" style="display:inline-block; margin-right: 10px; text-decoration: none;">
+    <img src="https://github.com/ScriptNex.png" width="130" height="130" alt="Neykoor💜" style="border-radius: 50%;"/>
+</a>
 
-<p>Agradecimientos especiales a <b>Neykoor💜</b> por su gran aporte al proyecto.</p>
-</div>
+<h1 align="center">⚡ EL BOT SE ACTUALIZA CADA DOS SEMANAS O CUANDO SE NESESITA ⚡</h1>
+
 <div align="center">
-<img src="https://www.google.com/search?q=https://readme-typing-svg.herokuapp.com%3Ffont%3DRusso%2BOne%26weight%3D800%26size%3D25%26pause%3D1000%26color%3D008000%26width%3D650%26center%3Dtrue%26vCenter%3Dtrue%26lines%3D🎄+¡FELIZ+NAVIDAD+Y+PRÓSPERO+CÓDIGO!+🎄" alt="Typing SVG">
+  <a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.herokuapp.com?font=Russo+One&weight=800&size=28&pause=1000&color=F7DE00&width=650&center=true&vCenter=true&random=false&width=650&lines=%F0%9F%94%A5+MANT%C3%89N+TU+BOT+SIEMPRE+ACTUALIZADO+%F0%9F%94%A5;%E2%AD%90+NUEVAS+FUNCIONES+CADA+SEMANA+%E2%AD%90;%F0%9F%9A%80+S%C3%8DGUENOS+EN+EL+CANAL+PARA+NOVEDADES+%F0%9F%9A%80" alt="Typing SVG" /></a>
 </div>
-<p align="center">
-<sub>Asta-Bot © 2024 | Desarrollado por Fernando</sub>
-</p>
