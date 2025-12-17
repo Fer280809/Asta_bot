@@ -5,11 +5,10 @@ let handler = async (m, { conn, usedPrefix }) => {
   ).length;
   let libreria = 'Baileys';
   let vs = '2.0.0';
-  let user = m.sender;
-  let username = user.split('@')[0];
+  let userId = m.sender;
 
   let infoText = `╭─━━━━━━━━━━━━━━━─╮
-│ 🎭 ¡Hola @${username}! 💖
+│ 🎭 ¡Hola @${userId.split('@')[0]}! 💖
 ╰─━━━━━━━━━━━━━━━─╯
 ╭─═⊰ 📡 𝐄𝐒𝐓𝐀𝐃𝐎 𝐀𝐂𝐓𝐈𝐕𝐎
 │ 🤖 Estado: ${(conn.user.jid == global.conn.user.jid ? '🟢 PREMIUM' : '🔗 prem-ʙᴏᴛ')}
@@ -23,53 +22,90 @@ let handler = async (m, { conn, usedPrefix }) => {
 ╰───────────────╯
 🌟 *Bienvenido a AstaBot!*`;
 
-  // ENVIAR IMAGEN PRIMERO
-  try {
-    await conn.sendFile(m.chat, 'https://files.catbox.moe/wrwuls.png', 'asta.jpg', infoText, m, false, {
-      mentions: [user]
-    });
-  } catch (e) {
-    console.log(e);
-    await conn.sendMessage(m.chat, { text: infoText, mentions: [user] }, { quoted: m });
-  }
+  let sections = [
+    {
+      title: "📌 COMANDOS HACKER",
+      rows: [
+        { title: "🔎 IANS", rowId: `${usedPrefix}IANS`, description: "Herramienta de búsqueda avanzada" },
+        { title: "🕵️ Argus", rowId: `${usedPrefix}argus`, description: "Ver la velocidad del bot" },
+        { title: "⚙️ MatrixPDF", rowId: `${usedPrefix}matrixpdf`, description: "Descargar PDF malicioso" },
+        { title: "🦠 Virus PC", rowId: `${usedPrefix}viruspc`, description: "Virus para pc" }
+      ]
+    },
+    {
+      title: "📌 PRÓXIMAMENTE",
+      rows: [
+        { title: "📊 Dataminer", rowId: `${usedPrefix}dataminer`, description: "En desarrollo" },
+        { title: "🔐 Cipher", rowId: `${usedPrefix}cipher`, description: "En desarrollo" },
+        { title: "🌐 Netscan", rowId: `${usedPrefix}netscan`, description: "En desarrollo" }
+      ]
+    }
+  ];
 
-  // ESPERAR 1 SEGUNDO Y ENVIAR LA LISTA
-  await new Promise(resolve => setTimeout(resolve, 1000));
-
-  let sections = [{
-    title: "📌 COMANDOS PRINCIPALES",
-    rows: [
-      { title: "🔎 IANS", rowId: `${usedPrefix}IANS`, description: "Herramienta de búsqueda avanzada" },
-      { title: "🕵️ Argus", rowId: `${usedPrefix}argus`, description: "Ver la velocidad del bot" },
-      { title: "⚙️ MatrixPDF", rowId: `${usedPrefix}matrixpdf`, description: "Descargar PDF malicioso" },
-      { title: "🦠 Virus PC", rowId: `${usedPrefix}viruspc`, description: "Virus para pc" },
-      { title: "📊 Dataminer", rowId: `${usedPrefix}dataminer`, description: "Próximamente" },
-      { title: "🔐 Cipher", rowId: `${usedPrefix}cipher`, description: "Próximamente" },
-      { title: "🌐 Netscan", rowId: `${usedPrefix}netscan`, description: "Próximamente" }
-    ]
-  }];
-
-  let listMessage = {
-    text: "🎭 *SELECCIONA UN COMANDO:*",
-    footer: "AstaBot ⚡ | Menú interactivo",
-    title: "⚡ COMANDOS DISPONIBLES",
-    buttonText: "📋 VER OPCIONES",
-    sections
+  // OPCIÓN 1: Lista CON imagen (headerType: 1 para imagen)
+  let listMessageWithImage = {
+    text: infoText,
+    footer: "AstaBot ⚡ | Selecciona un comando",
+    title: "🎭 ASTABOT - MENÚ HACKER",
+    buttonText: "VER COMANDOS 📋",
+    sections: sections,
+    headerType: 1,
+    // Puedes agregar imagen aquí si quieres
+    // image: { url: 'https://files.catbox.moe/wrwuls.png' }
   };
 
+  // OPCIÓN 2: Lista SIN imagen
+  let listMessage = {
+    text: infoText,
+    footer: "AstaBot ⚡ | Selecciona un comando",
+    title: "🎭 ASTABOT - MENÚ HACKER",
+    buttonText: "VER COMANDOS 📋",
+    sections: sections
+  };
+
+  // Intentar enviar
   try {
-    // Enviar la lista como mensaje separado
-    await conn.sendMessage(m.chat, listMessage, { quoted: m });
-  } catch (error) {
-    console.error('Error al enviar lista:', error);
-    // Fallback: enviar como texto simple
-    let fallbackText = `*COMANDOS DISPONIBLES:*\n\n` +
-      sections[0].rows.map((cmd, i) => `${i + 1}. *${cmd.title}* - ${cmd.description}\n   Usa: \`${cmd.rowId}\``).join('\n\n');
+    // Enviar la lista directamente
+    await conn.sendMessage(m.chat, listMessage, { 
+      quoted: m,
+      mentions: [userId]
+    });
     
-    await conn.sendMessage(m.chat, { 
-      text: fallbackText,
-      mentions: [user]
-    }, { quoted: m });
+  } catch (error) {
+    console.error("Error lista:", error);
+    
+    // Si falla, probar método alternativo
+    try {
+      // Método alternativo usando template messages
+      let template = {
+        text: infoText,
+        templateButtons: [
+          { index: 1, urlButton: { displayText: '🔗 GitHub', url: 'https://github.com' } },
+          { index: 1, quickReplyButton: { displayText: `🔎 IANS`, id: `${usedPrefix}IANS` } },
+          { index: 2, quickReplyButton: { displayText: `🕵️ Argus`, id: `${usedPrefix}argus` } },
+          { index: 3, quickReplyButton: { displayText: `⚙️ MatrixPDF`, id: `${usedPrefix}matrixpdf` } },
+          { index: 4, quickReplyButton: { displayText: `🦠 Virus PC`, id: `${usedPrefix}viruspc` } }
+        ]
+      };
+      
+      await conn.sendMessage(m.chat, template, { quoted: m });
+      
+    } catch (err2) {
+      console.error("Error template:", err2);
+      
+      // Último fallback
+      await conn.sendMessage(m.chat, { 
+        text: `${infoText}\n\n` +
+              "*Usa:*\n" +
+              `• ${usedPrefix}IANS\n` +
+              `• ${usedPrefix}argus\n` +
+              `• ${usedPrefix}matrixpdf\n` +
+              `• ${usedPrefix}viruspc\n` +
+              `• ${usedPrefix}dataminer\n` +
+              `• ${usedPrefix}cipher`,
+        mentions: [userId]
+      }, { quoted: m });
+    }
   }
 };
 
