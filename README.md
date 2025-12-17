@@ -56,6 +56,8 @@ href="https://www.mediafire.com/file/pa3r4x9cat0rrq0/F-Droid.apk/file"><img src=
   <a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=800&size=25&pause=1000&color=F70000&width=435&center=true&random=false&width=435&lines=%E2%9A%A1%EF%B8%8F+INSTALACI%C3%93N+R%C3%81PIDA+%E2%9A%A1%EF%B8%8F;%F0%9F%94%A5+SIGUE+LOS+PASOS+%F0%9F%94%A5" alt="Typing SVG" /></a>
 </div>
 
+---
+
 ### **`🛠️ Instalación por Termux`**
 
 <details>
@@ -146,6 +148,9 @@ cd && cd Asta_bot && rm -rf sessions/Principal && npm run code
 ```
 
 </details>
+
+---
+
 
 <details>
 <summary><b>🜸 Comandos para mantener el Bot activo 24/7</b></summary>
