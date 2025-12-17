@@ -28,50 +28,82 @@ const handler = async (m, { conn, text }) => {
         return m.reply('❌ *¡Ese árbol ya está vacío!* No tiene Adornos para robar.');
     }
     
-    // Inicializar ladrón si no existe
+    // Inicializar ladrón si no existe (Mantenido el tema navideño)
     if (!users[robberId]) {
         users[robberId] = {
             harem: [],
             favorites: [],
-            // Usar el mensaje navideño predeterminado
             claimMessage: '✨ *¡Feliz Navidad!* {user} ha añadido a {character} a su *Colección de Adornos Festivos* (Harem). ¡Qué gran regalo!',
             lastRoll: 0,
             votes: {},
-            gachaCoins: 1000
+            gachaCoins: 1000,
+            grinchPass: { uses: 0, expires: 0, lastGrant: 0 } // Asegurar la estructura
         };
     }
     
+    // Asegurar estructura del Pase del Grinch
+    if (!users[robberId].grinchPass) {
+        users[robberId].grinchPass = { uses: 0, expires: 0, lastGrant: 0 };
+    }
+
     // Cooldown de 6 horas
     const now = Date.now();
     const cooldown = 21600000; // 6 horas
     
-    if (users[robberId].lastRob && (now - users[robberId].lastRob) < cooldown) {
-        const remaining = Math.ceil((cooldown - (now - users[robberId].lastRob)) / 3600000);
-        return m.reply(`⏰ *El Grinch está cansado.* Debes esperar ${remaining} horas para intentar robar Adornos de nuevo.`);
+    let usePass = false;
+    let passUses = users[robberId].grinchPass.uses || 0;
+    let passExpires = users[robberId].grinchPass.expires || 0;
+
+    // --- Lógica del Pase del Grinch ---
+    if (passUses > 0 && now < passExpires) {
+        // Pase activo y con usos restantes
+        users[robberId].grinchPass.uses -= 1;
+        usePass = true;
+    } else if (passUses > 0 && now >= passExpires) {
+        // Pase expirado, pero aún tiene usos. Resetear.
+        users[robberId].grinchPass.uses = 0;
     }
-    
+    // --- Fin Lógica del Pase ---
+
+    if (!usePass) {
+        // Aplicar cooldown normal si no se usó el pase
+        if (users[robberId].lastRob && (now - users[robberId].lastRob) < cooldown) {
+            const remaining = Math.ceil((cooldown - (now - users[robberId].lastRob)) / 3600000);
+            return m.reply(`⏰ *El Grinch está cansado.* Debes esperar ${remaining} horas para intentar robar Adornos de nuevo.`);
+        }
+    } else {
+        // Mensaje de uso del pase
+        m.reply(`😈 *Pase del Grinch usado.* Te quedan ${users[robberId].grinchPass.uses} robos sin cooldown.`);
+    }
+
     // Probabilidad de éxito: 30%
     const success = Math.random() < 0.3;
     
     if (!success) {
-        users[robberId].lastRob = now;
+        // Si falló, actualizamos el cooldown normal si NO usó el pase
+        if (!usePass) {
+            users[robberId].lastRob = now;
+        }
+        
         fs.writeFileSync(usersPath, JSON.stringify(users, null, 2), 'utf-8');
         return m.reply('❌ *¡Intento del Grinch fallido!* Te atraparon los Duendes de Seguridad.');
     }
     
-    // Seleccionar personaje aleatorio (Lógica intacta)
+    // Seleccionar personaje aleatorio
     const randomIndex = Math.floor(Math.random() * users[victimId].harem.length);
     const stolenChar = users[victimId].harem[randomIndex];
     
     // Verificar si ya tiene el personaje
     const alreadyHas = users[robberId].harem.find(c => c.id === stolenChar.id);
     if (alreadyHas) {
-        users[robberId].lastRob = now;
+        if (!usePass) {
+            users[robberId].lastRob = now;
+        }
         fs.writeFileSync(usersPath, JSON.stringify(users, null, 2), 'utf-8');
         return m.reply('⚠️ *Robaste un Adorno que ya tenías.* No se agregó a tu Colección.');
     }
     
-    // Transferir personaje (Lógica intacta)
+    // Transferir personaje
     users[robberId].harem.push({ ...stolenChar, claimedAt: now, forSale: false, salePrice: 0 });
     users[victimId].harem.splice(randomIndex, 1);
     
@@ -86,7 +118,10 @@ const handler = async (m, { conn, text }) => {
     // Eliminar de favoritos de la víctima (Lógica intacta)
     users[victimId].favorites = users[victimId].favorites.filter(id => id !== stolenChar.id);
     
-    users[robberId].lastRob = now;
+    // Aplicar cooldown normal solo si NO usó el pase
+    if (!usePass) {
+        users[robberId].lastRob = now;
+    }
     
     fs.writeFileSync(usersPath, JSON.stringify(users, null, 2), 'utf-8');
     
