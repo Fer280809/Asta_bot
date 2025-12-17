@@ -499,47 +499,30 @@ const MenuOrder = [
 ];
 // ----------------------------------------------------
 
-
 let handler = async (m, { conn, usedPrefix, text }) => {
-    if (MenuOrder.length === 0) return m.reply('❌ El menú está vacío o no configurado.');
-    
+    if (MenuOrder.length === 0) return m.reply('❌ El menú está vacío.');
+
     let totalreg = Object.keys(global.db.data.users).length;
     let userId = m.sender;
     const totalCategories = MenuOrder.length;
-    
-    // 1. Determinar la categoría actual
-    let currentCategoryKey = MenuOrder[0];
-    let currentIndex = 0;
 
-    // Si se pasa un argumento numérico (desde un botón), úsalo como índice
+    // 1. Determinar el índice actual
+    let currentIndex = 0;
     if (text && !isNaN(parseInt(text))) {
         currentIndex = parseInt(text);
-        
-        // Asegurar que el índice esté dentro del rango
-        if (currentIndex >= 0 && currentIndex < totalCategories) {
-            currentCategoryKey = MenuOrder[currentIndex];
-        } else {
-            currentIndex = 0;
-            currentCategoryKey = MenuOrder[0];
-        }
     }
-
+    
+    currentIndex = Math.max(0, Math.min(currentIndex, totalCategories - 1));
+    let currentCategoryKey = MenuOrder[currentIndex];
     const currentMenu = MenuData[currentCategoryKey];
 
-    if (!currentMenu) return m.reply('❌ Categoría de menú no encontrada. Intente de nuevo.');
-
-    // 2. Generar el cuerpo del mensaje
+    // 2. Generar el contenido del texto
     let bodyContent = '';
-    
     if (typeof currentMenu.body === 'function') {
-        // Para la página de inicio (con datos dinámicos)
         bodyContent = currentMenu.body(totalreg, userId, conn);
     } else {
-        // Para las páginas de comandos (estáticas)
-        const currentPageNumber = currentIndex + 1;
-        
         bodyContent = `
-╭ *Página ${currentPageNumber}/${totalCategories}*
+╭ *Página ${currentIndex + 1}/${totalCategories}*
 ╰──────────────────
 
 ┏━━━━━━━━━━━━━━┓
@@ -548,70 +531,48 @@ let handler = async (m, { conn, usedPrefix, text }) => {
 ${currentMenu.body}
 `.trim();
     }
-    
-    let infoText = bodyContent;
-    
-    // 3. Lógica de Botones Siguiente/Anterior
+
+    // 3. Configurar Botones
     let buttons = [];
-
-    // Botón ANTERIOR
     if (currentIndex > 0) {
-        const prevIndex = currentIndex - 1;
-        buttons.push({ 
-            // Envía el índice de la categoría anterior
-            buttonId: usedPrefix + 'menu2 ' + prevIndex, 
-            buttonText: { displayText: '◀️ Anterior' },
-type: 1 
-        });
+        buttons.push({ buttonId: `${usedPrefix}menu2 ${currentIndex - 1}`, buttonText: { displayText: '◀️ Anterior' }, type: 1 });
     }
-
-    // Botón SIGUIENTE
     if (currentIndex < totalCategories - 1) {
-        const nextIndex = currentIndex + 1;
-        buttons.push({ 
-            // Envía el índice de la categoría siguiente
-            buttonId: usedPrefix + 'menu2 ' + nextIndex, 
-            buttonText: { displayText: 'Siguiente ▶️' }, 
-            type: 1 
-        });
+        buttons.push({ buttonId: `${usedPrefix}menu2 ${currentIndex + 1}`, buttonText: { displayText: 'Siguiente ▶️' }, type: 1 });
     }
-    
-    // Botón Fijo (Sup-Bot/code)
-    buttons.push({ 
-        buttonId: usedPrefix + 'code', 
-        buttonText: { displayText: '🤖 Sup-Bot' }, 
-        type: 1 
-    });
+    buttons.push({ buttonId: `${usedPrefix}code`, buttonText: { displayText: '🤖 Sup-Bot' }, type: 1 });
 
-    // --- 4. ENVÍO DEL MENSAJE ---
+    // 4. Lógica de "Mensaje Maestro" (Igual que en tu comando Update)
     let mediaUrl = 'https://files.catbox.moe/lajq7h.jpg';
+    
+    // Verificamos si el usuario está interactuando con un mensaje previo del bot
+    const isButtonInteraction = m.quoted && m.quoted.fromMe && m.quoted.buttons;
 
-    try {
+    if (isButtonInteraction) {
+        // ACTUALIZACIÓN DIRECTA (Edita el mensaje del que proviene el botón)
+        await conn.sendMessage(m.chat, {
+            text: bodyContent,
+            edit: m.quoted.vM.key, // Usamos la llave del mensaje citado, igual que en Update
+            buttons: buttons,
+            footer: "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』⚡",
+            headerType: 1,
+            mentions: [userId]
+        });
+    } else {
+        // PRIMER ENVÍO (Cuando el usuario escribe el comando manualmente)
         await conn.sendMessage(m.chat, {
             image: { url: mediaUrl },
-            caption: infoText,
+            caption: bodyContent,
             footer: "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』⚡",
             buttons: buttons,
             headerType: 4,
             mentions: [userId]
         }, { quoted: m });
-    } catch (e) {
-        // Fallback sin imagen (HeaderType 1)
-        let buttonMessage = {
-            text: infoText,
-            footer: "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』⚡",
-            buttons: buttons,
-            headerType: 1,
-            mentions: [userId]
-        };
-        await conn.sendMessage(m.chat, buttonMessage, { quoted: m });
     }
 };
 
-// 5. Configuración del comando: ¡Mantener los nombres originales!
 handler.help = ['menu2'];
 handler.tags = ['main'];
 handler.command = ['menú2', 'menu2', 'help2'];
 
 export default handler;
- 
