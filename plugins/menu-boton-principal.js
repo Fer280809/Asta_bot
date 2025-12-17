@@ -36,7 +36,7 @@ Selecciona una opción:`;
   ];
   
   // URL de imagen navideña (recomiendo cambiarla por una imagen navideña)
-  let mediaUrl = 'https://files.catbox.moe/lajq7h.jpg'; // Cambia esto por una imagen navideña
+  let mediaUrl = 'https://files.catbox.moe/nqvhaq.jpg'; // Cambia esto por una imagen navideña
   // Sugerencias de imágenes navideñas gratuitas:
   // https://images.unsplash.com/photo-1547716750-5c2e2c2b9d81 (Navidad)
   // https://images.unsplash.com/photo-1512389142860-9c449e58a543 (Árbol navideño)
