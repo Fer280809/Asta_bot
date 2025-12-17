@@ -543,7 +543,7 @@ ${currentMenu.body}
     buttons.push({ buttonId: `${usedPrefix}code`, buttonText: { displayText: '🤖 Sub-Bot' }, type: 1 });
 
     // 4. Lógica de "Mensaje Maestro" (Igual que en tu comando Update)
-    let mediaUrl = 'https://files.catbox.moe/lajq7h.jpg';
+    let mediaUrl = 'https://files.catbox.moe/nqvhaq.jpg';
     
     // Verificamos si el usuario está interactuando con un mensaje previo del bot
     const isButtonInteraction = m.quoted && m.quoted.fromMe && m.quoted.buttons;
