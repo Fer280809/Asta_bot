@@ -357,20 +357,134 @@ function obtenerContenidoCategoria(categoria, usedPrefix, m) {
     break;
             
         case 'ANIME':
-            titulo = '🌸 ANIME';
-            descripcion = 'Comandos de anime, wallpapers';
-            contenido = `*COMANDOS ANIME*
+    titulo = '🎌 COMANDOS DE ANIME';
+    descripcion = 'Reacciones, waifus y contenido otaku';
+    
+    contenido = `
+╭─❖ *🎭 REACCIONES ANIME* ❖─╮
+├─🌸 *${usedPrefix}angry* @usuario
+│  ╰─ Enojarse con alguien
+├─🌸 *${usedPrefix}bath* @usuario
+│  ╰─ Bañarse o ducharse
+├─🌸 *${usedPrefix}bite* @usuario
+│  ╰─ Morder a alguien
+├─🌸 *${usedPrefix}bleh* @usuario
+│  ╰─ Sacar la lengua
+├─🌸 *${usedPrefix}blush* @usuario
+│  ╰─ Sonrojarse o avergonzarse
+├─🌸 *${usedPrefix}bored* @usuario
+│  ╰─ Mostrar aburrimiento
+├─🌸 *${usedPrefix}clap* @usuario
+│  ╰─ Aplaudir o felicitar
+├─🌸 *${usedPrefix}coffee* @usuario
+│  ╰─ Tomar un café
+├─🌸 *${usedPrefix}cry* @usuario
+│  ╰─ Llorar por algo
+├─🌸 *${usedPrefix}cuddle* @usuario
+│  ╰─ Acurrucarse o arrullar
+├─🌸 *${usedPrefix}dance* @usuario
+│  ╰─ Bailar o danzar
+├─🌸 *${usedPrefix}dramatic* @usuario
+│  ╰─ Dramatizar una situación
+├─🌸 *${usedPrefix}drunk* @usuario
+│  ╰─ Actuar como borracho
+├─🌸 *${usedPrefix}eat* @usuario
+│  ╰─ Comer algo delicioso
+├─🌸 *${usedPrefix}facepalm* @usuario
+│  ╰─ Palmada en la cara
+├─🌸 *${usedPrefix}happy* @usuario
+│  ╰─ Mostrar felicidad
+├─🌸 *${usedPrefix}hug* @usuario
+│  ╰─ Dar un abrazo
+├─🌸 *${usedPrefix}impregnate* @usuario
+│  ╰─ Embarazar a alguien
+├─🌸 *${usedPrefix}kill* @usuario
+│  ╰─ Matar o atacar
+├─🌸 *${usedPrefix}kiss* @usuario
+│  ╰─ Dar un beso
+├─🌸 *${usedPrefix}kisscheek* @usuario
+│  ╰─ Beso en la mejilla
+├─🌸 *${usedPrefix}laugh* @usuario
+│  ╰─ Reírse a carcajadas
+├─🌸 *${usedPrefix}lick* @usuario
+│  ╰─ Lamer a alguien
+├─🌸 *${usedPrefix}love* @usuario
+│  ╰─ Enamorarse o amar
+├─🌸 *${usedPrefix}pat* @usuario
+│  ╰─ Acariciar suavemente
+├─🌸 *${usedPrefix}poke* @usuario
+│  ╰─ Picar o tocar
+├─🌸 *${usedPrefix}pout* @usuario
+│  ╰─ Hacer pucheros
+├─🌸 *${usedPrefix}punch* @usuario
+│  ╰─ Dar un puñetazo
+├─🌸 *${usedPrefix}run* @usuario
+│  ╰─ Correr o huir
+├─🌸 *${usedPrefix}sad* @usuario
+│  ╰─ Mostrar tristeza
+├─🌸 *${usedPrefix}scared* @usuario
+│  ╰─ Asustarse o temer
+├─🌸 *${usedPrefix}seduce* @usuario
+│  ╰─ Seducir a alguien
+├─🌸 *${usedPrefix}shy* @usuario
+│  ╰─ Mostrar timidez
+├─🌸 *${usedPrefix}slap* @usuario
+│  ╰─ Dar una bofetada
+├─🌸 *${usedPrefix}sleep* @usuario
+│  ╰─ Dormir o descansar
+├─🌸 *${usedPrefix}smoke* @usuario
+│  ╰─ Fumar un cigarro
+├─🌸 *${usedPrefix}spit* @usuario
+│  ╰─ Escupir o despreciar
+├─🌸 *${usedPrefix}step* @usuario
+│  ╰─ Pisar a alguien
+├─🌸 *${usedPrefix}think* @usuario
+│  ╰─ Pensar o reflexionar
+├─🌸 *${usedPrefix}walk* @usuario
+│  ╰─ Caminar o pasear
+├─🌸 *${usedPrefix}wink* @usuario
+│  ╰─ Guiñar el ojo
+├─🌸 *${usedPrefix}cringe* @usuario
+│  ╰─ Avergonzarse
+├─🌸 *${usedPrefix}smug* @usuario
+│  ╰─ Presumir con estilo
+├─🌸 *${usedPrefix}smile* @usuario
+│  ╰─ Sonreír tiernamente
+├─🌸 *${usedPrefix}highfive* @usuario
+│  ╰─ Chocar los cinco
+├─🌸 *${usedPrefix}bully* @usuario
+│  ╰─ Molestar o acosar
+├─🌸 *${usedPrefix}handhold* @usuario
+│  ╰─ Tomarse de la mano
+└─🌸 *${usedPrefix}wave* @usuario
+   ╰─ Saludar con la mano
 
-🖼️ *Imágenes:*
-• ${usedPrefix}animepic
-• ${usedPrefix}wallpaper
+╭─❖ *💖 WAIFUS Y PAREJAS* ❖─╮
+├─💞 *${usedPrefix}waifu*
+│  ╰─ Waifu aleatoria
+└─💑 *${usedPrefix}ppcouple*
+   ╰─ Imágenes de parejas anime
 
-ℹ️ *Información:*
-• ${usedPrefix}animeinfo
-• ${usedPrefix}character
+╭─❖ *🐉 POKÉMON* ❖─╮
+├─🔍 *${usedPrefix}pokedex* <nombre>
+│  ╰─ Información Pokémon
+└─🐾 *${usedPrefix}pokemon* <nombre>
+   ╰─ Buscar Pokémon
 
-*Añade aquí tus comandos específicos...*`;
-            break;
+╭─❖ *ℹ️ INFORMACIÓN* ❖─╮
+├─📺 *${usedPrefix}anime* <nombre>
+│  ╰─ Buscar anime
+├─📚 *${usedPrefix}manga* <nombre>
+│  ╰─ Buscar manga
+└─👤 *${usedPrefix}character* <nombre>
+   ╰─ Buscar personaje
+
+╭─❖ *🖼️ IMÁGENES* ❖─╮
+├─🎨 *${usedPrefix}animepic*
+│  ╰─ Imagen anime aleatoria
+└─🖼️ *${usedPrefix}wallpaper*
+   ╰─ Wallpaper anime HD
+    break;
             
         case 'NSFW':
             titulo = '🔞 NSFW';
