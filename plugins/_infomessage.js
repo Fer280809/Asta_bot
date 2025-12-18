@@ -16,13 +16,13 @@ handler.before = async function (m, { conn, participants, groupMetadata }) {
     const users = m.messageStubParameters[0]
     const usuario = await resolveLidToRealJid(m?.sender, conn, m?.chat)
     const groupAdmins = participants.filter(p => p.admin)
-    
+
     const rcanal = { 
         contextInfo: { 
             isForwarded: true, 
             forwardedNewsletterMessageInfo: { newsletterJid: channelRD.id, serverMessageId: '', newsletterName: channelRD.name }, 
             externalAdReply: { 
-                title: "𐔌 . ⋮ ᗩ ᐯ I Տ O .ᐟ ֹ ₊ ꒱", 
+                title: "🎅 𝘼𝙎𝙏𝘼 𝘽𝙊𝙏 • 𝙉𝘼𝙑𝙄𝘿𝘼𝘿 🎄", 
                 body: textbot, 
                 mediaUrl: null, 
                 description: null, 
@@ -35,17 +35,17 @@ handler.before = async function (m, { conn, participants, groupMetadata }) {
             mentionedJid: null 
         }
     }
-    
+
     const pp = await conn.profilePictureUrl(m.chat, 'image').catch(_ => null) || 'https://files.catbox.moe/xr2m6u.jpg'
 
-    // Mensajes editados
-    const nombre = `╭━〔✦ NOMBRE DEL GRUPO CAMBIADO ✦〕━╮\n┃ > @${usuario.split('@')[0]} ha cambiado el nombre del grupo.\n┃ > Nuevo nombre: *${m.messageStubParameters[0]}*\n╰━━━━━━━━━━━━╯`
-    const foto = `╭━〔✦ IMAGEN DEL GRUPO CAMBIADA ✦〕━╮\n┃ > Acción hecha por: @${usuario.split('@')[0]}\n╰━━━━━━━━━━━━╯`
-    const edit = `╭━〔✦ CONFIGURACIÓN DE GRUPO ✦〕━╮\n┃ > @${usuario.split('@')[0]} ha permitido que ${m.messageStubParameters[0] == 'on' ? 'solo admins' : 'todos'} puedan configurar el grupo.\n╰━━━━━━━━━━━━╯`
-    const newlink = `╭━〔✦ ENLACE RESTABLECIDO ✦〕━╮\n┃ > Acción hecha por: @${usuario.split('@')[0]}\n╰━━━━━━━━━━━━╯`
-    const status = `╭━〔✦ ESTADO DEL GRUPO ✦〕━╮\n┃ > El grupo ha sido ${m.messageStubParameters[0] == 'on' ? '*cerrado*' : '*abierto*'} por @${usuario.split('@')[0]}\n┃ > Ahora ${m.messageStubParameters[0] == 'on' ? '*solo admins*' : '*todos*'} pueden enviar mensajes.\n╰━━━━━━━━━━━━╯`
-    const admingp = `╭━〔✦ NUEVO ADMIN ✦〕━╮\n┃ > @${users.split('@')[0]} ahora es admin del grupo.\n┃ > Acción hecha por: @${usuario.split('@')[0]}\n╰━━━━━━━━━━━━╯`
-    const noadmingp = `╭━〔✦ ADMIN REMOVIDO ✦〕━╮\n┃ > @${users.split('@')[0]} deja de ser admin del grupo.\n┃ > Acción hecha por: @${usuario.split('@')[0]}\n╰━━━━━━━━━━━━╯`
+    // Mensajes editados con estilo navideño 🎄
+    const nombre = `╭━〔🎄 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀𝙇 𝙂𝙍𝙐𝙋𝙊 𝘾𝘼𝙈𝘽𝙄𝘼𝘿𝙊 🎅〕━╮\n┃ ✨ @${usuario.split('@')[0]} ha cambiado el nombre del grupo\n┃ 🎁 *Nuevo nombre:* ${m.messageStubParameters[0]}\n╰━━━━━━━━━━━━━━━━━━❄️`
+    const foto = `╭━〔🎁 𝙄𝙈𝘼𝙂𝙀𝙉 𝘿𝙀𝙇 𝙂𝙍𝙐𝙋𝙊 𝘾𝘼𝙈𝘽𝙄𝘼𝘿𝘼 🎁〕━╮\n┃ ⛄ Acción realizada por: @${usuario.split('@')[0]}\n┃ 🎶 ¡Nueva foto navideña! ✨\n╰━━━━━━━━━━━━━━━━━━❄️`
+    const edit = `╭━〔✨ 𝘾𝙊𝙉𝙁𝙄𝙂𝙐𝙍𝘼𝘾𝙄Ó𝙉 𝘿𝙀 𝙂𝙍𝙐𝙋𝙊 ✨〕━╮\n┃ 🦌 @${usuario.split('@')[0]} ha permitido que\n┃ ${m.messageStubParameters[0] == 'on' ? '🎅 *solo admins*' : '🎄 *todos*'} puedan configurar el grupo\n╰━━━━━━━━━━━━━━━━━━❄️`
+    const newlink = `╭━〔🔗 𝙀𝙉𝙇𝘼𝘾𝙀 𝙍𝙀𝙎𝙏𝘼𝘽𝙇𝙀𝘾𝙄𝘿𝙊 🎄〕━╮\n┃ 🎁 Acción realizada por: @${usuario.split('@')[0]}\n┃ ⛄ ¡Nuevo enlace navideño! 🎅\n╰━━━━━━━━━━━━━━━━━━❄️`
+    const status = `╭━〔⛄ 𝙀𝙎𝙏𝘼𝘿𝙊 𝘿𝙀𝙇 𝙂𝙍𝙐𝙋𝙊 🎅〕━╮\n┃ 🎄 El grupo ha sido ${m.messageStubParameters[0] == 'on' ? '*cerrado* 🔒' : '*abierto* 🎊'} por @${usuario.split('@')[0]}\n┃ ✨ Ahora ${m.messageStubParameters[0] == 'on' ? '*solo admins* 🎅' : '*todos* 🎄'} pueden enviar mensajes\n╰━━━━━━━━━━━━━━━━━━❄️`
+    const admingp = `╭━〔🎄 𝙉𝙐𝙀𝙑𝙊 𝘼𝘿𝙈𝙄𝙉 𝙉𝘼𝙑𝙄𝘿𝙀Ñ𝙊 🎄〕━╮\n┃ 🎁 @${users.split('@')[0]} ahora es admin del grupo\n┃ 🎅 Acción realizada por: @${usuario.split('@')[0]}\n┃ ✨ ¡Felicidades en esta navidad! 🎉\n╰━━━━━━━━━━━━━━━━━━❄️`
+    const noadmingp = `╭━〔🎅 𝘼𝘿𝙈𝙄𝙉 𝙍𝙀𝙈𝙊𝙑𝙄𝘿𝙊 🎅〕━╮\n┃ 🎄 @${users.split('@')[0]} deja de ser admin del grupo\n┃ 🦌 Acción realizada por: @${usuario.split('@')[0]}\n┃ ⛄ ¡Que la magia navideña te acompañe! ✨\n╰━━━━━━━━━━━━━━━━━━❄️`
 
     // Eliminación de sesiones para evitar "undefined"
     if (chat.detect && m.messageStubType == 2) {
@@ -54,7 +54,7 @@ handler.before = async function (m, { conn, participants, groupMetadata }) {
         for (const file of await fs.promises.readdir(sessionPath)) {
             if (file.includes(uniqid)) {
                 await fs.promises.unlink(path.join(sessionPath, file))
-                console.log(`${chalk.yellow.bold('✎ Delete!')} ${chalk.greenBright(`'${file}'`)}\n${chalk.redBright('Eliminado para evitar "undefined" en chat.')}`)
+                console.log(`${chalk.yellow.bold('🎅 ¡Eliminado!')} ${chalk.greenBright(`'${file}'`)}\n${chalk.redBright('Eliminado para evitar "undefined" en el chat navideño.')}`)
             }
         }
     }
