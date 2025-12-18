@@ -1,7 +1,8 @@
+
 let handler = async (m, { conn, usedPrefix }) => {
 if (!db.data.chats[m.chat].economy && m.isGroup) {
   return m.reply(
-    `🚫 *Economía desactivada*\n\nLos comandos de economía están desactivados en este grupo.\n\n🛡️ *Un administrador* puede activarlos con:\n» *${usedPrefix}economy on*`
+    `🎄 *¡Economía navideña desactivada!* 🎅\n\nLos comandos de economía están desactivados en este grupo.\n\n🎁 *Un administrador* puede activarlos con:\n» *${usedPrefix}economy on*`
   )
 }
 
@@ -21,7 +22,7 @@ let name = await (async () =>
   })()
 )()
 
-if (!(who in global.db.data.users)) return m.reply(`⚠️ *El usuario no está registrado en mi base de datos.*`)
+if (!(who in global.db.data.users)) return m.reply(`🎅 *¡El usuario no está registrado en mi base de datos navideña!* ✨`)
 
 let user = global.db.data.users[who]
 let coin = user.coin || 0
@@ -29,16 +30,16 @@ let bank = user.bank || 0
 let total = coin + bank
 
 const texto = `
-┏━━━━━━━━━━━━━━━━━━━┓
-     💰 *BALANCE ACTUAL* 💰
-┗━━━━━━━━━━━━━━━━━━━┛
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+     🎄 *BALANCE NAVIDEÑO* 🎅
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
-👤 *Usuario:* ${name}
-🪙 *Cartera:* ¥${coin.toLocaleString()} ${currency}
-🏦 *Banco:* ¥${bank.toLocaleString()} ${currency}
-💵 *Total:* ¥${total.toLocaleString()} ${currency}
+⛄ *Usuario:* ${name}
+🎄 *Cartera:* ¥${coin.toLocaleString()} ${currency}
+🎅 *Banco:* ¥${bank.toLocaleString()} ${currency}
+🎁 *Total:* ¥${total.toLocaleString()} ${currency}
 
-💡 *Consejo:* Protege tu dinero depositándolo en el banco:
+✨ *Consejo del elfo:* Protege tu dinero navideño depositándolo en el banco:
 » *${usedPrefix}deposit cantidad*
 `
 
