@@ -6,132 +6,16 @@ import fs, { unwatchFile, watchFile } from "fs"
 import chalk from "chalk"
 import fetch from "node-fetch"
 import ws from "ws"
+// Importación necesaria para la nueva detección de admins
 import { jidNormalizedUser, areJidsSameUser } from '@whiskeysockets/baileys'
 
-// ============ MANTENIENDO LAS FUNCIONES ORIGINALES ============
 const isNumber = x => typeof x === "number" && !isNaN(x)
 const delay = ms => isNumber(ms) && new Promise(resolve => setTimeout(function () {
     clearTimeout(this)
     resolve()
 }, ms))
 
-// Cache para metadatos de grupos (OPTIMIZACIÓN NUEVA PERO SEGURA)
-const groupMetadataCache = new Map()
-const CACHE_TTL = 5 * 60 * 1000 // 5 minutos
-
-// ============ FUNCIONES AUXILIARES OPTIMIZADAS (MANTIENEN COMPATIBILIDAD) ============
-
-/**
- * Obtiene metadatos de grupo con cache (REEMPLAZO TRANSPARENTE)
- */
-async function getCachedGroupMetadata(conn, chatId) {
-    if (!chatId.endsWith('@g.us')) return null
-    
-    const cached = groupMetadataCache.get(chatId)
-    if (cached && (Date.now() - cached.timestamp) < CACHE_TTL) {
-        return cached.data
-    }
-    
-    try {
-        // Usa la misma lógica original pero con cache
-        const metadata = global.cachedGroupMetadata 
-            ? await global.cachedGroupMetadata(chatId).catch((_) => null)
-            : await conn.groupMetadata(chatId).catch((_) => null)
-            
-        if (metadata) {
-            groupMetadataCache.set(chatId, {
-                data: metadata,
-                timestamp: Date.now()
-            })
-        }
-        return metadata || {}
-    } catch {
-        return {}
-    }
-}
-
-/**
- * Detección optimizada de admins (MANTIENE TODAS LAS VARIABLES ORIGINALES)
- */
-async function detectAdmins(conn, m) {
-    if (!m.isGroup) {
-        return {
-            participants: [],
-            groupMetadata: {},
-            userGroup: {},
-            botGroup: {},
-            isRAdmin: false,
-            isAdmin: false,
-            isBotAdmin: false
-        }
-    }
-    
-    // Usa función cacheada en lugar de llamadas repetidas
-    const groupMetadata = await getCachedGroupMetadata(conn, m.chat)
-    const participants = Array.isArray(groupMetadata?.participants) ? groupMetadata.participants : []
-    
-    // === MANTENIENDO EXACTAMENTE LA LÓGICA ORIGINAL PERO OPTIMIZADA ===
-    
-    // Funciones auxiliares (COPIADAS DEL ORIGINAL)
-    const decode = (j) => conn.decodeJid(j)
-    const norm = (j) => jidNormalizedUser(decode(j))
-    const numOnly = (j) => String(decode(j)).split('@')[0].replace(/[^0-9]/g, '')
-    
-    // Identificación del bot (MISMA LÓGICA)
-    const meIdRaw = conn.user?.id || conn.user?.jid 
-    const meLidRaw = (conn.user?.lid || conn?.user?.lid || '').toString().replace(/:.*/, '') || null 
-    const botNum = numOnly(meIdRaw)
-    
-    const botCandidates = [
-        decode(meIdRaw),
-        jidNormalizedUser(decode(meIdRaw)),
-        botNum,
-        meLidRaw && `${meLidRaw}@lid`,
-        meLidRaw && jidNormalizedUser(`${meLidRaw}@lid`),
-        meLidRaw && `${meLidRaw}@s.whatsapp.net`
-    ].filter(Boolean)
-    
-    const senderCandidates = [decode(m.sender), jidNormalizedUser(decode(m.sender)), numOnly(m.sender)]
-    
-    // Mapeo de participantes (MÁS RÁPIDO PERO MISMO RESULTADO)
-    const participantsMap = {}
-    for (const p of participants) {
-        const raw = p.jid || p.id
-        const dj = decode(raw)
-        const nj = jidNormalizedUser(dj)
-        const no = numOnly(dj)
-        participantsMap[dj] = p
-        participantsMap[nj] = p
-        participantsMap[no] = p
-    }
-    
-    // Función pick (MISMA LÓGICA)
-    const pick = (cands) => {
-        for (const k of cands) if (participantsMap[k]) return participantsMap[k]
-        return participants.find((p) => cands.some((c) => areJidsSameUser(norm(p.jid || p.id), jidNormalizedUser(decode(c))))) || null
-    }
-    
-    // Asignación con nombres EXACTAMENTE IGUALES
-    const userGroup = m.isGroup ? pick(senderCandidates) || {} : {}
-    const botGroup = m.isGroup ? pick(botCandidates) || {} : {}
-    
-    const isRAdmin = userGroup?.admin === 'superadmin'
-    const isAdmin = isRAdmin || userGroup?.admin === 'admin' || userGroup?.admin === true
-    const isBotAdmin = botGroup?.admin === 'admin' || botGroup?.admin === 'superadmin' || botGroup?.admin === true
-    
-    return {
-        participants,
-        groupMetadata,
-        userGroup,
-        botGroup,
-        isRAdmin,
-        isAdmin,
-        isBotAdmin
-    }
-}
-
 export async function handler(chatUpdate) {
-    // ============ INICIALIZACIÓN IDÉNTICA ============
     this.msgqueque = this.msgqueque || []
     this.uptime = this.uptime || Date.now()
     if (!chatUpdate) return
@@ -140,13 +24,10 @@ export async function handler(chatUpdate) {
     if (!m) return
     if (global.db.data == null)
         await global.loadDatabase()
-    
     try {
         m = smsg(this, m) || m
         if (!m) return
         m.exp = 0
-        
-        // ============ SECCIÓN DE INICIALIZACIÓN DE DB (EXACTAMENTE IGUAL) ============
         try {
             const user = global.db.data.users[m.sender]
             if (typeof user !== "object") {
@@ -193,7 +74,6 @@ export async function handler(chatUpdate) {
                 afkReason: "",
                 warn: 0
             }
-            
             const chat = global.db.data.chats[m.chat]
             if (typeof chat !== "object") {
                 global.db.data.chats[m.chat] = {}
@@ -225,7 +105,6 @@ export async function handler(chatUpdate) {
                 economy: true,
                 gacha: true
             }
-            
             const settings = global.db.data.settings[this.user.jid]
             if (typeof settings !== "object") {
                 global.db.data.settings[this.user.jid] = {}
@@ -246,11 +125,8 @@ export async function handler(chatUpdate) {
         } catch (e) {
             console.error(e)
         }
-        
-        // ============ MANTENIENDO EL CÓDIGO ORIGINAL PERO LIMPIO ============
         if (typeof m.text !== "string") m.text = ""
         const user = global.db.data.users[m.sender]
-        
         try {
             const actual = user.name || ""
             const nuevo = m.pushName || await this.getName(m.sender)
@@ -258,18 +134,14 @@ export async function handler(chatUpdate) {
                 user.name = nuevo
             }
         } catch {}
-        
         const chat = global.db.data.chats[m.chat]
         const settings = global.db.data.settings[this.user.jid]
-        
         const isROwner = [...global.owner.map((number) => number)].map(v => v.replace(/[^0-9]/g, "") + "@s.whatsapp.net").includes(m.sender)
         const isOwner = isROwner || m.fromMe
         const isPrems = isROwner || global.prems.map(v => v.replace(/[^0-9]/g, "") + "@s.whatsapp.net").includes(m.sender) || user.premium == true
         const isOwners = [this.user.jid, ...global.owner.map((number) => number + "@s.whatsapp.net")].includes(m.sender)
-        
         if (settings.self && !isOwners) return
         if (settings.gponly && !isOwners && !m.chat.endsWith('g.us') && !/code|p|ping|qr|estado|status|infobot|botinfo|report|reportar|invite|join|logout|suggest|help|menu/gim.test(m.text)) return
-        
         if (opts["queque"] && m.text && !(isPrems)) {
             const queque = this.msgqueque,
                 time = 1000 * 5
@@ -283,20 +155,68 @@ export async function handler(chatUpdate) {
 
         if (m.isBaileys) return
         m.exp += Math.ceil(Math.random() * 10)
-        
-        // ============ DETECCIÓN DE ADMINS OPTIMIZADA PERO COMPATIBLE ============
-        const adminData = await detectAdmins(this, m)
-        const { participants, groupMetadata, userGroup, botGroup, isRAdmin, isAdmin, isBotAdmin } = adminData
-        
-        // ============ PROCESAMIENTO DE PLUGINS (MISMA ESTRUCTURA) ============
-        const ___dirname = path.join(path.dirname(fileURLToPath(import.meta.url)), "./plugins")
-        
+        let usedPrefix
+
+                // INICIO DE NUEVA LÓGICA ROBUSTA DE ADMINS
+                const groupMetadata = m.isGroup 
+            ? (global.cachedGroupMetadata 
+                ? await global.cachedGroupMetadata(m.chat).catch((_) => null) 
+                : await this.groupMetadata(m.chat).catch((_) => null)) || {} 
+            : {}
+            
+        const participants = Array.isArray(groupMetadata?.participants) ? groupMetadata.participants : []
+
+        // Funciones auxiliares para normalizar IDs
+        const decode = (j) => this.decodeJid(j)
+        const norm = (j) => jidNormalizedUser(decode(j))
+        const numOnly = (j) => String(decode(j)).split('@')[0].replace(/[^0-9]/g, '')
+
+        // Identificación robusta del propio Bot
+        const meIdRaw = this.user?.id || this.user?.jid 
+        const meLidRaw = (this.user?.lid || conn?.user?.lid || '').toString().replace(/:.*/, '') || null 
+        const botNum = numOnly(meIdRaw)
+
+        const botCandidates = [
+            decode(meIdRaw),
+            jidNormalizedUser(decode(meIdRaw)),
+            botNum,
+            meLidRaw && `${meLidRaw}@lid`,
+            meLidRaw && jidNormalizedUser(`${meLidRaw}@lid`),
+            meLidRaw && `${meLidRaw}@s.whatsapp.net`
+        ].filter(Boolean)
+
+        const senderCandidates = [decode(m.sender), jidNormalizedUser(decode(m.sender)), numOnly(m.sender)]
+
+        // Mapeo de participantes para búsqueda rápida y segura
+        const participantsMap = {}
+        for (const p of participants) {
+            const raw = p.jid || p.id
+            const dj = decode(raw)
+            const nj = jidNormalizedUser(dj)
+            const no = numOnly(dj)
+            participantsMap[dj] = p
+            participantsMap[nj] = p
+            participantsMap[no] = p
+        }
+
+        const pick = (cands) => {
+            for (const k of cands) if (participantsMap[k]) return participantsMap[k]
+            return participants.find((p) => cands.some((c) => areJidsSameUser(norm(p.jid || p.id), jidNormalizedUser(decode(c))))) || null
+        }
+
+        // Asignación con nombres compatibles con el resto de handler.js
+        const userGroup = m.isGroup ? pick(senderCandidates) || {} : {}
+        const botGroup = m.isGroup ? pick(botCandidates) || {} : {}
+
+        const isRAdmin = userGroup?.admin === 'superadmin'
+        const isAdmin = isRAdmin || userGroup?.admin === 'admin' || userGroup?.admin === true
+        const isBotAdmin = botGroup?.admin === 'admin' || botGroup?.admin === 'superadmin' || botGroup?.admin === true
+                 const ___dirname = path.join(path.dirname(fileURLToPath(import.meta.url)), "./plugins")
         for (const name in global.plugins) {
             const plugin = global.plugins[name]
             if (!plugin) continue
             if (plugin.disabled) continue
             const __filename = join(___dirname, name)
-            
             if (typeof plugin.all === "function") {
                 try {
                     await plugin.all.call(this, m, {
@@ -311,13 +231,10 @@ export async function handler(chatUpdate) {
                     console.error(err)
                 }
             }
-            
             if (!opts["restrict"])
                 if (plugin.tags && plugin.tags.includes("admin")) {
                     continue
                 }
-            
-            // ============ MANTENIENDO EXACTAMENTE LA LÓGICA DE PREFIJOS ============
             const strRegex = (str) => str.replace(/[|\\{}()[\]^$+*?.]/g, "\\$&")
             const pluginPrefix = plugin.customPrefix || conn.prefix || global.prefix
             const match = (pluginPrefix instanceof RegExp ?
@@ -338,7 +255,6 @@ export async function handler(chatUpdate) {
                         [], new RegExp
                     ]
                 ]).find(prefix => prefix[1])
-            
             if (typeof plugin.before === "function") {
                 if (await plugin.before.call(this, m, {
                         match,
@@ -363,11 +279,9 @@ export async function handler(chatUpdate) {
                     continue
                 }
             }
-            
             if (typeof plugin !== "function") {
                 continue
             }
-            
             if ((usedPrefix = (match[0] || "")[0])) {
                 const noPrefix = m.text.replace(usedPrefix, "")
                 let [command, ...args] = noPrefix.trim().split(" ").filter(v => v)
@@ -385,10 +299,9 @@ export async function handler(chatUpdate) {
                     plugin.command === command : false
                 global.comando = command
 
-                // ============ MANTENIENDO LOS FILTROS DE ID ============
                 if ((m.id.startsWith("NJX-") || (m.id.startsWith("BAE5") && m.id.length === 16) || (m.id.startsWith("B24E") && m.id.length === 20))) return
 
-                // Primary bot logic (EXACTAMENTE IGUAL)
+                // Primary by: Alex 🐼
                 if (global.db.data.chats[m.chat].primaryBot && global.db.data.chats[m.chat].primaryBot !== this.user.jid) {
                     const primaryBotConn = global.conns.find(conn => conn.user.jid === global.db.data.chats[m.chat].primaryBot && conn.ws.socket && conn.ws.socket.readyState !== ws.CLOSED)
                     const participants = m.isGroup ? (await this.groupMetadata(m.chat).catch(() => ({
@@ -407,8 +320,6 @@ export async function handler(chatUpdate) {
                 if (isAccept) {
                     global.db.data.users[m.sender].commands = (global.db.data.users[m.sender].commands || 0) + 1
                 }
-                
-                // ============ VERIFICACIONES DE BANEO (IGUAL) ============
                 if (chat) {
                     const botId = this.user.jid
                     const primaryBotId = chat.primaryBot
@@ -427,8 +338,6 @@ export async function handler(chatUpdate) {
                         }
                     }
                 }
-                
-                // ============ VERIFICACIONES DE PERMISOS (IGUAL) ============
                 const adminMode = chat.modoadmin || false
                 const wa = plugin.botAdmin || plugin.admin || plugin.group || plugin || noPrefix || pluginPrefix || m.text.slice(0, 1) === pluginPrefix || plugin.command
                 if (adminMode && !isOwner && m.isGroup && !isAdmin && wa) return
@@ -462,8 +371,6 @@ export async function handler(chatUpdate) {
                     fail("private", m, this)
                     continue
                 }
-                
-                // ============ EJECUCIÓN (IGUAL) ============
                 m.isCommand = true
                 m.exp += plugin.exp ? parseInt(plugin.exp) : 10
                 let extra = {
@@ -492,7 +399,6 @@ export async function handler(chatUpdate) {
                     chat,
                     settings
                 }
-                
                 try {
                     await plugin.call(this, m, extra)
                 } catch (err) {
@@ -512,7 +418,6 @@ export async function handler(chatUpdate) {
     } catch (err) {
         console.error(err)
     } finally {
-        // ============ FINAL (EXACTAMENTE IGUAL) ============
         if (opts["queque"] && m.text) {
             const quequeIndex = this.msgqueque.indexOf(m.id || m.key.id)
             if (quequeIndex !== -1)
@@ -531,30 +436,25 @@ export async function handler(chatUpdate) {
             console.log(m.message)
         }
     }
-}
 
-// ============ DFail ORIGINAL (NO CAMBIAR) ============
-global.dfail = (type, m, conn) => {
-    const msg = {
-        rowner: `🎅 *¡ACCESO DENEGADO!*\n\nEste comando es exclusivo para los creadores del bot.\n\n🎄 ¡Feliz Navidad! 🎁`,
-        owner: `🎁 *¡RESERVADO PARA SANTA!.*\n\nSolo los desarrolladores del bot pueden usar este comando.\n\n🦌 ¡Solo para la lista buena! ❄️.`,
-        mods: `⛄ *¡PERMISO INSUFICIENTE!.*\n\nNecesitas ser moderador del bot para usar este comando.\n\n❄️ ¡Vuelve cuando seas un reno! 🦌`,
-        premium: `✨ *¡EXCLUSIVO PREMIUM!*\n\nEste comando está reservado para usuarios premium.\n\n🎁 ¡Santa te espera! 🎅`,
-        group: `🏭 *¡SOLO EN TALLERES!*\n\nEste comando solo funciona en grupos.\n\n🛠️ ¡Únete a un taller! 🔨`,
-        private: `✉️ *¡SOLO EN CARTAS!*\n\nEste comando solo se puede usar en chat privado.\n\n📮 ¡Escribe a Santa! 🎅`,
-        admin: `🎄 *¡ELFO MAYOR REQUERIDO!*\n\nNecesitas ser administrador del grupo.\n\n🧝 ¡Pídele a Santa el ascenso! ⭐`,
-        botAdmin: `🎅 *¡SANTA NECESITA PODERES!*\n\nEl bot debe ser administrador del grupo.\n\n🧝‍♂️ ¡Hazme supervisor! 🔑`,
-        restrict: ` *¡REGALO CONGELADO!*\n\nEsta función está temporalmente deshabilitada.\n\n🛷 ¡Vuelve en Año Nuevo! ⏳`
-    } [type]
-    if (msg) return conn.reply(m.chat, msg, m, rcanal).then(_ => m.react('✖️'))
+    global.dfail = (type, m, conn) => {
+        const msg = {
+            rowner: `🎅 *¡ACCESO DENEGADO!*\n\nEste comando es exclusivo para los creadores del bot.\n\n🎄 ¡Feliz Navidad! 🎁`,
+            owner: `🎁 *¡RESERVADO PARA SANTA!.*\n\nSolo los desarrolladores del bot pueden usar este comando.\n\n🦌 ¡Solo para la lista buena! ❄️.`,
+            mods: `⛄ *¡PERMISO INSUFICIENTE!.*\n\nNecesitas ser moderador del bot para usar este comando.\n\n❄️ ¡Vuelve cuando seas un reno! 🦌`,
+            premium: `✨ *¡EXCLUSIVO PREMIUM!*\n\nEste comando está reservado para usuarios premium.\n\n🎁 ¡Santa te espera! 🎅`,
+            group: `🏭 *¡SOLO EN TALLERES!*\n\nEste comando solo funciona en grupos.\n\n🛠️ ¡Únete a un taller! 🔨`,
+            private: `✉️ *¡SOLO EN CARTAS!*\n\nEste comando solo se puede usar en chat privado.\n\n📮 ¡Escribe a Santa! 🎅`,
+            admin: `🎄 *¡ELFO MAYOR REQUERIDO!*\n\nNecesitas ser administrador del grupo.\n\n🧝 ¡Pídele a Santa el ascenso! ⭐`,
+            botAdmin: `🎅 *¡SANTA NECESITA PODERES!*\n\nEl bot debe ser administrador del grupo.\n\n🧝‍♂️ ¡Hazme supervisor! 🔑`,
+            restrict: ` *¡REGALO CONGELADO!*\n\nEsta función está temporalmente deshabilitada.\n\n🛷 ¡Vuelve en Año Nuevo! ⏳`
+        } [type]
+        if (msg) return conn.reply(m.chat, msg, m, rcanal).then(_ => m.react('✖️'))
+    }
+    let file = global.__filename(import.meta.url, true)
+    watchFile(file, async () => {
+        unwatchFile(file)
+        console.log(chalk.magenta("Se actualizo 'handler.js'"))
+        if (global.reloadHandler) console.log(await global.reloadHandler())
+    })
 }
-
-// ============ WATCH FILE (IGUAL) ============
-let file = global.__filename(import.meta.url, true)
-watchFile(file, async () => {
-    unwatchFile(file)
-    console.log(chalk.magenta("Se actualizo 'handler.js'"))
-    // Limpia el caché cuando se actualiza
-    groupMetadataCache.clear()
-    if (global.reloadHandler) console.log(await global.reloadHandler())
-})
