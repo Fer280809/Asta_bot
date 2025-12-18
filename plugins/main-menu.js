@@ -173,22 +173,45 @@ function obtenerContenidoCategoria(categoria, usedPrefix, m) {
     
     switch(categoria) {
         case 'MENU_INICIO':
-            titulo = '🏠 INICIO';
-            descripcion = 'Menú principal del bot';
-            contenido = `¡Bienvenido al menú interactivo!
+    titulo = '🌟 BIENVENIDO A ASTA-BOT';
+    descripcion = 'Panel principal - Todo en un solo lugar';
+    
+    // Obtener estadísticas
+    const totalUsers = Object.keys(global.db.data.users).length;
+    const activeUsers = Object.values(global.db.data.users).filter(u => u.lastseen && (Date.now() - u.lastseen) < 86400000).length;
+    const totalGroups = Object.keys(global.db.data.chats).filter(c => c.endsWith('@g.us')).length;
+    const totalCommands = Object.values(global.plugins).filter(v => v.help && v.tags).length;
+    const uptime = clockString(process.uptime() * 1000);
+    
+    contenido = `
+╭─❖ *🚀 INFORMACIÓN DEL MENU* ❖─╮
+├─📊 *ESTADÍSTICAS GLOBALES:*
+│  ├─👥 *Usuarios:* ${totalUsers.toLocaleString()}
+│  ├─🟢 *Activos (24h):* ${activeUsers.toLocaleString()}
+│  ├─👥 *Grupos:* ${totalGroups}
+│  ├─⚡ *Comandos:* ${totalCommands}
+│  └─⏰ *Uptime:* ${uptime}
+│
+├─📁 *CATEGORÍAS DISPONIBLES:*
+│  ├─💰 ECONOMÍA - Sistema de monedas
+│  ├─📥 DOWNLOAD - Descargas multimedia
+│  ├─🎴 GACHA - Sistema de coleccionables
+│  ├─🔌 SOCKETS - Sub-bots y conexiones
+│  ├─🛠️ UTILITIES - Herramientas varias
+│  ├─👤 PROFILES - Perfiles de usuario
+│  ├─👥 GROUPS - Administración grupal
+│  ├─🌸 ANIME - Contenido otaku
+│  └─🔞 NSFW - Contenido adulto (18+)
+│
+├─💡 *CONSEJOS RÁPIDOS:*
+│  ├─✨ Usa los botones para navegar
+│  ├─🔍 Escribe comandos directamente
+│  ├─📱 Responde a mensajes para interactuar
+│  └─⚡ El bot está optimizado para velocidad
+╰─────────────────────╯
 
-🔹 *Comandos básicos:*
-• ${usedPrefix}help - Ayuda general
-• ${usedPrefix}infobot - Información del bot
-• ${usedPrefix}owner - Contactar owner
-
-📊 *Estadísticas:*
-• Usuarios: ${Object.keys(global.db.data.users).length}
-• Activo: ${clockString(process.uptime() * 1000)}
-• Comandos: ${Object.values(global.plugins).filter(v => v.help && v.tags).length}
-
-*Usa los botones para explorar categorías*`;
-            break;
+*💬 ¡Explora todas las categorías usando los botones!*`;
+    break;
             
         case 'ECONOMY':
             titulo = '💰 ECONOMÍA';
