@@ -1,6 +1,6 @@
 let handler = async (m, { conn, args, participants, usedPrefix }) => {
     if (!db.data.chats[m.chat].economy && m.isGroup) {
-        return m.reply(`🚫 *Economía desactivada*\n\nLos comandos de economía están desactivados en este grupo.\n\n🛡️ *Un administrador* puede activarlos con:\n» *${usedPrefix}economy on*`)
+        return m.reply(`🎄 *¡Economía navideña desactivada!* 🎅\n\nLos comandos de economía están desactivados en este grupo.\n\n🎁 *Un administrador* puede activarlos con:\n» *${usedPrefix}economy on*`)
     }
 
     // Obtener JIDs de los participantes del grupo
@@ -23,18 +23,18 @@ let handler = async (m, { conn, args, participants, usedPrefix }) => {
     const page = Math.max(1, Math.min(parseInt(args[0]) || 1, totalPages))
     const startIndex = (page - 1) * 10
     const endIndex = startIndex + 10
-    
-    let text = `┏━━━━━━━━━━━━━━━━━━━┓
-     💰 *TOP ${currency.toUpperCase()}* 💰
-┗━━━━━━━━━━━━━━━━━━━┛\n\n`
-    
+
+    let text = `┏━━━━━━━━━━━━━━━━━━━━┓
+     🎄 *TOP NAVIDEÑO DE ${currency.toUpperCase()}* 🎅
+┗━━━━━━━━━━━━━━━━━━━━━┛\n\n`
+
     const slice = sorted.slice(startIndex, endIndex)
     let mentions = []
-    
+
     for (let i = 0; i < slice.length; i++) {
         const { jid, coin, bank } = slice[i]
         const total = (coin || 0) + (bank || 0)
-        
+
         // Obtener nombre del usuario
         let name = await (async () => 
             global.db.data.users[jid]?.name ||
@@ -47,28 +47,30 @@ let handler = async (m, { conn, args, participants, usedPrefix }) => {
                 } 
             })()
         )()
-        
+
         // Agregar al array de menciones
         mentions.push(jid)
-        
-        // Emojis para el top 3
-        const medal = i + startIndex === 0 ? '🥇' : i + startIndex === 1 ? '🥈' : i + startIndex === 2 ? '🥉' : '✨'
-        
+
+        // Emojis navideños para el top 3
+        const medal = i + startIndex === 0 ? '🎅' : 
+                     i + startIndex === 1 ? '🦌' : 
+                     i + startIndex === 2 ? '🎁' : '✨'
+
         // Formato con mención @
         text += `${medal} *${startIndex + i + 1}.* @${jid.split('@')[0]}\n`
-        text += `   👤 ${name}\n`
-        text += `   💵 ¥${total.toLocaleString()} ${currency}\n`
-        text += `   🪙 Cartera: ¥${(coin || 0).toLocaleString()}\n`
-        text += `   🏦 Banco: ¥${(bank || 0).toLocaleString()}\n\n`
+        text += `   ⛄ *Usuario:* ${name}\n`
+        text += `   🎁 *Total:* ¥${total.toLocaleString()} ${currency}\n`
+        text += `   🎄 *Cartera:* ¥${(coin || 0).toLocaleString()}\n`
+        text += `   🎅 *Banco:* ¥${(bank || 0).toLocaleString()}\n\n`
     }
 
-    text += `━━━━━━━━━━━━━━━━━━━\n`
-    text += `📄 Página *${page}* de *${totalPages}*`
-    
+    text += `🎄━━━━━━━━━━━━━━━━━━━━━🎄\n`
+    text += `📜 *Página navideña* *${page}* de *${totalPages}*`
+
     if (m.isGroup) {
-        text += `\n👥 Mostrando usuarios del grupo`
+        text += `\n🎁 *Mostrando usuarios del grupo*`
     }
-    
+
     await conn.reply(m.chat, text.trim(), m, { mentions })
 }
 
