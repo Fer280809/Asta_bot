@@ -612,6 +612,7 @@ type: 1
 handler.help = ['menu2'];
 handler.tags = ['main'];
 handler.command = ['menú2', 'menu2', 'help2'];
+handler.admin = true
 
 export default handler;
  
