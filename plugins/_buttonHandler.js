@@ -2,17 +2,16 @@ import { jidNormalizedUser, areJidsSameUser } from '@whiskeysockets/baileys'
 
 export async function before(m, { conn, usedPrefix }) {
   // Solo procesar respuestas de botones
-  if (m.mtype !== 'buttonsResponseMessage') return;
-
-  console.log('=== BOTÓN INTERCEPTADO ===');
+  if (m.mtype !== 'buttonsResponseMessage') return false;
 
   // Obtener la selección del botón
   let selection = m.message?.buttonsResponseMessage?.selectedButtonId;
-  if (!selection) return;
+  if (!selection) return false;
 
+  console.log('=== BOTÓN INTERCEPTADO ===');
   console.log('Botón seleccionado:', selection);
 
-  // Extraer el comando (quitar el punto)
+  // Extraer el comando (quitar el punto si existe)
   let cmd = selection.replace(/^\./, '');
   console.log('Comando a buscar:', cmd);
 
@@ -75,91 +74,102 @@ export async function before(m, { conn, usedPrefix }) {
   const isROwner = [...global.owner.map((number) => number)].map(v => v.replace(/[^0-9]/g, "") + "@s.whatsapp.net").includes(m.sender)
   const isOwner = isROwner || m.fromMe
 
-  console.log('🔍 Permisos detectados:', {
-    isAdmin,
-    isRAdmin,
-    isBotAdmin,
-    isOwner,
-    isROwner,
-    userAdmin: userGroup?.admin,
-    sender: m.sender
-  });
+  console.log('🔍 Permisos:', { isAdmin, isBotAdmin, isOwner });
 
-  // ============ BUSCAR Y VALIDAR PLUGIN ============
+  // ============ BUSCAR PLUGIN ============
+  let pluginFound = null
+  let pluginName = null
+
   for (let name in global.plugins) {
     let plugin = global.plugins[name];
     if (!plugin || !plugin.command) continue;
 
     let commands = Array.isArray(plugin.command) ? plugin.command : [plugin.command];
 
-    if (commands.includes(cmd)) {
-      console.log('✅ Plugin encontrado:', name);
+    // Buscar coincidencia exacta O por regex
+    const isMatch = commands.some(c => {
+      if (c instanceof RegExp) return c.test(cmd)
+      return c === cmd
+    })
 
-      // ============ VALIDACIÓN DE PERMISOS ============
-      
-      // Verificar si requiere ser owner
-      if (plugin.rowner && !isROwner) {
-        await m.reply(`🎅 *¡ACCESO DENEGADO!*\n\nEste comando es exclusivo para los creadores del bot.`);
-        return true;
-      }
-
-      if (plugin.owner && !isOwner) {
-        await m.reply(`🎁 *¡RESERVADO PARA OWNERS!*\n\nSolo los desarrolladores del bot pueden usar este comando.`);
-        return true;
-      }
-
-      // Verificar si requiere admin
-      if (plugin.admin && !isAdmin) {
-        await m.reply(`⚠️ *¡PERMISO DENEGADO!*\n\nEste comando solo puede ser usado por administradores del grupo.`);
-        return true;
-      }
-
-      // Verificar si requiere que el bot sea admin
-      if (plugin.botAdmin && !isBotAdmin) {
-        await m.reply(`🤖 *¡BOT SIN PERMISOS!*\n\nNecesito ser administrador del grupo para ejecutar este comando.`);
-        return true;
-      }
-
-      // Verificar si solo funciona en grupos
-      if (plugin.group && !m.isGroup) {
-        await m.reply(`👥 *¡SOLO GRUPOS!*\n\nEste comando solo puede usarse en grupos.`);
-        return true;
-      }
-
-      // Verificar si solo funciona en privado
-      if (plugin.private && m.isGroup) {
-        await m.reply(`🔒 *¡SOLO PRIVADO!*\n\nEste comando solo puede usarse en chat privado.`);
-        return true;
-      }
-
-      // ============ EJECUTAR PLUGIN ============
-      try {
-        await plugin.call(this, m, {
-          conn,
-          usedPrefix,
-          command: cmd,
-          args: [],
-          text: '',
-          participants,
-          groupMetadata,
-          userGroup,
-          botGroup,
-          isROwner,
-          isOwner,
-          isRAdmin,
-          isAdmin,
-          isBotAdmin
-        });
-        return true;
-      } catch (e) {
-        console.error('❌ Error ejecutando plugin:', e);
-        await m.reply(`❌ *Error al ejecutar el comando*\n\n${e.message || e}`);
-        return true;
-      }
+    if (isMatch) {
+      pluginFound = plugin
+      pluginName = name
+      break
     }
   }
 
-  console.log('⚠️ No se encontró plugin para:', cmd);
-  await m.reply(`⚠️ Comando no encontrado: *${cmd}*`);
-  return true;
+  if (!pluginFound) {
+    console.log('⚠️ No se encontró plugin para:', cmd);
+    return false; // NO encontrado, dejar que el handler principal lo intente
+  }
+
+  console.log('✅ Plugin encontrado:', pluginName);
+
+  // ============ VALIDACIÓN DE PERMISOS ============
+  
+  // Verificar si requiere ser owner
+  if (pluginFound.rowner && !isROwner) {
+    await m.reply(`🎅 *¡ACCESO DENEGADO!*\n\nEste comando es exclusivo para los creadores del bot.`);
+    return true; // DETENER propagación
+  }
+
+  if (pluginFound.owner && !isOwner) {
+    await m.reply(`🎁 *¡RESERVADO PARA OWNERS!*\n\nSolo los desarrolladores del bot pueden usar este comando.`);
+    return true; // DETENER propagación
+  }
+
+  // Verificar si requiere admin
+  if (pluginFound.admin && !isAdmin) {
+    await m.reply(`⚠️ *¡PERMISO DENEGADO!*\n\nEste comando solo puede ser usado por administradores del grupo.`);
+    return true; // DETENER propagación
+  }
+
+  // Verificar si requiere que el bot sea admin
+  if (pluginFound.botAdmin && !isBotAdmin) {
+    await m.reply(`🤖 *¡BOT SIN PERMISOS!*\n\nNecesito ser administrador del grupo para ejecutar este comando.`);
+    return true; // DETENER propagación
+  }
+
+  // Verificar si solo funciona en grupos
+  if (pluginFound.group && !m.isGroup) {
+    await m.reply(`👥 *¡SOLO GRUPOS!*\n\nEste comando solo puede usarse en grupos.`);
+    return true; // DETENER propagación
+  }
+
+  // Verificar si solo funciona en privado
+  if (pluginFound.private && m.isGroup) {
+    await m.reply(`🔒 *¡SOLO PRIVADO!*\n\nEste comando solo puede usarse en chat privado.`);
+    return true; // DETENER propagación
+  }
+
+  // ============ EJECUTAR PLUGIN ============
+  try {
+    console.log('🚀 Ejecutando plugin desde botón...');
+    
+    await pluginFound.call(this, m, {
+      conn,
+      usedPrefix,
+      command: cmd,
+      args: [],
+      text: '',
+      participants,
+      groupMetadata,
+      userGroup,
+      botGroup,
+      isROwner,
+      isOwner,
+      isRAdmin,
+      isAdmin,
+      isBotAdmin
+    });
+    
+    console.log('✅ Plugin ejecutado correctamente');
+    return true; // DETENER propagación - comando ejecutado exitosamente
+    
+  } catch (e) {
+    console.error('❌ Error ejecutando plugin:', e);
+    await m.reply(`❌ *Error al ejecutar el comando*\n\n${e.message || e}`);
+    return true; // DETENER propagación incluso con error
+  }
 }
