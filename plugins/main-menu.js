@@ -298,20 +298,63 @@ function obtenerContenidoCategoria(categoria, usedPrefix, m) {
             break;
             
         case 'GROUPS':
-            titulo = '👥 GRUPOS';
-            descripcion = 'Administración de grupos';
-            contenido = `*COMANDOS DE GRUPOS*
+    titulo = '🛡️ MODERACIÓN DE GRUPOS';
+    descripcion = 'Panel completo de gestión grupal';
+    
+    contenido = `
+╔════════════════════════╗
+   🏰 *ADMINISTRACIÓN*
+╚════════════════════════╝
 
-👑 *Admin:*
-• ${usedPrefix}promote
-• ${usedPrefix}demote
+┌─🔸 *${usedPrefix}kick* @usuario
+│  ╰─ Expulsar del grupo
+├─🔸 *${usedPrefix}add* 521123456789
+│  ╰─ Invitar por número
+├─🔸 *${usedPrefix}admins*
+│  ╰─ Listar administradores
+├─🔸 *${usedPrefix}link*
+│  ╰─ Obtener enlace
+├─🔹 *${usedPrefix}promote* @usuario
+│  ╰─ Hacer administrador
+├─🔹 *${usedPrefix}demote* @usuario
+│  ╰─ Quitar administrador
+├─🔹 *${usedPrefix}warn* @usuario
+│  ╰─ Advertir usuario
+├─🔹 *${usedPrefix}revoke*
+│  ╰─ Renovar enlace
+├─🔸 *${usedPrefix}fantasmas*
+│  ╰─ Detectar inactivos
+├─🔸 *${usedPrefix}hidetag* [texto]
+│  ╰─ Mencionar silenciosamente
+├─🔸 *${usedPrefix}group* open/close
+│  ╰─ Abrir/cerrar chat
+└─🔸 *${usedPrefix}delete*
+   ╰─ Borrar mensajes
 
-⚙️ *Config:*
-• ${usedPrefix}group open/close
-• ${usedPrefix}antilink
+╔════════════════════════╗
+   ⚙️ *CONFIGURACIÓN*
+╚════════════════════════╝
 
-*Añade aquí tus comandos específicos...*`;
-            break;
+┌─🔹 *${usedPrefix}infogrupo*
+│  ╰─ Info detallada
+├─🔹 *${usedPrefix}setwelcome*
+│  ╰─ Configurar bienvenida
+├─🔹 *${usedPrefix}setbye*
+│  ╰─ Configurar despedida
+├─🔹 *${usedPrefix}bot* on/off
+│  ╰─ Control del bot
+├─🔸 *${usedPrefix}groupname*
+│  ╰─ Cambiar nombre
+├─🔸 *${usedPrefix}groupdesc*
+│  ╰─ Cambiar descripción
+└─🔸 *${usedPrefix}groupimg*
+   ╰─ Cambiar foto
+   
+*🎯 *Requisitos por color:*
+• 🔷 Solo admin 
+• 🔶 Admin + bot admin
+• 🔹 Funciona en cualquier grupo`;
+    break;
             
         case 'ANIME':
             titulo = '🌸 ANIME';
