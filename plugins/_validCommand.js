@@ -27,7 +27,14 @@ if (validCommand(command, global.plugins)) {
 } else {
 const comando = command
 await m.reply(
-`⚠️ | ᴄᴏᴍᴀɴᴅᴏ ɴᴏ ᴇɴᴄᴏɴᴛʀᴀᴅᴏ: *「${comando}」*  
-┆💡 Usa *${usedPrefix}menu* o *${usedPrefix}help* para ver los disponibles.`
+`🎅 *¡Ups! Comando mágico no encontrado*
+│
+│ ✨ Has dicho: *${comando}*
+│ 
+│ 🎄 *Consejo del elfo:*
+│ 🎁 Usa *${usedPrefix}menu* para ver todos los regalos
+│ 🔔 O *${usedPrefix}help* para ayuda especial
+│ 
+│ ⛄ ¡La magia navideña te guiará!`
 )
 }}
