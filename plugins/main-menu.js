@@ -184,33 +184,40 @@ function obtenerContenidoCategoria(categoria, usedPrefix, m) {
     const uptime = clockString(process.uptime() * 1000);
     
     contenido = `
-╭─❖ *🚀 INFORMACIÓN DEL MENU* ❖─╮
-├─📊 *ESTADÍSTICAS GLOBALES:*
-│  ├─👥 *Usuarios:* ${totalUsers.toLocaleString()}
-│  ├─🟢 *Activos (24h):* ${activeUsers.toLocaleString()}
-│  ├─👥 *Grupos:* ${totalGroups}
-│  ├─⚡ *Comandos:* ${totalCommands}
-│  └─⏰ *Uptime:* ${uptime}
-│
-├─📁 *CATEGORÍAS DISPONIBLES:*
-│  ├─💰 ECONOMÍA - Sistema de monedas
-│  ├─📥 DOWNLOAD - Descargas multimedia
-│  ├─🎴 GACHA - Sistema de coleccionables
-│  ├─🔌 SOCKETS - Sub-bots y conexiones
-│  ├─🛠️ UTILITIES - Herramientas varias
-│  ├─👤 PROFILES - Perfiles de usuario
-│  ├─👥 GROUPS - Administración grupal
-│  ├─🌸 ANIME - Contenido otaku
-│  └─🔞 NSFW - Contenido adulto (18+)
-│
-├─💡 *CONSEJOS RÁPIDOS:*
-│  ├─✨ Usa los botones para navegar
-│  ├─🔍 Escribe comandos directamente
-│  ├─📱 Responde a mensajes para interactuar
-│  └─⚡ El bot está optimizado para velocidad
-╰─────────────────────╯
+╔════════════════════════╗
+    🚀 *INFORMACIÓN*
+╚════════════════════════╝
 
-*💬 ¡Explora todas las categorías usando los botones!*`;
+┌─📊 *ESTADÍSTICAS GLOBALES*
+│ ├─👥 *Usuarios:* ${totalUsers.toLocaleString()}
+│ ├─🟢 *Activos (24h):* ${activeUsers.toLocaleString()}
+│ ├─👥 *Grupos:* ${totalGroups}
+│ ├─⚡ *Comandos:* ${totalCommands}
+│ └─⏰ *Uptime:* ${uptime}
+
+╔════════════════════════╗
+   📁 *CATEGORÍAS DISPONIBLES*
+╚════════════════════════╝
+
+┌─💰 *ECONOMÍA* - Sistema de monedas
+├─📥 *DOWNLOAD* - Descargas multimedia
+├─🎴 *GACHA* - Sistema de coleccionables
+├─🔌 *SOCKETS* - Sub-bots y conexiones
+├─🛠️ *UTILITIES* - Herramientas varias
+├─👤 *PROFILES* - Perfiles de usuario
+├─👥 *GROUPS* - Administración grupal
+├─🌸 *ANIME* - Contenido otaku
+└─🔞 *NSFW* - Contenido adulto (18+)
+
+╔════════════════════════╗
+   💡 *CONSEJOS RÁPIDOS*
+╚════════════════════════╝
+
+┌─✨ Usa los botones para navegar
+├─🔍 Escribe comandos directamente
+├─📱 Responde a mensajes para interactuar
+└─⚡ El bot está optimizado para velocidad
+💬 *¡Explora todas las categorías usando los botones!*`;
     break;
             
         case 'ECONOMY':
@@ -236,23 +243,83 @@ function obtenerContenidoCategoria(categoria, usedPrefix, m) {
             break;
             
         case 'DOWNLOAD':
-            titulo = '📥 DESCARGAS';
-            descripcion = 'Descargar de YouTube, Instagram, etc';
-            contenido = `*COMANDOS DE DESCARGA*
+    titulo = '📥 DESCARGAS MULTIMEDIA';
+    descripcion = 'Obtén archivos de múltiples plataformas';
+    
+    contenido = `
+╔════════════════════════╗
+   🎵 *AUDIO Y MÚSICA*
+╚════════════════════════╝
 
-🎵 *Música:*
-• ${usedPrefix}play
-• ${usedPrefix}ytmp3
+┌─🔸 *${usedPrefix}play* [canción]
+│  ╰─ Buscar y reproducir música
+├─🔸 *${usedPrefix}ytmp3* [link]
+│  ╰─ Descargar audio de YouTube
+├─🔸 *${usedPrefix}ytmp3doc* [link]
+│  ╰─ Audio como documento
+└─🔸 *${usedPrefix}spotify* [link]
+   ╰─ Descargar de Spotify
 
-🎥 *Video:*
-• ${usedPrefix}ytmp4
-• ${usedPrefix}igdl
+╔════════════════════════╗
+   🎬 *VIDEOS Y REDES*
+╚════════════════════════╝
 
-📷 *Imágenes:*
-• ${usedPrefix}pinterest
+┌─🔹 *${usedPrefix}ytmp4* [link]
+│  ╰─ Descargar video de YouTube
+├─🔹 *${usedPrefix}ytmp4doc* [link]
+│  ╰─ Video como documento
+├─🔹 *${usedPrefix}tiktok* [link]
+│  ╰─ Descargar de TikTok
+├─🔹 *${usedPrefix}facebook* [link]
+│  ╰─ Descargar de Facebook
+├─🔹 *${usedPrefix}twitter* [link]
+│  ╰─ Descargar de Twitter/X
+└─🔹 *${usedPrefix}instagram* [link]
+   ╰─ Descargar de Instagram
 
-*Añade aquí tus comandos específicos...*`;
-            break;
+╔════════════════════════╗
+   🖼️ *IMÁGENES*
+╚════════════════════════╝
+
+┌─🔸 *${usedPrefix}pinterest* [búsqueda]
+│  ╰─ Buscar imágenes Pinterest
+├─🔸 *${usedPrefix}image* [búsqueda]
+│  ╰─ Buscar imágenes Google
+└─🔸 *${usedPrefix}pinterestdoc* [búsqueda]
+   ╰─ Imágenes como documento
+
+╔════════════════════════╗
+   📂 *ARCHIVOS Y APPS*
+╚════════════════════════╝
+
+┌─🔹 *${usedPrefix}mediafire* [link]
+│  ╰─ Descargar de MediaFire
+├─🔹 *${usedPrefix}mega* [link]
+│  ╰─ Descargar de MEGA
+├─🔹 *${usedPrefix}apk* [nombre app]
+│  ╰─ Buscar APK en Aptoide
+└─🔹 *${usedPrefix}mods* [nombre]
+   ╰─ Buscar mods Minecraft
+
+╔════════════════════════╗
+   🔍 *BÚSQUEDAS*
+╚════════════════════════╝
+
+┌─🔸 *${usedPrefix}ytsearch* [búsqueda]
+│  ╰─ Buscar en YouTube
+├─🔸 *${usedPrefix}play2* [canción]
+│  ╰─ Alternativa de búsqueda
+└─🔸 *${usedPrefix}estados*
+   ╰─ Descargar estados WhatsApp
+
+╔════════════════════════╗
+   📊 *ESTADÍSTICAS*
+╚════════════════════════╝
+
+┌─📈 *Comandos activos:* 20
+├─💾 *Formatos soportados:* MP3/MP4/JPG/APK
+└─🌐 *Plataformas:* YouTube, TikTok, IG, FB, Twitter, Pinterest, MediaFire, MEGA`;
+    break;
             
         case 'GACHA':
             titulo = '🎴 GACHA';
