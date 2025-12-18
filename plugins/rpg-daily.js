@@ -1,7 +1,7 @@
 var handler = async (m, { conn, usedPrefix }) => {
     // Comprobar si la economía está activada en el grupo
     if (!db.data.chats[m.chat].economy && m.isGroup) 
-        return m.reply(`《✦》Los comandos de *Economía* están desactivados en este grupo.\n\nUn *administrador* puede activarlos con el comando:\n» *${usedPrefix}economy on*`)
+        return m.reply(`🎄 Los comandos de *Economía Navideña* están desactivados en este grupo.\n\nUn *elfo administrador* puede activarlos con el comando:\n» *${usedPrefix}economy on*`)
 
     let user = global.db.data.users[m.sender]
     let now = Date.now()
@@ -18,7 +18,7 @@ var handler = async (m, { conn, usedPrefix }) => {
     // Comprobar si ya reclamó el daily
     if (now < user.lastDaily) {
         let wait = formatTime(Math.floor((user.lastDaily - now) / 1000))
-        return conn.reply(m.chat, `⚠️ Ya has reclamado tu *Daily* de hoy.\n> Puedes reclamarlo de nuevo en *${wait}*`, m)
+        return conn.reply(m.chat, `🎅 Ya has reclamado tu *Daily Navideño* de hoy.\n> Puedes reclamarlo de nuevo en *${wait}*`, m)
     }
 
     // Comprobar si perdió racha
@@ -40,16 +40,16 @@ var handler = async (m, { conn, usedPrefix }) => {
     user.lastDaily = now + gap
     let nextReward = Math.min(20000 + user.streak * 5000, 1015000).toLocaleString()
 
-    // Mensaje rediseñado ASTA-BOT
-    let msg = `╭━〔💰 *RECOMPENSA DIARIA* 💰〕━╮
+    // Mensaje rediseñado ASTA-BOT con estilo navideño
+    let msg = `╭━〔🎄 *RECOMPENSA NAVIDEÑA DIARIA* 🎅〕━╮
  ┃
- ┃ ✅ Has reclamado tu Daily de hoy
- ┃ 💸 Recompensa: *¥${reward.toLocaleString()} ${currency}*
- ┃ 🗓 Día: *${user.streak}*
+ ┃ 🎁 Has reclamado tu Daily Navideño de hoy
+ ┃ 🎄 Recompensa: *¥${reward.toLocaleString()} ${currency}*
+ ┃ 🦌 Día: *${user.streak}*
  ┃
- ┃ 🔹 Próximo día: *+¥${nextReward}*
-${lost ? ' ┃ ⚠ ¡Has perdido tu racha de días! ⚠' : ''}
- ╰━━━━━━━━━━━━━━━╯`
+ ┃ ✨ Próximo día: *+¥${nextReward}*
+${lost ? ' ┃ 🎅 ¡Has perdido tu racha de días navideños! 🎄' : ''}
+ ╰━━━━━━━━━━━━━━━━━━━━╯`
 
     conn.reply(m.chat, msg, m)
 }
