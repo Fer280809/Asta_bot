@@ -1,12 +1,12 @@
 let handler = async (m, { conn, usedPrefix, command }) => {
     if (!db.data.chats[m.chat].economy && m.isGroup) {
         return m.reply(`
-╔══❖ ECONOMÍA DESACTIVADA ❖══╗
-│ Los comandos de *Economía* están desactivados en este grupo.
+╔══🎄 ECONOMÍA NAVIDEÑA DESACTIVADA 🎅══╗
+│ Los comandos de *Economía Navideña* están desactivados en este grupo.
 │ 
-│ Un *administrador* puede activarlos con:
+│ Un *elfo administrador* puede activarlos con:
 │ » *${usedPrefix}economy on*
-╚═════════════════════════════╝
+╚══════════════════════════════════════╝
         `);
     }
 
@@ -21,9 +21,9 @@ let handler = async (m, { conn, usedPrefix, command }) => {
         const restante = user.lastcrime - ahora;
         const wait = formatTimeMs(restante);
         return conn.reply(m.chat, `
-⏳ *Espera un momento...*
+🎄 *¡Espera un momento, duende travieso!* 🎅
 No puedes usar *${usedPrefix + command}* todavía.
-Tiempo restante: *${wait}*
+⏰ Tiempo de espera navideño: *${wait}*
         `, m);
     }
 
@@ -40,15 +40,15 @@ Tiempo restante: *${wait}*
         if (user.coin < 0) user.coin = 0;
     }
 
-    // Nuevo estilo de mensaje final
+    // Nuevo estilo de mensaje final navideño
     await conn.reply(m.chat, `
-╔══❖ CRIMEN REALIZADO ❖══╗
-│ ${evento.tipo === 'victoria' ? '💰 ÉXITO' : '⚠️ FALLIDO'}
+╔══🎄 CRIMEN NAVIDEÑO REALIZADO 🎅══╗
+│ ${evento.tipo === 'victoria' ? '🎁 ÉXITO NAVIDEÑO' : '🎅 FALLIDO NAVIDEÑO'}
 │
 │ ${evento.mensaje}
 │
-│ ${evento.tipo === 'victoria' ? '💎 Ganaste' : '💸 Perdiste'}: *¥${cantidad.toLocaleString()} ${currency}*
-╚══════════════════════════╝
+│ ${evento.tipo === 'victoria' ? '✨ Ganaste' : '🎄 Perdiste'}: *¥${cantidad.toLocaleString()} ${currency}*
+╚══════════════════════════════════╝
     `, m);
 }
 
@@ -74,24 +74,24 @@ function pickRandom(list) {
 }
 
 const crimen = [
-    { tipo: 'victoria', mensaje: "Hackeaste un cajero automático usando un exploit del sistema y retiraste efectivo sin alertas, ganaste." },
-    { tipo: 'victoria', mensaje: "Te infiltraste como técnico en una mansión y robaste joyas mientras inspeccionabas la red, ganaste." },
-    { tipo: 'victoria', mensaje: "Simulaste una transferencia bancaria falsa y obtuviste fondos antes de que cancelaran la operación, ganaste." },
-    { tipo: 'victoria', mensaje: "Interceptaste un paquete de lujo en una recepción corporativa y lo revendiste, ganaste." },
-    { tipo: 'victoria', mensaje: "Vaciaste una cartera olvidada en un restaurante sin que nadie lo notara, ganaste." },
-    { tipo: 'victoria', mensaje: "Accediste al servidor de una tienda digital y aplicaste descuentos fraudulentos para obtener productos gratis, ganaste." },
-    { tipo: 'victoria', mensaje: "Te hiciste pasar por repartidor y sustrajiste un paquete de colección sin levantar sospechas, ganaste." },
-    { tipo: 'victoria', mensaje: "Copiaste la llave maestra de una galería de arte y vendiste una escultura sin registro, ganaste." },
-    { tipo: 'victoria', mensaje: "Creaste un sitio falso de caridad y lograste que cientos de personas donaran, ganaste." },
-    { tipo: 'victoria', mensaje: "Manipulaste un lector de tarjetas en una tienda local y vaciaste cuentas privadas, ganaste." },
-    { tipo: 'victoria', mensaje: "Falsificaste entradas VIP para un evento y accediste a un área con objetos exclusivos, ganaste." },
-    { tipo: 'victoria', mensaje: "Engañaste a un coleccionista vendiéndole una réplica como pieza original, ganaste." },
-    { tipo: 'victoria', mensaje: "Capturaste la contraseña de un empresario en un café y transferiste fondos a tu cuenta, ganaste." },
-    { tipo: 'victoria', mensaje: "Convenciste a un anciano de participar en una inversión falsa y retiraste sus ahorros, ganaste." },
-    { tipo: 'derrota', mensaje: "Intentaste vender un reloj falso, pero el comprador notó el engaño y te denunció, perdiste." },
-    { tipo: 'derrota', mensaje: "Hackeaste una cuenta bancaria, pero olvidaste ocultar tu IP y fuiste rastreado, perdiste." },
-    { tipo: 'derrota', mensaje: "Robaste una mochila en un evento, pero una cámara oculta capturó todo el acto, perdiste." },
-    { tipo: 'derrota', mensaje: "Te infiltraste en una tienda de lujo, pero el sistema silencioso activó la alarma, perdiste." },
-    { tipo: 'derrota', mensaje: "Simulaste ser técnico en una mansión, pero el dueño te reconoció y llamó a seguridad, perdiste." },
-    { tipo: 'derrota', mensaje: "Intentaste vender documentos secretos, pero eran falsos y nadie quiso comprarlos, perdiste." }
+    { tipo: 'victoria', mensaje: "🎅 Robaste el saco de regalos de Santa Claus y vendiste los juguetes, ganaste." },
+    { tipo: 'victoria', mensaje: "🦌 Sustrajiste galletas navideñas de la fábrica del Polo Norte y las vendiste, ganaste." },
+    { tipo: 'victoria', mensaje: "🎄 Hackeaste la lista de niños buenos y añadiste regalos extra para revender, ganaste." },
+    { tipo: 'victoria', mensaje: "✨ Interceptaste un trineo de renos cargado de regalos y lo revendiste, ganaste." },
+    { tipo: 'victoria', mensaje: "⛄ Robaste un saco lleno de monedas de chocolate navideñas, ganaste." },
+    { tipo: 'victoria', mensaje: "🎁 Accediste al taller de duendes y tomaste juguetes antes de ser empaquetados, ganaste." },
+    { tipo: 'victoria', mensaje: "🔔 Falsificaste cupones de descuento para tiendas navideñas y obtuviste productos gratis, ganaste." },
+    { tipo: 'victoria', mensaje: "🕯️ Te hiciste pasar por duende repartidor y sustrajiste un paquete de regalos exclusivos, ganaste." },
+    { tipo: 'victoria', mensaje: "🌟 Robaste un cargamento de luces navideñas mágicas y las vendiste en el mercado negro, ganaste." },
+    { tipo: 'victoria', mensaje: "❄️ Creaste un sitio falso de donaciones navideñas y lograste que cientos de personas donaran, ganaste." },
+    { tipo: 'victoria', mensaje: "🎅 Manipulaste un lector de tarjetas en una tienda navideña y vaciaste cuentas, ganaste." },
+    { tipo: 'victoria', mensaje: "🦌 Falsificaste entradas VIP para la casa de Santa Claus y accediste a un área con objetos exclusivos, ganaste." },
+    { tipo: 'victoria', mensaje: "🎄 Engañaste a un coleccionista vendiéndole una réplica de juguete navideño como original, ganaste." },
+    { tipo: 'victoria', mensaje: "✨ Capturaste la contraseña de un elfo en un café navideño y transferiste fondos a tu cuenta, ganaste." },
+    { tipo: 'victoria', mensaje: "⛄ Convenciste a un duende de participar en una inversión navideña falsa y retiraste sus ahorros, ganaste." },
+    { tipo: 'derrota', mensaje: "🎅 Intentaste vender un árbol de navidad falso, pero el comprador notó el engaño y te denunció, perdiste." },
+    { tipo: 'derrota', mensaje: "🦌 Hackeaste la cuenta bancaria de un duende, pero olvidaste ocultar tu IP y fuiste rastreado, perdiste." },
+    { tipo: 'derrota', mensaje: "🎄 Robaste un saco de regalos en un taller, pero una cámara mágica capturó todo el acto, perdiste." },
+    { tipo: 'derrota', mensaje: "✨ Te infiltraste en la fábrica de juguetes, pero el sistema de seguridad navideño activó la alarma, perdiste." },
+    { tipo: 'derrota', mensaje: "⛄ Simulaste ser un duende en el taller, pero Santa Claus te reconoció y llamó a los renos de seguridad, perdiste." }
 ];
