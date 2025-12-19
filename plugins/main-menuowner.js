@@ -17,109 +17,206 @@ let handler = async (m, { conn, args }) => {
     // URL de la imagen del menú
     let menuImage = 'https://files.catbox.moe/lajq7h.jpg'
     
-    let txt = `🌟⭐ *${botname}* ⭐🌟
-   
-╭─━━━━━━━━━━━━━━━─╮
-│ 🎭 ¡Hola @${userId.split('@')[0]}! 💖
-╰─━━━━━━━━━━━━━━━─╯
+    let txt = `👑 *${botname} - PANEL OWNER* 👑
 
-╭─═⊰ 📡 𝐄𝐒𝐓𝐀𝐃𝐎 𝐀𝐂𝐓𝐈𝐕𝐎
-│ 🤖 Estado: ${(conn.user.jid == global.conn.user.jid ? '🟢 PREMIUM ' : '🔗 prem-ʙᴏᴛ')}
-│ ⚡ Activo: 『${uptime}』
-│ 👥 Users: 『${totalreg}』🔥
-│ 🛠️ Comandos: 『${totalCommands}』⚙️
-│ 📅 Fecha: ${moment().tz('America/Mexico_City').format('DD/MM/YYYY')}
-│ 🕐 Hora: ${moment().tz('America/Mexico_City').format('HH:mm:ss')}
-│ 🌍 Servidor: México 🇲🇽
-│ 📡 Ping: Online ✅
-│ 💾 Memoria: Estable 📊
-│ 🔒 Modo: Privado 🔐
-╰───────────────╯                                                                                                                                                                                                                                                                                                                                                                                                                    
+╔════════════════════════╗
+     📡 *ESTADO DEL SISTEMA*
+╚════════════════════════╝
 
-═══ COMANDOS DE OWNER ═══
+┌─🤖 *Estado:* ${(conn.user.jid == global.conn.user.jid ? '🟢 PREMIUM' : '🔗 PREM-BOT')}
+├─⚡ *Activo:* ${uptime}
+├─👥 *Usuarios:* ${totalreg}
+├─🛠️ *Comandos:* ${totalCommands}
+├─📅 *Fecha:* ${moment().tz('America/Mexico_City').format('DD/MM/YYYY')}
+├─🕐 *Hora:* ${moment().tz('America/Mexico_City').format('HH:mm:ss')}
+├─🌍 *Servidor:* México 🇲🇽
+├─📡 *Ping:* Online ✅
+├─💾 *Memoria:* Estable 📊
+└─🔒 *Modo:* Privado 🔐
 
-🔑 *GESTIÓN OWNERS*
-• #addowner • #delowner
-• #codigo
+╔════════════════════════╗
+     🔑 *GESTIÓN OWNERS*
+╚════════════════════════╝
 
-💾 *ARCHIVOS*
-• #backup • #copia
-• #cleanfiles • #dsowner
-• #cleartmp • #vaciartmp
-• #deletefile
+┌─🔸 *#addowner* [@usuario]
+│  ╰─ Agregar nuevo owner
+├─🔸 *#delowner* [@usuario]
+│  ╰─ Eliminar owner
+└─🔸 *#codigo*
+   ╰─ Generar código de sub-bot
 
-💰 *ECONOMÍA*
-• #addcoins • #añadircoin
-• #userpremium • #addprem
-• #delprem • #remove
-• #addexp • #añadirxp
-• #removecoin • #quitarcoin
-• #deletedatauser • #resetuser
-• #removexp • #quitarxp
+╔════════════════════════╗
+     💾 *ARCHIVOS Y DATOS*
+╚════════════════════════╝
 
-📢 *COMUNICACIÓN*
-• #bcgc • #let
-• #reunion • #meeting
+┌─🔹 *#backup* / *#copia*
+│  ╰─ Crear copia de seguridad
+├─🔹 *#cleanfiles* / *#dsowner*
+│  ╰─ Limpiar archivos temporales
+├─🔹 *#cleartmp* / *#vaciartmp*
+│  ╰─ Vaciar carpeta temporal
+├─🔹 *#deletefile* [nombre]
+│  ╰─ Eliminar archivo específico
+└─🔹 *#deletedatauser* [@usuario]
+   ╰─ Resetear datos de usuario
 
-🚫 *SISTEMA DE BANEOS*
-┌─ 🔐 Solo Fernando:
-│ • #banned [usuario] [tiempo] [razón]
-│ • #unban [usuario]
-├─ 👥 Todos los usuarios:
-│ • #horaban
-└─ 👑 Owners:
-  • #checkban [usuario]
-  • #banlist
-  • #block [usuario]
-  • #unblock [usuario]
-  • #blocklist
+╔════════════════════════╗
+     💰 *ECONOMÍA Y PREMIUM*
+╚════════════════════════╝
 
-*Ejemplos de uso:*
-• #banned @user 7d Spam
-• #banned 521234567890 2h 30m Mal comportamiento
-• #banned @user Permanente
-• #unban @user
-• #horaban (ver tu tiempo de baneo)
+┌─🔸 *#addcoins* [@usuario] [cantidad]
+│  ╰─ Agregar coins a usuario
+├─🔸 *#añadircoin* [@usuario] [cantidad]
+│  ╰─ Alternativa para agregar coins
+├─🔸 *#removecoin* / *#quitarcoin* [@usuario] [cantidad]
+│  ╰─ Quitar coins a usuario
+├─🔸 *#addexp* [@usuario] [cantidad]
+│  ╰─ Agregar experiencia
+├─🔸 *#removexp* / *#quitarxp* [@usuario] [cantidad]
+│  ╰─ Quitar experiencia
+├─🔸 *#addprem* [@usuario] [tiempo]
+│  ╰─ Agregar premium a usuario
+├─🔸 *#delprem* / *#remove* [@usuario]
+│  ╰─ Quitar premium a usuario
+└─🔸 *#userpremium* [@usuario]
+   ╰─ Ver estado premium
 
-🤖 *ADMIN AUTO*
-• #autoadmin
+╔════════════════════════╗
+     📢 *COMUNICACIÓN*
+╚════════════════════════╝
 
-👥 *GRUPOS*
-• #newgc • #creargc
-• #grouplist • #listgroup
-• #join • #invite
-• #leave • #salir
+┌─🔹 *#bcgc* [mensaje]
+│  ╰─ Broadcast a todos los grupos
+├─🔹 *#let* [mensaje]
+│  ╰─ Enviar mensaje como anuncio
+├─🔹 *#reunion* [link]
+│  ╰─ Crear reunión/conferencia
+└─🔹 *#meeting* [link]
+   ╰─ Alternativa para reunión
 
-🌐 *WEB*
-• #get • #fetch
-• #plugin • #getplugin
+╔════════════════════════╝
+     🚫 *SISTEMA DE BANEOS*
+╚════════════════════════╗
 
-⚙️ *CONFIGURACIÓN*
-• #prefix • #resetprefix
-• #reiniciar • #restart
-• #setbanner • #setavatar
-• #setimage2 • #setpfp2
-• #setmoneda • #setname
-• #setbio2 • #setstatus2
-• #update
+┌─🔐 *Solo Fernando:*
+│ ├─🔸 *#banned* [usuario] [tiempo] [razón]
+│ │  ╰─ Banear usuario (tiempo: 1h, 2d, permanente)
+│ ├─🔸 *#unban* [usuario]
+│ │  ╰─ Desbanear usuario
+│ └─🔸 *#horaban*
+│    ╰─ Ver tu tiempo de baneo
+├─👥 *Todos los usuarios:*
+│ └─🔸 *#horaban*
+│    ╰─ Ver tu tiempo de baneo
+└─👑 *Owners:*
+   ├─🔸 *#checkban* [usuario]
+   │  ╰─ Revisar ban de usuario
+   ├─🔸 *#banlist*
+   │  ╰─ Lista de baneos
+   ├─🔸 *#block* [usuario]
+   │  ╰─ Bloquear usuario en el bot
+   ├─🔸 *#unblock* [usuario]
+   │  ╰─ Desbloquear usuario
+   └─🔸 *#blocklist*
+      ╰─ Lista de bloqueados
 
-💾 *COMANDOS CUSTOM*
-• #addcmd • #setcmd
-• #delcmd • #cmdlist
-• #listcmd • #editarplugin
-• #subirplugin • #eliminarplugin
-• #saveplugin • #svp
-• #descargarplugins • #descargarplugin 
+*📌 Ejemplos de uso:*
+• *#banned @usuario 7d Spam*
+• *#banned 521234567890 2h 30m Mal comportamiento*
+• *#banned @usuario permanente*
+• *#unban @usuario*
+• *#horaban* (ver tu tiempo de baneo)
 
-╭────────────────────
-│ ✨ Usa con responsabilidad
-│ 🔒 Sistema de baneos mejorado
-│ ⏱️ Soporta baneos temporales
-╰────── 👑 OWNER 👑
-`
+╔════════════════════════╗
+    🤖 *AUTOMATIZACIÓN*
+╚════════════════════════╝
+
+┌─🔸 *#autoadmin*
+│  ╰─ Activar/desactivar auto-admin
+└─🔸 *#resetuser* [@usuario]
+   ╰─ Resetear usuario completamente
+
+╔════════════════════════╗
+  👥 *GESTIÓN DE GRUPOS*
+╚════════════════════════╝
+
+┌─🔹 *#newgc* / *#creargc*
+│  ╰─ Crear nuevo grupo
+├─🔹 *#grouplist* / *#listgroup*
+│  ╰─ Lista de grupos del bot
+├─🔹 *#join* [invitación]
+│  ╰─ Unir bot a un grupo
+└─🔹 *#leave* / *#salir*
+   ╰─ Sacar bot de un grupo
+
+╔════════════════════════╗
+    🌐 *WEB Y PLUGINS*
+╚════════════════════════╝
+
+┌─🔸 *#get* [url]
+│  ╰─ Obtener contenido de URL
+├─🔸 *#fetch* [url]
+│  ╰─ Alternativa para obtener URL
+├─🔸 *#plugin* [nombre]
+│  ╰─ Obtener plugin por nombre
+└─🔸 *#getplugin* [nombre]
+   ╰─ Alternativa para obtener plugin
+
+╔════════════════════════╗
+   ⚙️ *CONFIGURACIÓN*
+╚════════════════════════╝
+
+┌─🔹 *#prefix* [nuevo]
+│  ╰─ Cambiar prefijo del bot
+├─🔹 *#resetprefix*
+│  ╰─ Restablecer prefijo por defecto
+├─🔹 *#reiniciar* / *#restart*
+│  ╰─ Reiniciar el bot
+├─🔹 *#setbanner* [imagen]
+│  ╰─ Establecer banner del bot
+├─🔹 *#setavatar* / *#setpfp2* [imagen]
+│  ╰─ Cambiar avatar del bot
+├─🔹 *#setimage2* [imagen]
+│  ╰─ Establecer imagen del menú
+├─🔹 *#setmoneda* [símbolo]
+│  ╰─ Cambiar símbolo de moneda
+├─🔹 *#setname* [nombre]
+│  ╰─ Cambiar nombre del bot
+├─🔹 *#setbio2* / *#setstatus2* [texto]
+│  ╰─ Cambiar biografía del bot
+└─🔹 *#update*
+   ╰─ Actualizar el bot
+
+╔════════════════════════╗
+  💾 *COMANDOS CUSTOM*
+╚════════════════════════╝
+
+┌─🔸 *#addcmd* / *#setcmd* [nombre] [texto]
+│  ╰─ Agregar comando personalizado
+├─🔸 *#delcmd* [nombre]
+│  ╰─ Eliminar comando personalizado
+├─🔸 *#cmdlist* / *#listcmd*
+│  ╰─ Listar comandos personalizados
+├─🔸 *#editarplugin* [nombre]
+│  ╰─ Editar plugin existente
+├─🔸 *#subirplugin* [nombre]
+│  ╰─ Subir nuevo plugin
+├─🔸 *#eliminarplugin* [nombre]
+│  ╰─ Eliminar plugin
+├─🔸 *#saveplugin* / *#svp* [nombre]
+│  ╰─ Guardar plugin
+├─🔸 *#descargarplugins* / *#descargarplugin*
+│  ╰─ Descargar todos los plugins
+└─🔸 *#updateplugin*
+   ╰─ Actualizar plugin específico
+
+╭─────────────────────────╮
+│ ✨ *Usa con responsabilidad*
+│ 🔒 *Sistema de baneos mejorado*
+│ ⏱️ *Soporta baneos temporales*
+╰─────────👑 OWNER 👑─────╯`
 
     try {
-        // Enviar solo una vez con validación
         await conn.sendMessage(m.chat, {
             image: { url: menuImage },
             caption: txt,
