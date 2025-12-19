@@ -1,14 +1,11 @@
 let handler = async (m, { conn, usedPrefix, command, args }) => {
-    // Estado de paginación por chat/usuario
     if (!global.menuState) global.menuState = {};
     let chatId = m.chat;
     let userId = m.sender;
     let key = `${chatId}_${userId}`;
     
-    // Imagen del bot desde settings.js
     let menuImage = global.icono || "https://files.catbox.moe/nqvhaq.jpg";
     
-    // Categorías en orden (SIN NSFW)
     const categorias = [
         "MENU_INICIO",
         "ECONOMY", 
@@ -21,11 +18,10 @@ let handler = async (m, { conn, usedPrefix, command, args }) => {
         "ANIME"
     ];
     
-    // Inicializar/actualizar estado
     if (!global.menuState[key] || args[0] === 'reset') {
         global.menuState[key] = {
             pagina: 0,
-            mensajeId: null,
+            mensajeKey: null,
             timestamp: Date.now()
         };
     }
@@ -34,10 +30,8 @@ let handler = async (m, { conn, usedPrefix, command, args }) => {
     let paginaIndex = estado.pagina;
     let categoriaActual = categorias[paginaIndex];
     
-    // Obtener contenido según categoría
     let { titulo, descripcion, contenido } = obtenerContenidoCategoria(categoriaActual, usedPrefix, m);
     
-    // Texto completo del mensaje
     let txt = `🎮 *${global.botname || 'Asta-Bot'} - MENÚ INTERACTIVO* 🎮
 
 ╭─═⊰ 📍 *${titulo}*
@@ -54,10 +48,8 @@ ${contenido}
 
 *Usa los botones para navegar*`;
 
-    // Botones de navegación (SIN botón NSFW)
     let botones = [];
     
-    // Solo botón "Anterior" si no es la primera página
     if (paginaIndex > 0) {
         botones.push({
             buttonId: `${usedPrefix}menu_prev`,
@@ -66,14 +58,12 @@ ${contenido}
         });
     }
     
-    // Botón "Inicio" siempre disponible
     botones.push({
         buttonId: `${usedPrefix}menu_home`,
         buttonText: { displayText: '🏠 Inicio' },
         type: 1
     });
     
-    // Solo botón "Siguiente" si no es la última página
     if (paginaIndex < categorias.length - 1) {
         botones.push({
             buttonId: `${usedPrefix}menu_next`,
@@ -92,21 +82,22 @@ ${contenido}
     };
     
     try {
-        // Si ya existe un mensaje, EDITARLO
-        if (estado.mensajeId && args[0] !== 'new') {
+        if (estado.mensajeKey && args[0] !== 'new') {
             await conn.sendMessage(m.chat, {
                 ...buttonMessage,
-                edit: estado.mensajeId
+                edit: estado.mensajeKey
             }, { quoted: m });
         } else {
-            // Enviar nuevo mensaje
             let mensaje = await conn.sendMessage(m.chat, buttonMessage, { quoted: m });
-            estado.mensajeId = mensaje.key.id;
+            if (mensaje && mensaje.key) {
+                estado.mensajeKey = mensaje.key;
+            } else {
+                estado.mensajeKey = null;
+            }
             estado.timestamp = Date.now();
         }
     } catch (error) {
         console.error('Error en menú interactivo:', error);
-        // Fallback a mensaje simple
         await conn.sendMessage(m.chat, {
             text: txt,
             mentions: [userId]
@@ -114,7 +105,6 @@ ${contenido}
     }
 };
 
-// Manejador para botones (SIN lógica NSFW)
 handler.before = async (m, { conn, usedPrefix }) => {
     if (!m.message?.buttonsResponseMessage) return;
     
@@ -127,47 +117,42 @@ handler.before = async (m, { conn, usedPrefix }) => {
     
     let estado = global.menuState[key];
     
-    // Limpiar estado viejo (más de 30 minutos)
     if (Date.now() - estado.timestamp > 30 * 60 * 1000) {
         delete global.menuState[key];
         return;
     }
     
-    // Procesar acción del botón (SIN NSFW)
     if (buttonId === `${usedPrefix}menu_prev`) {
         estado.pagina = Math.max(0, estado.pagina - 1);
     } else if (buttonId === `${usedPrefix}menu_next`) {
-        estado.pagina = Math.min(8, estado.pagina + 1); // Cambiado de 9 a 8
+        estado.pagina = Math.min(8, estado.pagina + 1);
     } else if (buttonId === `${usedPrefix}menu_home`) {
         estado.pagina = 0;
     } else {
-        return; // No es un botón del menú
+        return;
     }
     
-    // Actualizar el menú
     estado.timestamp = Date.now();
     await handler(m, { conn, usedPrefix, command: 'menu', args: [] });
     
-    return true; // Evitar procesamiento adicional
+    return true;
 };
 
-// Función para obtener contenido por categoría (SIN NSFW)
 function obtenerContenidoCategoria(categoria, usedPrefix, m) {
     let titulo, descripcion, contenido;
     
     switch(categoria) {
         case 'MENU_INICIO':
-    titulo = '🌟 BIENVENIDO A ASTA-BOT';
-    descripcion = 'Panel principal - Todo en un solo lugar';
-    
-    // Obtener estadísticas
-    const totalUsers = Object.keys(global.db.data.users).length;
-    const activeUsers = Object.values(global.db.data.users).filter(u => u.lastseen && (Date.now() - u.lastseen) < 86400000).length;
-    const totalGroups = Object.keys(global.db.data.chats).filter(c => c.endsWith('@g.us')).length;
-    const totalCommands = Object.values(global.plugins).filter(v => v.help && v.tags).length;
-    const uptime = clockString(process.uptime() * 1000);
-    
-    contenido = `
+            titulo = '🌟 BIENVENIDO A ASTA-BOT';
+            descripcion = 'Panel principal - Todo en un solo lugar';
+            
+            const totalUsers = Object.keys(global.db.data.users).length;
+            const activeUsers = Object.values(global.db.data.users).filter(u => u.lastseen && (Date.now() - u.lastseen) < 86400000).length;
+            const totalGroups = Object.keys(global.db.data.chats).filter(c => c.endsWith('@g.us')).length;
+            const totalCommands = Object.values(global.plugins).filter(v => v.help && v.tags).length;
+            const uptime = clockString(process.uptime() * 1000);
+            
+            contenido = `
 ╔════════════════════════╗
     🚀 *INFORMACIÓN*
 ╚════════════════════════╝
@@ -201,7 +186,7 @@ function obtenerContenidoCategoria(categoria, usedPrefix, m) {
 ├─📱 Responde a mensajes para interactuar
 └─⚡ El bot está optimizado para velocidad
 💬 *¡Explora todas las categorías usando los botones!*`;
-    break;
+            break;
             
         case 'ECONOMY':
     titulo = '💰 SISTEMA ECONÓMICO';
@@ -799,14 +784,12 @@ function obtenerContenidoCategoria(categoria, usedPrefix, m) {
     return { titulo, descripcion, contenido };
 }
 
-// Configuración del handler
 handler.help = ['menu2']
 handler.tags = ['main']
 handler.command = ['menu2', 'menú2', 'help2']
 
 export default handler
 
-// Función auxiliar para tiempo
 function clockString(ms) {
     let seconds = Math.floor((ms / 1000) % 60)
     let minutes = Math.floor((ms / (1000 * 60)) % 60)
