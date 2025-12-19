@@ -8,7 +8,7 @@ let handler = async (m, { conn, usedPrefix, command, args }) => {
     // Imagen del bot desde settings.js
     let menuImage = global.icono || "https://files.catbox.moe/nqvhaq.jpg";
     
-    // Categorías en orden
+    // Categorías en orden (SIN NSFW)
     const categorias = [
         "MENU_INICIO",
         "ECONOMY", 
@@ -18,8 +18,7 @@ let handler = async (m, { conn, usedPrefix, command, args }) => {
         "UTILITIES",
         "PROFILES",
         "GROUPS",
-        "ANIME",
-        "NSFW"
+        "ANIME"
     ];
     
     // Inicializar/actualizar estado
@@ -39,7 +38,7 @@ let handler = async (m, { conn, usedPrefix, command, args }) => {
     let { titulo, descripcion, contenido } = obtenerContenidoCategoria(categoriaActual, usedPrefix, m);
     
     // Texto completo del mensaje
-    let txt = `🎮 *${botname} - MENÚ INTERACTIVO* 🎮
+    let txt = `🎮 *${global.botname || 'Asta-Bot'} - MENÚ INTERACTIVO* 🎮
 
 ╭─═⊰ 📍 *${titulo}*
 │ ${descripcion}
@@ -55,7 +54,7 @@ ${contenido}
 
 *Usa los botones para navegar*`;
 
-    // Botones de navegación
+    // Botones de navegación (SIN botón NSFW)
     let botones = [];
     
     // Solo botón "Anterior" si no es la primera página
@@ -83,19 +82,10 @@ ${contenido}
         });
     }
     
-    // Si es NSFW, agregar botón de confirmación especial
-    if (categoriaActual === 'NSFW') {
-        botones.push({
-            buttonId: `${usedPrefix}menu_nsfwconfirm`,
-            buttonText: { displayText: '⚠️ Confirmar NSFW' },
-            type: 1
-        });
-    }
-    
     const buttonMessage = {
         image: { url: menuImage },
         caption: txt,
-        footer: `${global.botname} | Página ${paginaIndex + 1}/${categorias.length}`,
+        footer: `${global.botname || 'Asta-Bot'} | Página ${paginaIndex + 1}/${categorias.length}`,
         buttons: botones,
         headerType: 1,
         mentions: [userId]
@@ -124,7 +114,7 @@ ${contenido}
     }
 };
 
-// Manejador para botones
+// Manejador para botones (SIN lógica NSFW)
 handler.before = async (m, { conn, usedPrefix }) => {
     if (!m.message?.buttonsResponseMessage) return;
     
@@ -143,19 +133,13 @@ handler.before = async (m, { conn, usedPrefix }) => {
         return;
     }
     
-    // Procesar acción del botón
+    // Procesar acción del botón (SIN NSFW)
     if (buttonId === `${usedPrefix}menu_prev`) {
         estado.pagina = Math.max(0, estado.pagina - 1);
     } else if (buttonId === `${usedPrefix}menu_next`) {
-        estado.pagina = Math.min(9, estado.pagina + 1);
+        estado.pagina = Math.min(8, estado.pagina + 1); // Cambiado de 9 a 8
     } else if (buttonId === `${usedPrefix}menu_home`) {
         estado.pagina = 0;
-    } else if (buttonId === `${usedPrefix}menu_nsfwconfirm`) {
-        // Lógica especial para NSFW
-        await conn.sendMessage(m.chat, {
-            text: '⚠️ *CONTENIDO NSFW*\n\nEsta sección contiene contenido para adultos.\nUsa el comando directamente si deseas acceder.'
-        }, { quoted: m });
-        return;
     } else {
         return; // No es un botón del menú
     }
@@ -167,7 +151,7 @@ handler.before = async (m, { conn, usedPrefix }) => {
     return true; // Evitar procesamiento adicional
 };
 
-// Función para obtener contenido por categoría (ESQUELETO - tú llenas los comandos)
+// Función para obtener contenido por categoría (SIN NSFW)
 function obtenerContenidoCategoria(categoria, usedPrefix, m) {
     let titulo, descripcion, contenido;
     
