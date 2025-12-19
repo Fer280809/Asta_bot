@@ -28,11 +28,10 @@ Me llamo『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』⚡
 Selecciona una opción:`;
 
   let buttons = [
-    { buttonId: usedPrefix + 'menu2', buttonText: { displayText: '📜 Menú' }, type: 1 },
-    { buttonId: usedPrefix + 'nuevos', buttonText: { displayText: '📌 Actualizaciones' }, type: 1 },
-    { buttonId: usedPrefix + 'code', buttonText: { displayText: '🤖 Sup-Bot' }, type: 1 },
+    { buttonId: usedPrefix + 'menu1', buttonText: { displayText: '📜 Menú' }, type: 1 },
+    { buttonId: usedPrefix + 'code', buttonText: { displayText: '🤖 Sub-Bot' }, type: 1 },
+    { buttonId: usedPrefix + 'nuevos', buttonText: { displayText: '📌 Novedades' }, type: 1 },
     { buttonId: usedPrefix + 'creador', buttonText: { displayText: '👑 CREADOR' }, type: 1 },
-    { buttonId: usedPrefix + 'menu+', buttonText: { displayText: '➕ Menu +18' }, type: 1 }
   ];
   
   // URL de la imagen o video (cambia por tu propia URL)
