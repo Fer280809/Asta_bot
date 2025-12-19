@@ -190,8 +190,7 @@ function obtenerContenidoCategoria(categoria, usedPrefix, m) {
 ├─🛠️ *UTILITIES* - Herramientas varias
 ├─👤 *PROFILES* - Perfiles de usuario
 ├─👥 *GROUPS* - Administración grupal
-├─🌸 *ANIME* - Contenido otaku
-└─🔞 *NSFW* - Contenido adulto (18+)
+└─🌸 *ANIME* - Contenido otaku
 
 ╔════════════════════════╗
    💡 *CONSEJOS RÁPIDOS*
