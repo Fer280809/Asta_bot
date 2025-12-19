@@ -221,26 +221,85 @@ function obtenerContenidoCategoria(categoria, usedPrefix, m) {
     break;
             
         case 'ECONOMY':
-            titulo = '💰 ECONOMÍA';
-            descripcion = 'Sistema de monedas, banca, trabajos';
-            contenido = `*COMANDOS DE ECONOMÍA*
+    titulo = '💰 SISTEMA ECONÓMICO';
+    descripcion = 'Gana, invierte y gestiona tu riqueza virtual';
+    
+    contenido = `
+╔════════════════════════╗
+💼 *TRABAJOS Y RECOMPENSAS*
+╚════════════════════════╝
 
-💵 *Monedas:*
-• ${usedPrefix}balance
-• ${usedPrefix}daily
-• ${usedPrefix}work
+┌─🔸 *${usedPrefix}work*
+│  ╰─ Ganar coins trabajando
+├─🔸 *${usedPrefix}slut*
+│  ╰─ Ganar coins prostituyéndote
+├─🔸 *${usedPrefix}crime*
+│  ╰─ Ganar coins rápido (crimen)
+├─🔸 *${usedPrefix}miming*
+│  ╰─ Ganar coins minando
+├─🔸 *${usedPrefix}aventura*
+│  ╰─ Aventuras para ganar coins y EXP
+├─🔸 *${usedPrefix}cazar*
+│  ╰─ Cazar animales por recompensas
+├─🔸 *${usedPrefix}fish*
+│  ╰─ Pescar para ganar coins
+├─🔸 *${usedPrefix}mazmorra*
+│  ╰─ Explorar mazmorras
+├─🔸 *${usedPrefix}daily*
+│  ╰─ Recompensa diaria
+├─🔸 *${usedPrefix}weekly*
+│  ╰─ Recompensa semanal
+├─🔸 *${usedPrefix}monthly*
+│  ╰─ Recompensa mensual
+└─🔸 *${usedPrefix}cofre*
+   ╰─ Reclamar cofre diario
 
-🏦 *Banca:*
-• ${usedPrefix}deposit
-• ${usedPrefix}withdraw
-• ${usedPrefix}transfer
+╔════════════════════════╗
+   🏦 *BANCA Y GESTIÓN*
+╚════════════════════════╝
 
-🎰 *Casino:*
-• ${usedPrefix}slot
-• ${usedPrefix}dado
+┌─🔹 *${usedPrefix}balance* [@usuario]
+│  ╰─ Ver saldo de coins
+├─🔹 *${usedPrefix}deposit* [cantidad|all]
+│  ╰─ Depositar en el banco
+├─🔹 *${usedPrefix}withdraw* [cantidad|all]
+│  ╰─ Retirar del banco
+├─🔹 *${usedPrefix}economyinfo*
+│  ╰─ Tu información económica
+└─🔹 *${usedPrefix}givecoins* [@usuario] [cantidad]
+   ╰─ Dar coins a otro usuario
 
-*Añade aquí tus comandos específicos...*`;
-            break;
+╔════════════════════════╗
+  🎲 *APUESTAS Y CASINO*
+╚════════════════════════╝
+
+┌─🔸 *${usedPrefix}coinflip* [cantidad] [cara/cruz]
+│  ╰─ Apostar en cara o cruz
+├─🔸 *${usedPrefix}roulette* [red/black] [cantidad]
+│  ╰─ Apostar en la ruleta
+├─🔸 *${usedPrefix}casino* [cantidad]
+│  ╰─ Jugar en el casino
+└─🔸 *${usedPrefix}steal* [@usuario]
+   ╰─ Intentar robar coins
+
+╔════════════════════════╗
+  ⚔️ *AVENTURA Y SALUD*
+╚════════════════════════╝
+
+┌─🔹 *${usedPrefix}curar*
+│  ╰─ Curar salud para aventuras
+└─🔹 *${usedPrefix}heal*
+   ╰─ Curar salud (alternativo)
+
+╔════════════════════════╗
+ 📊 *RANKINGS Y LIDERAZGO*
+╚════════════════════════╝
+
+┌─🔸 *${usedPrefix}economyboard* [página]
+│  ╰─ Ranking económico del grupo
+└─🔸 *${usedPrefix}baltop* [página]
+   ╰─ Ranking económico (alternativo)`;
+    break;
             
         case 'DOWNLOAD':
     titulo = '📥 DESCARGAS MULTIMEDIA';
@@ -278,7 +337,7 @@ function obtenerContenidoCategoria(categoria, usedPrefix, m) {
    ╰─ Descargar de Instagram
 
 ╔════════════════════════╗
-   🖼️ *IMÁGENES*
+      🖼️ *IMÁGENES*
 ╚════════════════════════╝
 
 ┌─🔸 *${usedPrefix}pinterest* [búsqueda]
@@ -302,7 +361,7 @@ function obtenerContenidoCategoria(categoria, usedPrefix, m) {
    ╰─ Buscar mods Minecraft
 
 ╔════════════════════════╗
-   🔍 *BÚSQUEDAS*
+     🔍 *BÚSQUEDAS*
 ╚════════════════════════╝
 
 ┌─🔸 *${usedPrefix}ytsearch* [búsqueda]
@@ -310,82 +369,254 @@ function obtenerContenidoCategoria(categoria, usedPrefix, m) {
 ├─🔸 *${usedPrefix}play2* [canción]
 │  ╰─ Alternativa de búsqueda
 └─🔸 *${usedPrefix}estados*
-   ╰─ Descargar estados WhatsApp
-
-╔════════════════════════╗
-   📊 *ESTADÍSTICAS*
-╚════════════════════════╝
-
-┌─📈 *Comandos activos:* 20
-├─💾 *Formatos soportados:* MP3/MP4/JPG/APK
-└─🌐 *Plataformas:* YouTube, TikTok, IG, FB, Twitter, Pinterest, MediaFire, MEGA`;
+   ╰─ Descargar estados WhatsApp`;
     break;
             
         case 'GACHA':
-            titulo = '🎴 GACHA';
-            descripcion = 'Sistema de cartas, coleccionables';
-            contenido = `*COMANDOS GACHA*
+    titulo = '🎴 SISTEMA GACHA';
+    descripcion = 'Colecciona, intercambia y gestiona personajes';
+    
+    contenido = `
+╔════════════════════════╗
+   🎲 *COLECCIÓN BÁSICA*
+╚════════════════════════╝
 
-🃏 *Cartas:*
-• ${usedPrefix}gacha
-• ${usedPrefix}inventory
+┌─🔸 *${usedPrefix}rollwaifu*
+│  ╰─ Personaje aleatorio
+├─🔸 *${usedPrefix}claim* [@personaje]
+│  ╰─ Reclamar personaje
+├─🔸 *${usedPrefix}harem* [@usuario]
+│  ╰─ Ver colección personal
+├─🔸 *${usedPrefix}charinfo* [nombre]
+│  ╰─ Info de personaje
+└─🔸 *${usedPrefix}serielist*
+   ╰─ Listar series disponibles
 
-🏆 *Colección:*
-• ${usedPrefix}shop
-• ${usedPrefix}buy
+╔════════════════════════╗
+   💰 *MERCADO Y VENTAS*
+╚════════════════════════╝
 
-*Añade aquí tus comandos específicos...*`;
-            break;
+┌─🔹 *${usedPrefix}sell* [precio] [nombre]
+│  ╰─ Vender personaje
+├─🔹 *${usedPrefix}haremshop* [página]
+│  ╰─ Tienda de personajes
+├─🔹 *${usedPrefix}buycharacter* [nombre]
+│  ╰─ Comprar personaje
+├─🔹 *${usedPrefix}removesale* [precio] [nombre]
+│  ╰─ Retirar de venta
+└─🔹 *${usedPrefix}givechar* [@usuario] [nombre]
+   ╰─ Regalar personaje
+
+╔════════════════════════╗
+  ⚔️ *INTERACCIÓN SOCIAL*
+╚════════════════════════╝
+
+┌─🔸 *${usedPrefix}trade* [tu personaje] [otro personaje]
+│  ╰─ Intercambiar personajes
+├─🔸 *${usedPrefix}robwaifu* [@usuario]
+│  ╰─ Robar personaje
+├─🔸 *${usedPrefix}giveallharem* [@usuario]
+│  ╰─ Regalar toda la colección
+└─🔸 *${usedPrefix}vote* [nombre]
+   ╰─ Votar por personaje
+
+╔════════════════════════╗
+   ⚙️ *GESTIÓN Y CONFIG*
+╚════════════════════════╝
+
+┌─🔹 *${usedPrefix}setclaimmsg* [mensaje]
+│  ╰─ Personalizar mensaje de claim
+├─🔹 *${usedPrefix}delclaimmsg*
+│  ╰─ Restablecer mensaje de claim
+├─🔹 *${usedPrefix}deletewaifu* [nombre]
+│  ╰─ Eliminar personaje
+├─🔹 *${usedPrefix}charimage* [nombre]
+│  ╰─ Ver imagen del personaje
+└─🔹 *${usedPrefix}serieinfo* [nombre]
+   ╰─ Información del anime
+
+╔════════════════════════╗
+    📊 *ESTADÍSTICAS*
+╚════════════════════════╝
+
+┌─🔸 *${usedPrefix}gachainfo*
+│  ╰─ Tu info de gacha
+├─🔸 *${usedPrefix}waifusboard* [número]
+│  ╰─ Top personajes por valor
+├─🔸 *${usedPrefix}favoritetop*
+│  ╰─ Top personajes favoritos
+└─🔸 *${usedPrefix}delwaifu* [nombre]
+   ╰─ Eliminar personaje (alternativo)`;
+    break;
             
         case 'SOCKETS':
-            titulo = '🔌 SOCKETS';
-            descripcion = 'Sub-bots, conexiones, jadibot';
-            contenido = `*COMANDOS DE SOCKETS*
+    titulo = '🔌 SOCKETS Y CONEXIONES';
+    descripcion = 'Gestiona sub-bots, conexiones y estado del sistema';
+    
+    contenido = `
+╔════════════════════════╗
+ 🤖 *SUB-BOTS Y SESIONES*
+╚════════════════════════╝
 
-🤖 *Sub-bots:*
-• ${usedPrefix}serbot
-• ${usedPrefix}jadibot
+┌─🔸 *${usedPrefix}qr* / *${usedPrefix}code*
+│  ╰─ Crear sub-bot con QR/código
+├─🔸 *${usedPrefix}bots*
+│  ╰─ Ver bots activos
+├─🔸 *${usedPrefix}logout*
+│  ╰─ Cerrar sesión del bot
+└─🔸 *${usedPrefix}join* [invitación]
+   ╰─ Unir bot a un grupo
 
-🔗 *Conexiones:*
-• ${usedPrefix}listjadibot
+╔════════════════════════╗
+ ⚙️ *CONFIGURAR DEL BOT*
+╚════════════════════════╝
 
-*Añade aquí tus comandos específicos...*`;
-            break;
+┌─🔹 *${usedPrefix}setusername* [nombre]
+│  ╰─ Cambiar nombre de usuario
+├─🔹 *${usedPrefix}setpfp*
+│  ╰─ Cambiar imagen de perfil
+├─🔹 *${usedPrefix}setstatus* [estado]
+│  ╰─ Cambiar estado (bio)
+└─🔹 *${usedPrefix}leave*
+   ╰─ Salir de un grupo
+
+╔════════════════════════╗
+ 📊 *ESTADO Y DIAGNÓSTICO*
+╚════════════════════════╝
+
+┌─🔸 *${usedPrefix}status*
+│  ╰─ Ver estado del bot
+├─🔸 *${usedPrefix}ping*
+│  ╰─ Medir tiempo de respuesta
+└─🔸 *${usedPrefix}botlist*
+   ╰─ Ver número de bots (alternativo)`;
+    break;
             
         case 'UTILITIES':
-            titulo = '🛠️ UTILIDADES';
-            descripcion = 'Herramientas, conversores, búsqueda';
-            contenido = `*COMANDOS UTILITARIOS*
+    titulo = '🛠️ HERRAMIENTAS Y UTILIDADES';
+    descripcion = 'Conversores, IA, búsquedas y herramientas varias';
+    
+    contenido = `
+╔════════════════════════╗
+🎨 *STICKERS Y MULTIMEDIA*
+╚════════════════════════╝
 
-🔍 *Búsqueda:*
-• ${usedPrefix}google
-• ${usedPrefix}wiki
+┌─🔸 *${usedPrefix}sticker*
+│  ╰─ Crear sticker de imagen/video
+├─🔸 *${usedPrefix}toimg*
+│  ╰─ Convertir sticker a imagen
+├─🔸 *${usedPrefix}setmeta* [autor]|[pack]
+│  ╰─ Configurar pack/autor stickers
+├─🔸 *${usedPrefix}delmeta*
+│  ╰─ Restablecer pack stickers
+├─🔸 *${usedPrefix}brat* / *${usedPrefix}emojimix*
+│  ╰─ Stickers con texto/emojis
+└─🔸 *${usedPrefix}enhance* [imagen]
+   ╰─ Mejorar calidad de imagen
 
-🔄 *Conversores:*
-• ${usedPrefix}sticker
-• ${usedPrefix}toimg
+╔════════════════════════╗
+        🤖 *IA*
+╚════════════════════════╝
 
-📊 *Herramientas:*
-• ${usedPrefix}calc
+┌─🔹 *${usedPrefix}ia* / *${usedPrefix}gemini*
+│  ╰─ Preguntar a ChatGPT/Gemini
+├─🔹 *${usedPrefix}dalle* [texto]
+│  ╰─ Crear imágenes con IA
+└─🔹 *${usedPrefix}translate* [texto]
+   ╰─ Traducir texto
 
-*Añade aquí tus comandos específicos...*`;
-            break;
+╔════════════════════════╗
+   🔍 *BÚSQUEDAS Y WEB*
+╚════════════════════════╝
+
+┌─🔸 *${usedPrefix}google* [consulta]
+│  ╰─ Buscar en Google
+├─🔸 *${usedPrefix}wiki* [tema]
+│  ╰─ Consultar Wikipedia
+├─🔸 *${usedPrefix}ssweb* [url]
+│  ╰─ Captura de pantalla web
+└─🔸 *${usedPrefix}gitclone* [url]
+   ╰─ Clonar repositorio GitHub
+
+╔════════════════════════╗
+ ⚙️ *HERRAMIENTAS VARIAS*
+╚════════════════════════╝
+
+┌─🔹 *${usedPrefix}calcular* [ecuación]
+│  ╰─ Calculadora
+├─🔹 *${usedPrefix}letra* [texto]
+│  ╰─ Cambiar fuente de texto
+├─🔹 *${usedPrefix}getpic* [@usuario]
+│  ╰─ Ver foto de perfil
+├─🔹 *${usedPrefix}tourl*
+│  ╰─ Subir media a URL
+├─🔹 *${usedPrefix}readviewonce*
+│  ╰─ Ver imágenes viewonce
+├─🔹 *${usedPrefix}say* [texto]
+│  ╰─ Repetir mensaje
+├─🔹 *${usedPrefix}npmdl* [paquete]
+│  ╰─ Descargar paquete npm
+└─🔹 *${usedPrefix}sc*
+   ╰─ Link del repositorio
+
+╔════════════════════════╗
+   🆘 *SOPORTE Y AYUDA*
+╚════════════════════════╝
+
+┌─🔸 *${usedPrefix}help*
+│  ╰─ Menú de comandos
+├─🔸 *${usedPrefix}reporte* [problema]
+│  ╰─ Reportar fallos
+└─🔸 *${usedPrefix}suggest* [idea]
+   ╰─ Sugerir nuevas funciones`;
+    break;
             
         case 'PROFILES':
-            titulo = '👤 PERFILES';
-            descripcion = 'Perfil de usuario, nivel, experiencia';
-            contenido = `*COMANDOS DE PERFIL*
+    titulo = '👤 PERFILES DE USUARIO';
+    descripcion = 'Gestiona tu perfil, nivel y relaciones sociales';
+    
+    contenido = `
+╔════════════════════════╗
+📱 *PERFIL Y ESTADÍSTICAS*
+╚════════════════════════╝
 
-📱 *Perfil:*
-• ${usedPrefix}profile
-• ${usedPrefix}level
+┌─🔸 *${usedPrefix}profile* [@usuario]
+│  ╰─ Ver perfil de usuario
+├─🔸 *${usedPrefix}level* [@usuario]
+│  ╰─ Ver nivel y experiencia
+└─🔸 *${usedPrefix}leaderboard* [página]
+   ╰─ Top de usuarios por EXP
 
-🏅 *Logros:*
-• ${usedPrefix}rank
-• ${usedPrefix}top
+╔════════════════════════╗
+   ✏️ *PERSONALIZACIÓN*
+╚════════════════════════╝
 
-*Añade aquí tus comandos específicos...*`;
-            break;
+┌─🔹 *${usedPrefix}setdescription* [texto]
+│  ╰─ Establecer tu descripción
+├─🔹 *${usedPrefix}deldescription*
+│  ╰─ Eliminar descripción
+├─🔹 *${usedPrefix}setgenre* [hombre|mujer]
+│  ╰─ Establecer género
+├─🔹 *${usedPrefix}delgenre*
+│  ╰─ Eliminar género
+├─🔹 *${usedPrefix}setbirth* [fecha]
+│  ╰─ Establecer cumpleaños
+├─🔹 *${usedPrefix}delbirth*
+│  ╰─ Eliminar cumpleaños
+└─🔹 *${usedPrefix}setfavourite* [personaje]
+   ╰─ Establecer claim favorito
+
+╔════════════════════════╗
+ 💝 *RELACIONES SOCIALES*
+╚════════════════════════╝
+
+┌─🔸 *${usedPrefix}marry* [@usuario]
+│  ╰─ Casarse con otro usuario
+├─🔸 *${usedPrefix}divorce*
+│  ╰─ Divorciarse
+└─🔸 *${usedPrefix}prem*
+   ╰─ Comprar membresía premium`;
+    break;
             
         case 'GROUPS':
     titulo = '🛡️ MODERACIÓN DE GRUPOS';
@@ -573,25 +804,8 @@ function obtenerContenidoCategoria(categoria, usedPrefix, m) {
 ├─🎨 *${usedPrefix}animepic*
 │  ╰─ Imagen anime aleatoria
 └─🖼️ *${usedPrefix}wallpaper*
-   ╰─ Wallpaper anime HD
+   ╰─ Wallpaper anime HD`;
     break;
-            
-        case 'NSFW':
-            titulo = '🔞 NSFW';
-            descripcion = 'Contenido para adultos (18+)';
-            contenido = `*COMANDOS NSFW*
-
-⚠️ *ADVERTENCIA: Contenido 18+*
-
-🎭 *General:*
-• ${usedPrefix}nsfw
-• ${usedPrefix}hentai
-
-🔞 *Explícito:*
-• [comandos específicos]
-
-*Requiere confirmación adicional*`;
-            break;
             
         default:
             titulo = '🏠 INICIO';
