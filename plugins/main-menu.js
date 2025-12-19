@@ -59,7 +59,7 @@ ${contenido}
     }
     
     botones.push({
-        buttonId: `${usedPrefix}menu_home`,
+        buttonId: `${usedPrefix}menu`,
         buttonText: { displayText: '🏠 Inicio' },
         type: 1
     });
