@@ -170,7 +170,7 @@ async function handler(m, { conn, args, usedPrefix, command }) {
 // Configuración del handler
 handler.help = ['pay <cantidad/all/half> @usuario', 'regalar', 'give', 'transferir']
 handler.tags = ['economy', 'navidad', 'regalos']
-handler.command = ['pay', 'regalar', 'give', 'transferir', 'gift', 'navidadgive', 'santagift', 'regalonavideno']
+handler.command = ['pay', 'regalar', 'give', 'transferir', 'gift']
 handler.group = true
 handler.limit = true
 
