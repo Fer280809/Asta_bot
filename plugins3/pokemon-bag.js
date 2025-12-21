@@ -1,60 +1,45 @@
-import { PokemonLogic } from '../lib/poke/logic.js'
+import fs from 'fs'
 
-let handler = async (m, { conn, text, usedPrefix }) => {
+let handler = async (m, { conn, usedPrefix }) => {
     let user = global.db.data.users[m.sender]
+    if (!user.pokemon?.registrado) return m.reply('❌ No tienes una partida activa.')
+
     let p = user.pokemon
-    if (!p?.registrado) return m.reply('❌ No has iniciado tu aventura.')
+    let itemsData = JSON.parse(fs.readFileSync('./lib/poke/items.json'))
+    
+    let inventario = p.inventario || {}
+    let texto = `🎒 *MOCHILA DE ${p.nombreEntrenador.toUpperCase()}*\n`
+    texto += `▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n`
+    texto += `💰 *Dinero:* $${p.dinero}\n\n`
 
-    // Lógica de uso de objetos
-    if (text) {
-        let item = text.toLowerCase().trim()
-        let miPkm = p.equipo[0]
-
-        if (item === 'pocion') {
-            if (p.inventario.pocion <= 0) return m.reply('❌ No tienes Pociones.')
-            miPkm.hp = Math.min(miPkm.hpMax, miPkm.hp + 20)
-            p.inventario.pocion--
-            return m.reply(`🧪 Usaste una Poción en *${miPkm.nombre}*. Ahora tiene ${miPkm.hp} HP.`)
-        }
-
-        if (item === 'pokeball') {
-            if (!p.combate) return m.reply('❌ Solo puedes lanzar Pokéballs en combate.')
-            if (p.inventario.pokeball <= 0) return m.reply('❌ No tienes Pokéballs.')
-            
-            p.inventario.pokeball--
-            let enemigo = p.combate
-            let hpPercent = (enemigo.hp / enemigo.hpMax) * 100
-            let atrapado = PokemonLogic.isCaught(80, hpPercent, 1) // 80 es ratio base
-
-            if (atrapado) {
-                let nuevoPkm = {
-                    id: enemigo.id,
-                    nombre: enemigo.nombre,
-                    nivel: enemigo.nivel,
-                    exp: 0,
-                    hp: enemigo.hpMax,
-                    hpMax: enemigo.hpMax,
-                    stats: enemigo.stats,
-                    tipos: enemigo.tipos,
-                    movimientos: ["Placaje"] // En la beta empiezan con básico
-                }
-                p.equipo.length < 6 ? p.equipo.push(nuevoPkm) : p.pc.push(nuevoPkm)
-                delete p.combate
-                return m.reply(`✨ ¡Increíble! Has atrapado a *${enemigo.nombre}*!`)
-            } else {
-                return m.reply(`¡Oh no! El *${enemigo.nombre}* se ha escapado de la bola.`)
-            }
-        }
+    let categorias = {
+        "balls": "⚪ *Poké Balls*",
+        "curacion": "🧪 *Objetos de Salud*",
+        "evolucion": "💎 *Objetos de Evolución*",
+        "especial": "⭐ *Otros*"
     }
 
-    const sections = [{
-        title: "TUS OBJETOS",
-        rows: [
-            { title: "Pocion", rowId: `${usedPrefix}p bag pocion`, description: `Tienes: ${p.inventario.pocion} (Cura 20 HP)` },
-            { title: "Pokeball", rowId: `${usedPrefix}p bag pokeball`, description: `Tienes: ${p.inventario.pokeball} (Atrapa Pokémon)` }
-        ]
-    }]
-    await conn.sendList(m.chat, "🎒 MOCHILA", "Selecciona un objeto para usar:", "Ver Mochila", sections, m)
+    let vacia = true
+    for (let [catKey, catName] of Object.entries(categorias)) {
+        let itemsEnCat = ""
+        for (let [itemId, cantidad] of Object.entries(inventario)) {
+            // Buscar datos del item en la categoría correspondiente del JSON maestro
+            let itemInfo = itemsData[catKey]?.[itemId]
+            if (itemInfo && cantidad > 0) {
+                itemsEnCat += `• ${itemInfo.emoji} *${itemInfo.nombre}* x${cantidad}\n`
+                vacia = false
+            }
+        }
+        if (itemsEnCat) texto += `${catName}\n${itemsEnCat}\n`
+    }
+
+    if (vacia) texto += `_Tu mochila está vacía..._ 🏜️\n`
+
+    texto += `▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n`
+    texto += `💡 _Usa *${usedPrefix}puse [nombre]* para usar un objeto._`
+
+    await conn.reply(m.chat, texto, m)
 }
-handler.command = /^p\s?bag$/i
+
+handler.command = /^(p|pokemon)bag|mochila$/i
 export default handler
