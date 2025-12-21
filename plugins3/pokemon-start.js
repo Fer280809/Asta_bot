@@ -1,45 +1,44 @@
-import { PokemonLogic } from '../../lib/poke/logic.js'
+import { PokemonLogic } from '../lib/poke/logic.js'
 
 let handler = async (m, { conn, text, usedPrefix, command }) => {
     let user = global.db.data.users[m.sender]
+    
+    // Si no existe el objeto pokemon, lo creamos
     if (!user.pokemon) user.pokemon = {}
     
-    if (user.pokemon.registrado) {
-        return m.reply(`¡Ya eres entrenador! Tu aventura sigue en *${user.pokemon.ubicacion}*`)
-    }
+    if (user.pokemon.registrado) return m.reply(`❌ Ya eres un entrenador. Tu aventura actual está en *${user.pokemon.ubicacion}*`)
 
     if (!text) {
-        const sections = [
-            {
-                title: "ELIGE TU COMPAÑERO",
-                rows: [
-                    { title: "Bulbasaur", rowId: `${usedPrefix + command} bulbasaur`, description: "Tipo Planta/Veneno" },
-                    { title: "Charmander", rowId: `${usedPrefix + command} charmander`, description: "Tipo Fuego" },
-                    { title: "Squirtle", rowId: `${usedPrefix + command} squirtle`, description: "Tipo Agua" }
-                ]
-            }
-        ]
-
-        return conn.sendList(m.chat, "✨ BIENVENIDO A AURELIA ✨", "Hola, soy el Profesor Roble. Para comenzar, elige uno de estos 3 Pokémon iniciales:", "Ver Iniciales", sections, m)
+        const sections = [{
+            title: "ELIGE TU COMPAÑERO",
+            rows: [
+                { title: "Bulbasaur", rowId: `${usedPrefix + command} bulbasaur`, description: "Tipo Planta/Veneno" },
+                { title: "Charmander", rowId: `${usedPrefix + command} charmander`, description: "Tipo Fuego" },
+                { title: "Squirtle", rowId: `${usedPrefix + command} squirtle`, description: "Tipo Agua" }
+            ]
+        }]
+        return conn.sendList(m.chat, "✨ BIENVENIDO A AURELIA ✨", "Elige a tu primer Pokémon para comenzar tu viaje:", "Ver Iniciales", sections, m)
     }
 
     let choice = text.toLowerCase().trim()
-    let pokemonId = choice === 'bulbasaur' ? 1 : choice === 'charmander' ? 4 : choice === 'squirtle' ? 7 : null
-    
-    if (!pokemonId) return m.reply("❌ Selección inválida.")
+    let pkmId = choice === 'bulbasaur' ? 1 : choice === 'charmander' ? 4 : choice === 'squirtle' ? 7 : null
+    if (!pkmId) return m.reply("❌ Selección inválida. Elige entre Bulbasaur, Charmander o Squirtle.")
 
-    const pkmBase = PokemonLogic.getPokemon(pokemonId)
+    const pkmBase = PokemonLogic.getPokemon(pkmId)
     
-    // Inicializar partida
+    // --- ESTRUCTURA DE PERFIL EXCLUSIVA ---
     user.pokemon = {
         registrado: true,
         nombreEntrenador: m.name,
-        dinero: 500,
+        dinero: 500, // <--- INICIA CON UN POQUITO DE DINERO (500 Yenes)
         ubicacion: "Pueblo Origen",
         medallas: [],
-        inventario: { pokeball: 5, pocion: 2 },
+        inventario: { 
+            pokeball: 5, // 5 Pokéballs de regalo
+            pocion: 2    // 2 Pociones de regalo
+        },
         equipo: [{
-            id: pokemonId,
+            id: pkmId,
             nombre: pkmBase.nombre,
             nivel: 5,
             exp: 0,
@@ -47,17 +46,16 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
             hpMax: pkmBase.statsBase.hp + 10,
             stats: { ...pkmBase.statsBase },
             tipos: pkmBase.tipos,
-            movimientos: ["Placaje", "Gruñido"] // Movimientos iniciales
+            movimientos: ["Placaje", "Arañazo"]
         }],
         pc: []
     }
 
     await conn.sendMessage(m.chat, { 
         image: { url: pkmBase.imagen }, 
-        caption: `🎉 ¡Excelente elección! *${pkmBase.nombre}* y tú serán grandes amigos.\n\n📍 Estás en: *Pueblo Origen*\n🎒 Tienes: 5 Pokéballs y 2 Pociones.\n\nUsa *.p info* para ver tu estado.` 
+        caption: `🎉 ¡Felicidades! Has recibido a *${pkmBase.nombre}*.\n\n💰 Has recibido *$500* y un kit de *5 Pokéballs* para empezar.\n\nUsa *.p info* para ver tu estado.` 
     }, { quoted: m })
 }
 
 handler.command = /^(p|pokemon)start$/i
-handler.tags = ['plugin3']
 export default handler
