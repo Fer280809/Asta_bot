@@ -298,9 +298,9 @@ const handler = async (m, { args, usedPrefix, command, conn }) => {
 }
 
 // Configuración del handler
-handler.help = ['slot <apuesta>', 'slots', 'tragamonedas', 'maquinanavidad']
+handler.help = ['slot <apuesta>', 'slots']
 handler.tags = ['economy', 'navidad', 'juegos']
-handler.command = ['slot', 'slots', 'tragamonedas', 'maquinanavidad', 'navidadslot', 'santaslots']
+handler.command = ['slot', 'slots']
 handler.group = true
 handler.limit = true
 
