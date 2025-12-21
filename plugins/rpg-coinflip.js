@@ -104,9 +104,9 @@ const handler = async (m, { conn, text, command, usedPrefix }) => {
 }
 
 // Información del comando
-handler.help = ['cf <cantidad> <regalo/trineo>', 'coinflip', 'navidad']
+handler.help = ['cf <cantidad> <regalo/trineo>', 'coinflip']
 handler.tags = ['economy', 'navidad', 'juegos']
-handler.command = ['cf', 'suerte', 'coinflip', 'flip', 'navidadcf', 'monedanavideña', 'regalotrineo']
+handler.command = ['cf', 'suerte', 'coinflip', 'flip']
 handler.group = true
 handler.limit = true // Para evitar spam
 
