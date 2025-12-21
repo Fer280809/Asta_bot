@@ -256,8 +256,8 @@ const handler = async (m, { conn, text, command, usedPrefix }) => {
 
 // Configuración del handler
 handler.tags = ['economy', 'navidad', 'juegos']
-handler.help = ['ruleta', 'roulette', 'rt', 'ruletanavidad', 'navidadroulette']
-handler.command = ['ruleta', 'roulette', 'rt', 'ruletanavidad', 'navidadroulette', 'santaroulette', 'ruletanavideno']
+handler.help = ['ruleta', 'roulette', 'rt']
+handler.command = ['ruleta', 'roulette', 'rt']
 handler.group = true
 handler.limit = true
 
