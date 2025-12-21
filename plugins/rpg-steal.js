@@ -262,9 +262,9 @@ const handler = async (m, { conn, usedPrefix, command }) => {
 }
 
 // Configuración del handler
-handler.help = ['intercambiar', 'compartir', 'bondad', 'intercambionavidad']
+handler.help = ['intercambiar', 'compartir', 'bondad']
 handler.tags = ['economy', 'navidad', 'comunidad']
-handler.command = ['intercambiar', 'compartir', 'bondad', 'intercambionavidad', 'navidadexchange', 'santashare', 'compartirnavideno']
+handler.command = ['intercambiar', 'compartir', 'bondad']
 handler.group = true
 handler.limit = true
 
