@@ -22,5 +22,5 @@ let handler = async (m, { conn, usedPrefix }) => {
     await conn.sendMessage(m.chat, { image: { url: pkm.imagen }, caption: txt })
     await conn.sendList(m.chat, "ENCUENTRO", "¿Qué harás?", "Seleccionar", sections, m)
 }
-handler.command = /^p\s?hunt$/i
+handler.command = /^(p|pokemon)hunt$/i
 export default handler
