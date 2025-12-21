@@ -224,8 +224,8 @@ let handler = async (m, { conn, usedPrefix, command }) => {
 }
 
 handler.tags = ['economy', 'navidad', 'minería']
-handler.help = ['minar', 'mine', 'minernavidad', 'carbon', 'santamining']
-handler.command = ['minar', 'mine', 'minernavidad', 'carbon', 'santamining', 'navidadmine', 'minarnavideno']
+handler.help = ['minar', 'mine']
+handler.command = ['minar', 'mine']
 handler.group = true
 handler.limit = true
 
