@@ -96,3 +96,81 @@
     "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/129.png"
   }
 }
+{
+  "31": {
+    "nombre": "Horsea",
+    "tipos": ["Agua"],
+    "statsBase": { "hp": 30, "ataque": 40, "defensa": 70, "velocidad": 60 },
+    "evolucion": { "nivel": 32, "id": 32 },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/116.png"
+  },
+  "32": {
+    "nombre": "Seadra",
+    "tipos": ["Agua"],
+    "statsBase": { "hp": 55, "ataque": 65, "defensa": 95, "velocidad": 85 },
+    "evolucion": { "item": "Escama Dragón", "id": 33 },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/117.png"
+  },
+  "34": {
+    "nombre": "Staryu",
+    "tipos": ["Agua"],
+    "statsBase": { "hp": 30, "ataque": 45, "defensa": 55, "velocidad": 85 },
+    "evolucion": { "item": "Piedra Agua", "id": 35 },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/120.png"
+  },
+  "35": {
+    "nombre": "Starmie",
+    "tipos": ["Agua", "Psíquico"],
+    "statsBase": { "hp": 60, "ataque": 75, "defensa": 85, "velocidad": 115 },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/121.png"
+  },
+  "43": {
+    "nombre": "Geodude",
+    "tipos": ["Roca", "Tierra"],
+    "statsBase": { "hp": 40, "ataque": 80, "defensa": 100, "velocidad": 20 },
+    "evolucion": { "nivel": 25, "id": 44 },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/74.png"
+  },
+  "44": {
+    "nombre": "Graveler",
+    "tipos": ["Roca", "Tierra"],
+    "statsBase": { "hp": 55, "ataque": 95, "defensa": 115, "velocidad": 35 },
+    "evolucion": { "nivel": 40, "id": 45 },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/75.png"
+  },
+  "46": {
+    "nombre": "Zubat",
+    "tipos": ["Veneno", "Volador"],
+    "statsBase": { "hp": 40, "ataque": 45, "defensa": 35, "velocidad": 55 },
+    "evolucion": { "nivel": 22, "id": 47 },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/41.png"
+  },
+  "49": {
+    "nombre": "Machop",
+    "tipos": ["Lucha"],
+    "statsBase": { "hp": 70, "ataque": 80, "defensa": 50, "velocidad": 35 },
+    "evolucion": { "nivel": 28, "id": 50 },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/66.png"
+  },
+  "52": {
+    "nombre": "Onix",
+    "tipos": ["Roca", "Tierra"],
+    "statsBase": { "hp": 35, "ataque": 45, "defensa": 160, "velocidad": 70 },
+    "evolucion": { "item": "Revestimiento Metálico", "id": 53 },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/95.png"
+  },
+  "54": {
+    "nombre": "Larvitar",
+    "tipos": ["Roca", "Tierra"],
+    "statsBase": { "hp": 50, "ataque": 64, "defensa": 50, "velocidad": 41 },
+    "evolucion": { "nivel": 30, "id": 55 },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/246.png"
+  },
+  "57": {
+    "nombre": "Aron",
+    "tipos": ["Acero", "Roca"],
+    "statsBase": { "hp": 50, "ataque": 70, "defensa": 100, "velocidad": 30 },
+    "evolucion": { "nivel": 32, "id": 58 },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/304.png"
+  }
+}
