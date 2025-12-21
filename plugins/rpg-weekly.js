@@ -1,5 +1,6 @@
 var handler = async (m, { conn, usedPrefix }) => {
-if (!db.data.chats[m.chat].economy && m.isGroup) return m.reply(`《✦》Los comandos de *Economía* están desactivados en este grupo.\n\nUn *administrador* puede activarlos con el comando:\n» *${usedPrefix}economy on*`)
+if (!db.data.chats[m.chat].economy && m.isGroup) return m.reply(`🎄 *¡Oh no!* Los regalos económicos están *congelados* en este grupo navideño.\n\n🎅 Un *elfo administrador* puede descongelarlos con:\n» *${usedPrefix}economy on*`)
+
 let user = global.db.data.users[m.sender]
 const gap = 604800000
 const now = Date.now()
@@ -8,26 +9,32 @@ user.lastWeeklyGlobal = user.lastWeeklyGlobal || 0
 user.coin = user.coin || 0
 user.exp = user.exp || 0
 user.lastweekly = user.lastweekly || 0
+
 if (now < user.lastweekly) {
 const wait = formatTime(Math.floor((user.lastweekly - now) / 1000))
-return conn.reply(m.chat, `ꕥ Ya has reclamado tu recompensa semanal.\n> Puedes reclamarlo de nuevo en *${wait}*`, m)
+return conn.reply(m.chat, `🎁 *¡Calma, pequeño elfo!* Ya abriste tu regalo semanal.\n🕐 Vuelve en *${wait}* cuando Papá Noel prepare nuevos obsequios`, m)
 }
+
 const lost = user.weeklyStreak >= 1 && now - user.lastWeeklyGlobal > gap * 1.5
 if (lost) user.weeklyStreak = 0
+
 const canClaimWeeklyGlobal = now - user.lastWeeklyGlobal >= gap
 if (canClaimWeeklyGlobal) {
 user.weeklyStreak = Math.min(user.weeklyStreak + 1, 30)
 user.lastWeeklyGlobal = now
 }
+
 const coins = Math.min(40000 + (user.weeklyStreak - 1) * 5000, 185000)
 const expRandom = Math.floor(Math.random() * (200 - 50 + 1)) + 50
 user.coin += coins
 user.exp += expRandom
 user.lastweekly = now + gap
+
 let nextReward = Math.min(40000 + user.weeklyStreak * 5000, 185000).toLocaleString()
-let msg = `> Semana *${user.weeklyStreak + 1}* » *+¥${nextReward}*`
-if (lost) msg += `\n> ☆ ¡Has perdido tu racha de semanas!`
-conn.reply(m.chat, `「❁」 Has reclamado tu recompensa semanal de *¥${coins.toLocaleString()} ${currency}* (Semana *${user.weeklyStreak}*)\n${msg}`, m)
+let msg = `> 🎄 *Semana ${user.weeklyStreak + 1}* » *+¥${nextReward}* de regalo`
+if (lost) msg += `\n> ❄️ *¡Se derritió tu racha de semanas navideñas!*`
+
+conn.reply(m.chat, `🎅 *¡Feliz Navidad!* 🎁\n\nHas recibido tu regalo semanal:\n*¥${coins.toLocaleString()} ${currency}* (Semana *${user.weeklyStreak}*)\n${msg}\n\n✨ *¡Que la magia navideña te acompañe!*`, m)
 }
 
 handler.help = ['weekly', 'semanal']
