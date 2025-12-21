@@ -2,30 +2,18 @@ import fetch from 'node-fetch'
 import { lookup } from 'mime-types'
 
 let handler = async (m, { conn, text, usedPrefix }) => {
-if (!text) return conn.reply(m.chat, '❀ Te faltó el enlace de Mediafire.', m)
-if (!/^https:\/\/www\.mediafire\.com\//i.test(text)) return conn.reply(m.chat, 'ꕥ Enlace inválido.', m)
+if (!text) return conn.reply(m.chat, '🎁 ¡Jo-jo-jo! Te faltó el enlace de Mediafire.', m)
 try {
-await m.react('🕒')
+await m.react('📦')
 const res = await fetch(`${global.APIs.delirius.url}/download/mediafire?url=${encodeURIComponent(text)}`)
 const json = await res.json()
 const data = json.data
-if (!json.status || !data?.filename || !data?.link) { throw 'ꕥ No se pudo obtener el archivo desde Delirius.' }
-const filename = data.filename
-const filesize = data.size || 'desconocido'
-const mimetype = data.mime || lookup(data.extension?.toLowerCase()) || 'application/octet-stream'
-const dl_url = data.link.includes('u=') ? decodeURIComponent(data.link.split('u=')[1]) : data.link
-const caption = `乂 MEDIAFIRE - DESCARGA 乂\n\n✩ Nombre » ${filename}\n✩ Peso » ${filesize}\n✩ MimeType » ${mimetype}\n✩ Enlace » ${text}`
-await conn.sendMessage(m.chat, { document: { url: dl_url }, fileName: filename, mimetype, caption }, { quoted: m })
-await m.react('✔️')
+const caption = `🎄 *MEDIAFIRE - X-MAS DELIVERY* 🎄\n\n✩ Regalo » ${data.filename}\n✩ Peso » ${data.size}\n✩ Tipo » ${data.mime}`
+await conn.sendMessage(m.chat, { document: { url: data.link }, fileName: data.filename, mimetype: data.mime, caption }, { quoted: m })
+await m.react('🌟')
 } catch (e) {
 await m.react('✖️')
-return conn.reply(m.chat, `⚠︎ Se ha producido un problema.\n> Usa *${usedPrefix}report* para informarlo.\n\n${e.message}`, m)
+conn.reply(m.chat, '❄️ Santa no pudo cargar este paquete.', m)
 }}
-
-handler.command = ['mf', 'mediafire']
-handler.help = ['mediafire']
-handler.tags = ['descargas']
-handler.group = true
-handler.premium = true
-
+handler.command = ['mediafire', 'mf']
 export default handler
