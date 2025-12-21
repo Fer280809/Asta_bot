@@ -1,4 +1,4 @@
-import { PokemonLogic } from '../../lib/poke/logic.js'
+import { PokemonLogic } from '../lib/poke/logic.js'
 
 let handler = async (m, { conn, usedPrefix }) => {
     let user = global.db.data.users[m.sender]
