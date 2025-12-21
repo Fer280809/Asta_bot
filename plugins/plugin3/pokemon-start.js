@@ -58,6 +58,6 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     }, { quoted: m })
 }
 
-handler.command = /^(p\s?start)$/i
+handler.command = /^(p|pokemon)start$/i
 handler.tags = ['plugin3']
 export default handler
