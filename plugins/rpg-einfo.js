@@ -216,8 +216,8 @@ let handler = async (m, { conn }) => {
 
 // Configuración del handler
 handler.tags = ['economy', 'navidad', 'info']
-handler.help = ['economy', 'infoeconomy', 'econavidad', 'navidadinfo', 'estadisticasnavidenas']
-handler.command = ['economy', 'infoeconomy', 'einfo', 'econavidad', 'navidadinfo', 'misdatosnavidenos', 'estadisticas']
+handler.help = ['economy', 'infoeconomy', 'einfo']
+handler.command = ['economy', 'infoeconomy', 'einfo']
 handler.owner = false
 handler.group = true
 handler.limit = false
