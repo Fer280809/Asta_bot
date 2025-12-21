@@ -174,3 +174,99 @@
     "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/304.png"
   }
 }
+{
+  "61": {
+    "nombre": "Altaria",
+    "tipos": ["Dragón", "Volador"],
+    "statsBase": { "hp": 75, "ataque": 70, "defensa": 90, "velocidad": 80 },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/334.png"
+  },
+  "62": {
+    "nombre": "Snorunt",
+    "tipos": ["Hielo"],
+    "statsBase": { "hp": 50, "ataque": 50, "defensa": 50, "velocidad": 50 },
+    "evolucion": { "nivel": 42, "id": 63, "alt": { "item": "Piedra Alba", "id": 64, "genero": "F" } },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/361.png"
+  },
+  "72": {
+    "nombre": "Eevee",
+    "tipos": ["Normal"],
+    "statsBase": { "hp": 55, "ataque": 55, "defensa": 50, "velocidad": 55 },
+    "evolucion": { "item": "Piedra Agua", "id": 73, "item2": "Piedra Trueno", "id2": 74, "item3": "Piedra Fuego", "id3": 75 },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/133.png"
+  },
+  "83": {
+    "nombre": "Mareep",
+    "tipos": ["Eléctrico"],
+    "statsBase": { "hp": 55, "ataque": 40, "defensa": 40, "velocidad": 35 },
+    "evolucion": { "nivel": 15, "id": 84 },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/179.png"
+  },
+  "86": {
+    "nombre": "Skarmory",
+    "tipos": ["Acero", "Volador"],
+    "statsBase": { "hp": 65, "ataque": 80, "defensa": 140, "velocidad": 70 },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/227.png"
+  },
+  "91": {
+    "nombre": "Misdreavus",
+    "tipos": ["Fantasma"],
+    "statsBase": { "hp": 60, "ataque": 60, "defensa": 60, "velocidad": 85 },
+    "evolucion": { "item": "Piedra Noche", "id": 92 },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/200.png"
+  },
+  "100": {
+    "nombre": "Electabuzz",
+    "tipos": ["Eléctrico"],
+    "statsBase": { "hp": 65, "ataque": 83, "defensa": 57, "velocidad": 105 },
+    "evolucion": { "item": "Electrizador", "id": 101 },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/125.png"
+  },
+  "111": {
+    "nombre": "Absol",
+    "tipos": ["Siniestro"],
+    "statsBase": { "hp": 65, "ataque": 130, "defensa": 60, "velocidad": 75 },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/359.png"
+  },
+  "121": {
+    "nombre": "Meowth",
+    "tipos": ["Normal"],
+    "statsBase": { "hp": 40, "ataque": 45, "defensa": 35, "velocidad": 90 },
+    "evolucion": { "nivel": 28, "id": 122 },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/52.png"
+  },
+  "138": {
+    "nombre": "Omanyte",
+    "tipos": ["Roca", "Agua"],
+    "statsBase": { "hp": 35, "ataque": 40, "defensa": 100, "velocidad": 35 },
+    "evolucion": { "nivel": 40, "id": 140 },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/138.png"
+  },
+  "150": {
+    "nombre": "Auralis",
+    "tipos": ["Normal"],
+    "statsBase": { "hp": 100, "ataque": 100, "defensa": 100, "velocidad": 100 },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/493.png",
+    "descripcion": "El guardián legendario de la región. Se dice que su canto equilibra las emociones de humanos y Pokémon."
+  },
+  "161": {
+    "nombre": "Aurachu",
+    "tipos": ["Eléctrico", "Hada"],
+    "statsBase": { "hp": 60, "ataque": 85, "defensa": 50, "velocidad": 110 },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/26.png",
+    "nota": "Forma Regional de Auralis"
+  },
+  "165": {
+    "nombre": "Sirfetch'd",
+    "tipos": ["Lucha"],
+    "statsBase": { "hp": 62, "ataque": 135, "defensa": 95, "velocidad": 65 },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/865.png"
+  },
+  "169": {
+    "nombre": "Obstagoon",
+    "tipos": ["Siniestro", "Normal"],
+    "statsBase": { "hp": 93, "ataque": 90, "defensa": 101, "velocidad": 95 },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/862.png"
+  }
+}
+
