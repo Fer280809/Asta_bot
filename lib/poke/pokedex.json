@@ -1,0 +1,292 @@
+{
+  "1": {
+    "nombre": "Bulbasaur",
+    "descripcion": "Un Pokémon raro de encontrar. Se dice que nace con una semilla en el lomo que brota con el paso del tiempo.",
+    "tipos": ["Planta", "Veneno"],
+    "statsBase": { "hp": 45, "ataque": 49, "defensa": 49, "velocidad": 45 },
+    "movimientos": {
+      "1": ["Placaje", "Gruñido"],
+      "7": ["Latigo Cepa"],
+      "13": ["Polvo Veneno"],
+      "15": ["Somnífero"]
+    },
+    "captureRate": 45,
+    "expBase": 64,
+    "imagen": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/001.png",
+    "evolucion": { "nivel": 16, "id": 2 }
+  },
+  "2": {
+    "nombre": "Ivysaur",
+    "descripcion": "Cuando el bulbo de su espalda crece, parece perder la capacidad de ponerse de pie sobre sus patas traseras.",
+    "tipos": ["Planta", "Veneno"],
+    "statsBase": { "hp": 60, "ataque": 62, "defensa": 63, "velocidad": 60 },
+    "movimientos": {
+      "1": ["Placaje", "Gruñido", "Latigo Cepa"],
+      "22": ["Hoja Afilada"],
+      "30": ["Drenadoras"]
+    },
+    "captureRate": 45,
+    "expBase": 142,
+    "imagen": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/002.png",
+    "evolucion": { "nivel": 32, "id": 3 }
+  },
+  "3": {
+    "nombre": "Venusaur",
+    "descripcion": "La flor de su lomo desprende un aroma delicado que relaja los ánimos de quienes están en combate.",
+    "tipos": ["Planta", "Veneno"],
+    "statsBase": { "hp": 80, "ataque": 82, "defensa": 83, "velocidad": 80 },
+    "movimientos": {
+      "1": ["Placaje", "Gruñido", "Latigo Cepa", "Hoja Afilada"],
+      "43": ["Rayo Solar"]
+    },
+    "captureRate": 45,
+    "expBase": 236,
+    "imagen": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/003.png",
+    "evolucion": null
+  },
+  "4": {
+    "nombre": "Charmander",
+    "descripcion": "Prefiere las cosas calientes. Dicen que cuando llueve le sale vapor de la punta de la cola.",
+    "tipos": ["Fuego"],
+    "statsBase": { "hp": 39, "ataque": 52, "defensa": 43, "velocidad": 65 },
+    "movimientos": {
+      "1": ["Arañazo", "Gruñido"],
+      "9": ["Ascuas"],
+      "15": ["Malicioso"]
+    },
+    "captureRate": 45,
+    "expBase": 62,
+    "imagen": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/004.png",
+    "evolucion": { "nivel": 16, "id": 5 }
+  },
+  "5": {
+    "nombre": "Charmeleon",
+    "descripcion": "Es muy agresivo. En combate usa sus garras afiladas y su cola ardiente para azotar al rival.",
+    "tipos": ["Fuego"],
+    "statsBase": { "hp": 58, "ataque": 64, "defensa": 58, "velocidad": 80 },
+    "movimientos": {
+      "1": ["Arañazo", "Gruñido", "Ascuas"],
+      "24": ["Furia Dragón"],
+      "33": ["Lanzallamas"]
+    },
+    "captureRate": 45,
+    "expBase": 142,
+    "imagen": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/005.png",
+    "evolucion": { "nivel": 36, "id": 6 }
+  },
+  "6": {
+    "nombre": "Charizard",
+    "descripcion": "Vuela por el cielo en busca de rivales fuertes. Echa fuego por la boca y es capaz de derretir cualquier cosa.",
+    "tipos": ["Fuego", "Volador"],
+    "statsBase": { "hp": 78, "ataque": 84, "defensa": 78, "velocidad": 100 },
+    "movimientos": {
+      "1": ["Arañazo", "Gruñido", "Ascuas", "Lanzallamas"],
+      "36": ["Ataque Ala"],
+      "55": ["Envite Ígneo"]
+    },
+    "captureRate": 45,
+    "expBase": 240,
+    "imagen": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/006.png",
+    "evolucion": null
+  },
+  "7": {
+    "nombre": "Squirtle",
+    "descripcion": "Su caparazón no solo le protege; su forma hidrodinámica le permite nadar a gran velocidad.",
+    "tipos": ["Agua"],
+    "statsBase": { "hp": 44, "ataque": 48, "defensa": 65, "velocidad": 43 },
+    "movimientos": {
+      "1": ["Placaje", "Látigo"],
+      "8": ["Burbuja"],
+      "15": ["Refugio"]
+    },
+    "captureRate": 45,
+    "expBase": 63,
+    "imagen": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/007.png",
+    "evolucion": { "nivel": 16, "id": 8 }
+  },
+  "8": {
+    "nombre": "Wartortle",
+    "descripcion": "Se le considera un símbolo de longevidad. Si su caparazón tiene algas, es que es muy viejo.",
+    "tipos": ["Agua"],
+    "statsBase": { "hp": 59, "ataque": 63, "defensa": 80, "velocidad": 58 },
+    "movimientos": {
+      "1": ["Placaje", "Látigo", "Burbuja"],
+      "24": ["Mordisco"],
+      "31": ["Pistola Agua"]
+    },
+    "captureRate": 45,
+    "expBase": 142,
+    "imagen": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/008.png",
+    "evolucion": { "nivel": 36, "id": 9 }
+  },
+  "9": {
+    "nombre": "Blastoise",
+    "descripcion": "Para acabar con su enemigo, le aplasta con su pesado cuerpo. En momentos de apuro, se esconde en su caparazón.",
+    "tipos": ["Agua"],
+    "statsBase": { "hp": 79, "ataque": 83, "defensa": 100, "velocidad": 78 },
+    "movimientos": {
+      "1": ["Pistola Agua", "Retirada", "Cabezazo"],
+      "42": ["Hidrobomba"]
+    },
+    "captureRate": 45,
+    "expBase": 239,
+    "imagen": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/009.png",
+    "evolucion": null
+  },
+  "10": {
+    "nombre": "Caterpie",
+    "descripcion": "Para protegerse, despide un hedor horrible por las antenas con el que repele a sus enemigos.",
+    "tipos": ["Bicho"],
+    "statsBase": { "hp": 45, "ataque": 30, "defensa": 35, "velocidad": 45 },
+    "movimientos": {
+      "1": ["Placaje", "Disparo Demora"]
+    },
+    "captureRate": 255,
+    "expBase": 39,
+    "imagen": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/010.png",
+    "evolucion": { "nivel": 7, "id": 11 }
+  },
+  "11": {
+    "nombre": "Metapod",
+    "descripcion": "Como en este estado solo puede endurecer su coraza, permanece inmóvil a la espera de evolucionar.",
+    "tipos": ["Bicho"],
+    "statsBase": { "hp": 50, "ataque": 20, "defensa": 55, "velocidad": 30 },
+    "movimientos": {
+      "1": ["Fortaleza"],
+      "7": ["Fortaleza"]
+    },
+    "captureRate": 120,
+    "expBase": 72,
+    "imagen": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/011.png",
+    "evolucion": { "nivel": 10, "id": 12 }
+  },
+  "12": {
+    "nombre": "Butterfree",
+    "descripcion": "Bate sus alas muy rápido para lanzar al aire polvos tóxicos. Si los respiras, enfermarás.",
+    "tipos": ["Bicho", "Volador"],
+    "statsBase": { "hp": 60, "ataque": 45, "defensa": 50, "velocidad": 70 },
+    "movimientos": {
+      "1": ["Confusión"],
+      "12": ["Polvo Veneno", "Paralizador", "Somnífero"],
+      "16": ["Tornado"]
+    },
+    "captureRate": 45,
+    "expBase": 178,
+    "imagen": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/012.png",
+    "evolucion": null
+  },
+  "13": {
+    "nombre": "Weedle",
+    "descripcion": "El aguijón de la cabeza es muy puntiagudo. Se alimenta de hojas en los bosques.",
+    "tipos": ["Bicho", "Veneno"],
+    "statsBase": { "hp": 40, "ataque": 35, "defensa": 30, "velocidad": 50 },
+    "movimientos": {
+      "1": ["Picotazo Veneno", "Disparo Demora"]
+    },
+    "captureRate": 255,
+    "expBase": 39,
+    "imagen": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/013.png",
+    "evolucion": { "nivel": 7, "id": 14 }
+  },
+  "14": {
+    "nombre": "Kakuna",
+    "descripcion": "Casi no puede moverse. Su única defensa es endurecer su caparazón para protegerse de los depredadores.",
+    "tipos": ["Bicho", "Veneno"],
+    "statsBase": { "hp": 45, "ataque": 25, "defensa": 50, "velocidad": 35 },
+    "movimientos": {
+      "1": ["Fortaleza"],
+      "7": ["Fortaleza"]
+    },
+    "captureRate": 120,
+    "expBase": 72,
+    "imagen": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/014.png",
+    "evolucion": { "nivel": 10, "id": 15 }
+  },
+  "15": {
+    "nombre": "Beedrill",
+    "descripcion": "Tiene tres aguijones venenosos, dos en las patas delanteras y uno en la parte posterior de su cuerpo.",
+    "tipos": ["Bicho", "Veneno"],
+    "statsBase": { "hp": 65, "ataque": 90, "defensa": 40, "velocidad": 75 },
+    "movimientos": {
+      "1": ["Ataque Furia"],
+      "12": ["Doble Ataque"],
+      "20": ["Pin Misil"]
+    },
+    "captureRate": 45,
+    "expBase": 178,
+    "imagen": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/015.png",
+    "evolucion": null
+  },
+  "16": {
+    "nombre": "Pidgey",
+    "descripcion": "Es muy dócil. Si le atacan, prefiere lanzar arena para intentar escapar en lugar de luchar.",
+    "tipos": ["Normal", "Volador"],
+    "statsBase": { "hp": 40, "ataque": 45, "defensa": 40, "velocidad": 56 },
+    "movimientos": {
+      "1": ["Placaje"],
+      "5": ["Ataque Arena"],
+      "9": ["Tornado"]
+    },
+    "captureRate": 255,
+    "expBase": 50,
+    "imagen": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/016.png",
+    "evolucion": { "nivel": 18, "id": 17 }
+  },
+  "17": {
+    "nombre": "Pidgeotto",
+    "descripcion": "Vuela en círculos sobre su territorio para buscar presas, que atrapa con sus garras afiladas.",
+    "tipos": ["Normal", "Volador"],
+    "statsBase": { "hp": 63, "ataque": 60, "defensa": 55, "velocidad": 71 },
+    "movimientos": {
+      "1": ["Placaje", "Ataque Arena", "Tornado"],
+      "21": ["Ataque Ala"]
+    },
+    "captureRate": 120,
+    "expBase": 122,
+    "imagen": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/017.png",
+    "evolucion": { "nivel": 36, "id": 18 }
+  },
+  "18": {
+    "nombre": "Pidgeot",
+    "descripcion": "Sus músculos pectorales son tan fuertes que puede provocar ráfagas de viento con solo batir las alas.",
+    "tipos": ["Normal", "Volador"],
+    "statsBase": { "hp": 83, "ataque": 80, "defensa": 75, "velocidad": 101 },
+    "movimientos": {
+      "1": ["Tornado", "Agilidad", "Ataque Ala"],
+      "44": ["Movimiento Espejo"]
+    },
+    "captureRate": 45,
+    "expBase": 216,
+    "imagen": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/018.png",
+    "evolucion": null
+  },
+  "19": {
+    "nombre": "Rattata",
+    "descripcion": "Come cualquier cosa. Se dice que allí donde hay comida, aparecen Rattata y se asientan.",
+    "tipos": ["Normal"],
+    "statsBase": { "hp": 30, "ataque": 56, "defensa": 35, "velocidad": 72 },
+    "movimientos": {
+      "1": ["Placaje", "Látigo"],
+      "7": ["Ataque Rápido"],
+      "14": ["Hipercolmillo"]
+    },
+    "captureRate": 255,
+    "expBase": 51,
+    "imagen": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/019.png",
+    "evolucion": { "nivel": 20, "id": 20 }
+  },
+  "20": {
+    "nombre": "Raticate",
+    "descripcion": "Sus colmillos crecen sin parar, por lo que necesita roer cosas duras para desgastarlos.",
+    "tipos": ["Normal"],
+    "statsBase": { "hp": 55, "ataque": 81, "defensa": 60, "velocidad": 97 },
+    "movimientos": {
+      "1": ["Placaje", "Látigo", "Ataque Rápido"],
+      "20": ["Golpe Bajo"]
+    },
+    "captureRate": 127,
+    "expBase": 145,
+    "imagen": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/020.png",
+    "evolucion": null
+  }
+}
