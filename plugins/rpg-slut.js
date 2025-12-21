@@ -2,7 +2,7 @@ let handler = async (m, { conn, usedPrefix, command }) => {
   // Verificar economía activada con temática navideña
   if (!db.data.chats[m.chat].economy && m.isGroup) {
     return m.reply(
-      `🎅 *¡Actividades Navideñas Bloqueadas!* 🎄\n\nLos comandos de *Economía Navideña* están desactivados en este grupo.\n\nUn *Elfo Administrador* puede activarlos con:\n» *${usedPrefix}economy on*\n\n🦌 *¡Así podrás participar en las festividades navideñas!* ✨`
+      `🎅 *¡Fiestas Navideñas Bloqueadas!* 🎄\n\nLos comandos de *Economía Navideña* están desactivados en este grupo.\n\nUn *Elfo Administrador* puede activarlos con:\n» *${usedPrefix}economy on*\n\n🦌 *¡Así podrás participar en las celebraciones navideñas!* 🎉`
     )
   }
 
@@ -15,51 +15,61 @@ let handler = async (m, { conn, usedPrefix, command }) => {
       exp: 0, 
       health: 100, 
       christmasSpirit: 0,
-      lastFestivity: 0
+      lastCelebration: 0,
+      celebrationStreak: 0
     }
     user = global.db.data.users[m.sender]
   }
 
-  user.lastFestivity = user.lastFestivity || 0
+  user.lastCelebration = user.lastCelebration || 0
+  user.celebrationStreak = user.celebrationStreak || 0
   
   // Bonus especial si es diciembre (cooldown reducido)
   const esNavidad = new Date().getMonth() === 11
   const cooldownBase = 5 * 60 * 1000 // 5 minutos base
   const cooldown = esNavidad ? cooldownBase * 0.7 : cooldownBase // 30% menos en diciembre
 
-  if (Date.now() < user.lastFestivity) {
-    const restante = user.lastFestivity - Date.now()
+  if (Date.now() < user.lastCelebration) {
+    const restante = user.lastCelebration - Date.now()
     const tiempoRestante = formatTime(restante)
     return conn.reply(m.chat,
-      `⏰ *¡Las festividades necesitan tiempo para organizarse!* 🎄\n\nDebes esperar *${tiempoRestante}* para participar en las *Actividades Navideñas* de nuevo.\n\n*🎅 Mientras tanto puedes:*\n• Hornear galletas: *${usedPrefix}cookies*\n• Cantar villancicos: *${usedPrefix}carols*\n• Decorar el árbol: *${usedPrefix}decorate*`,
+      `⏰ *¡Las fiestas necesitan tiempo para organizarse!* 🎄\n\nDebes esperar *${tiempoRestante}* para participar en las *Celebraciones Navideñas* de nuevo.\n\n*🎅 Mientras tanto puedes:*\n• Hornear galletas: *${usedPrefix}cookies*\n• Cantar villancicos: *${usedPrefix}carols*\n• Decorar el árbol: *${usedPrefix}decorate*`,
       m
     )
   }
 
-  user.lastFestivity = Date.now() + cooldown
+  user.lastCelebration = Date.now() + cooldown
+  
+  // Aumentar racha de celebraciones
+  user.celebrationStreak = (user.celebrationStreak || 0) + 1
   
   // Bonus de diciembre (más chance de éxito)
-  const chanceBase = 0.75 // 75% base de éxito
-  const chanceExito = esNavidad ? chanceBase * 1.2 : chanceBase // 20% más en diciembre
+  const chanceBase = 0.7 // 70% base de éxito
+  const chanceExito = esNavidad ? chanceBase * 1.25 : chanceBase // 25% más en diciembre
   
   const exito = Math.random() < chanceExito
   const tipo = exito ? 'victoria' : 'derrota'
   
+  // Seleccionar evento apropiado
   const evento = exito ? 
-    pickRandom(actividadesNavidenas.filter(e => e.tipo === 'victoria')) :
-    pickRandom(actividadesNavidenas.filter(e => e.tipo === 'derrota'))
+    pickRandom(celebracionesNavidenas.filter(e => e.tipo === 'victoria')) :
+    pickRandom(celebracionesNavidenas.filter(e => e.tipo === 'derrota'))
 
-  let cantidad, experiencia, espirituNavideno, alegria
+  let cantidad, experiencia, espirituNavideno, alegria, bonusRacha
   
-  // Bonus de diciembre (más recompensas)
-  const multiplicadorNavidad = esNavidad ? 1.5 : 1
+  // Bonus de diciembre (valores aumentados)
+  const multiplicadorNavidad = esNavidad ? 1.4 : 1
+
+  // Bonus por racha de celebraciones
+  const bonusPorRacha = Math.min(Math.floor(user.celebrationStreak / 3) * 0.1, 0.5) // Hasta 50% extra
 
   if (exito) {
-    // Éxito en actividad navideña
-    cantidad = Math.floor((Math.random() * 1501 + 4000) * multiplicadorNavidad)
-    experiencia = Math.floor(Math.random() * 101) + 50
-    espirituNavideno = Math.floor(Math.random() * 15) + 10
-    alegria = Math.floor(Math.random() * 5) + 1
+    // Éxito en celebración
+    cantidad = Math.floor((Math.random() * 1501 + 4000) * multiplicadorNavidad * (1 + bonusPorRacha))
+    experiencia = Math.floor((Math.random() * 101 + 50) * multiplicadorNavidad)
+    espirituNavideno = Math.floor((Math.random() * 20 + 10) * multiplicadorNavidad)
+    alegria = Math.floor(Math.random() * 5) + 3
+    bonusRacha = Math.floor(cantidad * bonusPorRacha)
     
     user.coin += cantidad
     user.exp = (user.exp || 0) + experiencia
@@ -67,54 +77,66 @@ let handler = async (m, { conn, usedPrefix, command }) => {
     user.health = Math.min(100, (user.health || 100) + alegria)
     
   } else {
-    // Fracaso en actividad navideña
+    // Fracaso en celebración
     cantidad = Math.floor((Math.random() * 1001 + 3000) * 0.6) // 40% menos pérdida
-    experiencia = Math.floor(Math.random() * 31) + 10
+    experiencia = Math.floor((Math.random() * 51 + 20) * 0.5)
     alegria = Math.floor(Math.random() * 3) + 1
     
-    // Posibilidad de ganar espíritu navideño incluso en fracaso (30% chance)
-    if (Math.random() < 0.3) {
-      espirituNavideno = Math.floor(Math.random() * 5) + 1
+    // Posibilidad de ganar algo positivo (40% chance)
+    if (Math.random() < 0.4) {
+      espirituNavideno = Math.floor(Math.random() * 8) + 3
       user.christmasSpirit = (user.christmasSpirit || 0) + espirituNavideno
     }
     
     user.coin = Math.max(0, (user.coin || 0) - cantidad)
     user.exp = Math.max(0, (user.exp || 0) - experiencia)
     user.health = Math.max(0, (user.health || 100) - alegria)
+    
+    // Perder racha si falla
+    user.celebrationStreak = 0
   }
 
   // Construir mensaje navideño
-  let mensaje = `🎄 *¡Participación en Actividades Navideñas!* 🎅\n\n`
+  let mensaje = `🎉 *¡Celebración Navideña!* 🎄\n\n`
   mensaje += `${evento.mensaje}\n\n`
 
   if (exito) {
-    mensaje += `✨ *¡Actividad Exitosa!*\n`
+    mensaje += `✨ *¡Fiesta Exitosa!*\n`
     mensaje += `💰 *Regalos obtenidos:* ${currency}${cantidad.toLocaleString()}\n`
     mensaje += `⭐ *Experiencia:* ${experiencia.toLocaleString()} XP\n`
     mensaje += `🎄 *Espíritu Navideño:* +${espirituNavideno}\n`
     mensaje += `❤️ *Alegría navideña:* +${alegria}\n`
     
-    if (multiplicadorNavidad > 1) {
-      mensaje += `🎅 *Bonus de Diciembre:* x1.5 en recompensas!\n`
+    if (bonusPorRacha > 0) {
+      mensaje += `🏆 *Bonus por racha (${user.celebrationStreak}):* +${Math.round(bonusPorRacha * 100)}% (${currency}${bonusRacha.toLocaleString()})\n`
     }
     
-    // Mensaje especial para actividades muy exitosas
+    if (multiplicadorNavidad > 1) {
+      mensaje += `🎅 *Bonus de Diciembre:* x1.4 en recompensas!\n`
+    }
+    
+    // Mensaje especial para celebraciones muy exitosas
     if (cantidad > 7000) {
-      mensaje += `🏆 *¡Excelente trabajo!* Los elfos están impresionados.\n`
+      mensaje += `🎊 *¡Gran celebración!* Los elfos están bailando contigo.\n`
+    }
+    
+    // Mensaje especial por racha alta
+    if (user.celebrationStreak >= 5) {
+      mensaje += `🔥 *¡Racha de ${user.celebrationStreak} celebraciones exitosas!*\n`
     }
     
   } else {
-    mensaje += `❄️ *¡La actividad no salió como esperabas!*\n`
+    mensaje += `❄️ *¡La celebración fue complicada!*\n`
     mensaje += `🦌 *Regalos perdidos:* ${currency}${cantidad.toLocaleString()}\n`
     mensaje += `📉 *Experiencia perdida:* ${experiencia.toLocaleString()} XP\n`
     mensaje += `❤️ *Alegría navideña:* -${alegria}\n`
     
     if (espirituNavideno) {
-      mensaje += `✨ *Pero ganaste Espíritu Navideño:* +${espirituNavideno}\n`
+      mensaje += `✨ *Al menos ganaste Espíritu Navideño:* +${espirituNavideno}\n`
     }
     
     // Mensaje alentador
-    mensaje += `💡 *No te preocupes!* Siempre hay más oportunidades para ayudar.\n`
+    mensaje += `💡 *No te preocupes!* Hay muchas más fiestas navideñas por venir.\n`
   }
 
   // Footer con estadísticas
@@ -123,37 +145,47 @@ let handler = async (m, { conn, usedPrefix, command }) => {
   mensaje += `🎯 *Experiencia:* ${user.exp.toLocaleString()} XP\n`
   mensaje += `❤️ *Alegría navideña:* ${user.health}/100\n`
   mensaje += `✨ *Espíritu Navideño:* ${user.christmasSpirit || 0}\n`
-  mensaje += `⏰ *Próxima actividad:* en ${formatTime(cooldown)}\n\n`
+  mensaje += `🎉 *Racha de celebraciones:* ${user.celebrationStreak}\n`
+  mensaje += `⏰ *Próxima celebración:* en ${formatTime(cooldown)}\n\n`
   
   // Consejo navideño aleatorio
   const consejos = [
-    'La mejor ayuda viene del corazón, no del bolsillo.',
-    'Compartir tiempo es más valioso que compartir regalos.',
-    'Los pequeños actos de bondad crean grandes recuerdos navideños.',
-    'La Navidad es más feliz cuando hacemos felices a los demás.',
-    'Cada sonrisa que provocas es un regalo para Santa.',
-    'El verdadero espíritu navideño está en dar sin esperar recibir.',
-    'Los mejores regalos no se compran, se crean con amor.'
+    'Las mejores fiestas son las que se comparten con amigos.',
+    'La alegría navideña se multiplica cuando la compartes.',
+    'Un corazón festivo atrae más celebraciones.',
+    'La Navidad es tiempo de bailar, cantar y celebrar.',
+    'Cada celebración fortalece el espíritu navideño.',
+    'Los mejores recuerdos navideños se crean en las fiestas.',
+    'Celebrar juntos es la verdadera magia de la Navidad.'
   ]
   
-  mensaje += `💡 *Reflexión navideña:* ${pickRandom(consejos)}`
+  mensaje += `💡 *Consejo festivo:* ${pickRandom(consejos)}`
 
   await conn.reply(m.chat, mensaje, m)
   
-  // Efecto especial para actividades muy exitosas
+  // Efecto especial para celebraciones muy exitosas
   if (exito && cantidad > 8000) {
     setTimeout(() => {
       conn.sendMessage(m.chat, {
-        text: `🎊 *¡CONTRIBUCIÓN EXCEPCIONAL!* 🎅\n\nTu ayuda ha hecho una gran diferencia en la comunidad navideña. ¡Santa te agradece personalmente!`
+        text: `🎊 *¡FIESTA LEGENDARIA!* 🏆\n\nTu celebración navideña ha sido registrada en los anales del Polo Norte. ¡Los renos todavía están bailando! 🦌✨`
       }, { quoted: m })
     }, 1000)
   }
+
+  // Efecto especial por racha de 10 celebraciones
+  if (exito && user.celebrationStreak === 10) {
+    setTimeout(() => {
+      conn.sendMessage(m.chat, {
+        text: `🎖️ *¡DÉCIMA CELEBRACIÓN CONSECUTIVA!* 🎉\n\nHas alcanzado 10 celebraciones navideñas exitosas. ¡Santa te otorga el título de "Rey/Reyna de la Fiesta Navideña"! 👑🎄`
+      }, { quoted: m })
+    }, 1500)
+  }
 }
 
-// Configuración del handler
-handler.help = ['festividad', 'ayudar', 'participar', 'actividadesnavidenas']
-handler.tags = ['economy', 'navidad', 'comunidad']
-handler.command = ['festividad', 'ayudar', 'participar', 'actividadesnavidenas', 'navidadayuda', 'santahelp', 'comunidadnavidena']
+// Configuración del handler (manteniendo comandos originales)
+handler.help = ['slut']
+handler.tags = ['economy', 'navidad', 'fiesta']
+handler.command = ['slut']
 handler.group = true
 handler.limit = true
 
@@ -174,39 +206,39 @@ function pickRandom(list) {
   return list[Math.floor(Math.random() * list.length)]
 }
 
-// Actividades navideñas apropiadas
-const actividadesNavidenas = [
-  // Victorias - Actividades exitosas
-  { tipo: 'victoria', mensaje: 'Organizaste una colecta de juguetes para niños necesitados y lograste reunir muchos regalos.' },
-  { tipo: 'victoria', mensaje: 'Ayudaste a un anciano a decorar su casa para la Navidad y te agradeció con una recompensa.' },
-  { tipo: 'victoria', mensaje: 'Participaste como voluntario en el banco de alimentos navideño y ayudaste a muchas familias.' },
-  { tipo: 'victoria', mensaje: 'Cocinaste galletas para la comunidad y todos disfrutaron de tu deliciosa receta.' },
-  { tipo: 'victoria', mensaje: 'Organizaste un coro de villancicos que alegró el vecindario completo.' },
-  { tipo: 'victoria', mensaje: 'Ayudaste a empaquetar regalos en el centro comunitario durante toda la tarde.' },
-  { tipo: 'victoria', mensaje: 'Recolectaste donaciones para el refugio de animales y les diste una Navidad especial.' },
-  { tipo: 'victoria', mensaje: 'Visitaste un hospital infantil disfrazado de elfo y alegraste a los niños enfermos.' },
-  { tipo: 'victoria', mensaje: 'Limpiaste y decoraste el parque local para la celebración navideña comunitaria.' },
-  { tipo: 'victoria', mensaje: 'Ayudaste a repartir cenas navideñas a personas sin hogar en tu ciudad.' },
-  { tipo: 'victoria', mensaje: 'Enseñaste a niños pequeños a hacer manualidades navideñas en la biblioteca local.' },
-  { tipo: 'victoria', mensaje: 'Organizaste un intercambio de regalos secretos en tu trabajo o escuela.' },
-  { tipo: 'victoria', mensaje: 'Ayudaste a una familia a armar su primer árbol de Navidad.' },
-  { tipo: 'victoria', mensaje: 'Recogiste y entregaste cartas a Santa para niños de orfanatos.' },
-  { tipo: 'victoria', mensaje: 'Donaste tu tiempo para leer cuentos navideños en la guardería local.' },
+// Eventos navideños de celebración
+const celebracionesNavidenas = [
+  // Victorias - Celebraciones exitosas
+  { tipo: 'victoria', mensaje: 'Organizaste una increíble fiesta de Navidad en el taller de Santa y todos los elfos disfrutaron mucho.' },
+  { tipo: 'victoria', mensaje: 'Bailaste toda la noche al ritmo de villancicos con los renos y ganaste un concurso de baile navideño.' },
+  { tipo: 'victoria', mensaje: 'Preparaste un banquete navideño espectacular que dejó a todos los invitados maravillados.' },
+  { tipo: 'victoria', mensaje: 'Ganaste el concurso de decoración navideña con tu creatividad y estilo único.' },
+  { tipo: 'victoria', mensaje: 'Cantaste villancicos tan bellamente que hiciste llorar de alegría al mismísimo Santa Claus.' },
+  { tipo: 'victoria', mensaje: 'Organizaste un intercambio de regalos secreto que fue el evento más comentado del Polo Norte.' },
+  { tipo: 'victoria', mensaje: 'Tu fiesta de Nochebuena fue tan memorable que los elfos todavía hablan de ella.' },
+  { tipo: 'victoria', mensaje: 'Ganaste el torneo de juegos navideños demostrando tu destreza y espíritu competitivo.' },
+  { tipo: 'victoria', mensaje: 'Preparaste el ponche de huevo más delicioso que haya probado Santa en décadas.' },
+  { tipo: 'victoria', mensaje: 'Tu habilidad para contar historias navideñas mantuvo a todos cautivados durante horas.' },
+  { tipo: 'victoria', mensaje: 'Decoraste la casa más bonita del vecindario y ganaste el premio a la mejor decoración.' },
+  { tipo: 'victoria', mensaje: 'Tu talento para hacer manualidades navideñas impresionó a todos los asistentes a la feria.' },
+  { tipo: 'victoria', mensaje: 'Organizaste una obra de teatro navideña que emocionó a niños y adultos por igual.' },
+  { tipo: 'victoria', mensaje: 'Tu karaoke de villancicos fue tan divertido que todos quisieron participar.' },
+  { tipo: 'victoria', mensaje: 'Preparaste galletas navideñas tan deliciosas que los elfos te pidieron la receta.' },
   
-  // Derrotas - Actividades con contratiempos
-  { tipo: 'derrota', mensaje: 'La lluvia arruinó la colecta de juguetes al aire libre que habías organizado.' },
-  { tipo: 'derrota', mensaje: 'Se canceló el evento navideño donde ibas a ser voluntario por falta de permisos.' },
-  { tipo: 'derrota', mensaje: 'Quemaste las galletas que ibas a donar y tuviste que empezar de nuevo.' },
-  { tipo: 'derrota', mensaje: 'Se te cayó el árbol de Navidad que estabas decorando y se rompieron algunos adornos.' },
-  { tipo: 'derrota', mensaje: 'Pocas personas asistieron al coro de villancicos que organizaste.' },
-  { tipo: 'derrota', mensaje: 'Perdiste parte del dinero recaudado para caridad en el camino al banco.' },
-  { tipo: 'derrota', mensaje: 'El disfraz de elfo que llevabas para el hospital se rompió justo antes de entrar.' },
-  { tipo: 'derrota', mensaje: 'Una tormenta de nieve impidió que llegaras al centro comunitario donde ibas a ayudar.' },
-  { tipo: 'derrota', mensaje: 'Confundiste las direcciones y entregaste los regalos en la casa equivocada.' },
-  { tipo: 'derrota', mensaje: 'Se te pasó la hora y llegaste tarde para ayudar a servir la cena navideña.' },
-  { tipo: 'derrota', mensaje: 'Olvidaste comprar materiales importantes para las manualidades navideñas.' },
-  { tipo: 'derrota', mensaje: 'El intercambio de regalos secretos tuvo problemas porque algunos no trajeron regalos.' },
-  { tipo: 'derrota', mensaje: 'Las luces navideñas que instalaste se fundieron durante la primera noche.' },
-  { tipo: 'derrota', mensaje: 'Las cartas a Santa que recogiste se mojaron en un aguacero repentino.' },
-  { tipo: 'derrota', mensaje: 'Los niños de la guardería estaban demasiado inquietos para escuchar los cuentos.' }
+  // Derrotas - Celebraciones con contratiempos
+  { tipo: 'derrota', mensaje: 'Quemaste el pavo navideño justo cuando llegaban los invitados a la cena.' },
+  { tipo: 'derrota', mensaje: 'Se te cayó el árbol de Navidad decorado justo antes de que comenzara la fiesta.' },
+  { tipo: 'derrota', mensaje: 'Confundiste las fechas y organizaste la fiesta un día después de Navidad.' },
+  { tipo: 'derrota', mensaje: 'Se rompió el reproductor de música justo cuando iba a comenzar la pista de baile.' },
+  { tipo: 'derrota', mensaje: 'Olvidaste comprar ingredientes importantes para la cena navideña.' },
+  { tipo: 'derrota', mensaje: 'Una tormenta de nieve impidió que la mayoría de invitados llegara a tu fiesta.' },
+  { tipo: 'derrota', mensaje: 'Confundiste los regalos y le diste a cada persona el regalo equivocado.' },
+  { tipo: 'derrota', mensaje: 'Se te pasó la hora y comenzaste la celebración cuando todos ya se estaban yendo.' },
+  { tipo: 'derrota', mensaje: 'Los adornos navideños que compraste resultaron ser de mala calidad y se rompieron.' },
+  { tipo: 'derrota', mensaje: 'Tu disfraz de Santa se deshizo en medio de la celebración.' },
+  { tipo: 'derrota', mensaje: 'Se te olvidó invitar a personas importantes a tu reunión navideña.' },
+  { tipo: 'derrota', mensaje: 'La piñata navideña se rompió antes de tiempo y todos los dulces cayeron al suelo.' },
+  { tipo: 'derrota', mensaje: 'Tu fotógrafo de la fiesta perdió todas las fotos del evento.' },
+  { tipo: 'derrota', mensaje: 'La bebida navideña especial que preparaste tenía un sabor extraño.' },
+  { tipo: 'derrota', mensaje: 'Tu actuación en el concurso de villancicos fue olvidada por los jueces.' }
 ]
