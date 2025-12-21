@@ -1,122 +1,29 @@
 {
-  "Placaje": {
-    "nombre": "Placaje",
-    "tipo": "Normal",
-    "poder": 40,
-    "precision": 100,
-    "categoria": "fisico",
-    "descripcion": "Un embate de cuerpo completo."
-  },
-  "Arañazo": {
-    "nombre": "Arañazo",
-    "tipo": "Normal",
-    "poder": 40,
-    "precision": 100,
-    "categoria": "fisico",
-    "descripcion": "Araña al rival con garras afiladas."
-  },
-  "Latigo Cepa": {
-    "nombre": "Latigo Cepa",
-    "tipo": "Planta",
-    "poder": 45,
-    "precision": 100,
-    "categoria": "fisico",
-    "descripcion": "Azota al rival con latigos delgados."
-  },
-  "Ascuas": {
-    "nombre": "Ascuas",
-    "tipo": "Fuego",
-    "poder": 40,
-    "precision": 100,
-    "categoria": "especial",
-    "efecto": { "quemar": 10 },
-    "descripcion": "Un pequeño disparo de fuego."
-  },
-  "Burbuja": {
-    "nombre": "Burbuja",
-    "tipo": "Agua",
-    "poder": 40,
-    "precision": 100,
-    "categoria": "especial",
-    "efecto": { "bajar_velocidad": 10 },
-    "descripcion": "Lanza burbujas que pueden ralentizar."
-  },
-  "Pistola Agua": {
-    "nombre": "Pistola Agua",
-    "tipo": "Agua",
-    "poder": 40,
-    "precision": 100,
-    "categoria": "especial",
-    "descripcion": "Un chorro de agua a presión."
-  },
-  "Hoja Afilada": {
-    "nombre": "Hoja Afilada",
-    "tipo": "Planta",
-    "poder": 55,
-    "precision": 95,
-    "categoria": "fisico",
-    "descripcion": "Hojas que cortan como cuchillas."
-  },
-  "Tornado": {
-    "nombre": "Tornado",
-    "tipo": "Volador",
-    "poder": 40,
-    "precision": 100,
-    "categoria": "especial",
-    "descripcion": "Crea un remolino de viento."
-  },
-  "Picotazo Veneno": {
-    "nombre": "Picotazo Veneno",
-    "tipo": "Veneno",
-    "poder": 15,
-    "precision": 100,
-    "categoria": "fisico",
-    "efecto": { "envenenar": 30 },
-    "descripcion": "Un picotazo que puede envenenar."
-  },
-  "Gruñido": {
-    "nombre": "Gruñido",
-    "tipo": "Normal",
-    "poder": 0,
-    "precision": 100,
-    "categoria": "estado",
-    "efecto": { "bajar_ataque": 1 },
-    "descripcion": "Reduce el ataque del rival."
-  },
-  "Látigo": {
-    "nombre": "Látigo",
-    "tipo": "Normal",
-    "poder": 0,
-    "precision": 100,
-    "categoria": "estado",
-    "efecto": { "bajar_defensa": 1 },
-    "descripcion": "Mueve la cola para bajar la defensa."
-  },
-  "Fortaleza": {
-    "nombre": "Fortaleza",
-    "tipo": "Normal",
-    "poder": 0,
-    "precision": 100,
-    "categoria": "estado",
-    "efecto": { "subir_defensa": 1 },
-    "descripcion": "Rígida el cuerpo para subir defensa."
-  },
-  "Ataque Rápido": {
-    "nombre": "Ataque Rápido",
-    "tipo": "Normal",
-    "poder": 40,
-    "precision": 100,
-    "categoria": "fisico",
-    "prioridad": 1,
-    "descripcion": "Ataque veloz que siempre va primero."
-  },
-  "Confusión": {
-    "nombre": "Confusión",
-    "tipo": "Psíquico",
-    "poder": 50,
-    "precision": 100,
-    "categoria": "especial",
-    "efecto": { "confundir": 10 },
-    "descripcion": "Un ataque mental debil."
-  }
+  "Placaje": { "poder": 40, "tipo": "Normal" },
+  "Arañazo": { "poder": 40, "tipo": "Normal" },
+  "Látigo Cepa": { "poder": 45, "tipo": "Planta" },
+  "Ascuas": { "poder": 40, "tipo": "Fuego" },
+  "Pistola Agua": { "poder": 40, "tipo": "Agua" },
+  "Impactrueno": { "poder": 40, "tipo": "Eléctrico" },
+  "Confusión": { "poder": 50, "tipo": "Psíquico" },
+  "Picadura": { "poder": 60, "tipo": "Bicho" },
+  "Ataque Ala": { "poder": 60, "tipo": "Volador" },
+  "Burbuja": { "poder": 40, "tipo": "Agua" },
+  "Hoja Afilada": { "poder": 55, "tipo": "Planta" },
+  "Lanzallamas": { "poder": 90, "tipo": "Fuego" },
+  "Hidrobomba": { "poder": 110, "tipo": "Agua" },
+  "Rayo": { "poder": 90, "tipo": "Eléctrico" },
+  "Psíquico": { "poder": 90, "tipo": "Psíquico" },
+  "Mordisco": { "poder": 60, "tipo": "Siniestro" },
+  "Residuos": { "poder": 65, "tipo": "Veneno" },
+  "Excavar": { "poder": 80, "tipo": "Tierra" },
+  "Doble Patada": { "poder": 30, "tipo": "Lucha" },
+  "Picotazo": { "poder": 35, "tipo": "Volador" },
+  "Cornada": { "poder": 65, "tipo": "Normal" },
+  "Terremoto": { "poder": 100, "tipo": "Tierra" },
+  "Chupa Vidas": { "poder": 20, "tipo": "Bicho" },
+  "Ácido": { "poder": 40, "tipo": "Veneno" },
+  "Absorber": { "poder": 20, "tipo": "Planta" },
+  "Destructor": { "poder": 40, "tipo": "Normal" },
+  "Voz Cautivadora": { "poder": 40, "tipo": "Hada" }
 }
