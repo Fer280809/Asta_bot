@@ -1,47 +1,167 @@
 {
-  "Pueblo Origen": {
-    "descripcion": "Un pequeño y tranquilo pueblo. Aquí se encuentra el laboratorio del Profesor y tu hogar.",
-    "tipo": "ciudad",
+  "Albavera": {
+    "descripcion": "Pueblo tranquilo rodeado de colinas suaves y un pequeño lago. El aire se siente puro.",
+    "tipo": "pueblo",
     "conexiones": ["Ruta 1"],
-    "puntos_interes": ["Laboratorio", "Hogar"],
-    "imagen": "https://files.catbox.moe/nqvhaq.jpg"
+    "puntos_interes": ["Laboratorio Cerezo", "Lago"],
+    "npc": ["Profesor Cerezo", "Mamá", "Rival"]
   },
   "Ruta 1": {
-    "descripcion": "Una senda natural que conecta Pueblo Origen con Ciudad Verde. Hay mucha hierba alta.",
+    "descripcion": "Camino Verdeante. Pradera con senderos bien definidos y flores silvestres.",
     "tipo": "hierba",
-    "conexiones": ["Pueblo Origen", "Ciudad Verde"],
-    "spawn": [16, 19],
-    "niveles": [2, 5],
-    "imagen": "https://files.catbox.moe/nqvhaq.jpg"
+    "conexiones": ["Albavera", "Villa Raíz"],
+    "spawn": [16, 19, 10, 13, 427],
+    "niveles": [2, 5]
   },
-  "Ciudad Verde": {
-    "descripcion": "Una ciudad próspera rodeada de naturaleza. Cuenta con un Centro Pokémon y una Tienda.",
-    "tipo": "ciudad",
-    "conexiones": ["Ruta 1", "Bosque Verde"],
-    "puntos_interes": ["Centro Pokémon", "Tienda"],
-    "imagen": "https://files.catbox.moe/nqvhaq.jpg"
+  "Villa Raíz": {
+    "descripcion": "Pueblo rural con granjas y un molino antiguo. Famoso por su guardería.",
+    "tipo": "pueblo",
+    "conexiones": ["Ruta 1", "Ruta 2", "Bosque Musgo"],
+    "puntos_interes": ["Tienda", "Centro Pokémon", "Guardería", "Casa de MTs"],
+    "npc": ["Granjero", "Anciano MT"]
   },
-  "Bosque Verde": {
-    "descripcion": "Un bosque frondoso y oscuro donde habitan muchos Pokémon de tipo Bicho. Ten cuidado de no perderte.",
+  "Bosque Musgo": {
+    "descripcion": "Bosque cerrado con árboles altos. El hogar de muchos Pokémon bicho.",
     "tipo": "hierba",
-    "conexiones": ["Ciudad Verde", "Ruta 2"],
-    "spawn": [10, 11, 13, 14],
-    "niveles": [3, 6],
-    "imagen": "https://files.catbox.moe/nqvhaq.jpg"
+    "conexiones": ["Villa Raíz", "Ruta 3"],
+    "spawn": [43, 285, 204, 412, 415],
+    "niveles": [4, 8],
+    "item_requerido": "Corte"
   },
   "Ruta 2": {
-    "descripcion": "Un camino que bordea el Bosque Verde y lleva hacia Ciudad Plateada.",
+    "descripcion": "Puente del Viento. Zona con puentes colgantes y vientos fuertes.",
     "tipo": "hierba",
-    "conexiones": ["Bosque Verde", "Ciudad Plateada"],
-    "spawn": [16, 19, 10, 13],
-    "niveles": [4, 7],
-    "imagen": "https://files.catbox.moe/nqvhaq.jpg"
+    "conexiones": ["Villa Raíz", "Ciudad Luminaria"],
+    "spawn": [21, 276, 163, 25],
+    "niveles": [6, 10]
   },
-  "Ciudad Plateada": {
-    "descripcion": "Una ciudad ubicada entre grandes rocas. Aquí se encuentra el primer Gimnasio de la región.",
+  "Ciudad Luminaria": {
+    "descripcion": "Ciudad costera con faro y puerto. El olor a salitre inunda las calles.",
     "tipo": "ciudad",
-    "conexiones": ["Ruta 2"],
-    "puntos_interes": ["Gimnasio Roca", "Centro Pokémon", "Tienda"],
-    "imagen": "https://files.catbox.moe/nqvhaq.jpg"
+    "conexiones": ["Ruta 2", "Ruta 3"],
+    "puntos_interes": ["Gimnasio Marea", "Mercado Costero", "Casa de Bicis", "Faro"],
+    "npc": ["Marina", "Capitán", "Artista"]
+  },
+  "Ruta 3": {
+    "descripcion": "Acantilados Rocosos. Terreno montañoso junto al mar embravecido.",
+    "tipo": "hierba",
+    "conexiones": ["Ciudad Luminaria", "Pueblo Minero"],
+    "spawn": [74, 41, 278, 66],
+    "niveles": [10, 15]
+  },
+  "Pueblo Minero": {
+    "descripcion": "Asentamiento dentro de un cráter volcánico inactivo. Hogar de la gran mina.",
+    "tipo": "pueblo",
+    "conexiones": ["Ruta 3", "Ruta 4"],
+    "puntos_interes": ["Mina Auralis", "Museo de Fósiles", "Tienda Especializada"],
+    "npc": ["Minero MO", "Geólogo"]
+  },
+  "Ruta 4": {
+    "descripcion": "Cumbre Neblina. Montaña alta cubierta por una niebla perpetua.",
+    "tipo": "hierba",
+    "conexiones": ["Pueblo Minero", "Ciudad Cénit"],
+    "spawn": [333, 299, 361, 307],
+    "niveles": [12, 18],
+    "item_requerido": "Despejar Niebla"
+  },
+  "Ciudad Cénit": {
+    "descripcion": "Ciudad moderna en la cima, con vistas panorámicas increíbles.",
+    "tipo": "ciudad",
+    "conexiones": ["Ruta 4", "Ruta 5"],
+    "puntos_interes": ["Gimnasio Mental", "Torre de Batalla", "Tienda de Lujo"],
+    "npc": ["Orion", "CEO Silph", "Adivina"]
+  },
+  "Ruta 5": {
+    "descripcion": "Colinas Eólicas. Paisaje lleno de molinos de viento y túneles.",
+    "tipo": "hierba",
+    "conexiones": ["Ciudad Cénit", "Villa Nidada"],
+    "spawn": [77, 179, 227, 111, 133],
+    "niveles": [18, 24]
+  },
+  "Villa Nidada": {
+    "descripcion": "Pueblo acogedor decorado con nidos gigantes en los tejados.",
+    "tipo": "pueblo",
+    "conexiones": ["Ruta 5", "Ruta 6"],
+    "puntos_interes": ["Gimnasio Brisa", "Observatorio de Aves"],
+    "npc": ["Zephyr", "Ornitólogo"]
+  },
+  "Ruta 6": {
+    "descripcion": "Cañón Profundo. Desfiladeros con puentes colgantes y cascadas.",
+    "tipo": "hierba",
+    "conexiones": ["Villa Nidada", "Ciudad Férrea"],
+    "spawn": [246, 95, 67, 198, 359],
+    "niveles": [22, 28]
+  },
+  "Ciudad Férrea": {
+    "descripcion": "Corazón industrial de la región. Fábricas de alta tecnología.",
+    "tipo": "ciudad",
+    "conexiones": ["Ruta 6", "Ruta 7", "Central Eléctrica"],
+    "puntos_interes": ["Gimnasio Aleación", "Fábrica Silph", "Mercado Minerales"],
+    "npc": ["Ferrum", "Ingeniero Jefe"]
+  },
+  "Central Eléctrica": {
+    "descripcion": "Instalación industrial zumbante de energía eléctrica.",
+    "tipo": "especial",
+    "conexiones": ["Ciudad Férrea"],
+    "spawn": [100, 125, 81, 25, 145],
+    "niveles": [30, 35]
+  },
+  "Ruta 7": {
+    "descripcion": "Bosque Neblinoso. Un lugar sombrío que alberga el Cementerio Pokémon.",
+    "tipo": "hierba",
+    "conexiones": ["Ciudad Férrea", "Pueblo Ancestral"],
+    "spawn": [200, 302, 353, 355, 442],
+    "niveles": [26, 32]
+  },
+  "Pueblo Ancestral": {
+    "descripcion": "Arquitectura antigua y tradiciones que se mantienen vivas.",
+    "tipo": "pueblo",
+    "conexiones": ["Ruta 7", "Ruta 8", "Ruta 9"],
+    "puntos_interes": ["Museo de Historia", "Dojo de Combate", "Gruta Aural"],
+    "npc": ["Anciano Sabio", "Maestro Dojo"]
+  },
+  "Ruta 8": {
+    "descripcion": "Lago Serenidad. Un espejo de agua cristalina rodeado de islas.",
+    "tipo": "agua",
+    "conexiones": ["Pueblo Ancestral"],
+    "spawn": [54, 55, 60, 270, 349],
+    "niveles": [30, 35],
+    "item_requerido": "Surf"
+  },
+  "Ruta 9": {
+    "descripcion": "Camino Glacial. Nieves eternas y cuevas de hielo resbaladizas.",
+    "tipo": "hierba",
+    "conexiones": ["Pueblo Ancestral", "Ciudad Pico"],
+    "spawn": [220, 225, 361, 215, 131],
+    "niveles": [30, 38]
+  },
+  "Ciudad Pico": {
+    "descripcion": "La ciudad más alta de Auralis, rodeada de picos nevados.",
+    "tipo": "ciudad",
+    "conexiones": ["Ruta 9", "Cueva Victoria"],
+    "puntos_interes": ["Gimnasio Cima", "Albergue de Entrenadores"],
+    "npc": ["Glacia", "Guía de Montaña"]
+  },
+  "Cueva Victoria": {
+    "descripcion": "El último desafío. Un laberinto de cuevas gigantes antes de la gloria.",
+    "tipo": "hierba",
+    "conexiones": ["Ciudad Pico", "Liga Pokémon"],
+    "spawn": [75, 95, 42, 169, 305, 149],
+    "niveles": [40, 48]
+  },
+  "Liga Pokémon": {
+    "descripcion": "El majestuoso castillo donde se coronan los campeones.",
+    "tipo": "ciudad",
+    "conexiones": ["Cueva Victoria"],
+    "puntos_interes": ["Centro Pokémon Final", "Sala de los Altares", "Alto Mando"],
+    "npc": ["Aura", "Drake", "Viola", "Thorne", "Celeste"]
+  },
+  "Isla Utopía": {
+    "descripcion": "Paraíso tropical post-liga. Desafíos avanzados te esperan.",
+    "tipo": "especial",
+    "conexiones": ["Ciudad Luminaria"],
+    "puntos_interes": ["Battle Frontier", "Zona Safari"],
+    "npc": ["Criador Legendario"],
+    "item_requerido": "Ticket Barco"
   }
 }
