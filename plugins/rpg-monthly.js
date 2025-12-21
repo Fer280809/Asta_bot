@@ -179,9 +179,9 @@ var handler = async (m, { conn, usedPrefix }) => {
 }
 
 // Configuración del handler
-handler.help = ['monthly', 'mensual', 'adviento', 'calendario', 'regalomensual']
+handler.help = ['monthly', 'mensual']
 handler.tags = ['economy', 'navidad', 'recompensas']
-handler.command = ['monthly', 'mensual', 'adviento', 'calendario', 'regalomensual', 'navidadmonthly', 'santacalendar', 'advientomensual']
+handler.command = ['monthly', 'mensual']
 handler.group = true
 handler.limit = false
 
