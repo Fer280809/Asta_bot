@@ -23,5 +23,5 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     }]
     await conn.sendList(m.chat, "🗺️ VIAJAR", `Estás en: *${user.pokemon.ubicacion}*`, "Elegir Destino", sections, m)
 }
-handler.command = /^p\s?go$/i
+handler.command = /^(p|pokemon)go$/i
 export default handler
