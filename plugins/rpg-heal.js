@@ -147,9 +147,9 @@ let handler = async (m, { conn, usedPrefix, command }) => {
 }
 
 // Configuración del handler
-handler.help = ['heal', 'curar', 'chocolate', 'galletas', 'alegría']
+handler.help = ['heal', 'curar']
 handler.tags = ['economy', 'navidad', 'salud']
-handler.command = ['heal', 'curar', 'chocolate', 'galletas', 'alegria', 'navidadheal', 'santacure', 'espíritu']
+handler.command = ['heal', 'curar']
 handler.group = true
 handler.limit = true
 
