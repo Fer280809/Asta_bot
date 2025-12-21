@@ -95,7 +95,7 @@ let handler = async (m, { args, usedPrefix, command }) => {
 // Información del comando
 handler.help = ['depositar <cantidad/all/mitad>', 'deposit', 'd']
 handler.tags = ['economy', 'navidad', 'banco']
-handler.command = ['deposit', 'depositar', 'd', 'dep', 'guardar', 'ahorrar', 'navideposito', 'regalobanco']
+handler.command = ['deposit', 'depositar', 'd', 'dep', 'guardar', 'ahorrar']
 handler.group = true
 handler.limit = true
 
