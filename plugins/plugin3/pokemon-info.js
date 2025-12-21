@@ -31,6 +31,6 @@ let handler = async (m, { conn, usedPrefix }) => {
     await conn.sendList(m.chat, "🎒 TU AVENTURA POKÉMON", caption, "Abrir Menú", sections, m)
 }
 
-handler.command = /^(p\s?info)$/i
+handler.command = /^(p|pokemon)info$/i
 handler.tags = ['plugin3']
 export default handler
