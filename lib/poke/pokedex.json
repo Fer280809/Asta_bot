@@ -1160,3 +1160,234 @@
     "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/137.png"
   }
 }
+{
+  "110": {
+    "nombre": "Porygon2",
+    "tipos": ["Normal"],
+    "statsBase": { "hp": 85, "ataque": 80, "defensa": 90, "velocidad": 60 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Chispazo", "daño": 80, "tipo": "Eléctrico" },
+      { "nivel": 30, "nombre": "Triataque", "daño": 80, "tipo": "Normal" }
+    ],
+    "evolucion": { "nivel": 45, "id": "111" },
+    "spawn": { "rango_nivel": [30, 44] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/233.png"
+  },
+  "111": {
+    "nombre": "Porygon-Z",
+    "tipos": ["Normal"],
+    "statsBase": { "hp": 85, "ataque": 80, "defensa": 70, "velocidad": 90 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Electrocañón", "daño": 120, "tipo": "Eléctrico" },
+      { "nivel": 50, "nombre": "Hiperrayo", "daño": 150, "tipo": "Normal" }
+    ],
+    "spawn": { "rango_nivel": [45, 65] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/474.png"
+  },
+  "112": {
+    "nombre": "Rotom",
+    "tipos": ["Eléctrico", "Fantasma"],
+    "statsBase": { "hp": 50, "ataque": 50, "defensa": 77, "velocidad": 91 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Impactrueno", "daño": 40, "tipo": "Eléctrico" },
+      { "nivel": 15, "nombre": "Infortunio", "daño": 65, "tipo": "Fantasma" }
+    ],
+    "spawn": { "rango_nivel": [15, 40] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/479.png"
+  },
+  "113": {
+    "nombre": "Spiritomb",
+    "tipos": ["Fantasma", "Siniestro"],
+    "statsBase": { "hp": 50, "ataque": 92, "defensa": 108, "velocidad": 35 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Sombra Vil", "daño": 40, "tipo": "Fantasma" },
+      { "nivel": 25, "nombre": "Pulso Umbrío", "daño": 80, "tipo": "Siniestro" }
+    ],
+    "spawn": { "rango_nivel": [30, 50] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/442.png"
+  },
+  "114": {
+    "nombre": "Sableye",
+    "tipos": ["Siniestro", "Fantasma"],
+    "statsBase": { "hp": 50, "ataque": 75, "defensa": 75, "velocidad": 50 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Finta", "daño": 60, "tipo": "Siniestro" },
+      { "nivel": 20, "nombre": "Garra Sombría", "daño": 70, "tipo": "Fantasma" }
+    ],
+    "spawn": { "rango_nivel": [15, 35] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/302.png"
+  },
+  "115": {
+    "nombre": "Absol",
+    "tipos": ["Siniestro"],
+    "statsBase": { "hp": 65, "ataque": 130, "defensa": 60, "velocidad": 75 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Ataque Rápido", "daño": 40, "tipo": "Normal" },
+      { "nivel": 25, "nombre": "Tajo Umbrío", "daño": 70, "tipo": "Siniestro" }
+    ],
+    "spawn": { "rango_nivel": [25, 50] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/359.png"
+  },
+  "116": {
+    "nombre": "Sneasel",
+    "tipos": ["Siniestro", "Hielo"],
+    "statsBase": { "hp": 55, "ataque": 95, "defensa": 55, "velocidad": 115 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Ataque Arena", "daño": 0, "tipo": "Tierra" },
+      { "nivel": 15, "nombre": "Canto Helado", "daño": 40, "tipo": "Hielo" }
+    ],
+    "evolucion": { "nivel": 40, "id": "117" },
+    "spawn": { "rango_nivel": [15, 35] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/215.png"
+  },
+  "117": {
+    "nombre": "Weavile",
+    "tipos": ["Siniestro", "Hielo"],
+    "statsBase": { "hp": 70, "ataque": 120, "defensa": 65, "velocidad": 125 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Tajo Umbrío", "daño": 70, "tipo": "Siniestro" },
+      { "nivel": 45, "nombre": "Cuchillada", "daño": 70, "tipo": "Normal" }
+    ],
+    "spawn": { "rango_nivel": [40, 60] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/461.png"
+  },
+  "118": {
+    "nombre": "Swinub",
+    "tipos": ["Hielo", "Tierra"],
+    "statsBase": { "hp": 50, "ataque": 50, "defensa": 40, "velocidad": 50 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Nieve Polvo", "daño": 40, "tipo": "Hielo" },
+      { "nivel": 10, "nombre": "Bofetón Lodo", "daño": 20, "tipo": "Tierra" }
+    ],
+    "evolucion": { "nivel": 33, "id": "119" },
+    "spawn": { "rango_nivel": [5, 20] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/220.png"
+  },
+  "119": {
+    "nombre": "Piloswine",
+    "tipos": ["Hielo", "Tierra"],
+    "statsBase": { "hp": 100, "ataque": 100, "defensa": 80, "velocidad": 50 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Viento Hielo", "daño": 55, "tipo": "Hielo" },
+      { "nivel": 33, "nombre": "Terremoto", "daño": 100, "tipo": "Tierra" }
+    ],
+    "evolucion": { "nivel": 50, "id": "120" },
+    "spawn": { "rango_nivel": [33, 49] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/221.png"
+  },
+  "120": {
+    "nombre": "Mamoswine",
+    "tipos": ["Hielo", "Tierra"],
+    "statsBase": { "hp": 110, "ataque": 130, "defensa": 80, "velocidad": 80 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Colmillo Hielo", "daño": 65, "tipo": "Hielo" },
+      { "nivel": 55, "nombre": "Fuerza Bruta", "daño": 120, "tipo": "Lucha" }
+    ],
+    "spawn": { "rango_nivel": [50, 70] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/473.png"
+  },
+  "121": {
+    "nombre": "Shroomish",
+    "tipos": ["Planta"],
+    "statsBase": { "hp": 60, "ataque": 40, "defensa": 60, "velocidad": 35 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Absorber", "daño": 20, "tipo": "Planta" },
+      { "nivel": 12, "nombre": "Paralizador", "daño": 0, "tipo": "Planta" }
+    ],
+    "evolucion": { "nivel": 23, "id": "122" },
+    "spawn": { "rango_nivel": [5, 20] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/285.png"
+  },
+  "122": {
+    "nombre": "Breloom",
+    "tipos": ["Planta", "Lucha"],
+    "statsBase": { "hp": 60, "ataque": 130, "defensa": 80, "velocidad": 70 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Ultrapuño", "daño": 40, "tipo": "Lucha" },
+      { "nivel": 25, "nombre": "Bomba Germen", "daño": 80, "tipo": "Planta" }
+    ],
+    "spawn": { "rango_nivel": [23, 45] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/286.png"
+  },
+  "123": {
+    "nombre": "Gible",
+    "tipos": ["Dragón", "Tierra"],
+    "statsBase": { "hp": 58, "ataque": 70, "defensa": 45, "velocidad": 42 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Placaje", "daño": 40, "tipo": "Normal" },
+      { "nivel": 15, "nombre": "Bucle Arena", "daño": 35, "tipo": "Tierra" }
+    ],
+    "evolucion": { "nivel": 24, "id": "124" },
+    "spawn": { "rango_nivel": [10, 25] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/443.png"
+  },
+  "124": {
+    "nombre": "Gabite",
+    "tipos": ["Dragón", "Tierra"],
+    "statsBase": { "hp": 68, "ataque": 90, "defensa": 65, "velocidad": 82 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Cuchillada", "daño": 70, "tipo": "Normal" },
+      { "nivel": 24, "nombre": "Garra Dragón", "daño": 80, "tipo": "Dragón" }
+    ],
+    "evolucion": { "nivel": 48, "id": "125" },
+    "spawn": { "rango_nivel": [24, 47] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/444.png"
+  },
+  "125": {
+    "nombre": "Garchomp",
+    "tipos": ["Dragón", "Tierra"],
+    "statsBase": { "hp": 108, "ataque": 130, "defensa": 95, "velocidad": 102 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Carga Dragón", "daño": 100, "tipo": "Dragón" },
+      { "nivel": 50, "nombre": "Terremoto", "daño": 100, "tipo": "Tierra" }
+    ],
+    "spawn": { "rango_nivel": [48, 70] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/445.png"
+  },
+  "126": {
+    "nombre": "Meowth",
+    "tipos": ["Normal"],
+    "statsBase": { "hp": 40, "ataque": 45, "defensa": 35, "velocidad": 90 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Arañazo", "daño": 40, "tipo": "Normal" },
+      { "nivel": 12, "nombre": "Mordisco", "daño": 60, "tipo": "Siniestro" }
+    ],
+    "evolucion": { "nivel": 28, "id": "127" },
+    "spawn": { "rango_nivel": [5, 20] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/52.png"
+  },
+  "127": {
+    "nombre": "Persian",
+    "tipos": ["Normal"],
+    "statsBase": { "hp": 65, "ataque": 70, "defensa": 60, "velocidad": 115 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Sorpresa", "daño": 40, "tipo": "Normal" },
+      { "nivel": 30, "nombre": "Cuchillada", "daño": 70, "tipo": "Normal" }
+    ],
+    "spawn": { "rango_nivel": [28, 50] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/53.png"
+  },
+  "128": {
+    "nombre": "Buneary",
+    "tipos": ["Normal"],
+    "statsBase": { "hp": 55, "ataque": 66, "defensa": 44, "velocidad": 85 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Destructor", "daño": 40, "tipo": "Normal" },
+      { "nivel": 13, "nombre": "Patada Salto", "daño": 70, "tipo": "Lucha" }
+    ],
+    "evolucion": { "nivel": 30, "id": "129" },
+    "spawn": { "rango_nivel": [5, 25] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/427.png"
+  },
+  "129": {
+    "nombre": "Lopunny",
+    "tipos": ["Normal"],
+    "statsBase": { "hp": 65, "ataque": 76, "defensa": 84, "velocidad": 105 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Puño Mareo", "daño": 70, "tipo": "Normal" },
+      { "nivel": 35, "nombre": "Patada Salto Alta", "daño": 130, "tipo": "Lucha" }
+    ],
+    "spawn": { "rango_nivel": [30, 55] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/428.png"
+  }
+}
