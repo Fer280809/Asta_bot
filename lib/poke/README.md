@@ -1,1 +1,0 @@
-###librerias de Pokémon category
