@@ -1,61 +1,35 @@
-import { PokemonLogic } from '../lib/poke/logic.js'
-
-let handler = async (m, { conn, text, usedPrefix, command }) => {
+import fs from 'fs'
+let handler = async (m, { conn, text, usedPrefix }) => {
     let user = global.db.data.users[m.sender]
-    
-    // Si no existe el objeto pokemon, lo creamos
-    if (!user.pokemon) user.pokemon = {}
-    
-    if (user.pokemon.registrado) return m.reply(`❌ Ya eres un entrenador. Tu aventura actual está en *${user.pokemon.ubicacion}*`)
+    if (user.pokemon?.registrado) return m.reply('❌ Ya eres un entrenador.')
 
-    if (!text) {
-        const sections = [{
-            title: "ELIGE TU COMPAÑERO",
-            rows: [
-                { title: "Bulbasaur", rowId: `${usedPrefix + command} bulbasaur`, description: "Tipo Planta/Veneno" },
-                { title: "Charmander", rowId: `${usedPrefix + command} charmander`, description: "Tipo Fuego" },
-                { title: "Squirtle", rowId: `${usedPrefix + command} squirtle`, description: "Tipo Agua" }
-            ]
-        }]
-        return conn.sendList(m.chat, "✨ BIENVENIDO A AURELIA ✨", "Elige a tu primer Pokémon para comenzar tu viaje:", "Ver Iniciales", sections, m)
+    const pokedex = JSON.parse(fs.readFileSync('./lib/poke/pokedex.json'))
+    const iniciales = ["1", "4", "7"] // Bulbasaur, Charmander, Squirtle
+
+    if (!text || !iniciales.includes(text)) {
+        return m.reply(`🌟 *BIENVENIDO A POKÉMON AURALIS* 🌟\n\nElige a tu compañero:\n1. Bulbasaur 🍃\n4. Charmander 🔥\n7. Squirtle 💧\n\nUsa: *${usedPrefix}pstart [número]*`)
     }
 
-    let choice = text.toLowerCase().trim()
-    let pkmId = choice === 'bulbasaur' ? 1 : choice === 'charmander' ? 4 : choice === 'squirtle' ? 7 : null
-    if (!pkmId) return m.reply("❌ Selección inválida. Elige entre Bulbasaur, Charmander o Squirtle.")
-
-    const pkmBase = PokemonLogic.getPokemon(pkmId)
-    
-    // --- ESTRUCTURA DE PERFIL EXCLUSIVA ---
+    let pData = pokedex[text]
     user.pokemon = {
         registrado: true,
-        nombreEntrenador: m.name,
-        dinero: 500, // <--- INICIA CON UN POQUITO DE DINERO (500 Yenes)
-        ubicacion: "Pueblo Origen",
+        id: text,
+        nombre: pData.nombre,
+        nombreEntrenador: m.pushName || 'Entrenador',
+        nivel: 5,
+        exp: 0,
+        hp: 100,
+        hpMax: 100,
+        tipos: pData.tipos,
+        dinero: 500,
+        ubicacion: "Pueblo Paleta",
+        mochila: { "pokebola": 5, "pocion": 2 },
         medallas: [],
-        inventario: { 
-            pokeball: 5, // 5 Pokéballs de regalo
-            pocion: 2    // 2 Pociones de regalo
-        },
-        equipo: [{
-            id: pkmId,
-            nombre: pkmBase.nombre,
-            nivel: 5,
-            exp: 0,
-            hp: pkmBase.statsBase.hp + 10,
-            hpMax: pkmBase.statsBase.hp + 10,
-            stats: { ...pkmBase.statsBase },
-            tipos: pkmBase.tipos,
-            movimientos: ["Placaje", "Arañazo"]
-        }],
-        pc: []
+        almacen: [],
+        emocion: 100
     }
 
-    await conn.sendMessage(m.chat, { 
-        image: { url: pkmBase.imagen }, 
-        caption: `🎉 ¡Felicidades! Has recibido a *${pkmBase.nombre}*.\n\n💰 Has recibido *$500* y un kit de *5 Pokéballs* para empezar.\n\nUsa *.p info* para ver tu estado.` 
-    }, { quoted: m })
+    m.reply(`🎉 ¡Felicidades! Ahora *${pData.nombre}* es tu compañero. ¡Tu aventura comienza en Pueblo Paleta!`)
 }
-
-handler.command = /^(p|pokemon)start$/i
+handler.command = /^(pstart|pokemonstart)$/i
 export default handler
