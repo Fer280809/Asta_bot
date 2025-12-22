@@ -1,27 +1,23 @@
-import { PokemonLogic } from '../lib/poke/logic.js'
-
-let handler = async (m, { conn, text, usedPrefix, command }) => {
+import fs from 'fs'
+let handler = async (m, { conn, text }) => {
     let user = global.db.data.users[m.sender]
-    if (!user.pokemon?.registrado) return m.reply('❌ No has iniciado tu aventura.')
+    if (!user.pokemon?.registrado) return m.reply('❌ No has iniciado.')
 
-    let zonaActual = PokemonLogic.getMap(user.pokemon.ubicacion)
+    const mapa = JSON.parse(fs.readFileSync('./lib/poke/mapa.json'))
+    let p = user.pokemon
+    let destino = text.trim()
 
-    if (text) {
-        let destino = text.trim()
-        if (zonaActual.conexiones.includes(destino)) {
-            user.pokemon.ubicacion = destino
-            return m.reply(`🚶‍♂️ Has llegado a: *${destino}*\n\n${PokemonLogic.getMap(destino).description}`)
-        }
+    if (!destino || !mapa[destino]) {
+        let opciones = mapa[p.ubicacion].conexiones.join(', ')
+        return m.reply(`📍 *UBICACIÓN ACTUAL:* ${p.ubicacion}\n🛣️ *PUEDES IR A:* ${opciones}`)
     }
 
-    const sections = [{
-        title: "DESTINOS DISPONIBLES",
-        rows: zonaActual.conexiones.map(loc => ({
-            title: loc,
-            rowId: `${usedPrefix + command} ${loc}`
-        }))
-    }]
-    await conn.sendList(m.chat, "🗺️ VIAJAR", `Estás en: *${user.pokemon.ubicacion}*`, "Elegir Destino", sections, m)
+    if (!mapa[p.ubicacion].conexiones.includes(destino)) {
+        return m.reply(`❌ No puedes llegar a ${destino} desde aquí.`)
+    }
+
+    p.ubicacion = destino
+    m.reply(`🚶 Has llegado a *${destino}*.\n${mapa[destino].descripcion}`)
 }
-handler.command = /^(p|pokemon)go$/i
+handler.command = /^(pgo|ir|viajar)$/i
 export default handler
