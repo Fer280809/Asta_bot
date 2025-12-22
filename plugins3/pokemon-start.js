@@ -1,15 +1,32 @@
 import fs from 'fs'
-let handler = async (m, { conn, text, usedPrefix }) => {
+
+let handler = async (m, { conn, text, usedPrefix, command }) => {
+    // 1. Verificar si el usuario ya tiene una partida
     let user = global.db.data.users[m.sender]
-    if (user.pokemon?.registrado) return m.reply('❌ Ya eres un entrenador.')
+    if (!user.pokemon) user.pokemon = {}
+    if (user.pokemon.registrado) return m.reply(`❌ Ya eres un entrenador Pokémon. Usa *${usedPrefix}p profile* para ver tus datos.`)
 
     const pokedex = JSON.parse(fs.readFileSync('./lib/poke/pokedex.json'))
-    const iniciales = ["1", "4", "7"] // Bulbasaur, Charmander, Squirtle
-
-    if (!text || !iniciales.includes(text)) {
-        return m.reply(`🌟 *BIENVENIDO A POKÉMON AURALIS* 🌟\n\nElige a tu compañero:\n1. Bulbasaur 🍃\n4. Charmander 🔥\n7. Squirtle 💧\n\nUsa: *${usedPrefix}pstart [número]*`)
+    
+    // IDs de los iniciales: 1 (Bulbasaur), 4 (Charmander), 7 (Squirtle)
+    const iniciales = {
+        "1": "Bulbasaur 🍃",
+        "4": "Charmander 🔥",
+        "7": "Squirtle 💧"
     }
 
+    // 2. Si no ha elegido uno, mostrar el menú
+    if (!text || !iniciales[text]) {
+        let menu = `🌟 *BIENVENIDO AL MUNDO POKÉMON* 🌟\n\n`
+        menu += `Soy el Profesor Cerezo. Para comenzar tu investigación en la región de *Auralis*, necesito que elijas a tu primer compañero:\n\n`
+        for (let id in iniciales) {
+            menu += `• [${id}] ${iniciales[id]}\n`
+        }
+        menu += `\nUsa: *${usedPrefix + command} [ID]*\n_Ejemplo: ${usedPrefix + command} 4_`
+        return m.reply(menu)
+    }
+
+    // 3. Registrar al usuario con la estructura completa
     let pData = pokedex[text]
     user.pokemon = {
         registrado: true,
@@ -18,18 +35,30 @@ let handler = async (m, { conn, text, usedPrefix }) => {
         nombreEntrenador: m.pushName || 'Entrenador',
         nivel: 5,
         exp: 0,
-        hp: 100,
-        hpMax: 100,
-        tipos: pData.tipos,
-        dinero: 500,
+        hp: 100, // Vida actual
+        hpMax: 100, // Vida máxima según nivel
+        dinero: 1000,
         ubicacion: "Pueblo Paleta",
-        mochila: { "pokebola": 5, "pocion": 2 },
+        tipos: pData.tipos,
+        // Mochila inicial balanceada
+        mochila: {
+            "pokebola": 5,
+            "pocion": 3,
+            "antidoto": 1
+        },
         medallas: [],
-        almacen: [],
-        emocion: 100
+        almacen: [], // El PC para los Pokémon capturados
+        emocion: 100, // Felicidad del Pokémon (afecta la EXP)
+        lastHunt: 0 // Cooldown para evitar spam de caza
     }
 
-    m.reply(`🎉 ¡Felicidades! Ahora *${pData.nombre}* es tu compañero. ¡Tu aventura comienza en Pueblo Paleta!`)
+    let bienvenida = `🎊 ¡Felicidades, *${user.pokemon.nombreEntrenador}*!\n\n`
+    bienvenida += `Has elegido a *${pData.nombre}* como tu compañero de aventuras.\n`
+    bienvenida += `📍 Actualmente te encuentras en *Pueblo Paleta*.\n\n`
+    bienvenida += `📱 Usa *${usedPrefix}p go* para empezar a moverte o *${usedPrefix}p hunt* para buscar Pokémon en la hierba alta.`
+
+    await conn.reply(m.chat, bienvenida, m)
 }
-handler.command = /^(pstart|pokemonstart)$/i
+
+handler.command = /^(p|pokemon)start|iniciar$/i
 export default handler
