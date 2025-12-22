@@ -1,45 +1,24 @@
-import fs from 'fs'
-
-let handler = async (m, { conn, usedPrefix }) => {
+let handler = async (m, { conn, text, usedPrefix }) => {
     let user = global.db.data.users[m.sender]
-    if (!user.pokemon?.registrado) return m.reply('❌ No tienes una partida activa.')
-
     let p = user.pokemon
-    let itemsData = JSON.parse(fs.readFileSync('./lib/poke/items.json'))
     
-    let inventario = p.inventario || {}
-    let texto = `🎒 *MOCHILA DE ${p.nombreEntrenador.toUpperCase()}*\n`
-    texto += `▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n`
-    texto += `💰 *Dinero:* $${p.dinero}\n\n`
-
-    let categorias = {
-        "balls": "⚪ *Poké Balls*",
-        "curacion": "🧪 *Objetos de Salud*",
-        "evolucion": "💎 *Objetos de Evolución*",
-        "especial": "⭐ *Otros*"
-    }
-
-    let vacia = true
-    for (let [catKey, catName] of Object.entries(categorias)) {
-        let itemsEnCat = ""
-        for (let [itemId, cantidad] of Object.entries(inventario)) {
-            // Buscar datos del item en la categoría correspondiente del JSON maestro
-            let itemInfo = itemsData[catKey]?.[itemId]
-            if (itemInfo && cantidad > 0) {
-                itemsEnCat += `• ${itemInfo.emoji} *${itemInfo.nombre}* x${cantidad}\n`
-                vacia = false
-            }
+    if (text.startsWith('use')) {
+        let item = text.replace('use', '').trim().toLowerCase()
+        if (!p.mochila[item] || p.mochila[item] <= 0) return m.reply('❌ No tienes ese objeto.')
+        
+        if (item === 'pocion') {
+            p.hp = Math.min(p.hpMax, p.hp + 50)
+            p.mochila[item]--
+            return m.reply(`🧪 Usaste Poción. HP: ${p.hp}/${p.hpMax}`)
         }
-        if (itemsEnCat) texto += `${catName}\n${itemsEnCat}\n`
     }
 
-    if (vacia) texto += `_Tu mochila está vacía..._ 🏜️\n`
-
-    texto += `▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n`
-    texto += `💡 _Usa *${usedPrefix}puse [nombre]* para usar un objeto._`
-
-    await conn.reply(m.chat, texto, m)
+    let txt = `🎒 *MOCHILA DE ${p.nombreEntrenador.toUpperCase()}*\n\n`
+    for (let [item, cant] of Object.entries(p.mochila)) {
+        txt += `▪️ ${item.charAt(0).toUpperCase() + item.slice(1)}: ${cant}\n`
+    }
+    txt += `\n💡 Usa: *${usedPrefix}pbag use pocion* para curar.`
+    m.reply(txt)
 }
-
-handler.command = /^(p|pokemon)bag|mochila$/i
+handler.command = /^(pbag|mochila|bag)$/i
 export default handler
