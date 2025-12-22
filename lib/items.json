@@ -1,0 +1,26 @@
+{
+  "balls": {
+    "pokeball": { "nombre": "Pokéball", "descripcion": "Captura Pokémon salvajes.", "precio": 200, "ratio": 1.0, "emoji": "⚪" },
+    "superball": { "nombre": "Superball", "descripcion": "Mejor que una Pokéball.", "precio": 600, "ratio": 1.5, "emoji": "🔵" },
+    "ultraball": { "nombre": "Ultraball", "descripcion": "Alta tasa de éxito.", "precio": 1200, "ratio": 2.0, "emoji": "🟡" },
+    "masterball": { "nombre": "Masterball", "descripcion": "Captura infalible.", "precio": 50000, "ratio": 100.0, "emoji": "🟣" }
+  },
+  "curacion": {
+    "pocion": { "nombre": "Poción", "descripcion": "Cura 20 HP.", "precio": 300, "curacion": 20, "emoji": "🧪" },
+    "superpocion": { "nombre": "Superpoción", "descripcion": "Cura 50 HP.", "precio": 700, "curacion": 50, "emoji": "🥤" },
+    "hiperpocion": { "nombre": "Hiperpoción", "descripcion": "Cura 200 HP.", "precio": 1500, "curacion": 200, "emoji": "🍶" },
+    "revivir": { "nombre": "Revivir", "descripcion": "Revive con 50% HP.", "precio": 1500, "revive": true, "emoji": "✨" }
+  },
+  "aventura": {
+    "hacha": { "nombre": "Hacha Antigua", "descripcion": "Corta arbustos.", "precio": 0, "emoji": "🪓" },
+    "linterna": { "nombre": "Linterna", "descripcion": "Ilumina cuevas.", "precio": 0, "emoji": "🔦" },
+    "ticket_barco": { "nombre": "Ticket Barco", "descripcion": "Acceso al S.S. Anne.", "precio": 0, "emoji": "🎫" },
+    "surf": { "nombre": "Tabla de Surf", "descripcion": "Cruza mares.", "precio": 0, "emoji": "🏄" },
+    "traje_buceo": { "nombre": "Traje de Buceo", "descripcion": "Explora el fondo.", "precio": 0, "emoji": "🤿" }
+  },
+  "evolucion": {
+    "piedra_fuego": { "nombre": "Piedra Fuego", "precio": 2500, "emoji": "🔥" },
+    "piedra_agua": { "nombre": "Piedra Agua", "precio": 2500, "emoji": "💧" },
+    "piedra_trueno": { "nombre": "Piedra Trueno", "precio": 2500, "emoji": "⚡" }
+  }
+}

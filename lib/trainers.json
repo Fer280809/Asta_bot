@@ -1,0 +1,61 @@
+{
+  "entrenadores_ruta": [
+    { "id": "t1", "nombre": "Joven Chano", "equipo": [19], "nivel": 4, "frase": "¡Mis Rattata son los más veloces!", "zona": "Ruta 1" },
+    { "id": "t2", "nombre": "Leñador Hugo", "equipo": [43, 66], "nivel": 10, "frase": "¡Si me vences, te daré el Hacha!", "zona": "Bosque Musgo" },
+    { "id": "t3", "nombre": "Montañero Pedro", "equipo": [74, 74], "nivel": 12, "frase": "¡Rocas duras como mi voluntad!", "zona": "Ruta 3" },
+    { "id": "t4", "nombre": "Pescador Simón", "equipo": [120, 118], "nivel": 15, "frase": "¡Pican el anzuelo!", "zona": "Ruta 4" },
+    { "id": "t5", "nombre": "Explorador Roy", "equipo": [27, 41], "nivel": 20, "frase": "¡Toma la linterna y déjame en paz!", "zona": "Pueblo Vapor" },
+    { "id": "t6", "nombre": "Nadador Javi", "equipo": [54, 121], "nivel": 30, "frase": "¡Cuidado con el calambre!", "zona": "Ruta 8" },
+    { "id": "t7", "nombre": "Veterano Logan", "equipo": [149, 95, 68], "nivel": 55, "frase": "¡La Liga es solo para la élite!", "zona": "Cueva Victoria" }
+  ],
+  "lideres": {
+    "Ciudad Férrea": {
+      "nombre": "Ferrum",
+      "equipo": [74, 95],
+      "nivel": 14,
+      "medalla": "Medalla Roca",
+      "frase": "¡Inquebrantable!",
+      "premio": 1500
+    },
+    "Ciudad Luminaria": {
+      "nombre": "Marina",
+      "equipo": [121, 131],
+      "nivel": 26,
+      "medalla": "Medalla Trueno",
+      "frase": "¡Directo al abismo!",
+      "premio": 3000
+    },
+    "Ciudad Cénit": {
+      "nombre": "Orion",
+      "equipo": [64, 65],
+      "nivel": 35,
+      "medalla": "Medalla Mental",
+      "frase": "¡Lo vi venir!",
+      "premio": 4500
+    },
+    "Villa Nidada": {
+      "nombre": "Zephyr",
+      "equipo": [17, 18],
+      "nivel": 38,
+      "medalla": "Medalla Brisa",
+      "frase": "¡Vuela alto!",
+      "premio": 5000
+    },
+    "Ciudad Pico": {
+      "nombre": "Glacia",
+      "equipo": [124, 91],
+      "nivel": 42,
+      "medalla": "Medalla Glaciar",
+      "frase": "¡Cero absoluto!",
+      "premio": 6000
+    },
+    "Liga Pokémon": {
+      "nombre": "Fernando",
+      "equipo": [149, 130, 150],
+      "nivel": 65,
+      "medalla": "Campeón",
+      "frase": "¡Este es el poder de un Campeón!",
+      "premio": 20000
+    }
+  }
+}
