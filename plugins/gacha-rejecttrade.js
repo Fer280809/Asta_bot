@@ -1,5 +1,5 @@
 // ============================================
-// plugins/gacha-haremshop.js
+// plugins/gacha-haremshop.js - VERSIÓN CON TEXTO MÁS CLARO
 // ============================================
 import fs from 'fs';
 import path from 'path';
@@ -53,21 +53,21 @@ const handler = async (m, { conn, args }) => {
         text += `
 ┌─⊷ ${i + 1}. *${char.name}*
 │ 📺 Origen: ${char.source}
-│ 💎 Rareza (Valor Base): ${char.value}
-│ 💰 Precio: $${char.salePrice} Monedas de Jengibre
-│ 👤 Elfo Vendedor: ${ownerName}
+│ 💎 Valor Base: ${char.value}
+│ 💰 Precio: ${char.salePrice} coins
+│ 👤 Vendedor: ${ownerName}
 └───────────────
 `;
     }
     
-    text += `\n💡 *Usa /buychar <nombre> para llevarte un Adorno a tu árbol.*`;
+    text += `\n💡 *Usa .buychar <nombre> para comprar un adorno.*`;
     
     m.reply(text);
 };
 
-handler.help = ['haremshop', 'tiendawaifus', 'wshop'];
-handler.tags = ['gacha'];
-handler.command = ['haremshop', 'tiendawaifus', 'wshop'];
+handler.help = ['haremshop', 'tienda', 'market'];
+handler.tags = ['gacha', 'navidad'];
+handler.command = ['haremshop', 'tienda', 'market'];
 handler.group = true;
 
 export default handler;

@@ -1,104 +1,181 @@
 // ============================================
-// plugins/gacha-giveallharem.js
+// plugins/gacha-giveallharem.js - VERSIÓN SEGURA
+// Ahora es una "VENTA MASIVA" con compensación justa
 // ============================================
 import fs from 'fs';
 import path from 'path';
 
 const handler = async (m, { conn, text }) => {
     if (!m.mentionedJid || m.mentionedJid.length === 0) {
-        return m.reply('❌ *Uso correcto:* /giveallharem @AyudanteDestino');
+        return m.reply('🎅 *¡Ho Ho Ho!* Debes mencionar al ayudante que recibirá tu colección.\n\n❄️ *Uso:* .giveallharem @usuario');
     }
     
     const giverId = m.sender;
     const receiverId = m.mentionedJid[0];
     
     if (giverId === receiverId) {
-        return m.reply('❌ *No puedes regalarte tu propia Colección Navideña.* ¡Ya la tienes!');
+        return m.reply('🎄 *No puedes regalarte tu propia colección navideña!*\n\n¡Ya la tienes en tu árbol!');
     }
     
     const usersPath = path.join(process.cwd(), 'lib', 'gacha_users.json');
-    const dbPath = path.join(process.cwd(), 'lib', 'characters.json');
     
+    // Cargar usuarios festivos
     let users = {};
     if (fs.existsSync(usersPath)) {
         users = JSON.parse(fs.readFileSync(usersPath, 'utf-8'));
     }
     
+    // Verificar que el donador existe y tiene adornos
     if (!users[giverId] || !users[giverId].harem || users[giverId].harem.length === 0) {
-        return m.reply('❌ *Tu árbol está vacío.* No tienes Adornos Navideños para donar.');
+        return m.reply('🎁 *¡Tu árbol está vacío!*\n\nNo tienes Adornos Navideños para transferir.\n✨ Usa `.roll` para obtener adornos primero.');
     }
     
     const totalAdornos = users[giverId].harem.length;
+    const totalValue = users[giverId].harem.reduce((sum, char) => sum + (parseInt(char.value) || 100), 0);
+    const saleValue = Math.floor(totalValue * 0.5); // 50% del valor total
     
-    // Confirmar acción
-    const confirmMsg = await m.reply(`⚠️ *¡ALERTA FESTIVA!* ¿Estás seguro de donar *TODOS* tus ${totalAdornos} Adornos Navideños (harem)?\n\nResponde con *SI* para confirmar la GRAN DONACIÓN o *NO* para cancelar.\n\n⏰ Tienes 30 segundos.`);
+    // Verificar que el receptor existe en la ECONOMÍA PRINCIPAL
+    if (!global.db.data.users[receiverId]) {
+        return m.reply('🦌 *El receptor no está en la Lista de Santa!*\n\nEl ayudante mencionado debe usar el bot al menos una vez primero.');
+    }
     
-    // Esperar respuesta
-    const collector = conn.awaitMessages(m.chat, x => x.sender === m.sender, {
-        max: 1,
-        time: 30000
-    });
+    // Verificar que el receptor tenga suficientes coins
+    const receiverCoins = global.db.data.users[receiverId].coin || 0;
+    if (receiverCoins < saleValue) {
+        return m.reply(`💰 *¡El receptor no tiene suficientes monedas!*\n\n• Valor total: ${saleValue} Monedas de Chocolate\n• Monedas del receptor: ${receiverCoins}\n\n🎄 Necesita ${saleValue - receiverCoins} monedas más.`);
+    }
     
-    collector.then(collected => {
-        const response = collected[0];
-        if (!response || response.text.toLowerCase() !== 'si') {
-            return m.reply('❌ *Operación de Donación cancelada.* ¡Qué susto!');
+    // MENSAJE DE CONFIRMACION MEJORADO
+    const confirmationMsg = 
+`🎅 *¿TRANSFERIR COLECCIÓN NAVIDEÑA COMPLETA?*
+
+🎁 *Donador:* Tú
+👤 *Receptor:* @${receiverId.split('@')[0]}
+🎄 *Adornos a transferir:* ${totalAdornos} adornos
+💎 *Valor total colección:* ${totalValue}
+💰 *Precio de venta:* ${saleValue} Monedas de Chocolate
+
+⚠️ *¡ESTA ACCIÓN ES PERMANENTE!*
+• Perderás TODOS tus adornos
+• El receptor pagará ${saleValue} coins
+• No se puede deshacer
+
+✅ *Para confirmar, responde exactamente:*
+\`\`\`
+CONFIRMAR VENTA ${totalAdornos} ADORNOS
+\`\`\`
+
+❌ *Para cancelar:* Ignora este mensaje`;
+
+    await m.reply(confirmationMsg);
+    
+    // Colector de respuesta simplificado
+    try {
+        const filter = (msg) => msg.sender === giverId && msg.chat === m.chat;
+        const collected = await conn.awaitMessages(m.chat, filter, {
+            max: 1,
+            time: 45000, // 45 segundos
+            errors: ['time']
+        });
+        
+        const response = collected[0].text;
+        
+        if (response !== `CONFIRMAR VENTA ${totalAdornos} ADORNOS`) {
+            return m.reply('❌ *Transferencia cancelada.*\n\nLa frase de confirmación no coincide.');
         }
         
-        // Inicializar receptor si no existe
+        // ============================================
+        // REALIZAR TRANSACCIÓN SEGURA
+        // ============================================
+        
+        // 1. Inicializar receptor en SISTEMA GACHA si no existe
         if (!users[receiverId]) {
             users[receiverId] = {
                 harem: [],
                 favorites: [],
-                // Usar el mensaje navideño predeterminado
-                claimMessage: '✨ *¡Feliz Navidad!* {user} ha añadido a {character} a su *Colección de Adornos Festivos* (Harem). ¡Qué gran regalo!', 
+                claimMessage: '✨ *¡Feliz Navidad!* {user} ha añadido a {character} a su *Colección de Adornos Festivos*. ¡Qué gran regalo!',
                 lastRoll: 0,
-                votes: {},
-                gachaCoins: 1000
+                votes: {}
+                // ¡NO HAY gachaCoins!
             };
         }
         
-        const characters = JSON.parse(fs.readFileSync(dbPath, 'utf-8'));
+        // 2. Calcular adornos únicos a transferir (evitar duplicados)
+        const uniqueChars = [];
+        const duplicateChars = [];
         
-        // Transferir todos los personajes (evitar duplicados)
         users[giverId].harem.forEach(char => {
             const alreadyHas = users[receiverId].harem.find(c => c.id === char.id);
-            if (!alreadyHas) {
-                users[receiverId].harem.push({ ...char, claimedAt: Date.now(), forSale: false, salePrice: 0 });
-                
-                // Actualizar en DB principal
-                const dbCharIndex = characters.findIndex(c => c.id === char.id);
-                if (dbCharIndex !== -1) {
-                    characters[dbCharIndex].user = receiverId;
-                }
+            if (alreadyHas) {
+                duplicateChars.push(char.name);
+            } else {
+                uniqueChars.push({
+                    ...char,
+                    transferredAt: Date.now(),
+                    transferredFrom: giverId,
+                    forSale: false,
+                    salePrice: 0
+                });
             }
         });
         
-        // Vaciar harem del donador
+        // 3. Transferir adornos únicos
+        users[receiverId].harem.push(...uniqueChars);
+        
+        // 4. Vaciar colección del donador
         users[giverId].harem = [];
         users[giverId].favorites = [];
         
-        fs.writeFileSync(dbPath, JSON.stringify(characters, null, 2), 'utf-8');
+        // 5. REALIZAR TRANSACCIÓN MONETARIA (ECONOMÍA PRINCIPAL)
+        // Receptor paga al donador
+        global.db.data.users[receiverId].coin -= saleValue;
+        global.db.data.users[giverId].coin = (global.db.data.users[giverId].coin || 0) + saleValue;
+        
+        // 6. Guardar cambios en gacha
         fs.writeFileSync(usersPath, JSON.stringify(users, null, 2), 'utf-8');
         
-        conn.getName(giverId).then(giverName => {
-            conn.getName(receiverId).then(receiverName => {
-                m.reply(`✅ *¡Donación de Espíritu Navideño Exitosa!* *${giverName}* le ha regalado su Colección completa (${totalAdornos} Adornos) a *${receiverName}*! 🎁`);
-                
-                // Notificar al receptor
-                conn.sendMessage(receiverId, { 
-                    text: `🎁 *¡Mega Regalo de Navidad recibido!*\n\n*${giverName}* te ha donado su Colección de ${totalAdornos} Adornos Navideños. ¡Que tengas un Feliz Árbol!` 
-                });
+        // 7. Obtener nombres
+        const giverName = await conn.getName(giverId);
+        const receiverName = await conn.getName(receiverId);
+        
+        // 8. Mensaje de éxito
+        let successMsg = `✅ *¡TRANSFERENCIA NAVIDEÑA EXITOSA!*\n\n`;
+        successMsg += `🎁 *${giverName}* vendió su colección a *${receiverName}*\n`;
+        successMsg += `🎄 *Adornos transferidos:* ${uniqueChars.length}/${totalAdornos}\n`;
+        successMsg += `💰 *Precio:* ${saleValue} Monedas de Chocolate\n`;
+        successMsg += `👑 *Nueva colección de ${receiverName}:* ${users[receiverId].harem.length} adornos\n`;
+        
+        if (duplicateChars.length > 0) {
+            successMsg += `\n⚠️ *Nota:* ${duplicateChars.length} adornos no se transfirieron (el receptor ya los tenía)`;
+        }
+        
+        successMsg += `\n\n🎅 *¡Que disfruten su nueva colección!*`;
+        
+        await m.reply(successMsg);
+        
+        // 9. Notificar al receptor
+        try {
+            await conn.sendMessage(receiverId, {
+                text: `🎁 *¡HAS ADQUIRIDO UNA COLECCIÓN NAVIDEÑA!*\n\n*${giverName}* te vendió ${uniqueChars.length} adornos únicos por ${saleValue} Monedas.\n\n🎄 *Tu colección ahora tiene:* ${users[receiverId].harem.length} adornos\n💰 *Tu saldo ahora:* ${global.db.data.users[receiverId].coin} coins`
             });
-        });
-    }).catch(() => {
-        m.reply('❌ *Tiempo agotado. La Gran Donación ha sido cancelada.*');
-    });
+        } catch (notifyError) {
+            console.log('No se pudo notificar al receptor:', notifyError.message);
+        }
+        
+    } catch (error) {
+        return m.reply('⏰ *Tiempo agotado.* La transferencia ha sido cancelada.');
+    }
 };
 
-handler.help = ['giveallharem'];
-handler.tags = ['gacha'];
-handler.command = ['giveallharem'];
+handler.help = ['giveallharem', 'vendercoleccion', 'transferharem'];
+handler.tags = ['gacha', 'navidad', 'economy'];
+handler.command = ['giveallharem', 'vendercoleccion', 'transferharem'];
 handler.group = true;
+
+// Información de seguridad
+handler.description = 'Vende toda tu colección de adornos a otro usuario por coins';
+handler.usage = '@usuario';
+handler.example = '.giveallharem @amigo';
+handler.note = 'Requiere confirmación explícita. El receptor paga el 50% del valor total.';
 
 export default handler;

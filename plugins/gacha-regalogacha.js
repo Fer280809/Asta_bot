@@ -1,173 +1,247 @@
 // ============================================
-// plugins/gacha-regalogacha.js
+// plugins/gacha-regalogacha.js - VERSIÓN CORREGIDA
+// AHORA usa SOLO la economía principal (user.coin) - ELIMINA gachaCoins
 // ============================================
 import fs from 'fs';
 import path from 'path';
 
 // --- CONSTANTES ACTUALIZADAS ---
-const COST = 500; 
+const COST = 500; // Costo en MONEDA PRINCIPAL (coin)
 const COOLDOWN_GIFT = 86400000; // 24 horas
 const GRINCH_DURATION = 86400000; // 24 horas
 
-const handler = async (m, { conn, usedPrefix, user, isOwner, args, text }) => {
-    // Aseguramos que 'user' (datos de la DB principal) esté disponible
+const handler = async (m, { conn, usedPrefix, user, isOwner, args }) => {
+    // Validar que el usuario existe en la economía principal
     if (!user) {
-        return m.reply('❌ No se encontraron datos de usuario. Intente de nuevo.');
+        return m.reply('🎅 *¡Primero debes estar en la Lista de Santa!*\n\nUsa cualquier comando para registrarte en el sistema.');
     }
     
     const userId = m.sender;
     const usersPath = path.join(process.cwd(), 'lib', 'gacha_users.json');
     const dbPath = path.join(process.cwd(), 'lib', 'characters.json');
 
-    let users = {};
+    // Cargar usuarios de gacha (solo para personajes/favoritos)
+    let gachaUsers = {};
     if (fs.existsSync(usersPath)) {
-        users = JSON.parse(fs.readFileSync(usersPath, 'utf-8'));
+        gachaUsers = JSON.parse(fs.readFileSync(usersPath, 'utf-8'));
     }
 
-    // Inicializar usuario si es nuevo
-    if (!users[userId]) {
-        users[userId] = {
+    // Inicializar usuario en SISTEMA GACHA si es nuevo (SOLO para datos de colección)
+    if (!gachaUsers[userId]) {
+        gachaUsers[userId] = {
             harem: [],
             favorites: [],
-            claimMessage: '✨ *¡Feliz Navidad!* {user} ha añadido a {character} a su *Colección de Adornos Festivos* (Harem). ¡Qué gran regalo!', 
+            claimMessage: '✨ *¡Feliz Navidad!* {user} ha añadido a {character} a su *Colección de Adornos Festivos*. ¡Qué gran regalo!',
             lastRoll: 0,
-            votes: {},
-            gachaCoins: 1000, 
             lastGift: 0,
+            votes: {},
             grinchPass: {
                 uses: 0,
                 expires: 0,
                 lastGrant: 0
             }
+            // ¡SE ELIMINÓ gachaCoins: 1000! 🎯
         };
     }
     
-    // --- Lógica del Modo Prueba (Owner Only) ---
-    // Chequeamos si el primer argumento es 'test' o 'prueba'
-    const isTestMode = isOwner && (args[0] === 'test' || args[0] === 'prueba');
-    let testResponse = '';
-
+    // --- Modo Prueba (Solo para owners) ---
+    const isTestMode = isOwner && args[0] && (args[0].toLowerCase() === 'test' || args[0].toLowerCase() === 'prueba');
+    let testHeader = '';
+    
     if (isTestMode) {
-        testResponse = '⚙️ *MODO PRUEBA (OWNER)* ⚙️\n> No se descontará dinero ni se aplicarán premios o cooldowns.\n\n';
+        testHeader = '🧪 *MODO PRUEBA (OWNER)*\n> No se descontarán coins ni se aplicarán cooldowns.\n\n';
     }
 
-    // --- 1. Verificar Cooldown General (24 horas) ---
+    // --- 1. Verificar Cooldown (24 horas) ---
     const now = Date.now();
     
-    if (!isTestMode) { // El Owner no tiene cooldown en modo prueba
-        if (users[userId].lastGift && (now - users[userId].lastGift) < COOLDOWN_GIFT) {
-            const remainingHours = Math.ceil((COOLDOWN_GIFT - (now - users[userId].lastGift)) / 3600000);
-            return m.reply(`⏰ *El Centro de Distribución está cerrado.* Debes esperar ${remainingHours} horas para abrir otro Regalo de Utilidad.`);
+    if (!isTestMode) {
+        if (gachaUsers[userId].lastGift && (now - gachaUsers[userId].lastGift) < COOLDOWN_GIFT) {
+            const remainingTime = COOLDOWN_GIFT - (now - gachaUsers[userId].lastGift);
+            const hours = Math.floor(remainingTime / 3600000);
+            const minutes = Math.floor((remainingTime % 3600000) / 60000);
+            
+            return m.reply(`⏰ *¡El Taller de Regalos está cerrado!*\n\nDebes esperar ${hours}h ${minutes}m para abrir otro regalo.\n🎄 *Último regalo:* ${new Date(gachaUsers[userId].lastGift).toLocaleTimeString()}`);
         }
     }
 
-    // --- 2. Verificar Costo ---
-    const currentRealBalance = user.coin || 0; 
-    
-    if (!isTestMode) { // El Owner no necesita dinero en modo prueba
-        if (currentRealBalance < COST) {
-            return m.reply(`❌ *¡Te falta dinero!* Necesitas *$${COST}* de tu balance principal para comprar este regalo. Actualmente tienes *$${currentRealBalance}*`);
-        }
+    // --- 2. Verificar Costo en MONEDA PRINCIPAL ---
+    if (!isTestMode && user.coin < COST) {
+        return m.reply(`💰 *¡Fondos insuficientes!*\n\nNecesitas *${COST} Monedas de Chocolate* pero solo tienes *${user.coin}*.\n💡 Gana coins con \`.daily\`, \`.work\` u otros comandos.`);
     }
 
-    // Cobrar el costo (SOLO si NO es Modo Prueba)
+    // --- 3. Cobrar el costo (SOLO en modo normal) ---
+    let paymentMsg = '';
     if (!isTestMode) {
-        user.coin -= COST; 
-    }
-    
-    // Texto inicial
-    let responseText = testResponse;
-    if (!isTestMode) {
-        responseText += `🎁 *¡REGALO ABIERTO!* - Se descontaron *$${COST}* de tu balance principal. 🎄\n\n`;
-    } else {
-        responseText += `🔍 *SIMULACIÓN DE APERTURA:*\n`;
+        user.coin -= COST;
+        paymentMsg = `💰 *Se descontaron ${COST} Monedas de Chocolate.*\n🎄 *Tu saldo ahora:* ${user.coin} coins\n\n`;
     }
 
-    // --- 3. Seleccionar y Aplicar Premio ---
+    // --- 4. Seleccionar Premio (SISTEMA MEJORADO) ---
     const rand = Math.random();
-    let rewardText;
-    let actualReward = ''; // Para guardar el premio real en modo prueba
-
-    if (rand < 0.40) { // 40% Monedas de Jengibre
-        const amount = Math.floor(Math.random() * (4000 - 400 + 1)) + 400;
+    let rewardText = '';
+    let testRewardInfo = ''; // Solo para modo prueba
+    
+    // PROBABILIDADES ACTUALIZADAS (todo en moneda real o personajes):
+    // 50% Monedas reales (bonus) | 30% Personaje | 20% Pase Grinch
+    
+    if (rand < 0.50) { 
+        // 50%: BONUS DE MONEDAS REALES (recompensa principal)
+        const minBonus = Math.floor(COST * 0.5);   // 50% del costo
+        const maxBonus = Math.floor(COST * 2.0);   // 200% del costo
+        const bonusAmount = Math.floor(Math.random() * (maxBonus - minBonus + 1)) + minBonus;
         
-        if (!isTestMode) users[userId].gachaCoins += amount; 
-        actualReward = `Monedas de Jengibre (+${amount})`;
+        if (!isTestMode) {
+            user.coin += bonusAmount; // ¡Pago en MONEDA REAL!
+        }
         
-        rewardText = `💰 ¡Encontraste una bolsa grande! Recibes *${amount} Monedas de Jengibre (GachaCoins)*.`;
-
-    } else if (rand < 0.70) { // 30% Adorno Aleatorio (Personaje)
+        rewardText = `💰 *¡TESORO NAVIDEÑO ENCONTRADO!*\n\n`;
+        rewardText += `🎁 Has recibido un bonus de *${bonusAmount} Monedas de Chocolate*.\n`;
+        rewardText += `✨ *Ganancia neta:* ${bonusAmount - COST} coins\n`;
+        rewardText += `🎄 *Tu saldo total:* ${user.coin} coins`;
+        
+        testRewardInfo = `Bonus de Monedas: ${bonusAmount} coins (${bonusAmount - COST} neto)`;
+        
+    } else if (rand < 0.80) { 
+        // 30%: ADORNO NAVIDEÑO (personaje)
         let randomChar = null;
-        let charData = null;
         
         if (fs.existsSync(dbPath)) {
             const characters = JSON.parse(fs.readFileSync(dbPath, 'utf-8'));
             if (Array.isArray(characters) && characters.length > 0) {
-                randomChar = characters[Math.floor(Math.random() * characters.length)];
+                // Filtrar personajes no obtenidos por el usuario
+                const userHaremIds = gachaUsers[userId].harem.map(c => c.id);
+                const availableChars = characters.filter(c => !userHaremIds.includes(c.id));
+                
+                if (availableChars.length > 0) {
+                    randomChar = availableChars[Math.floor(Math.random() * availableChars.length)];
+                } else {
+                    randomChar = characters[Math.floor(Math.random() * characters.length)];
+                }
             }
-            charData = characters;
         }
 
         if (!randomChar) {
-            rewardText = "⚠️ No fue posible obtener un Adorno (Catálogo vacío).";
-            if (!isTestMode) user.coin += COST; // Reembolso si no se encuentra en modo normal
-            actualReward = "Reembolso por error de catálogo";
+            // Si no hay personajes, dar reembolso + bonus
+            const refundBonus = Math.floor(COST * 0.8);
+            if (!isTestMode) user.coin += refundBonus;
+            
+            rewardText = `📦 *¡El taller de Santa está vacío!*\n\n`;
+            rewardText += `🎁 Como compensación, recibes *${refundBonus} Monedas de Chocolate*.\n`;
+            rewardText += `🎄 *Tu saldo ahora:* ${user.coin} coins`;
+            
+            testRewardInfo = `Reembolso por catálogo vacío: ${refundBonus} coins`;
         } else {
-            const alreadyHas = users[userId].harem.find(c => c.id === randomChar.id);
+            // Verificar si ya tiene el personaje
+            const alreadyHas = gachaUsers[userId].harem.find(c => c.id === randomChar.id);
             
             if (!alreadyHas && !isTestMode) {
-                users[userId].harem.push({ 
+                gachaUsers[userId].harem.push({ 
                     ...randomChar, 
                     claimedAt: now, 
+                    obtainedFrom: 'regalo_gacha',
                     forSale: false, 
                     salePrice: 0 
                 });
             }
             
-            const statusText = alreadyHas ? "*(¡Adorno Duplicado!)*" : "*(Nuevo Adorno)*";
-            actualReward = `${randomChar.name} ${statusText}`;
-
-            rewardText = `⭐ ¡Sorpresa! Desempacaste el Adorno *${randomChar.name}* ${statusText}.\n`;
-            rewardText += `   📺 Origen: ${randomChar.source}\n   💎 Rareza: ${randomChar.value}`;
-        }
-    } else { // 30% Pase del Grinch
-        const COOLDOWN_GRINCH = 43200000; 
-
-        if (users[userId].grinchPass.lastGrant && (now - users[userId].grinchPass.lastGrant) < COOLDOWN_GRINCH && !isTestMode) {
-             rewardText = "⚠️ Ya recibiste un Pase del Grinch recientemente (hace menos de 12 horas). Por esta vez, recibes un reembolso del 80% del costo.";
-             user.coin += Math.floor(COST * 0.8); // Reembolso en modo normal
-             actualReward = "Reembolso (Pase Grinch en cooldown)";
-        } else {
-            if (!isTestMode) {
-                users[userId].grinchPass.uses = 10;
-                users[userId].grinchPass.expires = now + GRINCH_DURATION;
-                users[userId].grinchPass.lastGrant = now;
+            const status = alreadyHas ? '*(¡Duplicado! Recibes coins en su lugar)*' : '*(¡Nuevo para tu colección!)*';
+            
+            if (alreadyHas && !isTestMode) {
+                // Si es duplicado, dar coins equivalentes al valor
+                const duplicateBonus = Math.floor((parseInt(randomChar.value) || 100) * 0.7);
+                user.coin += duplicateBonus;
+                
+                rewardText = `⭐ *¡ADORNO DUPLICADO!*\n\n`;
+                rewardText += `🎁 Ya tenías a *${randomChar.name}* en tu colección.\n`;
+                rewardText += `💰 Recibes *${duplicateBonus} Monedas de Chocolate* en su lugar.\n`;
+                rewardText += `🎄 *Tu saldo ahora:* ${user.coin} coins`;
+                
+                testRewardInfo = `Duplicado convertido a coins: ${duplicateBonus}`;
+            } else {
+                rewardText = `⭐ *¡NUEVO ADORNO NAVIDEÑO!*\n\n`;
+                rewardText += `🎁 Has obtenido a *${randomChar.name}* ${status}\n`;
+                rewardText += `📺 Origen: ${randomChar.source || 'Desconocido'}\n`;
+                rewardText += `💎 Valor: ${randomChar.value || 100}\n`;
+                rewardText += `✨ *Total en tu colección:* ${gachaUsers[userId].harem.length} adornos`;
+                
+                testRewardInfo = `Nuevo personaje: ${randomChar.name} (Valor: ${randomChar.value || 100})`;
             }
-            actualReward = "Pase del Grinch Activado (10 usos)";
-
-            rewardText = `😈 ¡Pase del Grinch activado! Tienes *10 intentos de robo* sin cooldown durante las próximas 24 horas.`;
-            rewardText += `\n\n💡 *Usa ${usedPrefix}robwaifu @usuario* antes de que expire.`;
+        }
+        
+    } else { 
+        // 20%: PASE DEL GRINCH
+        const COOLDOWN_GRINCH = 43200000; // 12 horas
+        
+        if (!isTestMode && gachaUsers[userId].grinchPass.lastGrant && 
+            (now - gachaUsers[userId].grinchPass.lastGrant) < COOLDOWN_GRINCH) {
+            
+            // Si está en cooldown, dar bonus de coins
+            const cooldownBonus = Math.floor(COST * 1.2); // 20% extra
+            user.coin += cooldownBonus;
+            
+            rewardText = `🎭 *¡PASE DEL GRINCH EN ESPERA!*\n\n`;
+            rewardText += `🎁 Ya recibiste un pase hace menos de 12 horas.\n`;
+            rewardText += `💰 Como compensación, recibes *${cooldownBonus} Monedas de Chocolate*.\n`;
+            rewardText += `🎄 *Tu saldo ahora:* ${user.coin} coins\n\n`;
+            rewardText += `⏰ Prueba de nuevo en ${Math.ceil((COOLDOWN_GRINCH - (now - gachaUsers[userId].grinchPass.lastGrant)) / 3600000)} horas.`;
+            
+            testRewardInfo = `Pase en cooldown → Bonus: ${cooldownBonus} coins`;
+            
+        } else {
+            // Otorgar pase del Grinch
+            if (!isTestMode) {
+                gachaUsers[userId].grinchPass.uses = 10;
+                gachaUsers[userId].grinchPass.expires = now + GRINCH_DURATION;
+                gachaUsers[userId].grinchPass.lastGrant = now;
+            }
+            
+            const expiryTime = new Date(now + GRINCH_DURATION).toLocaleTimeString();
+            
+            rewardText = `😈 *¡PASE DEL GRINCH ACTIVADO!*\n\n`;
+            rewardText += `🎁 Tienes *10 intentos de robo* disponibles.\n`;
+            rewardText += `⏰ Válido por 24 horas (hasta las ${expiryTime}).\n\n`;
+            rewardText += `💡 *Usa:* \`${usedPrefix}robwaifu @usuario\`\n`;
+            rewardText += `🎯 *Objetivo:* ¡Roba adornos de otros árboles!`;
+            
+            testRewardInfo = `Pase del Grinch: 10 usos por 24h`;
         }
     }
     
-    // --- 4. Guardar Cooldown y Datos (SOLO si NO es Modo Prueba) ---
+    // --- 5. Actualizar datos (SOLO modo normal) ---
     if (!isTestMode) {
-        users[userId].lastGift = now;
-        fs.writeFileSync(usersPath, JSON.stringify(users, null, 2), 'utf-8');
+        gachaUsers[userId].lastGift = now;
+        fs.writeFileSync(usersPath, JSON.stringify(gachaUsers, null, 2), 'utf-8');
+        
+        // Enviar mensaje final
+        const finalMsg = testHeader + paymentMsg + rewardText;
+        await m.reply(finalMsg);
+        
     } else {
-        // En modo prueba, se muestra un resumen simple del resultado
-        rewardText = `\n✅ *RESULTADO DE LA PRUEBA:*\n> ${actualReward}`;
+        // Modo prueba: mostrar solo información
+        const testMsg = testHeader + 
+                       `🔍 *SIMULACIÓN DE REGALO NAVIDEÑO*\n\n` +
+                       `💎 *Costo normal:* ${COST} coins\n` +
+                       `🎯 *Premio simulado:* ${testRewardInfo}\n\n` +
+                       `📊 *Probabilidades:*\n` +
+                       `• 50% Bonus de Coins (${Math.floor(COST*0.5)}-${Math.floor(COST*2)})\n` +
+                       `• 30% Adorno Navideño\n` +
+                       `• 20% Pase del Grinch (10 robos/24h)\n\n` +
+                       `🎅 *En modo real se descontarían ${COST} coins.*`;
+        
+        await m.reply(testMsg);
     }
-    
-    m.reply(responseText + rewardText);
 };
 
-handler.help = ['regalogacha', 'openpresent'];
-handler.tags = ['gacha', 'economy'];
-handler.command = ['regalogacha', 'openpresent'];
+handler.help = ['regalogacha', 'abrirregalo', 'giftgacha'];
+handler.tags = ['gacha', 'navidad', 'economy'];
+handler.command = ['regalogacha', 'abrirregalo', 'giftgacha'];
 handler.group = true;
-handler.owner = false; // El owner puede usar el comando, pero no necesita restricción general
-// Puedes mantener o quitar 'handler.limit = true' dependiendo de cómo lo uses, 
-// pero 'user' ya está inyectado gracias al handler principal.
+
+// Información del comando
+handler.description = 'Abrir un regalo navideño especial (cuesta 500 coins)';
+handler.usage = '[test/prueba] (solo owners)';
+handler.example = ['.regalogacha', '.regalogacha prueba'];
+handler.note = 'Cooldown: 24 horas. Premios: coins, adornos, o pase del Grinch.';
 
 export default handler;
