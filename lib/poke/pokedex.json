@@ -467,3 +467,237 @@
     "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/74.png"
   }
 }
+{
+  "50": {
+    "nombre": "Graveler",
+    "tipos": ["Roca", "Tierra"],
+    "statsBase": { "hp": 55, "ataque": 95, "defensa": 115, "velocidad": 35 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Desenrollar", "daño": 30, "tipo": "Roca" },
+      { "nivel": 25, "nombre": "Magnitud", "daño": 60, "tipo": "Tierra" }
+    ],
+    "evolucion": { "nivel": 40, "id": "51" },
+    "spawn": { "rango_nivel": [25, 38] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/75.png"
+  },
+  "51": {
+    "nombre": "Golem",
+    "tipos": ["Roca", "Tierra"],
+    "statsBase": { "hp": 80, "ataque": 120, "defensa": 130, "velocidad": 45 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Terremoto", "daño": 100, "tipo": "Tierra" },
+      { "nivel": 40, "nombre": "Roca Afilada", "daño": 100, "tipo": "Roca" }
+    ],
+    "spawn": { "rango_nivel": [40, 60] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/76.png"
+  },
+  "52": {
+    "nombre": "Zubat",
+    "tipos": ["Veneno", "Volador"],
+    "statsBase": { "hp": 40, "ataque": 45, "defensa": 35, "velocidad": 55 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Chupa Vidas", "daño": 20, "tipo": "Bicho" },
+      { "nivel": 12, "nombre": "Mordisco", "daño": 60, "tipo": "Siniestro" }
+    ],
+    "evolucion": { "nivel": 22, "id": "53" },
+    "spawn": { "rango_nivel": [2, 18] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/41.png"
+  },
+  "53": {
+    "nombre": "Golbat",
+    "tipos": ["Veneno", "Volador"],
+    "statsBase": { "hp": 75, "ataque": 80, "defensa": 70, "velocidad": 90 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Aire Afilado", "daño": 60, "tipo": "Volador" },
+      { "nivel": 25, "nombre": "Colmillo Veneno", "daño": 50, "tipo": "Veneno" }
+    ],
+    "evolucion": { "nivel": 40, "id": "54" },
+    "spawn": { "rango_nivel": [22, 40] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/42.png"
+  },
+  "54": {
+    "nombre": "Crobat",
+    "tipos": ["Veneno", "Volador"],
+    "statsBase": { "hp": 85, "ataque": 90, "defensa": 80, "velocidad": 130 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Tajo Aéreo", "daño": 75, "tipo": "Volador" },
+      { "nivel": 45, "nombre": "Veneno X", "daño": 80, "tipo": "Veneno" }
+    ],
+    "spawn": { "rango_nivel": [40, 65] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/169.png"
+  },
+  "55": {
+    "nombre": "Machop",
+    "tipos": ["Lucha"],
+    "statsBase": { "hp": 70, "ataque": 80, "defensa": 50, "velocidad": 35 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Patada Baja", "daño": 50, "tipo": "Lucha" },
+      { "nivel": 10, "nombre": "Karate Chop", "daño": 50, "tipo": "Lucha" }
+    ],
+    "evolucion": { "nivel": 28, "id": "56" },
+    "spawn": { "rango_nivel": [5, 25] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/66.png"
+  },
+  "56": {
+    "nombre": "Machoke",
+    "tipos": ["Lucha"],
+    "statsBase": { "hp": 80, "ataque": 100, "defensa": 70, "velocidad": 45 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Tiro Vital", "daño": 70, "tipo": "Lucha" },
+      { "nivel": 30, "nombre": "Sumisión", "daño": 80, "tipo": "Lucha" }
+    ],
+    "evolucion": { "nivel": 45, "id": "57" },
+    "spawn": { "rango_nivel": [28, 44] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/67.png"
+  },
+  "57": {
+    "nombre": "Machamp",
+    "tipos": ["Lucha"],
+    "statsBase": { "hp": 90, "ataque": 130, "defensa": 80, "velocidad": 55 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Puño Dinámico", "daño": 100, "tipo": "Lucha" },
+      { "nivel": 50, "nombre": "A Bocajarro", "daño": 120, "tipo": "Lucha" }
+    ],
+    "spawn": { "rango_nivel": [45, 65] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/68.png"
+  },
+  "58": {
+    "nombre": "Onix",
+    "tipos": ["Roca", "Tierra"],
+    "statsBase": { "hp": 35, "ataque": 45, "defensa": 160, "velocidad": 70 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Atadura", "daño": 15, "tipo": "Normal" },
+      { "nivel": 12, "nombre": "Tumba Rocas", "daño": 60, "tipo": "Roca" }
+    ],
+    "evolucion": { "nivel": 35, "id": "59" },
+    "spawn": { "rango_nivel": [10, 30] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/95.png"
+  },
+  "59": {
+    "nombre": "Steelix",
+    "tipos": ["Acero", "Tierra"],
+    "statsBase": { "hp": 75, "ataque": 85, "defensa": 200, "velocidad": 30 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Cola Férrea", "daño": 100, "tipo": "Acero" },
+      { "nivel": 40, "nombre": "Cuerpo Pesado", "daño": 80, "tipo": "Acero" }
+    ],
+    "spawn": { "rango_nivel": [35, 55] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/208.png"
+  },
+  "60": {
+    "nombre": "Larvitar",
+    "tipos": ["Roca", "Tierra"],
+    "statsBase": { "hp": 50, "ataque": 64, "defensa": 50, "velocidad": 41 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Mordisco", "daño": 60, "tipo": "Siniestro" },
+      { "nivel": 10, "nombre": "Lanzarrocas", "daño": 50, "tipo": "Roca" }
+    ],
+    "evolucion": { "nivel": 30, "id": "61" },
+    "spawn": { "rango_nivel": [15, 25] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/246.png"
+  },
+  "61": {
+    "nombre": "Pupitar",
+    "tipos": ["Roca", "Tierra"],
+    "statsBase": { "hp": 70, "ataque": 84, "defensa": 70, "velocidad": 51 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Poder Pasado", "daño": 60, "tipo": "Roca" },
+      { "nivel": 32, "nombre": "Triturar", "daño": 80, "tipo": "Siniestro" }
+    ],
+    "evolucion": { "nivel": 55, "id": "62" },
+    "spawn": { "rango_nivel": [30, 50] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/247.png"
+  },
+  "62": {
+    "nombre": "Tyranitar",
+    "tipos": ["Roca", "Siniestro"],
+    "statsBase": { "hp": 100, "ataque": 134, "defensa": 110, "velocidad": 61 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Roca Afilada", "daño": 100, "tipo": "Roca" },
+      { "nivel": 55, "nombre": "Hiperrayo", "daño": 150, "tipo": "Normal" }
+    ],
+    "spawn": { "rango_nivel": [55, 75] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/248.png"
+  },
+  "63": {
+    "nombre": "Aron",
+    "tipos": ["Acero", "Roca"],
+    "statsBase": { "hp": 50, "ataque": 70, "defensa": 100, "velocidad": 30 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Placaje", "daño": 40, "tipo": "Normal" },
+      { "nivel": 12, "nombre": "Cabeza de Hierro", "daño": 80, "tipo": "Acero" }
+    ],
+    "evolucion": { "nivel": 32, "id": "64" },
+    "spawn": { "rango_nivel": [10, 25] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/304.png"
+  },
+  "64": {
+    "nombre": "Lairon",
+    "tipos": ["Acero", "Roca"],
+    "statsBase": { "hp": 60, "ataque": 90, "defensa": 140, "velocidad": 40 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Derribo", "daño": 90, "tipo": "Normal" },
+      { "nivel": 35, "nombre": "Defensa Férrea", "daño": 0, "tipo": "Acero" }
+    ],
+    "evolucion": { "nivel": 42, "id": "65" },
+    "spawn": { "rango_nivel": [32, 41] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/305.png"
+  },
+  "65": {
+    "nombre": "Aggron",
+    "tipos": ["Acero", "Roca"],
+    "statsBase": { "hp": 70, "ataque": 110, "defensa": 180, "velocidad": 50 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Cuerpopesado", "daño": 80, "tipo": "Acero" },
+      { "nivel": 45, "nombre": "Testarazo", "daño": 150, "tipo": "Roca" }
+    ],
+    "spawn": { "rango_nivel": [42, 60] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/306.png"
+  },
+  "66": {
+    "nombre": "Swablu",
+    "tipos": ["Normal", "Volador"],
+    "statsBase": { "hp": 45, "ataque": 40, "defensa": 60, "velocidad": 50 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Picotazo", "daño": 35, "tipo": "Volador" },
+      { "nivel": 15, "nombre": "Canto", "daño": 0, "tipo": "Normal" }
+    ],
+    "evolucion": { "nivel": 35, "id": "67" },
+    "spawn": { "rango_nivel": [10, 30] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/333.png"
+  },
+  "67": {
+    "nombre": "Altaria",
+    "tipos": ["Dragón", "Volador"],
+    "statsBase": { "hp": 75, "ataque": 70, "defensa": 90, "velocidad": 80 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Pulso Dragón", "daño": 85, "tipo": "Dragón" },
+      { "nivel": 40, "nombre": "Fuerza Lunar", "daño": 95, "tipo": "Hada" }
+    ],
+    "spawn": { "rango_nivel": [35, 55] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/334.png"
+  },
+  "68": {
+    "nombre": "Snorunt",
+    "tipos": ["Hielo"],
+    "statsBase": { "hp": 50, "ataque": 50, "defensa": 50, "velocidad": 50 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Nieve Polvo", "daño": 40, "tipo": "Hielo" },
+      { "nivel": 15, "nombre": "Viento Hielo", "daño": 55, "tipo": "Hielo" }
+    ],
+    "evolucion": { "nivel": 42, "id": "69", "alternativa": "70" },
+    "spawn": { "rango_nivel": [10, 30] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/361.png"
+  },
+  "69": {
+    "nombre": "Glalie",
+    "tipos": ["Hielo"],
+    "statsBase": { "hp": 80, "ataque": 80, "defensa": 80, "velocidad": 80 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Colmillo Hielo", "daño": 65, "tipo": "Hielo" },
+      { "nivel": 45, "nombre": "Frío Agudo", "daño": 150, "tipo": "Hielo" }
+    ],
+    "spawn": { "rango_nivel": [42, 60] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/362.png"
+  }
+}
