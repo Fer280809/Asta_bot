@@ -3,270 +3,136 @@
     "nombre": "Floris",
     "tipos": ["Planta"],
     "statsBase": { "hp": 45, "ataque": 49, "defensa": 49, "velocidad": 45 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Placaje", "daño": 40, "tipo": "Normal" },
+      { "nivel": 7, "nombre": "Látigo Cepa", "daño": 45, "tipo": "Planta" },
+      { "nivel": 13, "nombre": "Polvo Veneno", "daño": 0, "tipo": "Veneno", "efecto": "veneno" }
+    ],
     "evolucion": { "nivel": 16, "id": 2 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png",
-    "descripcion": "El inicial de planta de Auralis. La flor de su lomo brilla cuando está feliz."
-  },
-  "2": {
-    "nombre": "Blossaur",
-    "tipos": ["Planta"],
-    "statsBase": { "hp": 60, "ataque": 62, "defensa": 63, "velocidad": 60 },
-    "evolucion": { "nivel": 32, "id": 3 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/2.png"
-  },
-  "3": {
-    "nombre": "Florosaur",
-    "tipos": ["Planta", "Hada"],
-    "statsBase": { "hp": 80, "ataque": 82, "defensa": 83, "velocidad": 80 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/3.png"
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png"
   },
   "4": {
-    "nombre": "Aquar",
-    "tipos": ["Agua"],
-    "statsBase": { "hp": 44, "ataque": 48, "defensa": 65, "velocidad": 43 },
-    "evolucion": { "nivel": 16, "id": 5 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/7.png"
-  },
-  "5": {
-    "nombre": "Aquarl",
-    "tipos": ["Agua"],
-    "statsBase": { "hp": 59, "ataque": 63, "defensa": 80, "velocidad": 58 },
-    "evolucion": { "nivel": 36, "id": 6 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/8.png"
-  },
-  "6": {
-    "nombre": "Aquarage",
-    "tipos": ["Agua", "Lucha"],
-    "statsBase": { "hp": 79, "ataque": 83, "defensa": 100, "velocidad": 78 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/9.png"
-  },
-  "7": {
-    "nombre": "Pyrot",
+    "nombre": "Ignis",
     "tipos": ["Fuego"],
     "statsBase": { "hp": 39, "ataque": 52, "defensa": 43, "velocidad": 65 },
-    "evolucion": { "nivel": 16, "id": 8 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Arañazo", "daño": 40, "tipo": "Normal" },
+      { "nivel": 7, "nombre": "Ascuas", "daño": 40, "tipo": "Fuego", "efecto": "quemadura" },
+      { "nivel": 15, "nombre": "Colmillo Ígneo", "daño": 65, "tipo": "Fuego" }
+    ],
+    "evolucion": { "nivel": 16, "id": 5 },
     "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png"
   },
-  "8": {
-    "nombre": "Pyroder",
-    "tipos": ["Fuego"],
-    "statsBase": { "hp": 58, "ataque": 64, "defensa": 58, "velocidad": 80 },
-    "evolucion": { "nivel": 36, "id": 9 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/5.png"
-  },
-  "9": {
-    "nombre": "Pyroster",
-    "tipos": ["Fuego", "Psíquico"],
-    "statsBase": { "hp": 78, "ataque": 84, "defensa": 78, "velocidad": 100 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png"
+  "7": {
+    "nombre": "Aquas",
+    "tipos": ["Agua"],
+    "statsBase": { "hp": 44, "ataque": 48, "defensa": 65, "velocidad": 43 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Placaje", "daño": 40, "tipo": "Normal" },
+      { "nivel": 7, "nombre": "Pistola Agua", "daño": 40, "tipo": "Agua" },
+      { "nivel": 13, "nombre": "Refugio", "daño": 0, "tipo": "Agua", "efecto": "defensa_up" }
+    ],
+    "evolucion": { "nivel": 16, "id": 8 },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/7.png"
   },
   "10": {
     "nombre": "Pidgey",
     "tipos": ["Normal", "Volador"],
     "statsBase": { "hp": 40, "ataque": 45, "defensa": 40, "velocidad": 56 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Tornado", "daño": 40, "tipo": "Volador" },
+      { "nivel": 12, "nombre": "Ataque Ala", "daño": 60, "tipo": "Volador" }
+    ],
     "evolucion": { "nivel": 18, "id": 11 },
     "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/16.png"
   },
-  "13": {
-    "nombre": "Rattata",
-    "tipos": ["Normal"],
-    "statsBase": { "hp": 30, "ataque": 56, "defensa": 35, "velocidad": 72 },
-    "evolucion": { "nivel": 20, "id": 14 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/19.png"
-  },
-  "15": {
-    "nombre": "Caterpie",
-    "tipos": ["Bicho"],
-    "statsBase": { "hp": 45, "ataque": 30, "defensa": 35, "velocidad": 45 },
-    "evolucion": { "nivel": 7, "id": 16 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10.png"
-  },
-  "21": {
-    "nombre": "Psyduck",
-    "tipos": ["Agua"],
-    "statsBase": { "hp": 50, "ataque": 52, "defensa": 48, "velocidad": 55 },
-    "evolucion": { "nivel": 33, "id": 22 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/54.png"
-  },
-  "29": {
-    "nombre": "Magikarp",
-    "tipos": ["Agua"],
-    "statsBase": { "hp": 20, "ataque": 10, "defensa": 55, "velocidad": 80 },
-    "evolucion": { "nivel": 20, "id": 30 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/129.png"
-  }
-}
-{
   "31": {
     "nombre": "Horsea",
     "tipos": ["Agua"],
     "statsBase": { "hp": 30, "ataque": 40, "defensa": 70, "velocidad": 60 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Burbuja", "daño": 40, "tipo": "Agua" },
+      { "nivel": 15, "nombre": "Rayo Burbuja", "daño": 65, "tipo": "Agua" }
+    ],
     "evolucion": { "nivel": 32, "id": 32 },
     "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/116.png"
-  },
-  "32": {
-    "nombre": "Seadra",
-    "tipos": ["Agua"],
-    "statsBase": { "hp": 55, "ataque": 65, "defensa": 95, "velocidad": 85 },
-    "evolucion": { "item": "Escama Dragón", "id": 33 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/117.png"
-  },
-  "34": {
-    "nombre": "Staryu",
-    "tipos": ["Agua"],
-    "statsBase": { "hp": 30, "ataque": 45, "defensa": 55, "velocidad": 85 },
-    "evolucion": { "item": "Piedra Agua", "id": 35 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/120.png"
-  },
-  "35": {
-    "nombre": "Starmie",
-    "tipos": ["Agua", "Psíquico"],
-    "statsBase": { "hp": 60, "ataque": 75, "defensa": 85, "velocidad": 115 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/121.png"
   },
   "43": {
     "nombre": "Geodude",
     "tipos": ["Roca", "Tierra"],
     "statsBase": { "hp": 40, "ataque": 80, "defensa": 100, "velocidad": 20 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Placaje", "daño": 40, "tipo": "Normal" },
+      { "nivel": 11, "nombre": "Lanzarrocas", "daño": 50, "tipo": "Roca" },
+      { "nivel": 16, "nombre": "Magnitud", "daño": 60, "tipo": "Tierra" }
+    ],
     "evolucion": { "nivel": 25, "id": 44 },
     "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/74.png"
-  },
-  "44": {
-    "nombre": "Graveler",
-    "tipos": ["Roca", "Tierra"],
-    "statsBase": { "hp": 55, "ataque": 95, "defensa": 115, "velocidad": 35 },
-    "evolucion": { "nivel": 40, "id": 45 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/75.png"
-  },
-  "46": {
-    "nombre": "Zubat",
-    "tipos": ["Veneno", "Volador"],
-    "statsBase": { "hp": 40, "ataque": 45, "defensa": 35, "velocidad": 55 },
-    "evolucion": { "nivel": 22, "id": 47 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/41.png"
   },
   "49": {
     "nombre": "Machop",
     "tipos": ["Lucha"],
     "statsBase": { "hp": 70, "ataque": 80, "defensa": 50, "velocidad": 35 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Patada Baja", "daño": 50, "tipo": "Lucha" },
+      { "nivel": 13, "nombre": "Golpe Karate", "daño": 50, "tipo": "Lucha" }
+    ],
     "evolucion": { "nivel": 28, "id": 50 },
     "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/66.png"
-  },
-  "52": {
-    "nombre": "Onix",
-    "tipos": ["Roca", "Tierra"],
-    "statsBase": { "hp": 35, "ataque": 45, "defensa": 160, "velocidad": 70 },
-    "evolucion": { "item": "Revestimiento Metálico", "id": 53 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/95.png"
   },
   "54": {
     "nombre": "Larvitar",
     "tipos": ["Roca", "Tierra"],
     "statsBase": { "hp": 50, "ataque": 64, "defensa": 50, "velocidad": 41 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Mordisco", "daño": 60, "tipo": "Siniestro" },
+      { "nivel": 10, "nombre": "Tormenta Arena", "daño": 0, "tipo": "Roca", "efecto": "clima" }
+    ],
     "evolucion": { "nivel": 30, "id": 55 },
     "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/246.png"
-  },
-  "57": {
-    "nombre": "Aron",
-    "tipos": ["Acero", "Roca"],
-    "statsBase": { "hp": 50, "ataque": 70, "defensa": 100, "velocidad": 30 },
-    "evolucion": { "nivel": 32, "id": 58 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/304.png"
   }
 }
 {
-  "61": {
-    "nombre": "Altaria",
-    "tipos": ["Dragón", "Volador"],
-    "statsBase": { "hp": 75, "ataque": 70, "defensa": 90, "velocidad": 80 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/334.png"
-  },
-  "62": {
-    "nombre": "Snorunt",
-    "tipos": ["Hielo"],
-    "statsBase": { "hp": 50, "ataque": 50, "defensa": 50, "velocidad": 50 },
-    "evolucion": { "nivel": 42, "id": 63, "alt": { "item": "Piedra Alba", "id": 64, "genero": "F" } },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/361.png"
-  },
-  "72": {
-    "nombre": "Eevee",
-    "tipos": ["Normal"],
-    "statsBase": { "hp": 55, "ataque": 55, "defensa": 50, "velocidad": 55 },
-    "evolucion": { "item": "Piedra Agua", "id": 73, "item2": "Piedra Trueno", "id2": 74, "item3": "Piedra Fuego", "id3": 75 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/133.png"
-  },
   "83": {
     "nombre": "Mareep",
     "tipos": ["Eléctrico"],
     "statsBase": { "hp": 55, "ataque": 40, "defensa": 40, "velocidad": 35 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Impactrueno", "daño": 40, "tipo": "Electrico", "efecto": "paralisis" },
+      { "nivel": 18, "nombre": "Onda Voltio", "daño": 60, "tipo": "Electrico" }
+    ],
     "evolucion": { "nivel": 15, "id": 84 },
     "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/179.png"
-  },
-  "86": {
-    "nombre": "Skarmory",
-    "tipos": ["Acero", "Volador"],
-    "statsBase": { "hp": 65, "ataque": 80, "defensa": 140, "velocidad": 70 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/227.png"
-  },
-  "91": {
-    "nombre": "Misdreavus",
-    "tipos": ["Fantasma"],
-    "statsBase": { "hp": 60, "ataque": 60, "defensa": 60, "velocidad": 85 },
-    "evolucion": { "item": "Piedra Noche", "id": 92 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/200.png"
-  },
-  "100": {
-    "nombre": "Electabuzz",
-    "tipos": ["Eléctrico"],
-    "statsBase": { "hp": 65, "ataque": 83, "defensa": 57, "velocidad": 105 },
-    "evolucion": { "item": "Electrizador", "id": 101 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/125.png"
   },
   "111": {
     "nombre": "Absol",
     "tipos": ["Siniestro"],
     "statsBase": { "hp": 65, "ataque": 130, "defensa": 60, "velocidad": 75 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Tajo Umbrío", "daño": 70, "tipo": "Siniestro" },
+      { "nivel": 20, "nombre": "Golpe Bajo", "daño": 70, "tipo": "Siniestro", "efecto": "prioridad" }
+    ],
     "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/359.png"
-  },
-  "121": {
-    "nombre": "Meowth",
-    "tipos": ["Normal"],
-    "statsBase": { "hp": 40, "ataque": 45, "defensa": 35, "velocidad": 90 },
-    "evolucion": { "nivel": 28, "id": 122 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/52.png"
-  },
-  "138": {
-    "nombre": "Omanyte",
-    "tipos": ["Roca", "Agua"],
-    "statsBase": { "hp": 35, "ataque": 40, "defensa": 100, "velocidad": 35 },
-    "evolucion": { "nivel": 40, "id": 140 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/138.png"
-  },
-  "150": {
-    "nombre": "Auralis",
-    "tipos": ["Normal"],
-    "statsBase": { "hp": 100, "ataque": 100, "defensa": 100, "velocidad": 100 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/493.png",
-    "descripcion": "El guardián legendario de la región. Se dice que su canto equilibra las emociones de humanos y Pokémon."
   },
   "161": {
     "nombre": "Aurachu",
     "tipos": ["Eléctrico", "Hada"],
     "statsBase": { "hp": 60, "ataque": 85, "defensa": 50, "velocidad": 110 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/26.png",
-    "nota": "Forma Regional de Auralis"
+    "movimientos": [
+      { "nivel": 1, "nombre": "Beso Drenaje", "daño": 50, "tipo": "Hada", "efecto": "curacion" },
+      { "nivel": 10, "nombre": "Chispa", "daño": 65, "tipo": "Electrico", "efecto": "paralisis" },
+      { "nivel": 30, "nombre": "Trueno", "daño": 110, "tipo": "Electrico" }
+    ],
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/26.png"
   },
-  "165": {
-    "nombre": "Sirfetch'd",
-    "tipos": ["Lucha"],
-    "statsBase": { "hp": 62, "ataque": 135, "defensa": 95, "velocidad": 65 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/865.png"
-  },
-  "169": {
-    "nombre": "Obstagoon",
-    "tipos": ["Siniestro", "Normal"],
-    "statsBase": { "hp": 93, "ataque": 90, "defensa": 101, "velocidad": 95 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/862.png"
+  "150": {
+    "nombre": "Auralis",
+    "tipos": ["Normal", "Psíquico"],
+    "statsBase": { "hp": 100, "ataque": 100, "defensa": 100, "velocidad": 100 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Voz Cautivadora", "daño": 60, "tipo": "Hada" },
+      { "nivel": 50, "nombre": "Juicio Astral", "daño": 120, "tipo": "Psiquico", "efecto": "reduccion_stats" }
+    ],
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/493.png"
   }
 }
-
