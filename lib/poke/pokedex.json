@@ -1,40 +1,4 @@
 {
-  "1": {
-    "nombre": "Floris",
-    "tipos": ["Planta"],
-    "statsBase": { "hp": 45, "ataque": 49, "defensa": 49, "velocidad": 45 },
-    "movimientos": [
-      { "nivel": 1, "nombre": "Placaje", "daño": 40, "tipo": "Normal" },
-      { "nivel": 7, "nombre": "Látigo Cepa", "daño": 45, "tipo": "Planta" },
-      { "nivel": 13, "nombre": "Polvo Veneno", "daño": 0, "tipo": "Veneno", "efecto": "veneno" }
-    ],
-    "evolucion": { "nivel": 16, "id": 2 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png"
-  },
-  "4": {
-    "nombre": "Ignis",
-    "tipos": ["Fuego"],
-    "statsBase": { "hp": 39, "ataque": 52, "defensa": 43, "velocidad": 65 },
-    "movimientos": [
-      { "nivel": 1, "nombre": "Arañazo", "daño": 40, "tipo": "Normal" },
-      { "nivel": 7, "nombre": "Ascuas", "daño": 40, "tipo": "Fuego", "efecto": "quemadura" },
-      { "nivel": 15, "nombre": "Colmillo Ígneo", "daño": 65, "tipo": "Fuego" }
-    ],
-    "evolucion": { "nivel": 16, "id": 5 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png"
-  },
-  "7": {
-    "nombre": "Aquas",
-    "tipos": ["Agua"],
-    "statsBase": { "hp": 44, "ataque": 48, "defensa": 65, "velocidad": 43 },
-    "movimientos": [
-      { "nivel": 1, "nombre": "Placaje", "daño": 40, "tipo": "Normal" },
-      { "nivel": 7, "nombre": "Pistola Agua", "daño": 40, "tipo": "Agua" },
-      { "nivel": 13, "nombre": "Refugio", "daño": 0, "tipo": "Agua", "efecto": "defensa_up" }
-    ],
-    "evolucion": { "nivel": 16, "id": 8 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/7.png"
-  },
   "10": {
     "nombre": "Pidgey",
     "tipos": ["Normal", "Volador"],
@@ -43,96 +7,229 @@
       { "nivel": 1, "nombre": "Tornado", "daño": 40, "tipo": "Volador" },
       { "nivel": 12, "nombre": "Ataque Ala", "daño": 60, "tipo": "Volador" }
     ],
-    "evolucion": { "nivel": 18, "id": 11 },
+    "evolucion": { "nivel": 18, "id": "11" },
+    "spawn": { "rango_nivel": [2, 10] },
     "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/16.png"
   },
-  "31": {
-    "nombre": "Horsea",
-    "tipos": ["Agua"],
-    "statsBase": { "hp": 30, "ataque": 40, "defensa": 70, "velocidad": 60 },
+  "11": {
+    "nombre": "Pidgeotto",
+    "tipos": ["Normal", "Volador"],
+    "statsBase": { "hp": 63, "ataque": 60, "defensa": 55, "velocidad": 71 },
     "movimientos": [
-      { "nivel": 1, "nombre": "Burbuja", "daño": 40, "tipo": "Agua" },
-      { "nivel": 15, "nombre": "Rayo Burbuja", "daño": 65, "tipo": "Agua" }
+      { "nivel": 1, "nombre": "Tornado", "daño": 40, "tipo": "Volador" },
+      { "nivel": 22, "nombre": "Remolino", "daño": 0, "tipo": "Normal" }
     ],
-    "evolucion": { "nivel": 32, "id": 32 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/116.png"
+    "evolucion": { "nivel": 36, "id": "12" },
+    "spawn": { "rango_nivel": [18, 25] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/17.png"
   },
-  "43": {
-    "nombre": "Geodude",
-    "tipos": ["Roca", "Tierra"],
-    "statsBase": { "hp": 40, "ataque": 80, "defensa": 100, "velocidad": 20 },
+  "12": {
+    "nombre": "Pidgeot",
+    "tipos": ["Normal", "Volador"],
+    "statsBase": { "hp": 83, "ataque": 80, "defensa": 75, "velocidad": 101 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Ataque Ala", "daño": 60, "tipo": "Volador" },
+      { "nivel": 44, "nombre": "Vendaval", "daño": 110, "tipo": "Volador" }
+    ],
+    "spawn": { "rango_nivel": [36, 55] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/18.png"
+  },
+  "13": {
+    "nombre": "Rattata",
+    "tipos": ["Normal"],
+    "statsBase": { "hp": 30, "ataque": 56, "defensa": 35, "velocidad": 72 },
     "movimientos": [
       { "nivel": 1, "nombre": "Placaje", "daño": 40, "tipo": "Normal" },
-      { "nivel": 11, "nombre": "Lanzarrocas", "daño": 50, "tipo": "Roca" },
-      { "nivel": 16, "nombre": "Magnitud", "daño": 60, "tipo": "Tierra" }
+      { "nivel": 10, "nombre": "Ataque Rápido", "daño": 40, "tipo": "Normal" }
     ],
-    "evolucion": { "nivel": 25, "id": 44 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/74.png"
+    "evolucion": { "nivel": 20, "id": "14" },
+    "spawn": { "rango_nivel": [2, 8] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/19.png"
   },
-  "49": {
-    "nombre": "Machop",
-    "tipos": ["Lucha"],
-    "statsBase": { "hp": 70, "ataque": 80, "defensa": 50, "velocidad": 35 },
-    "movimientos": [
-      { "nivel": 1, "nombre": "Patada Baja", "daño": 50, "tipo": "Lucha" },
-      { "nivel": 13, "nombre": "Golpe Karate", "daño": 50, "tipo": "Lucha" }
-    ],
-    "evolucion": { "nivel": 28, "id": 50 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/66.png"
-  },
-  "54": {
-    "nombre": "Larvitar",
-    "tipos": ["Roca", "Tierra"],
-    "statsBase": { "hp": 50, "ataque": 64, "defensa": 50, "velocidad": 41 },
+  "14": {
+    "nombre": "Raticate",
+    "tipos": ["Normal"],
+    "statsBase": { "hp": 55, "ataque": 81, "defensa": 60, "velocidad": 97 },
     "movimientos": [
       { "nivel": 1, "nombre": "Mordisco", "daño": 60, "tipo": "Siniestro" },
-      { "nivel": 10, "nombre": "Tormenta Arena", "daño": 0, "tipo": "Roca", "efecto": "clima" }
+      { "nivel": 24, "nombre": "Golpe Bajo", "daño": 70, "tipo": "Siniestro" }
     ],
-    "evolucion": { "nivel": 30, "id": 55 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/246.png"
-  }
-}
-{
-  "83": {
-    "nombre": "Mareep",
-    "tipos": ["Eléctrico"],
-    "statsBase": { "hp": 55, "ataque": 40, "defensa": 40, "velocidad": 35 },
-    "movimientos": [
-      { "nivel": 1, "nombre": "Impactrueno", "daño": 40, "tipo": "Electrico", "efecto": "paralisis" },
-      { "nivel": 18, "nombre": "Onda Voltio", "daño": 60, "tipo": "Electrico" }
-    ],
-    "evolucion": { "nivel": 15, "id": 84 },
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/179.png"
+    "spawn": { "rango_nivel": [20, 35] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/20.png"
   },
-  "111": {
-    "nombre": "Absol",
-    "tipos": ["Siniestro"],
-    "statsBase": { "hp": 65, "ataque": 130, "defensa": 60, "velocidad": 75 },
+  "15": {
+    "nombre": "Caterpie",
+    "tipos": ["Bicho"],
+    "statsBase": { "hp": 45, "ataque": 30, "defensa": 35, "velocidad": 45 },
     "movimientos": [
-      { "nivel": 1, "nombre": "Tajo Umbrío", "daño": 70, "tipo": "Siniestro" },
-      { "nivel": 20, "nombre": "Golpe Bajo", "daño": 70, "tipo": "Siniestro", "efecto": "prioridad" }
+      { "nivel": 1, "nombre": "Placaje", "daño": 40, "tipo": "Normal" },
+      { "nivel": 6, "nombre": "Disparo Demora", "daño": 0, "tipo": "Bicho" }
     ],
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/359.png"
+    "evolucion": { "nivel": 7, "id": "16" },
+    "spawn": { "rango_nivel": [2, 6] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10.png"
   },
-  "161": {
-    "nombre": "Aurachu",
-    "tipos": ["Eléctrico", "Hada"],
-    "statsBase": { "hp": 60, "ataque": 85, "defensa": 50, "velocidad": 110 },
+  "16": {
+    "nombre": "Metapod",
+    "tipos": ["Bicho"],
+    "statsBase": { "hp": 50, "ataque": 20, "defensa": 55, "velocidad": 30 },
     "movimientos": [
-      { "nivel": 1, "nombre": "Beso Drenaje", "daño": 50, "tipo": "Hada", "efecto": "curacion" },
-      { "nivel": 10, "nombre": "Chispa", "daño": 65, "tipo": "Electrico", "efecto": "paralisis" },
-      { "nivel": 30, "nombre": "Trueno", "daño": 110, "tipo": "Electrico" }
+      { "nivel": 1, "nombre": "Fortaleza", "daño": 0, "tipo": "Normal" }
     ],
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/26.png"
+    "evolucion": { "nivel": 10, "id": "17" },
+    "spawn": { "rango_nivel": [7, 9] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/11.png"
   },
-  "150": {
-    "nombre": "Auralis",
-    "tipos": ["Normal", "Psíquico"],
-    "statsBase": { "hp": 100, "ataque": 100, "defensa": 100, "velocidad": 100 },
+  "17": {
+    "nombre": "Butterfree",
+    "tipos": ["Bicho", "Volador"],
+    "statsBase": { "hp": 60, "ataque": 45, "defensa": 50, "velocidad": 70 },
     "movimientos": [
-      { "nivel": 1, "nombre": "Voz Cautivadora", "daño": 60, "tipo": "Hada" },
-      { "nivel": 50, "nombre": "Juicio Astral", "daño": 120, "tipo": "Psiquico", "efecto": "reduccion_stats" }
+      { "nivel": 1, "nombre": "Confusión", "daño": 50, "tipo": "Psíquico" },
+      { "nivel": 12, "nombre": "Polvo Veneno", "daño": 0, "tipo": "Veneno" },
+      { "nivel": 20, "nombre": "Tornado", "daño": 40, "tipo": "Volador" }
     ],
-    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/493.png"
+    "spawn": { "rango_nivel": [10, 20] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/12.png"
+  },
+  "18": {
+    "nombre": "Weedle",
+    "tipos": ["Bicho", "Veneno"],
+    "statsBase": { "hp": 40, "ataque": 35, "defensa": 30, "velocidad": 50 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Picotazo Veneno", "daño": 15, "tipo": "Veneno" },
+      { "nivel": 6, "nombre": "Disparo Demora", "daño": 0, "tipo": "Bicho" }
+    ],
+    "evolucion": { "nivel": 7, "id": "19" },
+    "spawn": { "rango_nivel": [2, 6] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/13.png"
+  },
+  "19": {
+    "nombre": "Kakuna",
+    "tipos": ["Bicho", "Veneno"],
+    "statsBase": { "hp": 45, "ataque": 25, "defensa": 50, "velocidad": 35 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Fortaleza", "daño": 0, "tipo": "Normal" }
+    ],
+    "evolucion": { "nivel": 10, "id": "20" },
+    "spawn": { "rango_nivel": [7, 9] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/14.png"
+  },
+  "20": {
+    "nombre": "Beedrill",
+    "tipos": ["Bicho", "Veneno"],
+    "statsBase": { "hp": 65, "ataque": 90, "defensa": 40, "velocidad": 75 },
+    "movimientos": [
+      { "nivel": 10, "nombre": "Furia Ataque", "daño": 15, "tipo": "Normal" },
+      { "nivel": 20, "nombre": "Doble Ataque", "daño": 25, "tipo": "Bicho" },
+      { "nivel": 30, "nombre": "Pin Misil", "daño": 25, "tipo": "Bicho" }
+    ],
+    "spawn": { "rango_nivel": [10, 25] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/15.png"
+  },
+  "21": {
+    "nombre": "Hoothoot",
+    "tipos": ["Normal", "Volador"],
+    "statsBase": { "hp": 60, "ataque": 30, "defensa": 30, "velocidad": 50 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Destructor", "daño": 40, "tipo": "Normal" },
+      { "nivel": 9, "nombre": "Confusión", "daño": 50, "tipo": "Psíquico" }
+    ],
+    "evolucion": { "nivel": 20, "id": "22" },
+    "spawn": { "rango_nivel": [3, 12] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/163.png"
+  },
+  "22": {
+    "nombre": "Noctowl",
+    "tipos": ["Normal", "Volador"],
+    "statsBase": { "hp": 100, "ataque": 50, "defensa": 50, "velocidad": 70 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Psicorrayo", "daño": 65, "tipo": "Psíquico" },
+      { "nivel": 32, "nombre": "Tajo Aéreo", "daño": 75, "tipo": "Volador" }
+    ],
+    "spawn": { "rango_nivel": [20, 45] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/164.png"
+  },
+  "23": {
+    "nombre": "Spearow",
+    "tipos": ["Normal", "Volador"],
+    "statsBase": { "hp": 40, "ataque": 60, "defensa": 30, "velocidad": 70 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Picotazo", "daño": 35, "tipo": "Volador" },
+      { "nivel": 15, "nombre": "Furia", "daño": 20, "tipo": "Normal" }
+    ],
+    "evolucion": { "nivel": 20, "id": "24" },
+    "spawn": { "rango_nivel": [5, 15] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/21.png"
+  },
+  "24": {
+    "nombre": "Fearow",
+    "tipos": ["Normal", "Volador"],
+    "statsBase": { "hp": 65, "ataque": 90, "defensa": 65, "velocidad": 100 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Pico Taladro", "daño": 80, "tipo": "Volador" },
+      { "nivel": 32, "nombre": "Agilidad", "daño": 0, "tipo": "Psíquico" }
+    ],
+    "spawn": { "rango_nivel": [20, 40] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/22.png"
+  },
+  "25": {
+    "nombre": "Taillow",
+    "tipos": ["Normal", "Volador"],
+    "statsBase": { "hp": 40, "ataque": 55, "defensa": 30, "velocidad": 85 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Picotazo", "daño": 35, "tipo": "Volador" },
+      { "nivel": 8, "nombre": "Ataque Rápido", "daño": 40, "tipo": "Normal" }
+    ],
+    "evolucion": { "nivel": 22, "id": "26" },
+    "spawn": { "rango_nivel": [5, 18] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/276.png"
+  },
+  "26": {
+    "nombre": "Swellow",
+    "tipos": ["Normal", "Volador"],
+    "statsBase": { "hp": 60, "ataque": 85, "defensa": 60, "velocidad": 125 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Esfuerzo", "daño": 0, "tipo": "Normal" },
+      { "nivel": 22, "nombre": "Golpe Aéreo", "daño": 60, "tipo": "Volador" }
+    ],
+    "spawn": { "rango_nivel": [22, 50] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/277.png"
+  },
+  "27": {
+    "nombre": "Wingull",
+    "tipos": ["Agua", "Volador"],
+    "statsBase": { "hp": 40, "ataque": 30, "defensa": 30, "velocidad": 85 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Pistola Agua", "daño": 40, "tipo": "Agua" },
+      { "nivel": 12, "nombre": "Supersónico", "daño": 0, "tipo": "Normal" }
+    ],
+    "evolucion": { "nivel": 25, "id": "28" },
+    "spawn": { "rango_nivel": [5, 20] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/278.png"
+  },
+  "28": {
+    "nombre": "Pelipper",
+    "tipos": ["Agua", "Volador"],
+    "statsBase": { "hp": 60, "ataque": 50, "defensa": 100, "velocidad": 65 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Hidropulso", "daño": 60, "tipo": "Agua" },
+      { "nivel": 30, "nombre": "Surf", "daño": 90, "tipo": "Agua" }
+    ],
+    "spawn": { "rango_nivel": [25, 45] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/279.png"
+  },
+  "29": {
+    "nombre": "Psyduck",
+    "tipos": ["Agua"],
+    "statsBase": { "hp": 50, "ataque": 52, "defensa": 48, "velocidad": 55 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Arañazo", "daño": 40, "tipo": "Normal" },
+      { "nivel": 9, "nombre": "Pistola Agua", "daño": 40, "tipo": "Agua" },
+      { "nivel": 15, "nombre": "Confusión", "daño": 50, "tipo": "Psíquico" }
+    ],
+    "evolucion": { "nivel": 33, "id": "30" },
+    "spawn": { "rango_nivel": [5, 25] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/54.png"
   }
 }
