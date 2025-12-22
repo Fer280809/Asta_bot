@@ -1,0 +1,206 @@
+{
+  "Albavera": {
+    "descripcion": "Pueblo natal. El aire huele a flores frescas.",
+    "tipo": "pueblo",
+    "conexiones": ["Ruta 1"],
+    "puntos_interes": ["Laboratorio Cerezo", "Tu Casa"],
+    "npc": ["Profesor Cerezo", "Mamá", "Investigadora Ana", "Abuelo Kai"]
+  },
+  "Ruta 1": {
+    "descripcion": "Camino Verdeante. Ideal para entrenadores novatos.",
+    "tipo": "hierba",
+    "conexiones": ["Albavera", "Villa Raíz"],
+    "spawn": [10, 19, 427],
+    "niveles": [2, 5],
+    "npc": ["Joven Chano"]
+  },
+  "Villa Raíz": {
+    "descripcion": "Pueblo agrícola con un gran molino.",
+    "tipo": "pueblo",
+    "conexiones": ["Ruta 1", "Ruta 2", "Bosque Musgo"],
+    "puntos_interes": ["Centro Pokémon", "PokéMart", "Guardería"],
+    "npc": ["Criadora Susi", "Anciano MT"]
+  },
+  "Bosque Musgo": {
+    "descripcion": "Un bosque denso donde la luz apenas toca el suelo.",
+    "tipo": "hierba",
+    "conexiones": ["Villa Raíz", "Ruta 3"],
+    "spawn": [13, 10, 285],
+    "niveles": [5, 9],
+    "item_requerido": "hacha",
+    "npc": ["Leñador Hugo"]
+  },
+  "Ruta 3": {
+    "descripcion": "Sendero rocoso a los pies de la montaña.",
+    "tipo": "hierba",
+    "conexiones": ["Bosque Musgo", "Ciudad Férrea"],
+    "spawn": [74, 66, 43],
+    "niveles": [8, 12],
+    "npc": ["Montañero Pedro"]
+  },
+  "Ciudad Férrea": {
+    "descripcion": "Ciudad industrial con minas de carbón.",
+    "tipo": "ciudad",
+    "conexiones": ["Ruta 3", "Ruta 4"],
+    "puntos_interes": ["Gimnasio Férreo", "Centro Pokémon", "Tienda"],
+    "npc": ["Líder Ferrum", "Minero Juan"],
+    "medalla_requerida": "Medalla Roca"
+  },
+  "Ruta 4": {
+    "descripcion": "Una costa soleada con olor a sal.",
+    "tipo": "hierba",
+    "conexiones": ["Ciudad Férrea", "Puerto Brisa"],
+    "spawn": [21, 27, 120],
+    "niveles": [12, 16],
+    "npc": ["Pescador Simón"]
+  },
+  "Puerto Brisa": {
+    "descripcion": "El puerto más grande de Auralis.",
+    "tipo": "ciudad",
+    "conexiones": ["Ruta 4", "Ruta 5", "Isla Remota"],
+    "puntos_interes": ["PokéMart", "Puerto", "Centro Pokémon"],
+    "npc": ["Capitán Estribor", "Marinero Bob"]
+  },
+  "Isla Remota": {
+    "descripcion": "Una isla llena de Pokémon exóticos.",
+    "tipo": "hierba",
+    "conexiones": ["Puerto Brisa"],
+    "spawn": [103, 123, 127],
+    "niveles": [20, 25],
+    "item_requerido": "ticket_barco",
+    "npc": ["Superentrenador"]
+  },
+  "Ruta 5": {
+    "descripcion": "Cañón del eco. El viento sopla fuerte.",
+    "tipo": "hierba",
+    "conexiones": ["Puerto Brisa", "Pueblo Vapor"],
+    "spawn": [56, 111, 28],
+    "niveles": [15, 19],
+    "npc": ["Excursionista"]
+  },
+  "Pueblo Vapor": {
+    "descripcion": "Famoso por sus aguas termales curativas.",
+    "tipo": "pueblo",
+    "conexiones": ["Ruta 5", "Túnel Oscuro"],
+    "puntos_interes": ["Centro Pokémon", "Termas"],
+    "npc": ["Explorador Roy", "Masajista Pokémon"]
+  },
+  "Túnel Oscuro": {
+    "descripcion": "Una cueva sin rastro de luz.",
+    "tipo": "hierba",
+    "conexiones": ["Pueblo Vapor", "Ruta 6"],
+    "spawn": [41, 74, 95],
+    "niveles": [18, 22],
+    "item_requerido": "linterna",
+    "npc": ["Minero Ciego"]
+  },
+  "Ruta 6": {
+    "descripcion": "Praderas llenas de flores amarillas.",
+    "tipo": "hierba",
+    "conexiones": ["Túnel Oscuro", "Ciudad Luminaria"],
+    "spawn": [32, 29, 35],
+    "niveles": [22, 26],
+    "npc": ["Dama Clara"]
+  },
+  "Ciudad Luminaria": {
+    "descripcion": "La ciudad que nunca duerme.",
+    "tipo": "ciudad",
+    "conexiones": ["Ruta 6", "Ruta 7", "Estación Central"],
+    "puntos_interes": ["Gimnasio Marea", "Mega PokéMart", "Estación"],
+    "npc": ["Líder Marina", "Revisor del Tren"],
+    "medalla_requerida": "Medalla Trueno"
+  },
+  "Ruta 7": {
+    "descripcion": "Un pantano peligroso y resbaladizo.",
+    "tipo": "hierba",
+    "conexiones": ["Ciudad Luminaria", "Pueblo Ancestral"],
+    "spawn": [88, 109, 194],
+    "niveles": [25, 29],
+    "npc": ["Cazabichos Kike"]
+  },
+  "Pueblo Ancestral": {
+    "descripcion": "Donde las leyendas cobran vida.",
+    "tipo": "pueblo",
+    "conexiones": ["Ruta 7", "Ruta 8", "Ruta 9"],
+    "puntos_interes": ["Centro Pokémon", "Templo"],
+    "npc": ["Sacerdotisa Draconia"]
+  },
+  "Ruta 8": {
+    "descripcion": "Un lago inmenso de aguas cristalinas.",
+    "tipo": "hierba",
+    "conexiones": ["Pueblo Ancestral", "Ciudad Cénit"],
+    "spawn": [54, 55, 60],
+    "niveles": [28, 32],
+    "item_requerido": "Surf",
+    "npc": ["Nadador Javi"]
+  },
+  "Ciudad Cénit": {
+    "descripcion": "Ciudad de rascacielos y tecnología.",
+    "tipo": "ciudad",
+    "conexiones": ["Ruta 8", "Ruta 11"],
+    "puntos_interes": ["Gimnasio Mental", "Centro Pokémon"],
+    "npc": ["Líder Orion", "Científico"]
+  },
+  "Ruta 11": {
+    "descripcion": "Un desierto azotado por tormentas de arena.",
+    "tipo": "hierba",
+    "conexiones": ["Ciudad Cénit", "Villa Nidada"],
+    "spawn": [104, 111, 328],
+    "niveles": [30, 34],
+    "npc": ["Nómada"]
+  },
+  "Villa Nidada": {
+    "descripcion": "Pueblo en las copas de los árboles.",
+    "tipo": "pueblo",
+    "conexiones": ["Ruta 11", "Ruta 9"],
+    "puntos_interes": ["Gimnasio Brisa", "Centro Pokémon"],
+    "npc": ["Líder Zephyr"]
+  },
+  "Ruta 9": {
+    "descripcion": "El ascenso helado a la montaña.",
+    "tipo": "hierba",
+    "conexiones": ["Villa Nidada", "Ciudad Pico"],
+    "spawn": [220, 225, 361],
+    "niveles": [34, 38],
+    "npc": ["Guía de Montaña"]
+  },
+  "Ciudad Pico": {
+    "descripcion": "Ciudad bajo cero constante.",
+    "tipo": "ciudad",
+    "conexiones": ["Ruta 9", "Ruta 10"],
+    "puntos_interes": ["Centro Pokémon", "Tienda de Esquí"],
+    "npc": ["Glacia", "Alpinista"]
+  },
+  "Ruta 10": {
+    "descripcion": "Un acantilado que baja hacia el abismo.",
+    "tipo": "hierba",
+    "conexiones": ["Ciudad Pico", "Foso Marino"],
+    "spawn": [304, 305, 147],
+    "niveles": [38, 42],
+    "npc": ["Cazador de Dragones"]
+  },
+  "Foso Marino": {
+    "descripcion": "Las profundidades más oscuras del océano.",
+    "tipo": "hierba",
+    "conexiones": ["Ruta 10", "Cueva Victoria"],
+    "spawn": [369, 170, 131],
+    "niveles": [42, 46],
+    "item_requerido": "traje_buceo",
+    "npc": ["Buzo Legendario"]
+  },
+  "Cueva Victoria": {
+    "descripcion": "Solo los mejores pueden cruzar este lugar.",
+    "tipo": "hierba",
+    "conexiones": ["Foso Marino", "Liga Pokémon"],
+    "spawn": [75, 95, 149],
+    "niveles": [46, 55],
+    "npc": ["Veterano Logan"]
+  },
+  "Liga Pokémon": {
+    "descripcion": "El fin del viaje. El trono del campeón.",
+    "tipo": "ciudad",
+    "conexiones": ["Cueva Victoria"],
+    "puntos_interes": ["Alto Mando", "Centro Pokémon Final"],
+    "npc": ["Campeón Fernando"]
+  }
+}
