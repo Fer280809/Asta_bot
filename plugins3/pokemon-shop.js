@@ -1,93 +1,74 @@
 import fs from 'fs'
-import { PokemonLogic } from '../lib/poke/logic.js'
 
 let handler = async (m, { conn, text, usedPrefix, command }) => {
     let user = global.db.data.users[m.sender]
-    if (!user.pokemon?.registrado) return m.reply('❌ No has iniciado tu aventura.')
+    let p = user.pokemon
 
-    // Cargar datos
+    // 1. Validaciones de inicio
+    if (!p?.registrado) return m.reply(`❌ No has iniciado tu aventura. Usa *${usedPrefix}p start*`)
+
     const itemsData = JSON.parse(fs.readFileSync('./lib/poke/items.json'))
     const mapa = JSON.parse(fs.readFileSync('./lib/poke/mapa.json'))
     
-    let p = user.pokemon
+    // 2. Verificar si hay una Tienda (PokéMart) en la ubicación actual
     let zonaActual = mapa[p.ubicacion]
-
-    // 1. Verificación de Tienda en la zona
-    if (!zonaActual.puntos_interes?.includes("Tienda") && !zonaActual.puntos_interes?.includes("Mercado")) {
-        return m.reply(`🏙️ *${p.ubicacion}* no tiene una Tienda Pokémon. ¡Viaja a una ciudad cercana!`)
+    if (!zonaActual.puntos_interes.includes("Tienda Pokémon") && !zonaActual.puntos_interes.includes("PokéMart")) {
+        return m.reply(`🏙️ No hay una Tienda Pokémon en *${p.ubicacion}*. Debes viajar a una ciudad para comprar suministros.`)
     }
 
-    // 2. Lógica de Compra
-    if (text) {
-        let [itemKey, cantidad] = text.toLowerCase().split(' ')
-        cantidad = parseInt(cantidad) || 1
-        if (cantidad < 1) return m.reply('💢 La cantidad debe ser al menos 1.')
-
-        // Buscar el ítem en todas las categorías del JSON
-        let itemFound = null
-        for (let cat in itemsData) {
-            if (itemsData[cat][itemKey]) {
-                itemFound = { ...itemsData[cat][itemKey], key: itemKey }
-                break
-            }
+    // 3. Si no escribe qué comprar, mostrar el catálogo
+    if (!text) {
+        let catalogo = `🛒 *BIENVENIDO A LA TIENDA POKÉMON* 🛒\n`
+        catalogo += `💰 Tu saldo: $${p.dinero.toLocaleString()}\n`
+        catalogo += `▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n\n`
+        
+        for (let id in itemsData) {
+            let item = itemsData[id]
+            catalogo += `🔹 *${item.nombre}* \n`
+            catalogo += `   Price: $${item.precio} | _${item.descripcion}_\n`
+            catalogo += `   Comprar: \`${usedPrefix + command} ${id}\`\n\n`
         }
-
-        if (!itemFound) return m.reply('❌ Ese artículo no existe en nuestro catálogo.')
-
-        let costeTotal = itemFound.precio * cantidad
-        if (p.dinero < costeTotal) return m.reply(`💸 No tienes suficiente dinero. Te faltan *$${costeTotal - p.dinero}*`)
-
-        // Ejecutar transacción
-        p.dinero -= costeTotal
-        p.inventario[itemKey] = (p.inventario[itemKey] || 0) + cantidad
-
-        return conn.reply(m.chat, `✅ *¡Compra exitosa!*\n\n📦 Has comprado: ${cantidad}x ${itemFound.emoji} *${itemFound.nombre}*\n💰 Total gastado: *$${costeTotal}*\n👛 Saldo restante: *$${p.dinero}*`, m)
+        
+        catalogo += `▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n`
+        catalogo += `💡 _Ejemplo: ${usedPrefix + command} pokebola_`
+        return m.reply(catalogo)
     }
 
-    // 3. Interfaz Visual (Generación de Secciones)
-    let textoTienda = `╔═════ 🛒 *TIENDA POKÉMON* ═════╗\n`
-    textoTienda += `║ 👤 *Cliente:* ${p.nombreEntrenador}\n`
-    textoTienda += `║ 📍 *Lugar:* ${p.ubicacion}\n`
-    textoTienda += `║ 💰 *Tu Saldo:* $${p.dinero}\n`
-    textoTienda += `╚════════════════════════╝\n\n`
-    textoTienda += `💡 _Escribe *${usedPrefix + command} [nombre] [cantidad]* para comprar._`
+    // 4. PROCESAR LA COMPRA
+    let input = text.toLowerCase().split(' ')
+    let itemID = input[0]
+    let cantidad = parseInt(input[1]) || 1 // Por defecto compra 1
 
-    const sections = []
+    if (cantidad <= 0) return m.reply('❌ La cantidad debe ser mayor a 0.')
 
-    // Categoría: Pokéballs
-    sections.push({
-        title: "⚪ SECCIÓN DE CAPTURA",
-        rows: Object.entries(itemsData.balls).map(([id, info]) => ({
-            title: `${info.emoji} ${info.nombre}`,
-            rowId: `${usedPrefix + command} ${id}`,
-            description: ` Precio: $${info.precio} - ${info.descripcion}`
-        }))
-    })
+    let itemSeleccionado = itemsData[itemID]
 
-    // Categoría: Curación
-    sections.push({
-        title: "🧪 MEDICAMENTOS Y POCIONES",
-        rows: Object.entries(itemsData.curacion).map(([id, info]) => ({
-            title: `${info.emoji} ${info.nombre}`,
-            rowId: `${usedPrefix + command} ${id}`,
-            description: ` Precio: $${info.precio} - ${info.descripcion}`
-        }))
-    })
-
-    // Categoría: Evolución (Solo mostrar si hay stock o es ciudad grande)
-    if (p.ubicacion.includes("Ciudad") || p.ubicacion.includes("Pueblo Ancestral")) {
-        sections.push({
-            title: "💎 OBJETOS DE EVOLUCIÓN",
-            rows: Object.entries(itemsData.evolucion).map(([id, info]) => ({
-                title: `${info.emoji} ${info.nombre}`,
-                rowId: `${usedPrefix + command} ${id}`,
-                description: ` Precio: $${info.precio} - ${info.descripcion}`
-            }))
-        })
+    if (!itemSeleccionado) {
+        return m.reply(`❌ El objeto *"${itemID}"* no está disponible en esta tienda.`)
     }
 
-    await conn.sendList(m.chat, "🏪 CENTRO COMERCIAL AURALIS", textoTienda, "Ver Catálogo", sections, m)
+    let costoTotal = itemSeleccionado.precio * cantidad
+
+    // 5. Validar fondos
+    if (p.dinero < costoTotal) {
+        return m.reply(`❌ No tienes suficiente dinero. \n💰 Costo: $${costoTotal} | Saldo: $${p.dinero}`)
+    }
+
+    // 6. Ejecutar transacción
+    p.dinero -= costoTotal
+    p.mochila[itemID] = (p.mochila[itemID] || 0) + cantidad
+
+    let ticket = `🛍️ *RECIBO DE COMPRA*\n`
+    ticket += `▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n`
+    ticket += `📦 Objeto: ${itemSeleccionado.nombre}\n`
+    ticket += `🔢 Cantidad: ${cantidad}\n`
+    ticket += `💸 Total pagado: $${costoTotal}\n`
+    ticket += `▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n`
+    ticket += `💰 Saldo restante: $${p.dinero}\n\n`
+    ticket += `✨ ¡Gracias por su compra! Vuelva pronto.`
+
+    await conn.reply(m.chat, ticket, m)
 }
 
-handler.command = /^(p|pokemon)shop$/i
+handler.command = /^(p|pokemon)shop|tienda|mart|buy|comprar$/i
 export default handler
