@@ -2,35 +2,23 @@ import { PokemonLogic } from '../lib/poke/logic.js'
 
 let handler = async (m, { conn, usedPrefix }) => {
     let user = global.db.data.users[m.sender]
-    if (!user.pokemon?.registrado) return m.reply('❌ No has iniciado tu aventura. Usa *.p start*')
+    if (!user.pokemon?.registrado) return m.reply('❌ No has iniciado tu aventura.')
 
     let p = user.pokemon
-    let poke = p.equipo[0]
+    // Corregido: p ya es el pokémon líder según tu estructura
     
-    let caption = `📑 *PERFIL DE ENTRENADOR*\n`
-    caption += `👤 *Entrenador:* ${p.nombreEntrenador}\n`
-    caption += `📍 *Lugar:* ${p.ubicacion}\n`
-    caption += `💰 *Yenes:* $${p.dinero}\n`
-    caption += `🎖️ *Medallas:* ${p.medallas.length}/8\n\n`
-    caption += `⭐ *Líder de Equipo:* ${poke.nombre} (Nv. ${poke.nivel})\n`
-    caption += `❤️ *HP:* ${poke.hp}/${poke.hpMax}\n`
-    caption += `💠 *XP:* ${poke.exp}/${PokemonLogic.getExpRequired(poke.nivel + 1)}`
+    let expNext = PokemonLogic.getExpRequired(p.nivel)
+    let expBar = '▓'.repeat(Math.floor((p.exp / expNext) * 10)) + '░'.repeat(10 - Math.floor((p.exp / expNext) * 10))
 
-    const sections = [
-        {
-            title: "ACCIONES DISPONIBLES",
-            rows: [
-                { title: "🌿 Buscar Pokémon", rowId: `${usedPrefix}p hunt`, description: "Explorar la zona actual" },
-                { title: "🗺️ Viajar", rowId: `${usedPrefix}p go`, description: "Ver rutas cercanas" },
-                { title: "🎒 Mochila", rowId: `${usedPrefix}p bag`, description: "Usar objetos" },
-                { title: "🏥 Curar", rowId: `${usedPrefix}p heal`, description: "Solo en Centros Pokémon" }
-            ]
-        }
-    ]
+    let caption = `📑 *INFO ENTRENADOR*\n`
+    caption += `👤 *Nombre:* ${p.nombreEntrenador}\n`
+    caption += `📍 *Ubicación:* ${p.ubicacion}\n`
+    caption += `💰 *Dinero:* $${p.dinero}\n\n`
+    caption += `⭐ *Compañero:* ${p.nombre} (Nv. ${p.nivel})\n`
+    caption += `❤️ *HP:* ${p.hp}/${p.hpMax}\n`
+    caption += `💠 *XP:* ${p.exp}/${expNext}\n${expBar}`
 
-    await conn.sendList(m.chat, "🎒 TU AVENTURA POKÉMON", caption, "Abrir Menú", sections, m)
+    m.reply(caption)
 }
-
-handler.command = /^(p|pokemon)info$/i
-handler.tags = ['plugin3']
+handler.command = ['pinfo', 'pokemon-info']
 export default handler

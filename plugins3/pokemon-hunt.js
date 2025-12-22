@@ -1,96 +1,75 @@
 import fs from 'fs'
+import { PokemonLogic } from '../lib/poke/logic.js'
 
-let handler = async (m, { conn, text, usedPrefix, command }) => {
+let handler = async (m, { conn, usedPrefix, command, text }) => {
     let user = global.db.data.users[m.sender]
     let p = user.pokemon
-
-    // 1. Validaciones previas
-    if (!p?.registrado) return m.reply(`❌ No tienes una partida activa. Usa *${usedPrefix}p start*`)
-    if (p.hp <= 0) return m.reply(`🚑 Tu Pokémon líder está debilitado. No puedes cazar en este estado. ¡Ve a un Centro Pokémon!`)
+    if (!p?.registrado) return m.reply('❌ No has iniciado tu aventura.')
 
     const pokedex = JSON.parse(fs.readFileSync('./lib/poke/pokedex.json'))
     const mapa = JSON.parse(fs.readFileSync('./lib/poke/mapa.json'))
-    
+    const items = JSON.parse(fs.readFileSync('./lib/poke/items.json'))
+
     let zona = mapa[p.ubicacion]
+    if (zona.tipo !== 'hierba') return m.reply('🌿 Aquí no hay hierba alta para buscar Pokémon.')
 
-    // 2. Verificar si hay Pokémon en la zona
-    if (!zona.spawn || zona.spawn.length === 0) {
-        return m.reply(`🏙️ Estás en una zona urbana o segura. Aquí no aparecen Pokémon salvajes. ¡Busca una Ruta o Cueva!`)
-    }
+    // Lógica de captura si el usuario envió una ball
+    if (text && p.combate) {
+        let ballId = text.toLowerCase().trim()
+        if (!p.mochila[ballId]) return m.reply('🚫 No tienes esa Pokéball.')
 
-    // Cooldown de caza (30 segundos para evitar spam)
-    let tiempo = 30000 
-    if (new Date() - p.lastHunt < tiempo) {
-        let faltan = Math.ceil((tiempo - (new Date() - p.lastHunt)) / 1000)
-        return m.reply(`⏳ Debes esperar ${faltan} segundos para volver a buscar en la hierba alta.`)
-    }
+        let enemigo = p.combate
+        let ratio = items.balls[ballId].ratio
+        let chance = (enemigo.hpMax - enemigo.hp) / enemigo.hpMax * ratio * 100
 
-    // 3. Generar el encuentro
-    let idSalvaje = zona.spawn[Math.floor(Math.random() * zona.spawn.length)]
-    let pS = pokedex[idSalvaje]
-    // Nivel aleatorio dentro del rango de la zona
-    let lvlS = Math.floor(Math.random() * (zona.rango_nivel[1] - zona.rango_nivel[0] + 1)) + zona.rango_nivel[0]
-
-    // 4. PROCESAR ACCIÓN (CAPTURA O HUIDA)
-    if (text) {
-        let accion = text.toLowerCase().trim()
-
-        if (accion === 'capturar') {
-            if (!p.mochila.pokebola || p.mochila.pokebola <= 0) {
-                return m.reply(`❌ ¡No te quedan Poké Balls! Compra más en la tienda de la ciudad.`)
-            }
-
-            p.mochila.pokebola--
-            p.lastHunt = new Date() * 1 // Aplicar cooldown tras intento
-
-            // Lógica de captura (Probabilidad base del 40%, aumenta un poco si el nivel es bajo)
-            let chance = 0.4 + (p.nivel > lvlS ? 0.1 : 0)
-            let exito = Math.random() < chance
-
-            if (exito) {
-                let nuevoPk = {
-                    id: idSalvaje,
-                    nombre: pS.nombre,
-                    nivel: lvlS,
-                    hp: 100,
-                    hpMax: 100,
-                    exp: 0,
-                    tipos: pS.tipos,
-                    fechaCaptura: new Date().toLocaleString()
-                }
-
-                p.almacen.push(nuevoPk)
-                return m.reply(`🎊 ¡Te pones en posición y lanzas la Poké Ball...!\n\n⭐ *¡CONSEGUIDO!* ⭐\nHas capturado a *${pS.nombre}* (Nv. ${lvlS}).\n📦 Se ha enviado a tu PC (Almacén).`)
+        if (Math.random() * 100 < chance || ballId === 'masterball') {
+            let nuevoPoke = { ...enemigo }
+            delete nuevoPoke.hpMax // Limpiamos datos de combate
+            
+            if (p.equipo.length < 6) {
+                p.equipo.push(nuevoPoke)
+                m.reply(`✅ ¡Atrapado! *${nuevoPoke.nombre}* se unió a tu equipo.`)
             } else {
-                return m.reply(`☁️ ¡La Poké Ball se rompió! El *${pS.nombre}* salvaje ha escapado entre la maleza...`)
+                p.almacen.push(nuevoPoke)
+                m.reply(`📦 ¡Atrapado! Tu equipo está lleno, *${nuevoPoke.nombre}* fue enviado al Almacén.`)
             }
-        }
-
-        if (accion === 'huir') {
-            p.lastHunt = new Date() * 1
-            return m.reply(`💨 Escapaste sano y salvo del *${pS.nombre}* salvaje.`)
+            delete p.combate
+            return
+        } else {
+            p.mochila[ballId]--
+            return m.reply('💢 ¡Se escapó de la bola! Sigue intentándolo.')
         }
     }
 
-    // 5. INTERFAZ DE ENCUENTRO
-    let interfaz = `🌿 *¡UN POKÉMON SALVAJE HA APARECIDO!*\n`
-    interfaz += `▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n`
-    interfaz += `👾 *${pS.nombre.toUpperCase()}*\n`
-    interfaz += `📊 Nivel: ${lvlS}\n`
-    interfaz += `🏷️ Tipos: ${pS.tipos.join(' / ')}\n`
-    interfaz += `▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n`
-    interfaz += `✨ *¿QUÉ DESEAS HACER?*\n\n`
-    interfaz += `🔴 Escribe: *${usedPrefix + command} capturar*\n`
-    interfaz += `🏃 Escribe: *${usedPrefix + command} huir*\n\n`
-    interfaz += `🎒 Tienes: ${p.mochila.pokebola || 0} Poké Balls.`
+    // Generar encuentro salvaje
+    let spawnList = zona.spawn
+    let idEnemigo = spawnList[Math.floor(Math.random() * spawnList.length)]
+    let pData = pokedex[idEnemigo]
+    let nivel = Math.floor(Math.random() * (zona.niveles[1] - zona.niveles[0] + 1)) + zona.niveles[0]
 
-    // Enviar imagen del salvaje si existe
-    if (pS.imagen) {
-        await conn.sendFile(m.chat, pS.imagen, 'wild.jpg', interfaz, m)
-    } else {
-        await conn.reply(m.chat, interfaz, m)
+    p.combate = {
+        id: idEnemigo,
+        nombre: pData.nombre,
+        nivel: nivel,
+        hp: pData.statsBase.hp + (nivel * 2),
+        hpMax: pData.statsBase.hp + (nivel * 2),
+        tipos: pData.tipos,
+        stats: pData.statsBase
     }
+
+    let msg = `🌿 ¡Un *${pData.nombre}* salvaje (Nivel ${nivel}) ha aparecido!\n\n`
+    msg += `Selecciona una Pokéball de tu mochila para intentar capturarlo o usa *.p battle* para luchar.`
+    
+    // Lista de balls disponibles
+    let rows = []
+    for (let b in p.mochila) {
+        if (items.balls[b] && p.mochila[b] > 0) {
+            rows.push({ title: `Lanzar ${items.balls[b].nombre}`, rowId: `${usedPrefix + command} ${b}`, description: `Tienes: ${p.mochila[b]}` })
+        }
+    }
+
+    if (rows.length === 0) return m.reply(msg + '\n\n⚠️ No tienes Pokéballs.')
+    return conn.sendList(m.chat, "🐾 ENCUENTRO SALVAJE", msg, "Lanzar Ball", [{ title: "MOCHILA", rows }], m)
 }
-
-handler.command = /^(p|pokemon)hunt|cazar|buscar|hierba$/i
+handler.command = ['hunt', 'cazar']
 export default handler
