@@ -233,3 +233,237 @@
     "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/54.png"
   }
 }
+{
+  "30": {
+    "nombre": "Golduck",
+    "tipos": ["Agua"],
+    "statsBase": { "hp": 80, "ataque": 82, "defensa": 78, "velocidad": 85 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Hidropulso", "daño": 60, "tipo": "Agua" },
+      { "nivel": 33, "nombre": "Rayo Confuso", "daño": 0, "tipo": "Fantasma" },
+      { "nivel": 40, "nombre": "Hidrobomba", "daño": 110, "tipo": "Agua" }
+    ],
+    "spawn": { "rango_nivel": [33, 50] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/55.png"
+  },
+  "31": {
+    "nombre": "Poliwag",
+    "tipos": ["Agua"],
+    "statsBase": { "hp": 40, "ataque": 50, "defensa": 40, "velocidad": 90 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Burbuja", "daño": 40, "tipo": "Agua" },
+      { "nivel": 15, "nombre": "Pistola Agua", "daño": 40, "tipo": "Agua" }
+    ],
+    "evolucion": { "nivel": 25, "id": "32" },
+    "spawn": { "rango_nivel": [5, 15] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/60.png"
+  },
+  "32": {
+    "nombre": "Poliwhirl",
+    "tipos": ["Agua"],
+    "statsBase": { "hp": 65, "ataque": 65, "defensa": 65, "velocidad": 90 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Bofetón Lodo", "daño": 20, "tipo": "Tierra" },
+      { "nivel": 25, "nombre": "Espabilar", "daño": 70, "tipo": "Lucha" }
+    ],
+    "evolucion": { "nivel": 36, "id": "33", "alternativa": "34" },
+    "spawn": { "rango_nivel": [25, 35] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/61.png"
+  },
+  "33": {
+    "nombre": "Poliwrath",
+    "tipos": ["Agua", "Lucha"],
+    "statsBase": { "hp": 90, "ataque": 95, "defensa": 95, "velocidad": 70 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Sumisión", "daño": 80, "tipo": "Lucha" },
+      { "nivel": 43, "nombre": "Puño Dinámico", "daño": 100, "tipo": "Lucha" }
+    ],
+    "spawn": { "rango_nivel": [36, 55] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/62.png"
+  },
+  "34": {
+    "nombre": "Politoed",
+    "tipos": ["Agua"],
+    "statsBase": { "hp": 90, "ataque": 75, "defensa": 75, "velocidad": 70 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Canto", "daño": 0, "tipo": "Normal" },
+      { "nivel": 36, "nombre": "Escaldar", "daño": 80, "tipo": "Agua" }
+    ],
+    "spawn": { "rango_nivel": [36, 55] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/186.png"
+  },
+  "35": {
+    "nombre": "Tentacool",
+    "tipos": ["Agua", "Veneno"],
+    "statsBase": { "hp": 40, "ataque": 40, "defensa": 35, "velocidad": 70 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Ácido", "daño": 40, "tipo": "Veneno" },
+      { "nivel": 10, "nombre": "Supersónico", "daño": 0, "tipo": "Normal" }
+    ],
+    "evolucion": { "nivel": 30, "id": "36" },
+    "spawn": { "rango_nivel": [5, 25] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/72.png"
+  },
+  "36": {
+    "nombre": "Tentacruel",
+    "tipos": ["Agua", "Veneno"],
+    "statsBase": { "hp": 80, "ataque": 70, "defensa": 65, "velocidad": 100 },
+    "movimientos": [
+      { "nivel": 30, "nombre": "Surf", "daño": 90, "tipo": "Agua" },
+      { "nivel": 40, "nombre": "Bomba Lodo", "daño": 90, "tipo": "Veneno" }
+    ],
+    "spawn": { "rango_nivel": [30, 50] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/73.png"
+  },
+  "37": {
+    "nombre": "Magikarp",
+    "tipos": ["Agua"],
+    "statsBase": { "hp": 20, "ataque": 10, "defensa": 55, "velocidad": 80 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Salpicadura", "daño": 0, "tipo": "Normal" },
+      { "nivel": 15, "nombre": "Placaje", "daño": 40, "tipo": "Normal" }
+    ],
+    "evolucion": { "nivel": 20, "id": "38" },
+    "spawn": { "rango_nivel": [5, 19] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/129.png"
+  },
+  "38": {
+    "nombre": "Gyarados",
+    "tipos": ["Agua", "Volador"],
+    "statsBase": { "hp": 95, "ataque": 125, "defensa": 79, "velocidad": 81 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Mordisco", "daño": 60, "tipo": "Siniestro" },
+      { "nivel": 21, "nombre": "Ciclón", "daño": 40, "tipo": "Dragón" },
+      { "nivel": 35, "nombre": "Danza Dragón", "daño": 0, "tipo": "Dragón" }
+    ],
+    "spawn": { "rango_nivel": [20, 50] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/130.png"
+  },
+  "39": {
+    "nombre": "Horsea",
+    "tipos": ["Agua"],
+    "statsBase": { "hp": 30, "ataque": 40, "defensa": 70, "velocidad": 60 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Burbuja", "daño": 40, "tipo": "Agua" },
+      { "nivel": 10, "nombre": "Pantalla de Humo", "daño": 0, "tipo": "Normal" }
+    ],
+    "evolucion": { "nivel": 32, "id": "40" },
+    "spawn": { "rango_nivel": [10, 25] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/116.png"
+  },
+  "40": {
+    "nombre": "Seadra",
+    "tipos": ["Agua"],
+    "statsBase": { "hp": 55, "ataque": 65, "defensa": 95, "velocidad": 85 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Salmuera", "daño": 65, "tipo": "Agua" },
+      { "nivel": 35, "nombre": "Hidrobomba", "daño": 110, "tipo": "Agua" }
+    ],
+    "evolucion": { "nivel": 45, "id": "41" },
+    "spawn": { "rango_nivel": [32, 45] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/117.png"
+  },
+  "41": {
+    "nombre": "Kingdra",
+    "tipos": ["Agua", "Dragón"],
+    "statsBase": { "hp": 75, "ataque": 95, "defensa": 95, "velocidad": 85 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Pulso Dragón", "daño": 85, "tipo": "Dragón" },
+      { "nivel": 50, "nombre": "Cometa Draco", "daño": 130, "tipo": "Dragón" }
+    ],
+    "spawn": { "rango_nivel": [45, 65] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/230.png"
+  },
+  "42": {
+    "nombre": "Staryu",
+    "tipos": ["Agua"],
+    "statsBase": { "hp": 30, "ataque": 45, "defensa": 55, "velocidad": 85 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Giro Rápido", "daño": 20, "tipo": "Normal" },
+      { "nivel": 10, "nombre": "Pistola Agua", "daño": 40, "tipo": "Agua" }
+    ],
+    "evolucion": { "nivel": 30, "id": "43" },
+    "spawn": { "rango_nivel": [10, 25] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/120.png"
+  },
+  "43": {
+    "nombre": "Starmie",
+    "tipos": ["Agua", "Psíquico"],
+    "statsBase": { "hp": 60, "ataque": 75, "defensa": 85, "velocidad": 115 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Psíquico", "daño": 90, "tipo": "Psíquico" },
+      { "nivel": 35, "nombre": "Rayo Hielo", "daño": 90, "tipo": "Hielo" }
+    ],
+    "spawn": { "rango_nivel": [30, 50] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/121.png"
+  },
+  "44": {
+    "nombre": "Feebas",
+    "tipos": ["Agua"],
+    "statsBase": { "hp": 20, "ataque": 15, "defensa": 20, "velocidad": 80 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Salpicadura", "daño": 0, "tipo": "Normal" }
+    ],
+    "evolucion": { "nivel": 20, "id": "45" },
+    "spawn": { "rango_nivel": [5, 15] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/349.png"
+  },
+  "45": {
+    "nombre": "Milotic",
+    "tipos": ["Agua"],
+    "statsBase": { "hp": 95, "ataque": 60, "defensa": 79, "velocidad": 81 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Acua Aro", "daño": 0, "tipo": "Agua" },
+      { "nivel": 25, "nombre": "Surf", "daño": 90, "tipo": "Agua" }
+    ],
+    "spawn": { "rango_nivel": [25, 55] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/350.png"
+  },
+  "46": {
+    "nombre": "Lotad",
+    "tipos": ["Agua", "Planta"],
+    "statsBase": { "hp": 40, "ataque": 30, "defensa": 30, "velocidad": 30 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Absorber", "daño": 20, "tipo": "Planta" },
+      { "nivel": 7, "nombre": "Pistola Agua", "daño": 40, "tipo": "Agua" }
+    ],
+    "evolucion": { "nivel": 14, "id": "47" },
+    "spawn": { "rango_nivel": [2, 12] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/270.png"
+  },
+  "47": {
+    "nombre": "Lombre",
+    "tipos": ["Agua", "Planta"],
+    "statsBase": { "hp": 60, "ataque": 50, "defensa": 50, "velocidad": 50 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Hoja Afilada", "daño": 55, "tipo": "Planta" },
+      { "nivel": 18, "nombre": "Megaagotar", "daño": 40, "tipo": "Planta" }
+    ],
+    "evolucion": { "nivel": 36, "id": "48" },
+    "spawn": { "rango_nivel": [14, 35] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/271.png"
+  },
+  "48": {
+    "nombre": "Ludicolo",
+    "tipos": ["Agua", "Planta"],
+    "statsBase": { "hp": 80, "ataque": 70, "defensa": 70, "velocidad": 70 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Energibola", "daño": 90, "tipo": "Planta" },
+      { "nivel": 36, "nombre": "Danza Lluvia", "daño": 0, "tipo": "Agua" }
+    ],
+    "spawn": { "rango_nivel": [36, 55] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/272.png"
+  },
+  "49": {
+    "nombre": "Geodude",
+    "tipos": ["Roca", "Tierra"],
+    "statsBase": { "hp": 40, "ataque": 80, "defensa": 100, "velocidad": 20 },
+    "movimientos": [
+      { "nivel": 1, "nombre": "Placaje", "daño": 40, "tipo": "Normal" },
+      { "nivel": 11, "nombre": "Lanzarrocas", "daño": 50, "tipo": "Roca" }
+    ],
+    "evolucion": { "nivel": 25, "id": "50" },
+    "spawn": { "rango_nivel": [5, 20] },
+    "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/74.png"
+  }
+}
