@@ -1,234 +1,1038 @@
 {
   "Placaje": {
     "poder": 40,
-    "tipo": "Normal"
+    "precision": 100,
+    "pp": 35,
+    "ppMax": 56,
+    "tipo": "Normal",
+    "categoria": "fisico",
+    "efecto": {
+      "tipo": null,
+      "probabilidad": 0,
+      "descripcion": null
+    },
+    "contacto": true,
+    "descripcion": "Un ataque físico sencillo."
   },
   "Arañazo": {
     "poder": 40,
-    "tipo": "Normal"
+    "precision": 100,
+    "pp": 35,
+    "ppMax": 56,
+    "tipo": "Normal",
+    "categoria": "fisico",
+    "efecto": {
+      "tipo": null,
+      "probabilidad": 0,
+      "descripcion": null
+    },
+    "contacto": true,
+    "descripcion": "Araña al rival con garras afiladas."
   },
   "Látigo Cepa": {
     "poder": 45,
-    "tipo": "Planta"
+    "precision": 100,
+    "pp": 25,
+    "ppMax": 40,
+    "tipo": "Planta",
+    "categoria": "fisico",
+    "efecto": {
+      "tipo": null,
+      "probabilidad": 0,
+      "descripcion": null
+    },
+    "contacto": true,
+    "descripcion": "Azota con lianas o raíces."
   },
   "Ascuas": {
     "poder": 40,
-    "tipo": "Fuego"
+    "precision": 100,
+    "pp": 25,
+    "ppMax": 40,
+    "tipo": "Fuego",
+    "categoria": "especial",
+    "efecto": {
+      "tipo": "quemado",
+      "probabilidad": 10,
+      "descripcion": "Puede quemar al objetivo."
+    },
+    "contacto": false,
+    "descripcion": "Ataca con pequeñas llamas."
   },
   "Pistola Agua": {
     "poder": 40,
-    "tipo": "Agua"
+    "precision": 100,
+    "pp": 25,
+    "ppMax": 40,
+    "tipo": "Agua",
+    "categoria": "especial",
+    "efecto": {
+      "tipo": null,
+      "probabilidad": 0,
+      "descripcion": null
+    },
+    "contacto": false,
+    "descripcion": "Dispara un chorro de agua."
   },
   "Impactrueno": {
     "poder": 40,
-    "tipo": "Eléctrico"
+    "precision": 100,
+    "pp": 30,
+    "ppMax": 48,
+    "tipo": "Eléctrico",
+    "categoria": "especial",
+    "efecto": {
+      "tipo": "paralizado",
+      "probabilidad": 10,
+      "descripcion": "Puede paralizar al objetivo."
+    },
+    "contacto": false,
+    "descripcion": "Ataque eléctrico que puede paralizar."
   },
   "Tornado": {
     "poder": 40,
-    "tipo": "Volador"
+    "precision": 100,
+    "pp": 35,
+    "ppMax": 56,
+    "tipo": "Volador",
+    "categoria": "especial",
+    "efecto": {
+      "tipo": "confundir",
+      "probabilidad": 20,
+      "descripcion": "Puede confundir al objetivo."
+    },
+    "contacto": false,
+    "descripcion": "Crea un remolino de viento."
   },
   "Ataque Ala": {
     "poder": 60,
-    "tipo": "Volador"
+    "precision": 100,
+    "pp": 35,
+    "ppMax": 56,
+    "tipo": "Volador",
+    "categoria": "fisico",
+    "efecto": {
+      "tipo": null,
+      "probabilidad": 0,
+      "descripcion": null
+    },
+    "contacto": true,
+    "descripcion": "Golpea con las alas desplegadas."
   },
   "Picadura": {
     "poder": 60,
-    "tipo": "Bicho"
+    "precision": 100,
+    "pp": 20,
+    "ppMax": 32,
+    "tipo": "Bicho",
+    "categoria": "fisico",
+    "efecto": {
+      "tipo": "retroceso",
+      "probabilidad": 10,
+      "descripcion": "Puede hacer retroceder al objetivo."
+    },
+    "contacto": true,
+    "descripcion": "Pincha con aguijón o cuernos."
   },
   "Confusión": {
     "poder": 50,
-    "tipo": "Psíquico"
+    "precision": 100,
+    "pp": 25,
+    "ppMax": 40,
+    "tipo": "Psíquico",
+    "categoria": "especial",
+    "efecto": {
+      "tipo": "confundir",
+      "probabilidad": 10,
+      "descripcion": "Puede confundir al objetivo."
+    },
+    "contacto": false,
+    "descripcion": "Ataque psíquico que puede confundir."
   },
   "Psíquico": {
     "poder": 90,
-    "tipo": "Psíquico"
+    "precision": 100,
+    "pp": 10,
+    "ppMax": 16,
+    "tipo": "Psíquico",
+    "categoria": "especial",
+    "efecto": {
+      "tipo": "bajarDefensaEspecial",
+      "probabilidad": 10,
+      "descripcion": "Puede bajar la Defensa Especial del objetivo."
+    },
+    "contacto": false,
+    "descripcion": "Poderoso ataque psíquico."
   },
   "Lanzallamas": {
     "poder": 90,
-    "tipo": "Fuego"
+    "precision": 100,
+    "pp": 15,
+    "ppMax": 24,
+    "tipo": "Fuego",
+    "categoria": "especial",
+    "efecto": {
+      "tipo": "quemado",
+      "probabilidad": 10,
+      "descripcion": "Puede quemar al objetivo."
+    },
+    "contacto": false,
+    "descripcion": "Intenso chorro de llamas."
   },
   "Hidrobomba": {
     "poder": 110,
-    "tipo": "Agua"
+    "precision": 80,
+    "pp": 5,
+    "ppMax": 8,
+    "tipo": "Agua",
+    "categoria": "especial",
+    "efecto": {
+      "tipo": null,
+      "probabilidad": 0,
+      "descripcion": null
+    },
+    "contacto": false,
+    "descripcion": "Potente chorro de agua a alta presión."
   },
   "Burbuja": {
     "poder": 40,
-    "tipo": "Agua"
+    "precision": 100,
+    "pp": 30,
+    "ppMax": 48,
+    "tipo": "Agua",
+    "categoria": "especial",
+    "efecto": {
+      "tipo": "bajarVelocidad",
+      "probabilidad": 10,
+      "descripcion": "Puede bajar la Velocidad del objetivo."
+    },
+    "contacto": false,
+    "descripcion": "Lanza burbujas al objetivo."
   },
   "Hoja Afilada": {
     "poder": 55,
-    "tipo": "Planta"
+    "precision": 95,
+    "pp": 25,
+    "ppMax": 40,
+    "tipo": "Planta",
+    "categoria": "fisico",
+    "efecto": {
+      "tipo": "golpeCritico",
+      "probabilidad": 100,
+      "descripcion": "Mayor probabilidad de golpe crítico."
+    },
+    "contacto": false,
+    "descripcion": "Lanza hojas afiladas como cuchillas."
   },
   "Rayo": {
     "poder": 90,
-    "tipo": "Eléctrico"
+    "precision": 100,
+    "pp": 15,
+    "ppMax": 24,
+    "tipo": "Eléctrico",
+    "categoria": "especial",
+    "efecto": {
+      "tipo": "paralizado",
+      "probabilidad": 10,
+      "descripcion": "Puede paralizar al objetivo."
+    },
+    "contacto": false,
+    "descripcion": "Potente descarga eléctrica."
   },
   "Mordisco": {
     "poder": 60,
-    "tipo": "Siniestro"
+    "precision": 100,
+    "pp": 25,
+    "ppMax": 40,
+    "tipo": "Siniestro",
+    "categoria": "fisico",
+    "efecto": {
+      "tipo": "retroceso",
+      "probabilidad": 30,
+      "descripcion": "Puede hacer retroceder al objetivo."
+    },
+    "contacto": true,
+    "descripcion": "Muerde fuertemente al objetivo."
   },
   "Residuos": {
     "poder": 65,
-    "tipo": "Veneno"
+    "precision": 100,
+    "pp": 20,
+    "ppMax": 32,
+    "tipo": "Veneno",
+    "categoria": "especial",
+    "efecto": {
+      "tipo": "envenenado",
+      "probabilidad": 30,
+      "descripcion": "Puede envenenar al objetivo."
+    },
+    "contacto": false,
+    "descripcion": "Lanza residuos tóxicos."
   },
   "Tajo Supremo": {
     "poder": 100,
-    "tipo": "Acero"
+    "precision": 95,
+    "pp": 5,
+    "ppMax": 8,
+    "tipo": "Acero",
+    "categoria": "fisico",
+    "efecto": {
+      "tipo": null,
+      "probabilidad": 0,
+      "descripcion": null
+    },
+    "contacto": true,
+    "descripcion": "Ataque de acero devastador."
   },
   "Carantoña": {
     "poder": 90,
-    "tipo": "Hada"
+    "precision": 90,
+    "pp": 10,
+    "ppMax": 16,
+    "tipo": "Hada",
+    "categoria": "especial",
+    "efecto": {
+      "tipo": "bajarAtaque",
+      "probabilidad": 100,
+      "descripcion": "Baja el Ataque del objetivo."
+    },
+    "contacto": false,
+    "descripcion": "Ataque de hadas que baja el Ataque."
   },
   "Embate Supremo": {
     "poder": 100,
-    "tipo": "Acero"
+    "precision": 95,
+    "pp": 5,
+    "ppMax": 8,
+    "tipo": "Acero",
+    "categoria": "fisico",
+    "efecto": {
+      "tipo": "retroceso",
+      "probabilidad": 30,
+      "descripcion": "El usuario también recibe daño por retroceso."
+    },
+    "contacto": true,
+    "descripcion": "Ataque de acero con retroceso."
   },
   "A bocajarro": {
     "poder": 120,
-    "tipo": "Lucha"
+    "precision": 100,
+    "pp": 5,
+    "ppMax": 8,
+    "tipo": "Lucha",
+    "categoria": "fisico",
+    "efecto": {
+      "tipo": null,
+      "probabilidad": 0,
+      "descripcion": null
+    },
+    "contacto": true,
+    "descripcion": "Ataque de lucha cuerpo a cuerpo."
   },
   "Vuelo": {
     "poder": 90,
-    "tipo": "Volador"
+    "precision": 95,
+    "pp": 15,
+    "ppMax": 24,
+    "tipo": "Volador",
+    "categoria": "fisico",
+    "efecto": {
+      "tipo": "vuelo",
+      "probabilidad": 100,
+      "descripcion": "Vuela en el primer turno y ataca en el segundo."
+    },
+    "contacto": true,
+    "descripcion": "Vuela alto y ataca en el siguiente turno."
   },
   "Excavar": {
     "poder": 80,
-    "tipo": "Tierra"
+    "precision": 100,
+    "pp": 10,
+    "ppMax": 16,
+    "tipo": "Tierra",
+    "categoria": "fisico",
+    "efecto": {
+      "tipo": "excavar",
+      "probabilidad": 100,
+      "descripcion": "Cava en el primer turno y ataca en el segundo."
+    },
+    "contacto": false,
+    "descripcion": "Cava bajo tierra y ataca por sorpresa."
   },
   "Avalancha": {
     "poder": 75,
-    "tipo": "Roca"
+    "precision": 90,
+    "pp": 10,
+    "ppMax": 16,
+    "tipo": "Roca",
+    "categoria": "fisico",
+    "efecto": {
+      "tipo": "retroceso",
+      "probabilidad": 30,
+      "descripcion": "Puede hacer retroceder al objetivo."
+    },
+    "contacto": false,
+    "descripcion": "Lanza rocas como una avalancha."
   },
   "Sombra Bola": {
     "poder": 80,
-    "tipo": "Fantasma"
+    "precision": 100,
+    "pp": 15,
+    "ppMax": 24,
+    "tipo": "Fantasma",
+    "categoria": "especial",
+    "efecto": {
+      "tipo": "bajarDefensaEspecial",
+      "probabilidad": 20,
+      "descripcion": "Puede bajar la Defensa Especial del objetivo."
+    },
+    "contacto": false,
+    "descripcion": "Bola de sombra que puede bajar defensa."
   },
   "Pulso Dragón": {
     "poder": 85,
-    "tipo": "Dragón"
+    "precision": 100,
+    "pp": 10,
+    "ppMax": 16,
+    "tipo": "Dragón",
+    "categoria": "especial",
+    "efecto": {
+      "tipo": null,
+      "probabilidad": 0,
+      "descripcion": null
+    },
+    "contacto": false,
+    "descripcion": "Potente pulso de energía dragón."
   },
   "Puño Incremento": {
     "poder": 40,
-    "tipo": "Lucha"
+    "precision": 100,
+    "pp": 30,
+    "ppMax": 48,
+    "tipo": "Lucha",
+    "categoria": "fisico",
+    "efecto": {
+      "tipo": "aumentarAtaque",
+      "probabilidad": 100,
+      "descripcion": "Aumenta el Ataque del usuario."
+    },
+    "contacto": true,
+    "descripcion": "Ataque de lucha que aumenta el Ataque."
   },
   "Rayo Hielo": {
     "poder": 90,
-    "tipo": "Hielo"
+    "precision": 100,
+    "pp": 10,
+    "ppMax": 16,
+    "tipo": "Hielo",
+    "categoria": "especial",
+    "efecto": {
+      "tipo": "congelado",
+      "probabilidad": 10,
+      "descripcion": "Puede congelar al objetivo."
+    },
+    "contacto": false,
+    "descripcion": "Rayo de hielo que puede congelar."
   },
   "Terremoto": {
     "poder": 100,
-    "tipo": "Tierra"
+    "precision": 100,
+    "pp": 10,
+    "ppMax": 16,
+    "tipo": "Tierra",
+    "categoria": "fisico",
+    "efecto": {
+      "tipo": null,
+      "probabilidad": 0,
+      "descripcion": null
+    },
+    "contacto": false,
+    "descripcion": "Sacudida sísmica que afecta a todos."
   },
   "Fuerza Bruta": {
     "poder": 120,
-    "tipo": "Lucha"
+    "precision": 100,
+    "pp": 5,
+    "ppMax": 8,
+    "tipo": "Lucha",
+    "categoria": "fisico",
+    "efecto": {
+      "tipo": "bajarDefensaEspecial",
+      "probabilidad": 100,
+      "descripcion": "Baja la Defensa Especial del usuario."
+    },
+    "contacto": true,
+    "descripcion": "Ataque de lucha poderoso pero baja Defensa."
   },
   "Pájaro Osado": {
     "poder": 120,
-    "tipo": "Volador"
+    "precision": 100,
+    "pp": 15,
+    "ppMax": 24,
+    "tipo": "Volador",
+    "categoria": "fisico",
+    "efecto": {
+      "tipo": "retroceso",
+      "probabilidad": 100,
+      "descripcion": "El usuario recibe daño por retroceso."
+    },
+    "contacto": true,
+    "descripcion": "Ataque volador poderoso con retroceso."
   },
   "Danza Llama": {
     "poder": 80,
-    "tipo": "Fuego"
+    "precision": 100,
+    "pp": 15,
+    "ppMax": 24,
+    "tipo": "Fuego",
+    "categoria": "especial",
+    "efecto": {
+      "tipo": "quemado",
+      "probabilidad": 10,
+      "descripcion": "Puede quemar al objetivo."
+    },
+    "contacto": false,
+    "descripcion": "Baile de llamas que puede quemar."
   },
   "Rayo Solar": {
     "poder": 120,
-    "tipo": "Planta"
+    "precision": 100,
+    "pp": 10,
+    "ppMax": 16,
+    "tipo": "Planta",
+    "categoria": "especial",
+    "efecto": {
+      "tipo": "carga",
+      "probabilidad": 100,
+      "descripcion": "Carga en el primer turno, ataca en el segundo."
+    },
+    "contacto": false,
+    "descripcion": "Rayo solar concentrado que requiere carga."
   },
   "Trueno": {
     "poder": 110,
-    "tipo": "Eléctrico"
+    "precision": 70,
+    "pp": 10,
+    "ppMax": 16,
+    "tipo": "Eléctrico",
+    "categoria": "especial",
+    "efecto": {
+      "tipo": "paralizado",
+      "probabilidad": 30,
+      "descripcion": "Puede paralizar al objetivo."
+    },
+    "contacto": false,
+    "descripcion": "Potente rayo que puede paralizar."
   },
   "Psicocorte": {
     "poder": 70,
-    "tipo": "Psíquico"
+    "precision": 100,
+    "pp": 20,
+    "ppMax": 32,
+    "tipo": "Psíquico",
+    "categoria": "fisico",
+    "efecto": {
+      "tipo": "golpeCritico",
+      "probabilidad": 100,
+      "descripcion": "Mayor probabilidad de golpe crítico."
+    },
+    "contacto": false,
+    "descripcion": "Corte psíquico con alta probabilidad crítica."
   },
   "Triturar": {
     "poder": 80,
-    "tipo": "Siniestro"
+    "precision": 100,
+    "pp": 15,
+    "ppMax": 24,
+    "tipo": "Siniestro",
+    "categoria": "fisico",
+    "efecto": {
+      "tipo": "bajarDefensa",
+      "probabilidad": 20,
+      "descripcion": "Puede bajar la Defensa del objetivo."
+    },
+    "contacto": true,
+    "descripcion": "Ataque siniestro que puede bajar Defensa."
   },
   "Cabeza de Hierro": {
     "poder": 80,
-    "tipo": "Acero"
+    "precision": 100,
+    "pp": 15,
+    "ppMax": 24,
+    "tipo": "Acero",
+    "categoria": "fisico",
+    "efecto": {
+      "tipo": "retroceso",
+      "probabilidad": 30,
+      "descripcion": "Puede hacer retroceder al objetivo."
+    },
+    "contacto": true,
+    "descripcion": "Golpea con cabeza de hierro."
   },
   "Brillo Mágico": {
     "poder": 80,
-    "tipo": "Hada"
+    "precision": 100,
+    "pp": 10,
+    "ppMax": 16,
+    "tipo": "Hada",
+    "categoria": "especial",
+    "efecto": {
+      "tipo": "reflejar",
+      "probabilidad": 30,
+      "descripcion": "Puede reflejar cambios de estado."
+    },
+    "contacto": false,
+    "descripcion": "Brillo mágico que puede reflejar efectos."
   },
   "Dracoaliento": {
     "poder": 60,
-    "tipo": "Dragón"
+    "precision": 100,
+    "pp": 20,
+    "ppMax": 32,
+    "tipo": "Dragón",
+    "categoria": "especial",
+    "efecto": {
+      "tipo": "quemado",
+      "probabilidad": 30,
+      "descripcion": "Puede quemar al objetivo."
+    },
+    "contacto": false,
+    "descripcion": "Aliento de dragón que puede quemar."
   },
   "Nieve Polvo": {
     "poder": 40,
-    "tipo": "Hielo"
+    "precision": 100,
+    "pp": 25,
+    "ppMax": 40,
+    "tipo": "Hielo",
+    "categoria": "especial",
+    "efecto": {
+      "tipo": "congelado",
+      "probabilidad": 10,
+      "descripcion": "Puede congelar al objetivo."
+    },
+    "contacto": false,
+    "descripcion": "Polvo de nieve que puede congelar."
   },
   "Remolino": {
     "poder": 0,
-    "tipo": "Normal"
+    "precision": 100,
+    "pp": 20,
+    "ppMax": 32,
+    "tipo": "Normal",
+    "categoria": "estado",
+    "efecto": {
+      "tipo": "confundir",
+      "probabilidad": 100,
+      "descripcion": "Confunde al objetivo."
+    },
+    "contacto": false,
+    "descripcion": "Crea un remolino que confunde al rival."
   },
   "Gruñido": {
     "poder": 0,
-    "tipo": "Normal"
+    "precision": 100,
+    "pp": 40,
+    "ppMax": 64,
+    "tipo": "Normal",
+    "categoria": "estado",
+    "efecto": {
+      "tipo": "bajarAtaque",
+      "probabilidad": 100,
+      "descripcion": "Baja el Ataque del objetivo."
+    },
+    "contacto": false,
+    "descripcion": "Gruñido que baja el Ataque del rival."
   },
   "Malicioso": {
     "poder": 0,
-    "tipo": "Normal"
+    "precision": 100,
+    "pp": 30,
+    "ppMax": 48,
+    "tipo": "Normal",
+    "categoria": "estado",
+    "efecto": {
+      "tipo": "bajarDefensa",
+      "probabilidad": 100,
+      "descripcion": "Baja la Defensa del objetivo."
+    },
+    "contacto": false,
+    "descripcion": "Ataque que baja la Defensa del rival."
   },
   "Cañón Dinámico": {
     "poder": 120,
-    "tipo": "Acero"
+    "precision": 85,
+    "pp": 5,
+    "ppMax": 8,
+    "tipo": "Acero",
+    "categoria": "fisico",
+    "efecto": {
+      "tipo": null,
+      "probabilidad": 0,
+      "descripcion": null
+    },
+    "contacto": false,
+    "descripcion": "Potente cañón de acero."
   },
   "Rayo Infinito": {
     "poder": 160,
-    "tipo": "Dragón"
+    "precision": 90,
+    "pp": 5,
+    "ppMax": 8,
+    "tipo": "Dragón",
+    "categoria": "especial",
+    "efecto": {
+      "tipo": "retroceso",
+      "probabilidad": 100,
+      "descripcion": "El usuario no puede moverse en el siguiente turno."
+    },
+    "contacto": false,
+    "descripcion": "Rayo dragón devastador con retroceso."
   },
   "Garra Dragón": {
     "poder": 80,
-    "tipo": "Dragón"
+    "precision": 100,
+    "pp": 15,
+    "ppMax": 24,
+    "tipo": "Dragón",
+    "categoria": "fisico",
+    "efecto": {
+      "tipo": null,
+      "probabilidad": 0,
+      "descripcion": null
+    },
+    "contacto": true,
+    "descripcion": "Garras de dragón afiladas."
   },
   "Danza Pétalo": {
     "poder": 120,
-    "tipo": "Planta"
+    "precision": 100,
+    "pp": 10,
+    "ppMax": 16,
+    "tipo": "Planta",
+    "categoria": "especial",
+    "efecto": {
+      "tipo": "confundir",
+      "probabilidad": 100,
+      "descripcion": "Confunde al usuario tras el ataque."
+    },
+    "contacto": false,
+    "descripcion": "Baile de pétalos que confunde al usuario."
   },
   "Bomba Lodo": {
     "poder": 90,
-    "tipo": "Veneno"
+    "precision": 100,
+    "pp": 10,
+    "ppMax": 16,
+    "tipo": "Veneno",
+    "categoria": "especial",
+    "efecto": {
+      "tipo": "envenenado",
+      "probabilidad": 30,
+      "descripcion": "Puede envenenar al objetivo."
+    },
+    "contacto": false,
+    "descripcion": "Bomba de lodo tóxico."
   },
   "Surf": {
     "poder": 90,
-    "tipo": "Agua"
+    "precision": 100,
+    "pp": 15,
+    "ppMax": 24,
+    "tipo": "Agua",
+    "categoria": "especial",
+    "efecto": {
+      "tipo": null,
+      "probabilidad": 0,
+      "descripcion": null
+    },
+    "contacto": false,
+    "descripcion": "Ola gigante que arrasa con todo."
   },
   "Puño Trueno": {
     "poder": 75,
-    "tipo": "Eléctrico"
+    "precision": 100,
+    "pp": 15,
+    "ppMax": 24,
+    "tipo": "Eléctrico",
+    "categoria": "fisico",
+    "efecto": {
+      "tipo": "paralizado",
+      "probabilidad": 10,
+      "descripcion": "Puede paralizar al objetivo."
+    },
+    "contacto": true,
+    "descripcion": "Puño eléctrico que puede paralizar."
   },
   "Onda Mental": {
     "poder": 100,
-    "tipo": "Psíquico"
+    "precision": 100,
+    "pp": 10,
+    "ppMax": 16,
+    "tipo": "Psíquico",
+    "categoria": "especial",
+    "efecto": {
+      "tipo": "confundir",
+      "probabilidad": 10,
+      "descripcion": "Puede confundir al objetivo."
+    },
+    "contacto": false,
+    "descripcion": "Onda psíquica que puede confundir."
   },
   "Esfera Aural": {
     "poder": 80,
-    "tipo": "Lucha"
+    "precision": 100,
+    "pp": 20,
+    "ppMax": 32,
+    "tipo": "Lucha",
+    "categoria": "especial",
+    "efecto": {
+      "tipo": "siempreAcierta",
+      "probabilidad": 100,
+      "descripcion": "Este movimiento siempre acierta."
+    },
+    "contacto": false,
+    "descripcion": "Esfera de energía que nunca falla."
   },
   "Velocidad Extrema": {
     "poder": 80,
-    "tipo": "Normal"
+    "precision": 100,
+    "pp": 5,
+    "ppMax": 8,
+    "tipo": "Normal",
+    "categoria": "fisico",
+    "efecto": {
+      "tipo": "golpePrioritario",
+      "probabilidad": 100,
+      "descripcion": "Este movimiento tiene prioridad alta."
+    },
+    "contacto": true,
+    "descripcion": "Ataque rápido con alta prioridad."
   },
   "Ascenso Draco": {
     "poder": 120,
-    "tipo": "Volador"
+    "precision": 100,
+    "pp": 5,
+    "ppMax": 8,
+    "tipo": "Volador",
+    "categoria": "fisico",
+    "efecto": {
+      "tipo": null,
+      "probabilidad": 0,
+      "descripcion": null
+    },
+    "contacto": true,
+    "descripcion": "Ataque volador de gran poder."
   },
   "Infierno": {
     "poder": 100,
-    "tipo": "Fuego"
+    "precision": 50,
+    "pp": 5,
+    "ppMax": 8,
+    "tipo": "Fuego",
+    "categoria": "especial",
+    "efecto": {
+      "tipo": "quemado",
+      "probabilidad": 100,
+      "descripcion": "Quema al objetivo si acierta."
+    },
+    "contacto": false,
+    "descripcion": "Llamas infernales que queman si aciertan."
   },
   "Danza Dragón": {
     "poder": 0,
-    "tipo": "Dragón"
+    "precision": 100,
+    "pp": 20,
+    "ppMax": 32,
+    "tipo": "Dragón",
+    "categoria": "estado",
+    "efecto": {
+      "tipo": "aumentarAtaqueVelocidad",
+      "probabilidad": 100,
+      "descripcion": "Aumenta Ataque y Velocidad del usuario."
+    },
+    "contacto": false,
+    "descripcion": "Baile de dragón que aumenta Ataque y Velocidad."
   },
   "Recuperación": {
     "poder": 0,
-    "tipo": "Normal"
+    "precision": 100,
+    "pp": 10,
+    "ppMax": 16,
+    "tipo": "Normal",
+    "categoria": "estado",
+    "efecto": {
+      "tipo": "curar",
+      "probabilidad": 100,
+      "descripcion": "Cura la mitad de los PS máximos del usuario."
+    },
+    "contacto": false,
+    "descripcion": "Recupera la mitad de los PS máximos."
+  },
+
+  "Disparo Demora": {
+    "poder": 0,
+    "precision": 100,
+    "pp": 40,
+    "ppMax": 64,
+    "tipo": "Bicho",
+    "categoria": "estado",
+    "efecto": {
+      "tipo": "bajarVelocidad",
+      "probabilidad": 100,
+      "descripcion": "Baja la Velocidad del objetivo."
+    },
+    "contacto": false,
+    "descripcion": "Dispara hilo que baja la Velocidad."
+  },
+  "Fortaleza": {
+    "poder": 0,
+    "precision": 100,
+    "pp": 30,
+    "ppMax": 48,
+    "tipo": "Normal",
+    "categoria": "estado",
+    "efecto": {
+      "tipo": "aumentarDefensa",
+      "probabilidad": 100,
+      "descripcion": "Aumenta mucho la Defensa del usuario."
+    },
+    "contacto": false,
+    "descripcion": "Endurece el cuerpo para aumentar Defensa."
+  },
+  "Vendaval": {
+    "poder": 110,
+    "precision": 70,
+    "pp": 10,
+    "ppMax": 16,
+    "tipo": "Volador",
+    "categoria": "especial",
+    "efecto": {
+      "tipo": "confundir",
+      "probabilidad": 30,
+      "descripcion": "Puede confundir al objetivo."
+    },
+    "contacto": false,
+    "descripcion": "Viento huracanado que puede confundir."
+  },
+  "Picotazo Veneno": {
+    "poder": 15,
+    "precision": 100,
+    "pp": 35,
+    "ppMax": 56,
+    "tipo": "Veneno",
+    "categoria": "fisico",
+    "efecto": {
+      "tipo": "envenenado",
+      "probabilidad": 30,
+      "descripcion": "Puede envenenar al objetivo."
+    },
+    "contacto": true,
+    "descripcion": "Picotazo venenoso que puede envenenar."
+  },
+  "Furia Ataque": {
+    "poder": 15,
+    "precision": 85,
+    "pp": 20,
+    "ppMax": 32,
+    "tipo": "Normal",
+    "categoria": "fisico",
+    "efecto": {
+      "tipo": "multiGolpe",
+      "probabilidad": 100,
+      "descripcion": "Golpea de 2 a 5 veces por turno."
+    },
+    "contacto": true,
+    "descripcion": "Furia de golpes consecutivos."
+  },
+  "Doble Ataque": {
+    "poder": 25,
+    "precision": 100,
+    "pp": 20,
+    "ppMax": 32,
+    "tipo": "Bicho",
+    "categoria": "fisico",
+    "efecto": {
+      "tipo": "dobleGolpe",
+      "probabilidad": 100,
+      "descripcion": "Golpea dos veces por turno."
+    },
+    "contacto": true,
+    "descripcion": "Ataque que golpea dos veces."
+  },
+  "Pin Misil": {
+    "poder": 25,
+    "precision": 95,
+    "pp": 20,
+    "ppMax": 32,
+    "tipo": "Bicho",
+    "categoria": "fisico",
+    "efecto": {
+      "tipo": "multiGolpe",
+      "probabilidad": 100,
+      "descripcion": "Golpea de 2 a 5 veces por turno."
+    },
+    "contacto": false,
+    "descripcion": "Dispara púas varias veces."
+  },
+  "Destructor": {
+    "poder": 40,
+    "precision": 100,
+    "pp": 35,
+    "ppMax": 56,
+    "tipo": "Normal",
+    "categoria": "fisico",
+    "efecto": {
+      "tipo": null,
+      "probabilidad": 0,
+      "descripcion": null
+    },
+    "contacto": true,
+    "descripcion": "Ataque físico básico."
+  },
+  "Ataque Rápido": {
+    "poder": 40,
+    "precision": 100,
+    "pp": 30,
+    "ppMax": 48,
+    "tipo": "Normal",
+    "categoria": "fisico",
+    "efecto": {
+      "tipo": "golpePrioritario",
+      "probabilidad": 100,
+      "descripcion": "Este movimiento tiene prioridad alta."
+    },
+    "contacto": true,
+    "descripcion": "Ataque rápido con alta prioridad."
+  },
+  "Golpe Bajo": {
+    "poder": 70,
+    "precision": 100,
+    "pp": 15,
+    "ppMax": 24,
+    "tipo": "Siniestro",
+    "categoria": "fisico",
+    "efecto": {
+      "tipo": "bajarDefensa",
+      "probabilidad": 50,
+      "descripcion": "Puede bajar la Defensa del objetivo."
+    },
+    "contacto": true,
+    "descripcion": "Golpe bajo que puede bajar Defensa."
+  },
+  "Polvo Veneno": {
+    "poder": 0,
+    "precision": 75,
+    "pp": 35,
+    "ppMax": 56,
+    "tipo": "Veneno",
+    "categoria": "estado",
+    "efecto": {
+      "tipo": "envenenado",
+      "probabilidad": 100,
+      "descripcion": "Envenena al objetivo."
+    },
+    "contacto": false,
+    "descripcion": "Polvo venenoso que envenena al rival."
   }
 }
