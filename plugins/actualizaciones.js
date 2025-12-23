@@ -90,5 +90,5 @@ const handler = async (m, { conn, usedPrefix }) => {
 
 handler.help = ['actualizaciones', 'novedades', 'update']
 handler.tags = ['info']
-handler.command = ['actualizaciones', 'novedades', 'update', 'nuevo']
+handler.command = ['actualizaciones', 'novedades', 'nuevo']
 export default handler
