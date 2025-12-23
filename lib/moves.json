@@ -1034,5 +1034,1398 @@
     },
     "contacto": false,
     "descripcion": "Polvo venenoso que envenena al rival."
+  },
+  
+  "Picotazo": {
+    "nombre": "Picotazo",
+    "tipo": "volador",
+    "categoria": "fisico",
+    "potencia": 35,
+    "precision": 100,
+    "pp": 35,
+    "efecto": "Ataca con un picotazo."
+  },
+  "Furia": {
+    "nombre": "Furia",
+    "tipo": "normal",
+    "categoria": "fisico",
+    "potencia": 15,
+    "precision": 85,
+    "pp": 20,
+    "efecto": "Golpea al objetivo de 2 a 5 veces."
+  },
+  "Pico Taladro": {
+    "nombre": "Pico Taladro",
+    "tipo": "volador",
+    "categoria": "fisico",
+    "potencia": 80,
+    "precision": 100,
+    "pp": 20,
+    "efecto": "Ataca con un pico giratorio."
+  },
+  "Esfuerzo": {
+    "nombre": "Esfuerzo",
+    "tipo": "normal",
+    "categoria": "fisico",
+    "potencia": 120,
+    "precision": 100,
+    "pp": 15,
+    "efecto": "Ataca con gran fuerza pero reduce defensa."
+  },
+  "Golpe Aéreo": {
+    "nombre": "Golpe Aéreo",
+    "tipo": "volador",
+    "categoria": "fisico",
+    "potencia": 60,
+    "precision": 100,
+    "pp": 20,
+    "efecto": "Ataca desde el aire con gran velocidad."
+  },
+  "Supersónico": {
+    "nombre": "Supersónico",
+    "tipo": "normal",
+    "categoria": "estado",
+    "potencia": null,
+    "precision": 55,
+    "pp": 20,
+    "efecto": "Emite ondas sonoras que confunden."
+  },
+  
+  "Bofetón Lodo": {
+    "nombre": "Bofetón Lodo",
+    "tipo": "veneno",
+    "categoria": "especial",
+    "potencia": 20,
+    "precision": 100,
+    "pp": 10,
+    "efecto": "Lanza lodo que puede envenenar."
+  },
+  "Espabilar": {
+    "nombre": "Espabilar",
+    "tipo": "normal",
+    "categoria": "estado",
+    "potencia": null,
+    "precision": null,
+    "pp": 30,
+    "efecto": "Cura problemas de estado."
+  },
+  "Sumisión": {
+    "nombre": "Sumisión",
+    "tipo": "lucha",
+    "categoria": "fisico",
+    "potencia": 80,
+    "precision": 80,
+    "pp": 20,
+    "efecto": "Ataca con fuerza pero hiere al usuario."
+  },
+  "Puño Dinámico": {
+    "nombre": "Puño Dinámico",
+    "tipo": "lucha",
+    "categoria": "fisico",
+    "potencia": 100,
+    "precision": 50,
+    "pp": 5,
+    "efecto": "Golpe certero que siempre confunde."
+  },
+  "Canto": {
+    "nombre": "Canto",
+    "tipo": "normal",
+    "categoria": "estado",
+    "potencia": null,
+    "precision": 55,
+    "pp": 15,
+    "efecto": "Duerme al objetivo con una canción."
+  },
+  "Ácido": {
+    "nombre": "Ácido",
+    "tipo": "veneno",
+    "categoria": "especial",
+    "potencia": 40,
+    "precision": 100,
+    "pp": 30,
+    "efecto": "Lanza ácido que puede bajar defensa."
+  },
+  
+  "Salpicadura": {
+    "nombre": "Salpicadura",
+    "tipo": "normal",
+    "categoria": "estado",
+    "potencia": null,
+    "precision": null,
+    "pp": 40,
+    "efecto": "Salpica agua sin efecto."
+  },
+  "Ciclón": {
+    "nombre": "Ciclón",
+    "tipo": "dragón",
+    "categoria": "especial",
+    "potencia": 40,
+    "precision": 100,
+    "pp": 20,
+    "efecto": "Atrapa al objetivo en un ciclón."
+  },
+  
+  "Pantalla de Humo": {
+    "nombre": "Pantalla de Humo",
+    "tipo": "normal",
+    "categoria": "estado",
+    "potencia": null,
+    "precision": 100,
+    "pp": 20,
+    "efecto": "Reduce la precisión del objetivo."
+  },
+  "Salmuera": {
+    "nombre": "Salmuera",
+    "tipo": "agua",
+    "categoria": "especial",
+    "potencia": 65,
+    "precision": 100,
+    "pp": 10,
+    "efecto": "Más potente si el objetivo tiene poca vida."
+  },
+  "Cometa Draco": {
+    "nombre": "Cometa Draco",
+    "tipo": "dragón",
+    "categoria": "especial",
+    "potencia": 130,
+    "precision": 90,
+    "pp": 5,
+    "efecto": "Ataca con un cometa de energía dragón."
+  },
+  "Giro Rápido": {
+    "nombre": "Giro Rápido",
+    "tipo": "normal",
+    "categoria": "fisico",
+    "potencia": 50,
+    "precision": 100,
+    "pp": 40,
+    "efecto": "Gira rápido y puede escapar de movimientos."
+  },
+  "Acua Aro": {
+    "nombre": "Acua Aro",
+    "tipo": "agua",
+    "categoria": "especial",
+    "potencia": 80,
+    "precision": 100,
+    "pp": 10,
+    "efecto": "Ataca con un aro de agua."
+  },
+  "Absorber": {
+    "nombre": "Absorber",
+    "tipo": "planta",
+    "categoria": "especial",
+    "potencia": 20,
+    "precision": 100,
+    "pp": 25,
+    "efecto": "Absorbe vida del objetivo."
+  },
+
+  "Megaagotar": {
+    "nombre": "Megaagotar",
+    "tipo": "planta",
+    "categoria": "especial",
+    "potencia": 40,
+    "precision": 100,
+    "pp": 15,
+    "efecto": "Absorbe más vida que Absorber."
+  },
+  "Energibola": {
+    "nombre": "Energibola",
+    "tipo": "planta",
+    "categoria": "especial",
+    "potencia": 90,
+    "precision": 100,
+    "pp": 10,
+    "efecto": "Lanza una esfera de energía vegetal."
+  },
+  "Danza Lluvia": {
+    "nombre": "Danza Lluvia",
+    "tipo": "agua",
+    "categoria": "estado",
+    "potencia": null,
+    "precision": null,
+    "pp": 5,
+    "efecto": "Invoca lluvia por 5 turnos."
+  },
+  "Lanzarrocas": {
+    "nombre": "Lanzarrocas",
+    "tipo": "roca",
+    "categoria": "fisico",
+    "potencia": 50,
+    "precision": 90,
+    "pp": 15,
+    "efecto": "Lanza rocas al objetivo."
+  },
+  "Desenrollar": {
+    "nombre": "Desenrollar",
+    "tipo": "normal",
+    "categoria": "fisico",
+    "potencia": 30,
+    "precision": 100,
+    "pp": 20,
+    "efecto": "Ataca desenrollándose."
+  },
+  "Magnitud": {
+    "nombre": "Magnitud",
+    "tipo": "tierra",
+    "categoria": "fisico",
+    "potencia": null,
+    "precision": 100,
+    "pp": 30,
+    "efecto": "Terremoto de potencia variable."
+  },
+  "Roca Afilada": {
+    "nombre": "Roca Afilada",
+    "tipo": "roca",
+    "categoria": "fisico",
+    "potencia": 100,
+    "precision": 80,
+    "pp": 5,
+    "efecto": "Lanza rocas afiladas."
+  },
+  "Chupa Vidas": {
+    "nombre": "Chupa Vidas",
+    "tipo": "bicho",
+    "categoria": "fisico",
+    "potencia": 80,
+    "precision": 100,
+    "pp": 10,
+    "efecto": "Absorbe la mitad del daño causado."
+  },
+  "Aire Afilado": {
+    "nombre": "Aire Afilado",
+    "tipo": "volador",
+    "categoria": "especial",
+    "potencia": 75,
+    "precision": 95,
+    "pp": 15,
+    "efecto": "Corta con aire afilado."
+  },
+  "Colmillo Veneno": {
+    "nombre": "Colmillo Veneno",
+    "tipo": "veneno",
+    "categoria": "fisico",
+    "potencia": 50,
+    "precision": 100,
+    "pp": 15,
+    "efecto": "Muerde con colmillos venenosos."
+  },
+  "Veneno X": {
+    "nombre": "Veneno X",
+    "tipo": "veneno",
+    "categoria": "estado",
+    "potencia": null,
+    "precision": 90,
+    "pp": 10,
+    "efecto": "Envenena gravemente al objetivo."
+  },
+  "Patada Baja": {
+    "nombre": "Patada Baja",
+    "tipo": "lucha",
+    "categoria": "fisico",
+    "potencia": null,
+    "precision": 100,
+    "pp": 20,
+    "efecto": "Daño variable según peso del objetivo."
+  },
+  "Karate Chop": {
+    "nombre": "Karate Chop",
+    "tipo": "lucha",
+    "categoria": "fisico",
+    "potencia": 50,
+    "precision": 100,
+    "pp": 25,
+    "efecto": "Golpe de karate con alta probabilidad de crítico."
+  },
+  "Tiro Vital": {
+    "nombre": "Tiro Vital",
+    "tipo": "lucha",
+    "categoria": "fisico",
+    "potencia": 70,
+    "precision": 100,
+    "pp": 20,
+    "efecto": "Ataca con un tiro vital."
+  },
+  "A Bocajarro": {
+    "nombre": "A Bocajarro",
+    "tipo": "lucha",
+    "categoria": "fisico",
+    "potencia": 120,
+    "precision": 100,
+    "pp": 5,
+    "efecto": "Ataca con gran fuerza pero baja defensa."
+  },
+  "Atadura": {
+    "nombre": "Atadura",
+    "tipo": "normal",
+    "categoria": "fisico",
+    "potencia": 15,
+    "precision": 85,
+    "pp": 20,
+    "efecto": "Atrapa al objetivo de 2 a 5 turnos."
+  },
+  "Tumba Rocas": {
+    "nombre": "Tumba Rocas",
+    "tipo": "roca",
+    "categoria": "fisico",
+    "potencia": 60,
+    "precision": 95,
+    "pp": 15,
+    "efecto": "Lanza rocas que pueden bajar velocidad."
+  },
+  "Cola Férrea": {
+    "nombre": "Cola Férrea",
+    "tipo": "acero",
+    "categoria": "fisico",
+    "potencia": 100,
+    "precision": 75,
+    "pp": 15,
+    "efecto": "Golpea con cola de hierro."
+  },
+  "Cuerpo Pesado": {
+    "nombre": "Cuerpo Pesado",
+    "tipo": "acero",
+    "categoria": "fisico",
+    "potencia": 100,
+    "precision": 100,
+    "pp": 10,
+    "efecto": "Golpea con cuerpo pesado."
+  },
+  "Poder Pasado": {
+    "nombre": "Poder Pasado",
+    "tipo": "fantasma",
+    "categoria": "especial",
+    "potencia": 90,
+    "precision": 100,
+    "pp": 10,
+    "efecto": "Ataca con poder del pasado."
+  },
+  "Hiperrayo": {
+    "nombre": "Hiperrayo",
+    "tipo": "normal",
+    "categoria": "especial",
+    "potencia": 150,
+    "precision": 90,
+    "pp": 5,
+    "efecto": "Potente rayo que deja inmóvil al usuario."
+  },
+
+  "Derribo": {
+    "nombre": "Derribo",
+    "tipo": "normal",
+    "categoria": "fisico",
+    "potencia": 90,
+    "precision": 85,
+    "pp": 20,
+    "efecto": "Derriba al objetivo con fuerza."
+  },
+  "Defensa Férrea": {
+    "nombre": "Defensa Férrea",
+    "tipo": "acero",
+    "categoria": "estado",
+    "potencia": null,
+    "precision": null,
+    "pp": 15,
+    "efecto": "Aumenta mucho la defensa."
+  },
+  "Cuerpopesado": {
+    "nombre": "Cuerpopesado",
+    "tipo": "acero",
+    "categoria": "fisico",
+    "potencia": 120,
+    "precision": 100,
+    "pp": 10,
+    "efecto": "Golpea con cuerpo pesado."
+  },
+  "Testarazo": {
+    "nombre": "Testarazo",
+    "tipo": "roca",
+    "categoria": "fisico",
+    "potencia": 150,
+    "precision": 80,
+    "pp": 5,
+    "efecto": "Potente cabezazo que hiere al usuario."
+  },
+  "Fuerza Lunar": {
+    "nombre": "Fuerza Lunar",
+    "tipo": "hada",
+    "categoria": "especial",
+    "potencia": 95,
+    "precision": 100,
+    "pp": 15,
+    "efecto": "Ataca con poder lunar."
+  },
+  
+  "Viento Hielo": {
+    "nombre": "Viento Hielo",
+    "tipo": "hielo",
+    "categoria": "especial",
+    "potencia": 55,
+    "precision": 95,
+    "pp": 15,
+    "efecto": "Ataca con viento helado."
+  },
+  "Colmillo Hielo": {
+    "nombre": "Colmillo Hielo",
+    "tipo": "hielo",
+    "categoria": "fisico",
+    "potencia": 65,
+    "precision": 95,
+    "pp": 15,
+    "efecto": "Muerde con colmillos de hielo."
+  },
+  "Frío Agudo": {
+    "nombre": "Frío Agudo",
+    "tipo": "hielo",
+    "categoria": "especial",
+    "potencia": 50,
+    "precision": 100,
+    "pp": 25,
+    "efecto": "Ataca con frío intenso."
+  },
+  "Canto Helado": {
+    "nombre": "Canto Helado",
+    "tipo": "hielo",
+    "categoria": "estado",
+    "potencia": null,
+    "precision": 55,
+    "pp": 15,
+    "efecto": "Duerme al objetivo con canto helado."
+  },
+  "Bola Sombra": {
+    "nombre": "Bola Sombra",
+    "tipo": "fantasma",
+    "categoria": "especial",
+    "potencia": 80,
+    "precision": 100,
+    "pp": 15,
+    "efecto": "Lanza una bola sombría."
+  },
+  "Ventisca": {
+    "nombre": "Ventisca",
+    "tipo": "hielo",
+    "categoria": "especial",
+    "potencia": 110,
+    "precision": 70,
+    "pp": 5,
+    "efecto": "Crea una ventisca que puede congelar."
+  },
+  "Puño Hielo": {
+    "nombre": "Puño Hielo",
+    "tipo": "hielo",
+    "categoria": "fisico",
+    "potencia": 75,
+    "precision": 100,
+    "pp": 15,
+    "efecto": "Golpea con puño de hielo."
+  },
+  "Patada Salto Alta": {
+    "nombre": "Patada Salto Alta",
+    "tipo": "lucha",
+    "categoria": "fisico",
+    "potencia": 130,
+    "precision": 90,
+    "pp": 10,
+    "efecto": "Patada saltando alto."
+  },
+  "Mazazo": {
+    "nombre": "Mazazo",
+    "tipo": "hielo",
+    "categoria": "fisico",
+    "potencia": 100,
+    "precision": 90,
+    "pp": 10,
+    "efecto": "Golpea con un mazo de hielo."
+  },
+  "Cornada": {
+    "nombre": "Cornada",
+    "tipo": "normal",
+    "categoria": "fisico",
+    "potencia": 65,
+    "precision": 100,
+    "pp": 25,
+    "efecto": "Ataca con cuernos."
+  },
+  "Pisotón": {
+    "nombre": "Pisotón",
+    "tipo": "normal",
+    "categoria": "fisico",
+    "potencia": 65,
+    "precision": 100,
+    "pp": 20,
+    "efecto": "Pisa fuerte al objetivo."
+  },
+  "Perforador": {
+    "nombre": "Perforador",
+    "tipo": "tierra",
+    "categoria": "fisico",
+    "potencia": 80,
+    "precision": 95,
+    "pp": 10,
+    "efecto": "Perfora al objetivo con cuernos."
+  },
+  "Romperrocas": {
+    "nombre": "Romperrocas",
+    "tipo": "lucha",
+    "categoria": "fisico",
+    "potencia": 40,
+    "precision": 100,
+    "pp": 15,
+    "efecto": "Rompe rocas, efectivo contra roca/hielo."
+  },
+  "Brazo Pintxo": {
+    "nombre": "Brazo Pintxo",
+    "tipo": "roca",
+    "categoria": "fisico",
+    "potencia": 100,
+    "precision": 100,
+    "pp": 5,
+    "efecto": "Ataca con brazo de púas."
+  },
+  "Onda Trueno": {
+    "nombre": "Onda Trueno",
+    "tipo": "eléctrico",
+    "categoria": "especial",
+    "potencia": 60,
+    "precision": 100,
+    "pp": 20,
+    "efecto": "Ataca con onda eléctrica."
+  },
+  "Joya de Luz": {
+    "nombre": "Joya de Luz",
+    "tipo": "roca",
+    "categoria": "especial",
+    "potencia": 80,
+    "precision": 100,
+    "pp": 20,
+    "efecto": "Lanza joyas de luz."
+  },
+  "Rueda Fuego": {
+    "nombre": "Rueda Fuego",
+    "tipo": "fuego",
+    "categoria": "fisico",
+    "potencia": 60,
+    "precision": 100,
+    "pp": 25,
+    "efecto": "Ataca con rueda de fuego."
+  },
+  "Envite Ígneo": {
+    "nombre": "Envite Ígneo",
+    "tipo": "fuego",
+    "categoria": "fisico",
+    "potencia": 120,
+    "precision": 100,
+    "pp": 15,
+    "efecto": "Carga ígnea que hiere al usuario."
+  },
+  "Megacuerno": {
+    "nombre": "Megacuerno",
+    "tipo": "bicho",
+    "categoria": "fisico",
+    "potencia": 120,
+    "precision": 85,
+    "pp": 10,
+    "efecto": "Ataca con cuernos gigantes."
+  },
+  "Ala de Acero": {
+    "nombre": "Ala de Acero",
+    "tipo": "acero",
+    "categoria": "fisico",
+    "potencia": 70,
+    "precision": 90,
+    "pp": 25,
+    "efecto": "Golpea con alas de acero."
+  },
+  "Persecución": {
+    "nombre": "Persecución",
+    "tipo": "siniestro",
+    "categoria": "fisico",
+    "potencia": 40,
+    "precision": 100,
+    "pp": 20,
+    "efecto": "Ataca al objetivo que cambia."
+  },
+  "Tajo Umbrío": {
+    "nombre": "Tajo Umbrío",
+    "tipo": "siniestro",
+    "categoria": "fisico",
+    "potencia": 70,
+    "precision": 100,
+    "pp": 15,
+    "efecto": "Corta con tajo oscuro."
+  },
+  "Rencor": {
+    "nombre": "Rencor",
+    "tipo": "fantasma",
+    "categoria": "estado",
+    "potencia": null,
+    "precision": 100,
+    "pp": 5,
+    "efecto": "Reduce PP del último movimiento usado."
+  },
+  "Sombra Vil": {
+    "nombre": "Sombra Vil",
+    "tipo": "fantasma",
+    "categoria": "fisico",
+    "potencia": 40,
+    "precision": 100,
+    "pp": 30,
+    "efecto": "Ataca con sombras."
+  },
+  "Garra Sombría": {
+    "nombre": "Garra Sombría",
+    "tipo": "fantasma",
+    "categoria": "fisico",
+    "potencia": 70,
+    "precision": 100,
+    "pp": 15,
+    "efecto": "Ataca con garras sombrías."
+  },
+  "Infortunio": {
+    "nombre": "Infortunio",
+    "tipo": "fantasma",
+    "categoria": "estado",
+    "potencia": null,
+    "precision": 100,
+    "pp": 15,
+    "efecto": "Trae mala suerte al objetivo."
+  },
+  "Impresionar": {
+    "nombre": "Impresionar",
+    "tipo": "normal",
+    "categoria": "estado",
+    "potencia": null,
+    "precision": 100,
+    "pp": 15,
+    "efecto": "Asusta al objetivo."
+  },
+  "Puño Sombra": {
+    "nombre": "Puño Sombra",
+    "tipo": "fantasma",
+    "categoria": "fisico",
+    "potencia": 60,
+    "precision": 100,
+    "pp": 20,
+    "efecto": "Golpea con puño sombrío."
+  },
+  "Fuego Fatuo": {
+    "nombre": "Fuego Fatuo",
+    "tipo": "fuego",
+    "categoria": "estado",
+    "potencia": null,
+    "precision": 85,
+    "pp": 15,
+    "efecto": "Quema al objetivo."
+  },
+  "Poltergeist": {
+    "nombre": "Poltergeist",
+    "tipo": "fantasma",
+    "categoria": "fisico",
+    "potencia": 110,
+    "precision": 90,
+    "pp": 5,
+    "efecto": "Ataca con objetos fantasmales."
+  },
+  "Rapidez": {
+    "nombre": "Rapidez",
+    "tipo": "normal",
+    "categoria": "fisico",
+    "potencia": 80,
+    "precision": 100,
+    "pp": 5,
+    "efecto": "Ataca con gran velocidad."
+  },
+  "Pulso Umbrío": {
+    "nombre": "Pulso Umbrío",
+    "tipo": "siniestro",
+    "categoria": "especial",
+    "potencia": 80,
+    "precision": 100,
+    "pp": 15,
+    "efecto": "Ataca con pulso oscuro."
+  },
+  "Hoja Aguda": {
+    "nombre": "Hoja Aguda",
+    "tipo": "planta",
+    "categoria": "fisico",
+    "potencia": 55,
+    "precision": 95,
+    "pp": 25,
+    "efecto": "Corta con hojas afiladas."
+  },
+  "Voz Cautivadora": {
+    "nombre": "Voz Cautivadora",
+    "tipo": "hada",
+    "categoria": "especial",
+    "potencia": 40,
+    "precision": 100,
+    "pp": 15,
+    "efecto": "Ataca con voz encantadora."
+  },
+  "Carga": {
+    "nombre": "Carga",
+    "tipo": "eléctrico",
+    "categoria": "fisico",
+    "potencia": 50,
+    "precision": 100,
+    "pp": 20,
+    "efecto": "Carga eléctrica."
+  },
+  "Chispa": {
+    "nombre": "Chispa",
+    "tipo": "eléctrico",
+    "categoria": "fisico",
+    "potencia": 65,
+    "precision": 100,
+    "pp": 20,
+    "efecto": "Ataca con chispas que pueden paralizar."
+  },
+  "Bola Voltio": {
+    "nombre": "Bola Voltio",
+    "tipo": "eléctrico",
+    "categoria": "especial",
+    "potencia": 60,
+    "precision": 100,
+    "pp": 15,
+    "efecto": "Lanza bola eléctrica."
+  },
+  "Explosión": {
+    "nombre": "Explosión",
+    "tipo": "normal",
+    "categoria": "fisico",
+    "potencia": 250,
+    "precision": 100,
+    "pp": 5,
+    "efecto": "Explota causando gran daño."
+  },
+  "Voltio Cruel": {
+    "nombre": "Voltio Cruel",
+    "tipo": "eléctrico",
+    "categoria": "fisico",
+    "potencia": 90,
+    "precision": 100,
+    "pp": 15,
+    "efecto": "Ataca con voltaje cruel."
+  },
+  "Giga Impacto": {
+    "nombre": "Giga Impacto",
+    "tipo": "normal",
+    "categoria": "fisico",
+    "potencia": 150,
+    "precision": 90,
+    "pp": 5,
+    "efecto": "Potente ataque que deja inmóvil."
+  },
+  "Bomba Imán": {
+    "nombre": "Bomba Imán",
+    "tipo": "acero",
+    "categoria": "especial",
+    "potencia": 60,
+    "precision": 100,
+    "pp": 20,
+    "efecto": "Lanza bomba magnética."
+  },
+  "Triataque": {
+    "nombre": "Triataque",
+    "tipo": "normal",
+    "categoria": "especial",
+    "potencia": 80,
+    "precision": 100,
+    "pp": 10,
+    "efecto": "Ataque triple que puede causar problemas."
+  },
+  "Foco Resplandor": {
+    "nombre": "Foco Resplandor",
+    "tipo": "acero",
+    "categoria": "especial",
+    "potencia": 80,
+    "precision": 100,
+    "pp": 10,
+    "efecto": "Enfoca energía luminosa."
+  },
+  "Electrocañón": {
+    "nombre": "Electrocañón",
+    "tipo": "eléctrico",
+    "categoria": "especial",
+    "potencia": 100,
+    "precision": 50,
+    "pp": 5,
+    "efecto": "Potente cañón eléctrico."
+  },
+  "Conversión": {
+    "nombre": "Conversión",
+    "tipo": "normal",
+    "categoria": "estado",
+    "potencia": null,
+    "precision": null,
+    "pp": 30,
+    "efecto": "Cambia tipo al del primer movimiento."
+  },
+  "Chispazo": {
+    "nombre": "Chispazo",
+    "tipo": "eléctrico",
+    "categoria": "fisico",
+    "potencia": 65,
+    "precision": 100,
+    "pp": 20,
+    "efecto": "Ataca con chispas."
+  },
+  "Finta": {
+    "nombre": "Finta",
+    "tipo": "siniestro",
+    "categoria": "fisico",
+    "potencia": 30,
+    "precision": 100,
+    "pp": 20,
+    "efecto": "Ataca por sorpresa."
+  },
+  "Ataque Arena": {
+    "nombre": "Ataque Arena",
+    "tipo": "tierra",
+    "categoria": "especial",
+    "potencia": 55,
+    "precision": 95,
+    "pp": 15,
+    "efecto": "Lanza arena a los ojos."
+  },
+  "Cuchillada": {
+    "nombre": "Cuchillada",
+    "tipo": "normal",
+    "categoria": "fisico",
+    "potencia": 70,
+    "precision": 100,
+    "pp": 20,
+    "efecto": "Corta con cuchillada."
+  },
+  "Paralizador": {
+    "nombre": "Paralizador",
+    "tipo": "planta",
+    "categoria": "estado",
+    "potencia": null,
+    "precision": 75,
+    "pp": 30,
+    "efecto": "Puede paralizar al objetivo."
+  },
+  "Ultrapuño": {
+    "nombre": "Ultrapuño",
+    "tipo": "lucha",
+    "categoria": "fisico",
+    "potencia": 40,
+    "precision": 100,
+    "pp": 30,
+    "efecto": "Golpea muy rápido."
+  },
+  "Bomba Germen": {
+    "nombre": "Bomba Germen",
+    "tipo": "planta",
+    "categoria": "especial",
+    "potencia": 90,
+    "precision": 100,
+    "pp": 15,
+    "efecto": "Lanza bomba de esporas."
+  },
+  "Bucle Arena": {
+    "nombre": "Bucle Arena",
+    "tipo": "tierra",
+    "categoria": "especial",
+    "potencia": 35,
+    "precision": 85,
+    "pp": 15,
+    "efecto": "Atrapa en bucle de arena."
+  },
+  "Carga Dragón": {
+    "nombre": "Carga Dragón",
+    "tipo": "dragón",
+    "categoria": "fisico",
+    "potencia": 100,
+    "precision": 75,
+    "pp": 10,
+    "efecto": "Carga como un dragón."
+  },
+  "Sorpresa": {
+    "nombre": "Sorpresa",
+    "tipo": "normal",
+    "categoria": "fisico",
+    "potencia": 70,
+    "precision": 100,
+    "pp": 20,
+    "efecto": "Ataca por sorpresa."
+  },
+  "Patada Salto": {
+    "nombre": "Patada Salto",
+    "tipo": "lucha",
+    "categoria": "fisico",
+    "potencia": 100,
+    "precision": 95,
+    "pp": 10,
+    "efecto": "Patada saltando."
+  },
+  "Puño Mareo": {
+    "nombre": "Puño Mareo",
+    "tipo": "normal",
+    "categoria": "fisico",
+    "potencia": 70,
+    "precision": 100,
+    "pp": 10,
+    "efecto": "Golpea causando mareo."
+  },
+  "Hoja Mágica": {
+    "nombre": "Hoja Mágica",
+    "tipo": "planta",
+    "categoria": "especial",
+    "potencia": 60,
+    "precision": null,
+    "pp": 20,
+    "efecto": "Ataca con hojas mágicas que no fallan."
+  },
+  "Tormenta de Hojas": {
+    "nombre": "Tormenta de Hojas",
+    "tipo": "planta",
+    "categoria": "especial",
+    "potencia": 130,
+    "precision": 90,
+    "pp": 5,
+    "efecto": "Tormenta de hojas que baja ataque especial."
+  },
+  "Autodestrucción": {
+    "nombre": "Autodestrucción",
+    "tipo": "normal",
+    "categoria": "fisico",
+    "potencia": 200,
+    "precision": 100,
+    "pp": 5,
+    "efecto": "Se autodestruye causando gran daño."
+  },
+  "Al Ataque": {
+    "nombre": "Al Ataque",
+    "tipo": "bicho",
+    "categoria": "fisico",
+    "potencia": 90,
+    "precision": 100,
+    "pp": 15,
+    "efecto": "Ataca con ferocidad."
+  },
+  "Drenadoras": {
+    "nombre": "Drenadoras",
+    "tipo": "planta",
+    "categoria": "especial",
+    "potencia": 75,
+    "precision": 100,
+    "pp": 10,
+    "efecto": "Drena energía del objetivo."
+  },
+  "Refugio": {
+    "nombre": "Refugio",
+    "tipo": "normal",
+    "categoria": "estado",
+    "potencia": null,
+    "precision": null,
+    "pp": 40,
+    "efecto": "Aumenta mucho la defensa."
+  },
+  "Corte": {
+    "nombre": "Corte",
+    "tipo": "normal",
+    "categoria": "fisico",
+    "potencia": 50,
+    "precision": 95,
+    "pp": 30,
+    "efecto": "Corta con filo."
+  },
+  "Acua Jet": {
+    "nombre": "Acua Jet",
+    "tipo": "agua",
+    "categoria": "fisico",
+    "potencia": 40,
+    "precision": 100,
+    "pp": 20,
+    "efecto": "Ataca con chorro de agua rápido."
+  },
+  "Constricción": {
+    "nombre": "Constricción",
+    "tipo": "normal",
+    "categoria": "fisico",
+    "potencia": 10,
+    "precision": 100,
+    "pp": 35,
+    "efecto": "Constriñe al objetivo."
+  },
+  "Gigadrenado": {
+    "nombre": "Gigadrenado",
+    "tipo": "planta",
+    "categoria": "especial",
+    "potencia": 75,
+    "precision": 100,
+    "pp": 10,
+    "efecto": "Drena mucha energía."
+  },
+  "Tijera X": {
+    "nombre": "Tijera X",
+    "tipo": "bicho",
+    "categoria": "fisico",
+    "potencia": 80,
+    "precision": 100,
+    "pp": 15,
+    "efecto": "Corta con tijeras."
+  },
+  "Garra Metal": {
+    "nombre": "Garra Metal",
+    "tipo": "acero",
+    "categoria": "fisico",
+    "potencia": 50,
+    "precision": 95,
+    "pp": 35,
+    "efecto": "Ataca con garras metálicas."
+  },
+  "Puño Meteoro": {
+    "nombre": "Puño Meteoro",
+    "tipo": "acero",
+    "categoria": "fisico",
+    "potencia": 90,
+    "precision": 90,
+    "pp": 10,
+    "efecto": "Golpea con puño meteórico."
+  },
+  "Protección": {
+    "nombre": "Protección",
+    "tipo": "normal",
+    "categoria": "estado",
+    "potencia": null,
+    "precision": null,
+    "pp": 10,
+    "efecto": "Protege de ataques."
+  },
+  "Ataque Aéreo": {
+    "nombre": "Ataque Aéreo",
+    "tipo": "volador",
+    "categoria": "fisico",
+    "potencia": 140,
+    "precision": 90,
+    "pp": 5,
+    "efecto": "Potente ataque aéreo."
+  },
+  "Acua Cola": {
+    "nombre": "Acua Cola",
+    "tipo": "agua",
+    "categoria": "fisico",
+    "potencia": 90,
+    "precision": 90,
+    "pp": 10,
+    "efecto": "Golpea con cola de agua."
+  },
+  "Enfado": {
+    "nombre": "Enfado",
+    "tipo": "dragón",
+    "categoria": "fisico",
+    "potencia": 120,
+    "precision": 100,
+    "pp": 10,
+    "efecto": "Ataca enfurecido."
+  },
+  "Metrónomo": {
+    "nombre": "Metrónomo",
+    "tipo": "normal",
+    "categoria": "estado",
+    "potencia": null,
+    "precision": null,
+    "pp": 10,
+    "efecto": "Usa un movimiento al azar."
+  },
+  "Colmillo Ígneo": {
+    "nombre": "Colmillo Ígneo",
+    "tipo": "fuego",
+    "categoria": "fisico",
+    "potencia": 65,
+    "precision": 95,
+    "pp": 15,
+    "efecto": "Muerde con colmillos de fuego."
+  },
+  "Erupción": {
+    "nombre": "Erupción",
+    "tipo": "fuego",
+    "categoria": "especial",
+    "potencia": 150,
+    "precision": 100,
+    "pp": 5,
+    "efecto": "Potente erupción de fuego."
+  },
+  "Rayo Burbuja": {
+    "nombre": "Rayo Burbuja",
+    "tipo": "agua",
+    "categoria": "especial",
+    "potencia": 65,
+    "precision": 100,
+    "pp": 20,
+    "efecto": "Ataca con rayo de burbujas."
+  },
+  "Aerochorro": {
+    "nombre": "Aerochorro",
+    "tipo": "volador",
+    "categoria": "especial",
+    "potencia": 100,
+    "precision": 95,
+    "pp": 5,
+    "efecto": "Ataca con chorro aéreo."
+  },
+  "Fuego Sagrado": {
+    "nombre": "Fuego Sagrado",
+    "tipo": "fuego",
+    "categoria": "especial",
+    "potencia": 100,
+    "precision": 95,
+    "pp": 5,
+    "efecto": "Fuego sagrado que puede quemar."
+  },
+  "Cura Natural": {
+    "nombre": "Cura Natural",
+    "tipo": "planta",
+    "categoria": "estado",
+    "potencia": null,
+    "precision": null,
+    "pp": 10,
+    "efecto": "Cura problemas de estado."
+  },
+  "Neblina Purificadora": {
+    "nombre": "Neblina Purificadora",
+    "tipo": "psíquico",
+    "categoria": "estado",
+    "potencia": null,
+    "precision": null,
+    "pp": 30,
+    "efecto": "Limpia cambios de estado del equipo."
+  },
+  "Resplandor": {
+    "nombre": "Resplandor",
+    "tipo": "psíquico",
+    "categoria": "especial",
+    "potencia": 70,
+    "precision": 100,
+    "pp": 5,
+    "efecto": "Ataca con resplandor."
+  },
+  "Primigenio": {
+    "nombre": "Primigenio",
+    "tipo": "agua",
+    "categoria": "especial",
+    "potencia": 110,
+    "precision": 85,
+    "pp": 10,
+    "efecto": "Ataque primordial del mar."
+  },
+  "Filo del Abismo": {
+    "nombre": "Filo del Abismo",
+    "tipo": "tierra",
+    "categoria": "fisico",
+    "potencia": 120,
+    "precision": 85,
+    "pp": 10,
+    "efecto": "Ataque primordial de la tierra."
+  },
+  "Deseo": {
+    "nombre": "Deseo",
+    "tipo": "normal",
+    "categoria": "estado",
+    "potencia": null,
+    "precision": null,
+    "pp": 10,
+    "efecto": "Cura al equipo en el siguiente turno."
+  },
+  "Deseo Oculto": {
+    "nombre": "Deseo Oculto",
+    "tipo": "acero",
+    "categoria": "fisico",
+    "potencia": 140,
+    "precision": 100,
+    "pp": 5,
+    "efecto": "Ataca con deseo oculto."
+  },
+  "Psicoataque": {
+    "nombre": "Psicoataque",
+    "tipo": "psíquico",
+    "categoria": "especial",
+    "potencia": 100,
+    "precision": 100,
+    "pp": 10,
+    "efecto": "Potente ataque psíquico."
+  },
+  "Distorsión": {
+    "nombre": "Distorsión",
+    "tipo": "dragón",
+    "categoria": "especial",
+    "potencia": 90,
+    "precision": 100,
+    "pp": 5,
+    "efecto": "Ataca distorsionando el tiempo."
+  },
+  "Corte Vacío": {
+    "nombre": "Corte Vacío",
+    "tipo": "dragón",
+    "categoria": "especial",
+    "potencia": 100,
+    "precision": 95,
+    "pp": 5,
+    "efecto": "Corta el espacio."
+  },
+  "Golpe Umbrío": {
+    "nombre": "Golpe Umbrío",
+    "tipo": "fantasma",
+    "categoria": "fisico",
+    "potencia": 120,
+    "precision": 100,
+    "pp": 5,
+    "efecto": "Golpe oscuro y potente."
+  },
+  "Brecha Negra": {
+    "nombre": "Brecha Negra",
+    "tipo": "siniestro",
+    "categoria": "especial",
+    "potencia": 80,
+    "precision": 100,
+    "pp": 15,
+    "efecto": "Crea una brecha negra."
+  },
+  "Sentencia": {
+    "nombre": "Sentencia",
+    "tipo": "normal",
+    "categoria": "especial",
+    "potencia": 100,
+    "precision": 100,
+    "pp": 10,
+    "efecto": "Ataca con sentencia divina."
+  },
+  "Ataque Ígneo": {
+    "nombre": "Ataque Ígneo",
+    "tipo": "fuego",
+    "categoria": "especial",
+    "potencia": 80,
+    "precision": 100,
+    "pp": 15,
+    "efecto": "Ataque ígneo."
+  },
+  "V de Fuego": {
+    "nombre": "V de Fuego",
+    "tipo": "fuego",
+    "categoria": "especial",
+    "potencia": 180,
+    "precision": 95,
+    "pp": 5,
+    "efecto": "Potente ataque en V de fuego."
+  },
+  "Ataque Fulgor": {
+    "nombre": "Ataque Fulgor",
+    "tipo": "dragón",
+    "categoria": "especial",
+    "potencia": 100,
+    "precision": 100,
+    "pp": 5,
+    "efecto": "Ataque fulgurante."
+  },
+  "Llama Azul": {
+    "nombre": "Llama Azul",
+    "tipo": "fuego",
+    "categoria": "especial",
+    "potencia": 130,
+    "precision": 85,
+    "pp": 5,
+    "efecto": "Potente llama azul."
+  },
+  "Mundo Gélido": {
+    "nombre": "Mundo Gélido",
+    "tipo": "hielo",
+    "categoria": "especial",
+    "potencia": 65,
+    "precision": 95,
+    "pp": 10,
+    "efecto": "Congela el mundo alrededor."
+  },
+  "Geocontrol": {
+    "nombre": "Geocontrol",
+    "tipo": "hada",
+    "categoria": "especial",
+    "potencia": 80,
+    "precision": 100,
+    "pp": 10,
+    "efecto": "Controla la energía de la tierra."
+  },
+  "Ala Mortífera": {
+    "nombre": "Ala Mortífera",
+    "tipo": "siniestro",
+    "categoria": "fisico",
+    "potencia": 80,
+    "precision": 100,
+    "pp": 15,
+    "efecto": "Ataca con alas mortíferas."
+  },
+  "Fuerza Telúrica": {
+    "nombre": "Fuerza Telúrica",
+    "tipo": "tierra",
+    "categoria": "especial",
+    "potencia": 90,
+    "precision": 100,
+    "pp": 10,
+    "efecto": "Ataca con fuerza telúrica."
+  },
+  "Núcleo Castigo": {
+    "nombre": "Núcleo Castigo",
+    "tipo": "dragón",
+    "categoria": "especial",
+    "potencia": 100,
+    "precision": 100,
+    "pp": 10,
+    "efecto": "Castiga con energía del núcleo."
+  },
+  "Meteoimpacto": {
+    "nombre": "Meteoimpacto",
+    "tipo": "psíquico",
+    "categoria": "fisico",
+    "potencia": 150,
+    "precision": 90,
+    "pp": 5,
+    "efecto": "Impacto meteórico."
+  },
+  "Cabezazo Zen": {
+    "nombre": "Cabezazo Zen",
+    "tipo": "psíquico",
+    "categoria": "fisico",
+    "potencia": 80,
+    "precision": 90,
+    "pp": 15,
+    "efecto": "Cabezazo zen."
+  },
+  "Rayo Umbrío": {
+    "nombre": "Rayo Umbrío",
+    "tipo": "fantasma",
+    "categoria": "especial",
+    "potencia": 100,
+    "precision": 100,
+    "pp": 5,
+    "efecto": "Rayo oscuro."
+  },
+  "Láser Prisma": {
+    "nombre": "Láser Prisma",
+    "tipo": "psíquico",
+    "categoria": "especial",
+    "potencia": 160,
+    "precision": 100,
+    "pp": 10,
+    "efecto": "Láser de prisma."
+  },
+  "Garra Umbría": {
+    "nombre": "Garra Umbría",
+    "tipo": "siniestro",
+    "categoria": "fisico",
+    "potencia": 85,
+    "precision": 100,
+    "pp": 10,
+    "efecto": "Ataca con garras umbrías."
+  },
+  "Caudal Dragón": {
+    "nombre": "Caudal Dragón",
+    "tipo": "dragón",
+    "categoria": "especial",
+    "potencia": 100,
+    "precision": 95,
+    "pp": 5,
+    "efecto": "Caudal de dragón."
   }
 }
