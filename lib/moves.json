@@ -1,46 +1,234 @@
 {
-  "Placaje": { "poder": 40, "tipo": "Normal" },
-  "Arañazo": { "poder": 40, "tipo": "Normal" },
-  "Látigo Cepa": { "poder": 45, "tipo": "Planta" },
-  "Ascuas": { "poder": 40, "tipo": "Fuego" },
-  "Pistola Agua": { "poder": 40, "tipo": "Agua" },
-  "Impactrueno": { "poder": 40, "tipo": "Electrico" },
-  "Tornado": { "poder": 40, "tipo": "Volador" },
-  "Ataque Ala": { "poder": 60, "tipo": "Volador" },
-  "Picadura": { "poder": 60, "tipo": "Bicho" },
-  "Confusión": { "poder": 50, "tipo": "Psiquico" },
-  "Psíquico": { "poder": 90, "tipo": "Psiquico" },
-  "Lanzallamas": { "poder": 90, "tipo": "Fuego" },
-  "Hidrobomba": { "poder": 110, "tipo": "Agua" },
-  "Burbuja": { "poder": 40, "tipo": "Agua" },
-  "Hoja Afilada": { "poder": 55, "tipo": "Planta" },
-  "Rayo": { "poder": 90, "tipo": "Electrico" },
-  "Mordisco": { "poder": 60, "tipo": "Siniestro" },
-  "Residuos": { "poder": 65, "tipo": "Veneno" },
-  "Tajo Supremo": { "poder": 100, "tipo": "Acero" },
-  "Carantoña": { "poder": 90, "tipo": "Hada" },
-  "Embate Supremo": { "poder": 100, "tipo": "Acero" },
-  "A bocajarro": { "poder": 120, "tipo": "Lucha" },
-  "Vuelo": { "poder": 90, "tipo": "Volador" },
-  "Excavar": { "poder": 80, "tipo": "Tierra" },
-  "Avalancha": { "poder": 75, "tipo": "Roca" },
-  "Sombra Bola": { "poder": 80, "tipo": "Fantasma" },
-  "Pulso Dragón": { "poder": 85, "tipo": "Dragon" },
-  "Puño Incremento": { "poder": 40, "tipo": "Lucha" },
-  "Rayo Hielo": { "poder": 90, "tipo": "Hielo" },
-  "Terremoto": { "poder": 100, "tipo": "Tierra" },
-  "Fuerza Bruta": { "poder": 120, "tipo": "Lucha" },
-  "Pájaro Osado": { "poder": 120, "tipo": "Volador" },
-  "Danza Llama": { "poder": 80, "tipo": "Fuego" },
-  "Rayo Solar": { "poder": 120, "tipo": "Planta" },
-  "Trueno": { "poder": 110, "tipo": "Electrico" },
-  "Psicocorte": { "poder": 70, "tipo": "Psiquico" },
-  "Triturar": { "poder": 80, "tipo": "Siniestro" },
-  "Cabeza de Hierro": { "poder": 80, "tipo": "Acero" },
-  "Brillo Mágico": { "poder": 80, "tipo": "Hada" },
-  "Dracoaliento": { "poder": 60, "tipo": "Dragon" },
-  "Nieve Polvo": { "poder": 40, "tipo": "Hielo" },
-  "Remolino": { "poder": 0, "tipo": "Normal" },
-  "Gruñido": { "poder": 0, "tipo": "Normal" },
-  "Malicioso": { "poder": 0, "tipo": "Normal" }
+  "Placaje": {
+    "poder": 40,
+    "tipo": "Normal"
+  },
+  "Arañazo": {
+    "poder": 40,
+    "tipo": "Normal"
+  },
+  "Látigo Cepa": {
+    "poder": 45,
+    "tipo": "Planta"
+  },
+  "Ascuas": {
+    "poder": 40,
+    "tipo": "Fuego"
+  },
+  "Pistola Agua": {
+    "poder": 40,
+    "tipo": "Agua"
+  },
+  "Impactrueno": {
+    "poder": 40,
+    "tipo": "Eléctrico"
+  },
+  "Tornado": {
+    "poder": 40,
+    "tipo": "Volador"
+  },
+  "Ataque Ala": {
+    "poder": 60,
+    "tipo": "Volador"
+  },
+  "Picadura": {
+    "poder": 60,
+    "tipo": "Bicho"
+  },
+  "Confusión": {
+    "poder": 50,
+    "tipo": "Psíquico"
+  },
+  "Psíquico": {
+    "poder": 90,
+    "tipo": "Psíquico"
+  },
+  "Lanzallamas": {
+    "poder": 90,
+    "tipo": "Fuego"
+  },
+  "Hidrobomba": {
+    "poder": 110,
+    "tipo": "Agua"
+  },
+  "Burbuja": {
+    "poder": 40,
+    "tipo": "Agua"
+  },
+  "Hoja Afilada": {
+    "poder": 55,
+    "tipo": "Planta"
+  },
+  "Rayo": {
+    "poder": 90,
+    "tipo": "Eléctrico"
+  },
+  "Mordisco": {
+    "poder": 60,
+    "tipo": "Siniestro"
+  },
+  "Residuos": {
+    "poder": 65,
+    "tipo": "Veneno"
+  },
+  "Tajo Supremo": {
+    "poder": 100,
+    "tipo": "Acero"
+  },
+  "Carantoña": {
+    "poder": 90,
+    "tipo": "Hada"
+  },
+  "Embate Supremo": {
+    "poder": 100,
+    "tipo": "Acero"
+  },
+  "A bocajarro": {
+    "poder": 120,
+    "tipo": "Lucha"
+  },
+  "Vuelo": {
+    "poder": 90,
+    "tipo": "Volador"
+  },
+  "Excavar": {
+    "poder": 80,
+    "tipo": "Tierra"
+  },
+  "Avalancha": {
+    "poder": 75,
+    "tipo": "Roca"
+  },
+  "Sombra Bola": {
+    "poder": 80,
+    "tipo": "Fantasma"
+  },
+  "Pulso Dragón": {
+    "poder": 85,
+    "tipo": "Dragón"
+  },
+  "Puño Incremento": {
+    "poder": 40,
+    "tipo": "Lucha"
+  },
+  "Rayo Hielo": {
+    "poder": 90,
+    "tipo": "Hielo"
+  },
+  "Terremoto": {
+    "poder": 100,
+    "tipo": "Tierra"
+  },
+  "Fuerza Bruta": {
+    "poder": 120,
+    "tipo": "Lucha"
+  },
+  "Pájaro Osado": {
+    "poder": 120,
+    "tipo": "Volador"
+  },
+  "Danza Llama": {
+    "poder": 80,
+    "tipo": "Fuego"
+  },
+  "Rayo Solar": {
+    "poder": 120,
+    "tipo": "Planta"
+  },
+  "Trueno": {
+    "poder": 110,
+    "tipo": "Eléctrico"
+  },
+  "Psicocorte": {
+    "poder": 70,
+    "tipo": "Psíquico"
+  },
+  "Triturar": {
+    "poder": 80,
+    "tipo": "Siniestro"
+  },
+  "Cabeza de Hierro": {
+    "poder": 80,
+    "tipo": "Acero"
+  },
+  "Brillo Mágico": {
+    "poder": 80,
+    "tipo": "Hada"
+  },
+  "Dracoaliento": {
+    "poder": 60,
+    "tipo": "Dragón"
+  },
+  "Nieve Polvo": {
+    "poder": 40,
+    "tipo": "Hielo"
+  },
+  "Remolino": {
+    "poder": 0,
+    "tipo": "Normal"
+  },
+  "Gruñido": {
+    "poder": 0,
+    "tipo": "Normal"
+  },
+  "Malicioso": {
+    "poder": 0,
+    "tipo": "Normal"
+  },
+  "Cañón Dinámico": {
+    "poder": 120,
+    "tipo": "Acero"
+  },
+  "Rayo Infinito": {
+    "poder": 160,
+    "tipo": "Dragón"
+  },
+  "Garra Dragón": {
+    "poder": 80,
+    "tipo": "Dragón"
+  },
+  "Danza Pétalo": {
+    "poder": 120,
+    "tipo": "Planta"
+  },
+  "Bomba Lodo": {
+    "poder": 90,
+    "tipo": "Veneno"
+  },
+  "Surf": {
+    "poder": 90,
+    "tipo": "Agua"
+  },
+  "Puño Trueno": {
+    "poder": 75,
+    "tipo": "Eléctrico"
+  },
+  "Onda Mental": {
+    "poder": 100,
+    "tipo": "Psíquico"
+  },
+  "Esfera Aural": {
+    "poder": 80,
+    "tipo": "Lucha"
+  },
+  "Velocidad Extrema": {
+    "poder": 80,
+    "tipo": "Normal"
+  },
+  "Ascenso Draco": {
+    "poder": 120,
+    "tipo": "Volador"
+  },
+  "Infierno": {
+    "poder": 100,
+    "tipo": "Fuego"
+  },
+  "Danza Dragón": {
+    "poder": 0,
+    "tipo": "Dragón"
+  },
+  "Recuperación": {
+    "poder": 0,
+    "tipo": "Normal"
+  }
 }

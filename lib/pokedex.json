@@ -2,7 +2,20 @@
   "10": {
     "nombre": "Pidgey",
     "tipos": ["Normal", "Volador"],
-    "statsBase": { "hp": 40, "ataque": 45, "defensa": 40, "velocidad": 56 },
+    "habilidad": "Vista Lince",
+    "habilidad_oculta": "Tumbos",
+    "grupo_huevo": ["Volador"],
+    "ratio_captura": 255,
+    "ratio_genero": 0.5,
+    "base_experiencia": 50,
+    "statsBase": {
+      "hp": 40,
+      "ataque": 45,
+      "defensa": 40,
+      "ataqueEspecial": 35,
+      "defensaEspecial": 35,
+      "velocidad": 56
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Tornado", "daño": 40, "tipo": "Volador" },
       { "nivel": 12, "nombre": "Ataque Ala", "daño": 60, "tipo": "Volador" }
@@ -14,7 +27,20 @@
   "11": {
     "nombre": "Pidgeotto",
     "tipos": ["Normal", "Volador"],
-    "statsBase": { "hp": 63, "ataque": 60, "defensa": 55, "velocidad": 71 },
+    "habilidad": "Vista Lince",
+    "habilidad_oculta": "Tumbos",
+    "grupo_huevo": ["Volador"],
+    "ratio_captura": 120,
+    "ratio_genero": 0.5,
+    "base_experiencia": 122,
+    "statsBase": {
+      "hp": 63,
+      "ataque": 60,
+      "defensa": 55,
+      "ataqueEspecial": 50,
+      "defensaEspecial": 50,
+      "velocidad": 71
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Tornado", "daño": 40, "tipo": "Volador" },
       { "nivel": 22, "nombre": "Remolino", "daño": 0, "tipo": "Normal" }
@@ -26,7 +52,20 @@
   "12": {
     "nombre": "Pidgeot",
     "tipos": ["Normal", "Volador"],
-    "statsBase": { "hp": 83, "ataque": 80, "defensa": 75, "velocidad": 101 },
+    "habilidad": "Vista Lince",
+    "habilidad_oculta": "Tumbos",
+    "grupo_huevo": ["Volador"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.5,
+    "base_experiencia": 216,
+    "statsBase": {
+      "hp": 83,
+      "ataque": 80,
+      "defensa": 75,
+      "ataqueEspecial": 70,
+      "defensaEspecial": 70,
+      "velocidad": 101
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Ataque Ala", "daño": 60, "tipo": "Volador" },
       { "nivel": 44, "nombre": "Vendaval", "daño": 110, "tipo": "Volador" }
@@ -37,7 +76,20 @@
   "13": {
     "nombre": "Rattata",
     "tipos": ["Normal"],
-    "statsBase": { "hp": 30, "ataque": 56, "defensa": 35, "velocidad": 72 },
+    "habilidad": "Fuga",
+    "habilidad_oculta": "Agallas",
+    "grupo_huevo": ["Campo"],
+    "ratio_captura": 255,
+    "ratio_genero": 0.5,
+    "base_experiencia": 51,
+    "statsBase": {
+      "hp": 30,
+      "ataque": 56,
+      "defensa": 35,
+      "ataqueEspecial": 25,
+      "defensaEspecial": 35,
+      "velocidad": 72
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Placaje", "daño": 40, "tipo": "Normal" },
       { "nivel": 10, "nombre": "Ataque Rápido", "daño": 40, "tipo": "Normal" }
@@ -49,7 +101,20 @@
   "14": {
     "nombre": "Raticate",
     "tipos": ["Normal"],
-    "statsBase": { "hp": 55, "ataque": 81, "defensa": 60, "velocidad": 97 },
+    "habilidad": "Fuga",
+    "habilidad_oculta": "Agallas",
+    "grupo_huevo": ["Campo"],
+    "ratio_captura": 127,
+    "ratio_genero": 0.5,
+    "base_experiencia": 145,
+    "statsBase": {
+      "hp": 55,
+      "ataque": 81,
+      "defensa": 60,
+      "ataqueEspecial": 50,
+      "defensaEspecial": 70,
+      "velocidad": 97
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Mordisco", "daño": 60, "tipo": "Siniestro" },
       { "nivel": 24, "nombre": "Golpe Bajo", "daño": 70, "tipo": "Siniestro" }
@@ -60,7 +125,20 @@
   "15": {
     "nombre": "Caterpie",
     "tipos": ["Bicho"],
-    "statsBase": { "hp": 45, "ataque": 30, "defensa": 35, "velocidad": 45 },
+    "habilidad": "Polvo Escudo",
+    "habilidad_oculta": "Fuga",
+    "grupo_huevo": ["Bicho"],
+    "ratio_captura": 255,
+    "ratio_genero": 0.5,
+    "base_experiencia": 39,
+    "statsBase": {
+      "hp": 45,
+      "ataque": 30,
+      "defensa": 35,
+      "ataqueEspecial": 20,
+      "defensaEspecial": 20,
+      "velocidad": 45
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Placaje", "daño": 40, "tipo": "Normal" },
       { "nivel": 6, "nombre": "Disparo Demora", "daño": 0, "tipo": "Bicho" }
@@ -72,7 +150,19 @@
   "16": {
     "nombre": "Metapod",
     "tipos": ["Bicho"],
-    "statsBase": { "hp": 50, "ataque": 20, "defensa": 55, "velocidad": 30 },
+    "habilidad": "Mudar",
+    "grupo_huevo": ["Bicho"],
+    "ratio_captura": 120,
+    "ratio_genero": 0.5,
+    "base_experiencia": 72,
+    "statsBase": {
+      "hp": 50,
+      "ataque": 20,
+      "defensa": 55,
+      "ataqueEspecial": 25,
+      "defensaEspecial": 25,
+      "velocidad": 30
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Fortaleza", "daño": 0, "tipo": "Normal" }
     ],
@@ -83,7 +173,20 @@
   "17": {
     "nombre": "Butterfree",
     "tipos": ["Bicho", "Volador"],
-    "statsBase": { "hp": 60, "ataque": 45, "defensa": 50, "velocidad": 70 },
+    "habilidad": "Ojo Compuesto",
+    "habilidad_oculta": "Cacheo",
+    "grupo_huevo": ["Bicho"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.5,
+    "base_experiencia": 178,
+    "statsBase": {
+      "hp": 60,
+      "ataque": 45,
+      "defensa": 50,
+      "ataqueEspecial": 90,
+      "defensaEspecial": 80,
+      "velocidad": 70
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Confusión", "daño": 50, "tipo": "Psíquico" },
       { "nivel": 12, "nombre": "Polvo Veneno", "daño": 0, "tipo": "Veneno" },
@@ -95,7 +198,20 @@
   "18": {
     "nombre": "Weedle",
     "tipos": ["Bicho", "Veneno"],
-    "statsBase": { "hp": 40, "ataque": 35, "defensa": 30, "velocidad": 50 },
+    "habilidad": "Polvo Escudo",
+    "habilidad_oculta": "Fuga",
+    "grupo_huevo": ["Bicho"],
+    "ratio_captura": 255,
+    "ratio_genero": 0.5,
+    "base_experiencia": 39,
+    "statsBase": {
+      "hp": 40,
+      "ataque": 35,
+      "defensa": 30,
+      "ataqueEspecial": 20,
+      "defensaEspecial": 20,
+      "velocidad": 50
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Picotazo Veneno", "daño": 15, "tipo": "Veneno" },
       { "nivel": 6, "nombre": "Disparo Demora", "daño": 0, "tipo": "Bicho" }
@@ -107,7 +223,19 @@
   "19": {
     "nombre": "Kakuna",
     "tipos": ["Bicho", "Veneno"],
-    "statsBase": { "hp": 45, "ataque": 25, "defensa": 50, "velocidad": 35 },
+    "habilidad": "Mudar",
+    "grupo_huevo": ["Bicho"],
+    "ratio_captura": 120,
+    "ratio_genero": 0.5,
+    "base_experiencia": 72,
+    "statsBase": {
+      "hp": 45,
+      "ataque": 25,
+      "defensa": 50,
+      "ataqueEspecial": 25,
+      "defensaEspecial": 25,
+      "velocidad": 35
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Fortaleza", "daño": 0, "tipo": "Normal" }
     ],
@@ -118,7 +246,20 @@
   "20": {
     "nombre": "Beedrill",
     "tipos": ["Bicho", "Veneno"],
-    "statsBase": { "hp": 65, "ataque": 90, "defensa": 40, "velocidad": 75 },
+    "habilidad": "Enjambre",
+    "habilidad_oculta": "Francotirador",
+    "grupo_huevo": ["Bicho"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.5,
+    "base_experiencia": 178,
+    "statsBase": {
+      "hp": 65,
+      "ataque": 90,
+      "defensa": 40,
+      "ataqueEspecial": 45,
+      "defensaEspecial": 80,
+      "velocidad": 75
+    },
     "movimientos": [
       { "nivel": 10, "nombre": "Furia Ataque", "daño": 15, "tipo": "Normal" },
       { "nivel": 20, "nombre": "Doble Ataque", "daño": 25, "tipo": "Bicho" },
@@ -130,7 +271,20 @@
   "21": {
     "nombre": "Hoothoot",
     "tipos": ["Normal", "Volador"],
-    "statsBase": { "hp": 60, "ataque": 30, "defensa": 30, "velocidad": 50 },
+    "habilidad": "Vista Lince",
+    "habilidad_oculta": "Cacheo",
+    "grupo_huevo": ["Volador"],
+    "ratio_captura": 255,
+    "ratio_genero": 0.5,
+    "base_experiencia": 52,
+    "statsBase": {
+      "hp": 60,
+      "ataque": 30,
+      "defensa": 30,
+      "ataqueEspecial": 36,
+      "defensaEspecial": 56,
+      "velocidad": 50
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Destructor", "daño": 40, "tipo": "Normal" },
       { "nivel": 9, "nombre": "Confusión", "daño": 50, "tipo": "Psíquico" }
@@ -142,7 +296,20 @@
   "22": {
     "nombre": "Noctowl",
     "tipos": ["Normal", "Volador"],
-    "statsBase": { "hp": 100, "ataque": 50, "defensa": 50, "velocidad": 70 },
+    "habilidad": "Vista Lince",
+    "habilidad_oculta": "Cacheo",
+    "grupo_huevo": ["Volador"],
+    "ratio_captura": 90,
+    "ratio_genero": 0.5,
+    "base_experiencia": 158,
+    "statsBase": {
+      "hp": 100,
+      "ataque": 50,
+      "defensa": 50,
+      "ataqueEspecial": 86,
+      "defensaEspecial": 96,
+      "velocidad": 70
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Psicorrayo", "daño": 65, "tipo": "Psíquico" },
       { "nivel": 32, "nombre": "Tajo Aéreo", "daño": 75, "tipo": "Volador" }
@@ -153,7 +320,20 @@
   "23": {
     "nombre": "Spearow",
     "tipos": ["Normal", "Volador"],
-    "statsBase": { "hp": 40, "ataque": 60, "defensa": 30, "velocidad": 70 },
+    "habilidad": "Vista Lince",
+    "habilidad_oculta": "Francotirador",
+    "grupo_huevo": ["Volador"],
+    "ratio_captura": 255,
+    "ratio_genero": 0.5,
+    "base_experiencia": 52,
+    "statsBase": {
+      "hp": 40,
+      "ataque": 60,
+      "defensa": 30,
+      "ataqueEspecial": 31,
+      "defensaEspecial": 31,
+      "velocidad": 70
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Picotazo", "daño": 35, "tipo": "Volador" },
       { "nivel": 15, "nombre": "Furia", "daño": 20, "tipo": "Normal" }
@@ -165,7 +345,20 @@
   "24": {
     "nombre": "Fearow",
     "tipos": ["Normal", "Volador"],
-    "statsBase": { "hp": 65, "ataque": 90, "defensa": 65, "velocidad": 100 },
+    "habilidad": "Vista Lince",
+    "habilidad_oculta": "Francotirador",
+    "grupo_huevo": ["Volador"],
+    "ratio_captura": 90,
+    "ratio_genero": 0.5,
+    "base_experiencia": 155,
+    "statsBase": {
+      "hp": 65,
+      "ataque": 90,
+      "defensa": 65,
+      "ataqueEspecial": 61,
+      "defensaEspecial": 61,
+      "velocidad": 100
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Pico Taladro", "daño": 80, "tipo": "Volador" },
       { "nivel": 32, "nombre": "Agilidad", "daño": 0, "tipo": "Psíquico" }
@@ -176,7 +369,20 @@
   "25": {
     "nombre": "Taillow",
     "tipos": ["Normal", "Volador"],
-    "statsBase": { "hp": 40, "ataque": 55, "defensa": 30, "velocidad": 85 },
+    "habilidad": "Agallas",
+    "habilidad_oculta": "Nado Rápido",
+    "grupo_huevo": ["Volador"],
+    "ratio_captura": 200,
+    "ratio_genero": 0.5,
+    "base_experiencia": 54,
+    "statsBase": {
+      "hp": 40,
+      "ataque": 55,
+      "defensa": 30,
+      "ataqueEspecial": 30,
+      "defensaEspecial": 30,
+      "velocidad": 85
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Picotazo", "daño": 35, "tipo": "Volador" },
       { "nivel": 8, "nombre": "Ataque Rápido", "daño": 40, "tipo": "Normal" }
@@ -188,7 +394,20 @@
   "26": {
     "nombre": "Swellow",
     "tipos": ["Normal", "Volador"],
-    "statsBase": { "hp": 60, "ataque": 85, "defensa": 60, "velocidad": 125 },
+    "habilidad": "Agallas",
+    "habilidad_oculta": "Nado Rápido",
+    "grupo_huevo": ["Volador"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.5,
+    "base_experiencia": 159,
+    "statsBase": {
+      "hp": 60,
+      "ataque": 85,
+      "defensa": 60,
+      "ataqueEspecial": 75,
+      "defensaEspecial": 50,
+      "velocidad": 125
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Esfuerzo", "daño": 0, "tipo": "Normal" },
       { "nivel": 22, "nombre": "Golpe Aéreo", "daño": 60, "tipo": "Volador" }
@@ -199,7 +418,20 @@
   "27": {
     "nombre": "Wingull",
     "tipos": ["Agua", "Volador"],
-    "statsBase": { "hp": 40, "ataque": 30, "defensa": 30, "velocidad": 85 },
+    "habilidad": "Vista Lince",
+    "habilidad_oculta": "Cura Lluvia",
+    "grupo_huevo": ["Agua 1", "Volador"],
+    "ratio_captura": 190,
+    "ratio_genero": 0.5,
+    "base_experiencia": 54,
+    "statsBase": {
+      "hp": 40,
+      "ataque": 30,
+      "defensa": 30,
+      "ataqueEspecial": 55,
+      "defensaEspecial": 30,
+      "velocidad": 85
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Pistola Agua", "daño": 40, "tipo": "Agua" },
       { "nivel": 12, "nombre": "Supersónico", "daño": 0, "tipo": "Normal" }
@@ -211,7 +443,20 @@
   "28": {
     "nombre": "Pelipper",
     "tipos": ["Agua", "Volador"],
-    "statsBase": { "hp": 60, "ataque": 50, "defensa": 100, "velocidad": 65 },
+    "habilidad": "Vista Lince",
+    "habilidad_oculta": "Cura Lluvia",
+    "grupo_huevo": ["Agua 1", "Volador"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.5,
+    "base_experiencia": 154,
+    "statsBase": {
+      "hp": 60,
+      "ataque": 50,
+      "defensa": 100,
+      "ataqueEspecial": 95,
+      "defensaEspecial": 70,
+      "velocidad": 65
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Hidropulso", "daño": 60, "tipo": "Agua" },
       { "nivel": 30, "nombre": "Surf", "daño": 90, "tipo": "Agua" }
@@ -222,7 +467,20 @@
   "29": {
     "nombre": "Psyduck",
     "tipos": ["Agua"],
-    "statsBase": { "hp": 50, "ataque": 52, "defensa": 48, "velocidad": 55 },
+    "habilidad": "Humedad",
+    "habilidad_oculta": "Aclimatación",
+    "grupo_huevo": ["Agua 1", "Campo"],
+    "ratio_captura": 190,
+    "ratio_genero": 0.5,
+    "base_experiencia": 64,
+    "statsBase": {
+      "hp": 50,
+      "ataque": 52,
+      "defensa": 48,
+      "ataqueEspecial": 65,
+      "defensaEspecial": 50,
+      "velocidad": 55
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Arañazo", "daño": 40, "tipo": "Normal" },
       { "nivel": 9, "nombre": "Pistola Agua", "daño": 40, "tipo": "Agua" },
@@ -231,13 +489,24 @@
     "evolucion": { "nivel": 33, "id": "30" },
     "spawn": { "rango_nivel": [5, 25] },
     "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/54.png"
-  }
-}
-{
+  },
   "30": {
     "nombre": "Golduck",
     "tipos": ["Agua"],
-    "statsBase": { "hp": 80, "ataque": 82, "defensa": 78, "velocidad": 85 },
+    "habilidad": "Humedad",
+    "habilidad_oculta": "Aclimatación",
+    "grupo_huevo": ["Agua 1", "Campo"],
+    "ratio_captura": 75,
+    "ratio_genero": 0.5,
+    "base_experiencia": 175,
+    "statsBase": {
+      "hp": 80,
+      "ataque": 82,
+      "defensa": 78,
+      "ataqueEspecial": 95,
+      "defensaEspecial": 80,
+      "velocidad": 85
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Hidropulso", "daño": 60, "tipo": "Agua" },
       { "nivel": 33, "nombre": "Rayo Confuso", "daño": 0, "tipo": "Fantasma" },
@@ -249,7 +518,20 @@
   "31": {
     "nombre": "Poliwag",
     "tipos": ["Agua"],
-    "statsBase": { "hp": 40, "ataque": 50, "defensa": 40, "velocidad": 90 },
+    "habilidad": "Absorbe Agua",
+    "habilidad_oculta": "Humedad",
+    "grupo_huevo": ["Agua 1"],
+    "ratio_captura": 255,
+    "ratio_genero": 0.5,
+    "base_experiencia": 60,
+    "statsBase": {
+      "hp": 40,
+      "ataque": 50,
+      "defensa": 40,
+      "ataqueEspecial": 40,
+      "defensaEspecial": 40,
+      "velocidad": 90
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Burbuja", "daño": 40, "tipo": "Agua" },
       { "nivel": 15, "nombre": "Pistola Agua", "daño": 40, "tipo": "Agua" }
@@ -261,7 +543,20 @@
   "32": {
     "nombre": "Poliwhirl",
     "tipos": ["Agua"],
-    "statsBase": { "hp": 65, "ataque": 65, "defensa": 65, "velocidad": 90 },
+    "habilidad": "Absorbe Agua",
+    "habilidad_oculta": "Humedad",
+    "grupo_huevo": ["Agua 1"],
+    "ratio_captura": 120,
+    "ratio_genero": 0.5,
+    "base_experiencia": 135,
+    "statsBase": {
+      "hp": 65,
+      "ataque": 65,
+      "defensa": 65,
+      "ataqueEspecial": 50,
+      "defensaEspecial": 50,
+      "velocidad": 90
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Bofetón Lodo", "daño": 20, "tipo": "Tierra" },
       { "nivel": 25, "nombre": "Espabilar", "daño": 70, "tipo": "Lucha" }
@@ -273,7 +568,20 @@
   "33": {
     "nombre": "Poliwrath",
     "tipos": ["Agua", "Lucha"],
-    "statsBase": { "hp": 90, "ataque": 95, "defensa": 95, "velocidad": 70 },
+    "habilidad": "Absorbe Agua",
+    "habilidad_oculta": "Humedad",
+    "grupo_huevo": ["Agua 1"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.5,
+    "base_experiencia": 230,
+    "statsBase": {
+      "hp": 90,
+      "ataque": 95,
+      "defensa": 95,
+      "ataqueEspecial": 70,
+      "defensaEspecial": 90,
+      "velocidad": 70
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Sumisión", "daño": 80, "tipo": "Lucha" },
       { "nivel": 43, "nombre": "Puño Dinámico", "daño": 100, "tipo": "Lucha" }
@@ -284,7 +592,20 @@
   "34": {
     "nombre": "Politoed",
     "tipos": ["Agua"],
-    "statsBase": { "hp": 90, "ataque": 75, "defensa": 75, "velocidad": 70 },
+    "habilidad": "Absorbe Agua",
+    "habilidad_oculta": "Dicha",
+    "grupo_huevo": ["Agua 1"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.5,
+    "base_experiencia": 225,
+    "statsBase": {
+      "hp": 90,
+      "ataque": 75,
+      "defensa": 75,
+      "ataqueEspecial": 90,
+      "defensaEspecial": 100,
+      "velocidad": 70
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Canto", "daño": 0, "tipo": "Normal" },
       { "nivel": 36, "nombre": "Escaldar", "daño": 80, "tipo": "Agua" }
@@ -295,7 +616,20 @@
   "35": {
     "nombre": "Tentacool",
     "tipos": ["Agua", "Veneno"],
-    "statsBase": { "hp": 40, "ataque": 40, "defensa": 35, "velocidad": 70 },
+    "habilidad": "Cuerpo Puro",
+    "habilidad_oculta": "Lodo Líquido",
+    "grupo_huevo": ["Agua 3"],
+    "ratio_captura": 190,
+    "ratio_genero": 0.5,
+    "base_experiencia": 67,
+    "statsBase": {
+      "hp": 40,
+      "ataque": 40,
+      "defensa": 35,
+      "ataqueEspecial": 50,
+      "defensaEspecial": 100,
+      "velocidad": 70
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Ácido", "daño": 40, "tipo": "Veneno" },
       { "nivel": 10, "nombre": "Supersónico", "daño": 0, "tipo": "Normal" }
@@ -307,7 +641,20 @@
   "36": {
     "nombre": "Tentacruel",
     "tipos": ["Agua", "Veneno"],
-    "statsBase": { "hp": 80, "ataque": 70, "defensa": 65, "velocidad": 100 },
+    "habilidad": "Cuerpo Puro",
+    "habilidad_oculta": "Lodo Líquido",
+    "grupo_huevo": ["Agua 3"],
+    "ratio_captura": 60,
+    "ratio_genero": 0.5,
+    "base_experiencia": 180,
+    "statsBase": {
+      "hp": 80,
+      "ataque": 70,
+      "defensa": 65,
+      "ataqueEspecial": 80,
+      "defensaEspecial": 120,
+      "velocidad": 100
+    },
     "movimientos": [
       { "nivel": 30, "nombre": "Surf", "daño": 90, "tipo": "Agua" },
       { "nivel": 40, "nombre": "Bomba Lodo", "daño": 90, "tipo": "Veneno" }
@@ -318,7 +665,20 @@
   "37": {
     "nombre": "Magikarp",
     "tipos": ["Agua"],
-    "statsBase": { "hp": 20, "ataque": 10, "defensa": 55, "velocidad": 80 },
+    "habilidad": "Nado Rápido",
+    "habilidad_oculta": "Cobardía",
+    "grupo_huevo": ["Agua 2", "Dragón"],
+    "ratio_captura": 255,
+    "ratio_genero": 0.5,
+    "base_experiencia": 40,
+    "statsBase": {
+      "hp": 20,
+      "ataque": 10,
+      "defensa": 55,
+      "ataqueEspecial": 15,
+      "defensaEspecial": 20,
+      "velocidad": 80
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Salpicadura", "daño": 0, "tipo": "Normal" },
       { "nivel": 15, "nombre": "Placaje", "daño": 40, "tipo": "Normal" }
@@ -330,7 +690,20 @@
   "38": {
     "nombre": "Gyarados",
     "tipos": ["Agua", "Volador"],
-    "statsBase": { "hp": 95, "ataque": 125, "defensa": 79, "velocidad": 81 },
+    "habilidad": "Intimidación",
+    "habilidad_oculta": "Autoestima",
+    "grupo_huevo": ["Agua 2", "Dragón"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.5,
+    "base_experiencia": 189,
+    "statsBase": {
+      "hp": 95,
+      "ataque": 125,
+      "defensa": 79,
+      "ataqueEspecial": 60,
+      "defensaEspecial": 100,
+      "velocidad": 81
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Mordisco", "daño": 60, "tipo": "Siniestro" },
       { "nivel": 21, "nombre": "Ciclón", "daño": 40, "tipo": "Dragón" },
@@ -342,7 +715,20 @@
   "39": {
     "nombre": "Horsea",
     "tipos": ["Agua"],
-    "statsBase": { "hp": 30, "ataque": 40, "defensa": 70, "velocidad": 60 },
+    "habilidad": "Nado Rápido",
+    "habilidad_oculta": "Francotirador",
+    "grupo_huevo": ["Agua 1", "Dragón"],
+    "ratio_captura": 225,
+    "ratio_genero": 0.5,
+    "base_experiencia": 59,
+    "statsBase": {
+      "hp": 30,
+      "ataque": 40,
+      "defensa": 70,
+      "ataqueEspecial": 70,
+      "defensaEspecial": 25,
+      "velocidad": 60
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Burbuja", "daño": 40, "tipo": "Agua" },
       { "nivel": 10, "nombre": "Pantalla de Humo", "daño": 0, "tipo": "Normal" }
@@ -354,7 +740,20 @@
   "40": {
     "nombre": "Seadra",
     "tipos": ["Agua"],
-    "statsBase": { "hp": 55, "ataque": 65, "defensa": 95, "velocidad": 85 },
+    "habilidad": "Punto Tóxico",
+    "habilidad_oculta": "Francotirador",
+    "grupo_huevo": ["Agua 1", "Dragón"],
+    "ratio_captura": 75,
+    "ratio_genero": 0.5,
+    "base_experiencia": 154,
+    "statsBase": {
+      "hp": 55,
+      "ataque": 65,
+      "defensa": 95,
+      "ataqueEspecial": 95,
+      "defensaEspecial": 45,
+      "velocidad": 85
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Salmuera", "daño": 65, "tipo": "Agua" },
       { "nivel": 35, "nombre": "Hidrobomba", "daño": 110, "tipo": "Agua" }
@@ -366,7 +765,20 @@
   "41": {
     "nombre": "Kingdra",
     "tipos": ["Agua", "Dragón"],
-    "statsBase": { "hp": 75, "ataque": 95, "defensa": 95, "velocidad": 85 },
+    "habilidad": "Nado Rápido",
+    "habilidad_oculta": "Francotirador",
+    "grupo_huevo": ["Agua 1", "Dragón"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.5,
+    "base_experiencia": 243,
+    "statsBase": {
+      "hp": 75,
+      "ataque": 95,
+      "defensa": 95,
+      "ataqueEspecial": 95,
+      "defensaEspecial": 95,
+      "velocidad": 85
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Pulso Dragón", "daño": 85, "tipo": "Dragón" },
       { "nivel": 50, "nombre": "Cometa Draco", "daño": 130, "tipo": "Dragón" }
@@ -377,7 +789,20 @@
   "42": {
     "nombre": "Staryu",
     "tipos": ["Agua"],
-    "statsBase": { "hp": 30, "ataque": 45, "defensa": 55, "velocidad": 85 },
+    "habilidad": "Cura Natural",
+    "habilidad_oculta": "Analista",
+    "grupo_huevo": ["Agua 3"],
+    "ratio_captura": 225,
+    "ratio_genero": null,
+    "base_experiencia": 68,
+    "statsBase": {
+      "hp": 30,
+      "ataque": 45,
+      "defensa": 55,
+      "ataqueEspecial": 70,
+      "defensaEspecial": 55,
+      "velocidad": 85
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Giro Rápido", "daño": 20, "tipo": "Normal" },
       { "nivel": 10, "nombre": "Pistola Agua", "daño": 40, "tipo": "Agua" }
@@ -389,7 +814,20 @@
   "43": {
     "nombre": "Starmie",
     "tipos": ["Agua", "Psíquico"],
-    "statsBase": { "hp": 60, "ataque": 75, "defensa": 85, "velocidad": 115 },
+    "habilidad": "Cura Natural",
+    "habilidad_oculta": "Analista",
+    "grupo_huevo": ["Agua 3"],
+    "ratio_captura": 60,
+    "ratio_genero": null,
+    "base_experiencia": 182,
+    "statsBase": {
+      "hp": 60,
+      "ataque": 75,
+      "defensa": 85,
+      "ataqueEspecial": 100,
+      "defensaEspecial": 85,
+      "velocidad": 115
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Psíquico", "daño": 90, "tipo": "Psíquico" },
       { "nivel": 35, "nombre": "Rayo Hielo", "daño": 90, "tipo": "Hielo" }
@@ -400,7 +838,20 @@
   "44": {
     "nombre": "Feebas",
     "tipos": ["Agua"],
-    "statsBase": { "hp": 20, "ataque": 15, "defensa": 20, "velocidad": 80 },
+    "habilidad": "Nado Rápido",
+    "habilidad_oculta": "Adaptable",
+    "grupo_huevo": ["Agua 1", "Dragón"],
+    "ratio_captura": 255,
+    "ratio_genero": 0.5,
+    "base_experiencia": 40,
+    "statsBase": {
+      "hp": 20,
+      "ataque": 15,
+      "defensa": 20,
+      "ataqueEspecial": 10,
+      "defensaEspecial": 55,
+      "velocidad": 80
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Salpicadura", "daño": 0, "tipo": "Normal" }
     ],
@@ -411,7 +862,20 @@
   "45": {
     "nombre": "Milotic",
     "tipos": ["Agua"],
-    "statsBase": { "hp": 95, "ataque": 60, "defensa": 79, "velocidad": 81 },
+    "habilidad": "Desenrollar",
+    "habilidad_oculta": "Competitivo",
+    "grupo_huevo": ["Agua 1", "Dragón"],
+    "ratio_captura": 60,
+    "ratio_genero": 0.5,
+    "base_experiencia": 189,
+    "statsBase": {
+      "hp": 95,
+      "ataque": 60,
+      "defensa": 79,
+      "ataqueEspecial": 100,
+      "defensaEspecial": 125,
+      "velocidad": 81
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Acua Aro", "daño": 0, "tipo": "Agua" },
       { "nivel": 25, "nombre": "Surf", "daño": 90, "tipo": "Agua" }
@@ -422,7 +886,20 @@
   "46": {
     "nombre": "Lotad",
     "tipos": ["Agua", "Planta"],
-    "statsBase": { "hp": 40, "ataque": 30, "defensa": 30, "velocidad": 30 },
+    "habilidad": "Absorbe Agua",
+    "habilidad_oculta": "Allanamiento",
+    "grupo_huevo": ["Agua 1", "Planta"],
+    "ratio_captura": 255,
+    "ratio_genero": 0.5,
+    "base_experiencia": 44,
+    "statsBase": {
+      "hp": 40,
+      "ataque": 30,
+      "defensa": 30,
+      "ataqueEspecial": 40,
+      "defensaEspecial": 50,
+      "velocidad": 30
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Absorber", "daño": 20, "tipo": "Planta" },
       { "nivel": 7, "nombre": "Pistola Agua", "daño": 40, "tipo": "Agua" }
@@ -434,7 +911,20 @@
   "47": {
     "nombre": "Lombre",
     "tipos": ["Agua", "Planta"],
-    "statsBase": { "hp": 60, "ataque": 50, "defensa": 50, "velocidad": 50 },
+    "habilidad": "Absorbe Agua",
+    "habilidad_oculta": "Allanamiento",
+    "grupo_huevo": ["Agua 1", "Planta"],
+    "ratio_captura": 120,
+    "ratio_genero": 0.5,
+    "base_experiencia": 119,
+    "statsBase": {
+      "hp": 60,
+      "ataque": 50,
+      "defensa": 50,
+      "ataqueEspecial": 60,
+      "defensaEspecial": 70,
+      "velocidad": 50
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Hoja Afilada", "daño": 55, "tipo": "Planta" },
       { "nivel": 18, "nombre": "Megaagotar", "daño": 40, "tipo": "Planta" }
@@ -446,7 +936,20 @@
   "48": {
     "nombre": "Ludicolo",
     "tipos": ["Agua", "Planta"],
-    "statsBase": { "hp": 80, "ataque": 70, "defensa": 70, "velocidad": 70 },
+    "habilidad": "Absorbe Agua",
+    "habilidad_oculta": "Allanamiento",
+    "grupo_huevo": ["Agua 1", "Planta"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.5,
+    "base_experiencia": 216,
+    "statsBase": {
+      "hp": 80,
+      "ataque": 70,
+      "defensa": 70,
+      "ataqueEspecial": 90,
+      "defensaEspecial": 100,
+      "velocidad": 70
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Energibola", "daño": 90, "tipo": "Planta" },
       { "nivel": 36, "nombre": "Danza Lluvia", "daño": 0, "tipo": "Agua" }
@@ -457,7 +960,20 @@
   "49": {
     "nombre": "Geodude",
     "tipos": ["Roca", "Tierra"],
-    "statsBase": { "hp": 40, "ataque": 80, "defensa": 100, "velocidad": 20 },
+    "habilidad": "Cabeza Roca",
+    "habilidad_oculta": "Velo Arena",
+    "grupo_huevo": ["Mineral"],
+    "ratio_captura": 255,
+    "ratio_genero": 0.5,
+    "base_experiencia": 60,
+    "statsBase": {
+      "hp": 40,
+      "ataque": 80,
+      "defensa": 100,
+      "ataqueEspecial": 30,
+      "defensaEspecial": 30,
+      "velocidad": 20
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Placaje", "daño": 40, "tipo": "Normal" },
       { "nivel": 11, "nombre": "Lanzarrocas", "daño": 50, "tipo": "Roca" }
@@ -465,13 +981,24 @@
     "evolucion": { "nivel": 25, "id": "50" },
     "spawn": { "rango_nivel": [5, 20] },
     "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/74.png"
-  }
-}
-{
+  },
   "50": {
     "nombre": "Graveler",
     "tipos": ["Roca", "Tierra"],
-    "statsBase": { "hp": 55, "ataque": 95, "defensa": 115, "velocidad": 35 },
+    "habilidad": "Cabeza Roca",
+    "habilidad_oculta": "Velo Arena",
+    "grupo_huevo": ["Mineral"],
+    "ratio_captura": 120,
+    "ratio_genero": 0.5,
+    "base_experiencia": 137,
+    "statsBase": {
+      "hp": 55,
+      "ataque": 95,
+      "defensa": 115,
+      "ataqueEspecial": 45,
+      "defensaEspecial": 45,
+      "velocidad": 35
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Desenrollar", "daño": 30, "tipo": "Roca" },
       { "nivel": 25, "nombre": "Magnitud", "daño": 60, "tipo": "Tierra" }
@@ -483,7 +1010,20 @@
   "51": {
     "nombre": "Golem",
     "tipos": ["Roca", "Tierra"],
-    "statsBase": { "hp": 80, "ataque": 120, "defensa": 130, "velocidad": 45 },
+    "habilidad": "Cabeza Roca",
+    "habilidad_oculta": "Velo Arena",
+    "grupo_huevo": ["Mineral"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.5,
+    "base_experiencia": 223,
+    "statsBase": {
+      "hp": 80,
+      "ataque": 120,
+      "defensa": 130,
+      "ataqueEspecial": 55,
+      "defensaEspecial": 65,
+      "velocidad": 45
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Terremoto", "daño": 100, "tipo": "Tierra" },
       { "nivel": 40, "nombre": "Roca Afilada", "daño": 100, "tipo": "Roca" }
@@ -494,7 +1034,20 @@
   "52": {
     "nombre": "Zubat",
     "tipos": ["Veneno", "Volador"],
-    "statsBase": { "hp": 40, "ataque": 45, "defensa": 35, "velocidad": 55 },
+    "habilidad": "Foco Interno",
+    "habilidad_oculta": "Allanamiento",
+    "grupo_huevo": ["Volador"],
+    "ratio_captura": 255,
+    "ratio_genero": 0.5,
+    "base_experiencia": 49,
+    "statsBase": {
+      "hp": 40,
+      "ataque": 45,
+      "defensa": 35,
+      "ataqueEspecial": 30,
+      "defensaEspecial": 40,
+      "velocidad": 55
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Chupa Vidas", "daño": 20, "tipo": "Bicho" },
       { "nivel": 12, "nombre": "Mordisco", "daño": 60, "tipo": "Siniestro" }
@@ -506,7 +1059,20 @@
   "53": {
     "nombre": "Golbat",
     "tipos": ["Veneno", "Volador"],
-    "statsBase": { "hp": 75, "ataque": 80, "defensa": 70, "velocidad": 90 },
+    "habilidad": "Foco Interno",
+    "habilidad_oculta": "Allanamiento",
+    "grupo_huevo": ["Volador"],
+    "ratio_captura": 90,
+    "ratio_genero": 0.5,
+    "base_experiencia": 159,
+    "statsBase": {
+      "hp": 75,
+      "ataque": 80,
+      "defensa": 70,
+      "ataqueEspecial": 65,
+      "defensaEspecial": 75,
+      "velocidad": 90
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Aire Afilado", "daño": 60, "tipo": "Volador" },
       { "nivel": 25, "nombre": "Colmillo Veneno", "daño": 50, "tipo": "Veneno" }
@@ -518,7 +1084,20 @@
   "54": {
     "nombre": "Crobat",
     "tipos": ["Veneno", "Volador"],
-    "statsBase": { "hp": 85, "ataque": 90, "defensa": 80, "velocidad": 130 },
+    "habilidad": "Foco Interno",
+    "habilidad_oculta": "Allanamiento",
+    "grupo_huevo": ["Volador"],
+    "ratio_captura": 90,
+    "ratio_genero": 0.5,
+    "base_experiencia": 241,
+    "statsBase": {
+      "hp": 85,
+      "ataque": 90,
+      "defensa": 80,
+      "ataqueEspecial": 70,
+      "defensaEspecial": 80,
+      "velocidad": 130
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Tajo Aéreo", "daño": 75, "tipo": "Volador" },
       { "nivel": 45, "nombre": "Veneno X", "daño": 80, "tipo": "Veneno" }
@@ -529,7 +1108,20 @@
   "55": {
     "nombre": "Machop",
     "tipos": ["Lucha"],
-    "statsBase": { "hp": 70, "ataque": 80, "defensa": 50, "velocidad": 35 },
+    "habilidad": "Agallas",
+    "habilidad_oculta": "Impasible",
+    "grupo_huevo": ["Humanoide"],
+    "ratio_captura": 180,
+    "ratio_genero": 0.75,
+    "base_experiencia": 61,
+    "statsBase": {
+      "hp": 70,
+      "ataque": 80,
+      "defensa": 50,
+      "ataqueEspecial": 35,
+      "defensaEspecial": 35,
+      "velocidad": 35
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Patada Baja", "daño": 50, "tipo": "Lucha" },
       { "nivel": 10, "nombre": "Karate Chop", "daño": 50, "tipo": "Lucha" }
@@ -541,7 +1133,20 @@
   "56": {
     "nombre": "Machoke",
     "tipos": ["Lucha"],
-    "statsBase": { "hp": 80, "ataque": 100, "defensa": 70, "velocidad": 45 },
+    "habilidad": "Agallas",
+    "habilidad_oculta": "Impasible",
+    "grupo_huevo": ["Humanoide"],
+    "ratio_captura": 90,
+    "ratio_genero": 0.75,
+    "base_experiencia": 142,
+    "statsBase": {
+      "hp": 80,
+      "ataque": 100,
+      "defensa": 70,
+      "ataqueEspecial": 50,
+      "defensaEspecial": 60,
+      "velocidad": 45
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Tiro Vital", "daño": 70, "tipo": "Lucha" },
       { "nivel": 30, "nombre": "Sumisión", "daño": 80, "tipo": "Lucha" }
@@ -553,7 +1158,20 @@
   "57": {
     "nombre": "Machamp",
     "tipos": ["Lucha"],
-    "statsBase": { "hp": 90, "ataque": 130, "defensa": 80, "velocidad": 55 },
+    "habilidad": "Agallas",
+    "habilidad_oculta": "Impasible",
+    "grupo_huevo": ["Humanoide"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.75,
+    "base_experiencia": 227,
+    "statsBase": {
+      "hp": 90,
+      "ataque": 130,
+      "defensa": 80,
+      "ataqueEspecial": 65,
+      "defensaEspecial": 85,
+      "velocidad": 55
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Puño Dinámico", "daño": 100, "tipo": "Lucha" },
       { "nivel": 50, "nombre": "A Bocajarro", "daño": 120, "tipo": "Lucha" }
@@ -564,7 +1182,20 @@
   "58": {
     "nombre": "Onix",
     "tipos": ["Roca", "Tierra"],
-    "statsBase": { "hp": 35, "ataque": 45, "defensa": 160, "velocidad": 70 },
+    "habilidad": "Cabeza Roca",
+    "habilidad_oculta": "Robustez",
+    "grupo_huevo": ["Mineral"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.5,
+    "base_experiencia": 77,
+    "statsBase": {
+      "hp": 35,
+      "ataque": 45,
+      "defensa": 160,
+      "ataqueEspecial": 30,
+      "defensaEspecial": 45,
+      "velocidad": 70
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Atadura", "daño": 15, "tipo": "Normal" },
       { "nivel": 12, "nombre": "Tumba Rocas", "daño": 60, "tipo": "Roca" }
@@ -576,7 +1207,20 @@
   "59": {
     "nombre": "Steelix",
     "tipos": ["Acero", "Tierra"],
-    "statsBase": { "hp": 75, "ataque": 85, "defensa": 200, "velocidad": 30 },
+    "habilidad": "Cabeza Roca",
+    "habilidad_oculta": "Robustez",
+    "grupo_huevo": ["Mineral"],
+    "ratio_captura": 25,
+    "ratio_genero": 0.5,
+    "base_experiencia": 179,
+    "statsBase": {
+      "hp": 75,
+      "ataque": 85,
+      "defensa": 200,
+      "ataqueEspecial": 55,
+      "defensaEspecial": 65,
+      "velocidad": 30
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Cola Férrea", "daño": 100, "tipo": "Acero" },
       { "nivel": 40, "nombre": "Cuerpo Pesado", "daño": 80, "tipo": "Acero" }
@@ -587,7 +1231,20 @@
   "60": {
     "nombre": "Larvitar",
     "tipos": ["Roca", "Tierra"],
-    "statsBase": { "hp": 50, "ataque": 64, "defensa": 50, "velocidad": 41 },
+    "habilidad": "Armadura Batalla",
+    "habilidad_oculta": "Vista Lince",
+    "grupo_huevo": ["Monstruo"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.5,
+    "base_experiencia": 60,
+    "statsBase": {
+      "hp": 50,
+      "ataque": 64,
+      "defensa": 50,
+      "ataqueEspecial": 45,
+      "defensaEspecial": 50,
+      "velocidad": 41
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Mordisco", "daño": 60, "tipo": "Siniestro" },
       { "nivel": 10, "nombre": "Lanzarrocas", "daño": 50, "tipo": "Roca" }
@@ -599,7 +1256,19 @@
   "61": {
     "nombre": "Pupitar",
     "tipos": ["Roca", "Tierra"],
-    "statsBase": { "hp": 70, "ataque": 84, "defensa": 70, "velocidad": 51 },
+    "habilidad": "Mudar",
+    "grupo_huevo": ["Monstruo"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.5,
+    "base_experiencia": 144,
+    "statsBase": {
+      "hp": 70,
+      "ataque": 84,
+      "defensa": 70,
+      "ataqueEspecial": 65,
+      "defensaEspecial": 70,
+      "velocidad": 51
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Poder Pasado", "daño": 60, "tipo": "Roca" },
       { "nivel": 32, "nombre": "Triturar", "daño": 80, "tipo": "Siniestro" }
@@ -611,7 +1280,20 @@
   "62": {
     "nombre": "Tyranitar",
     "tipos": ["Roca", "Siniestro"],
-    "statsBase": { "hp": 100, "ataque": 134, "defensa": 110, "velocidad": 61 },
+    "habilidad": "Chorro Arena",
+    "habilidad_oculta": "Nerviosismo",
+    "grupo_huevo": ["Monstruo"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.5,
+    "base_experiencia": 270,
+    "statsBase": {
+      "hp": 100,
+      "ataque": 134,
+      "defensa": 110,
+      "ataqueEspecial": 95,
+      "defensaEspecial": 100,
+      "velocidad": 61
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Roca Afilada", "daño": 100, "tipo": "Roca" },
       { "nivel": 55, "nombre": "Hiperrayo", "daño": 150, "tipo": "Normal" }
@@ -622,7 +1304,20 @@
   "63": {
     "nombre": "Aron",
     "tipos": ["Acero", "Roca"],
-    "statsBase": { "hp": 50, "ataque": 70, "defensa": 100, "velocidad": 30 },
+    "habilidad": "Robustez",
+    "habilidad_oculta": "Cabeza Roca",
+    "grupo_huevo": ["Monstruo"],
+    "ratio_captura": 180,
+    "ratio_genero": 0.5,
+    "base_experiencia": 66,
+    "statsBase": {
+      "hp": 50,
+      "ataque": 70,
+      "defensa": 100,
+      "ataqueEspecial": 40,
+      "defensaEspecial": 40,
+      "velocidad": 30
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Placaje", "daño": 40, "tipo": "Normal" },
       { "nivel": 12, "nombre": "Cabeza de Hierro", "daño": 80, "tipo": "Acero" }
@@ -634,7 +1329,20 @@
   "64": {
     "nombre": "Lairon",
     "tipos": ["Acero", "Roca"],
-    "statsBase": { "hp": 60, "ataque": 90, "defensa": 140, "velocidad": 40 },
+    "habilidad": "Robustez",
+    "habilidad_oculta": "Cabeza Roca",
+    "grupo_huevo": ["Monstruo"],
+    "ratio_captura": 90,
+    "ratio_genero": 0.5,
+    "base_experiencia": 151,
+    "statsBase": {
+      "hp": 60,
+      "ataque": 90,
+      "defensa": 140,
+      "ataqueEspecial": 50,
+      "defensaEspecial": 50,
+      "velocidad": 40
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Derribo", "daño": 90, "tipo": "Normal" },
       { "nivel": 35, "nombre": "Defensa Férrea", "daño": 0, "tipo": "Acero" }
@@ -646,7 +1354,20 @@
   "65": {
     "nombre": "Aggron",
     "tipos": ["Acero", "Roca"],
-    "statsBase": { "hp": 70, "ataque": 110, "defensa": 180, "velocidad": 50 },
+    "habilidad": "Robustez",
+    "habilidad_oculta": "Cabeza Roca",
+    "grupo_huevo": ["Monstruo"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.5,
+    "base_experiencia": 239,
+    "statsBase": {
+      "hp": 70,
+      "ataque": 110,
+      "defensa": 180,
+      "ataqueEspecial": 60,
+      "defensaEspecial": 60,
+      "velocidad": 50
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Cuerpopesado", "daño": 80, "tipo": "Acero" },
       { "nivel": 45, "nombre": "Testarazo", "daño": 150, "tipo": "Roca" }
@@ -657,7 +1378,20 @@
   "66": {
     "nombre": "Swablu",
     "tipos": ["Normal", "Volador"],
-    "statsBase": { "hp": 45, "ataque": 40, "defensa": 60, "velocidad": 50 },
+    "habilidad": "Cura Natural",
+    "habilidad_oculta": "Flaqueza",
+    "grupo_huevo": ["Volador", "Dragón"],
+    "ratio_captura": 255,
+    "ratio_genero": 0.5,
+    "base_experiencia": 62,
+    "statsBase": {
+      "hp": 45,
+      "ataque": 40,
+      "defensa": 60,
+      "ataqueEspecial": 40,
+      "defensaEspecial": 75,
+      "velocidad": 50
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Picotazo", "daño": 35, "tipo": "Volador" },
       { "nivel": 15, "nombre": "Canto", "daño": 0, "tipo": "Normal" }
@@ -669,7 +1403,20 @@
   "67": {
     "nombre": "Altaria",
     "tipos": ["Dragón", "Volador"],
-    "statsBase": { "hp": 75, "ataque": 70, "defensa": 90, "velocidad": 80 },
+    "habilidad": "Cura Natural",
+    "habilidad_oculta": "Flaqueza",
+    "grupo_huevo": ["Volador", "Dragón"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.5,
+    "base_experiencia": 172,
+    "statsBase": {
+      "hp": 75,
+      "ataque": 70,
+      "defensa": 90,
+      "ataqueEspecial": 70,
+      "defensaEspecial": 105,
+      "velocidad": 80
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Pulso Dragón", "daño": 85, "tipo": "Dragón" },
       { "nivel": 40, "nombre": "Fuerza Lunar", "daño": 95, "tipo": "Hada" }
@@ -680,7 +1427,20 @@
   "68": {
     "nombre": "Snorunt",
     "tipos": ["Hielo"],
-    "statsBase": { "hp": 50, "ataque": 50, "defensa": 50, "velocidad": 50 },
+    "habilidad": "Cuerpo Helado",
+    "habilidad_oculta": "Armadura Fría",
+    "grupo_huevo": ["Hada", "Mineral"],
+    "ratio_captura": 190,
+    "ratio_genero": 0.5,
+    "base_experiencia": 60,
+    "statsBase": {
+      "hp": 50,
+      "ataque": 50,
+      "defensa": 50,
+      "ataqueEspecial": 50,
+      "defensaEspecial": 50,
+      "velocidad": 50
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Nieve Polvo", "daño": 40, "tipo": "Hielo" },
       { "nivel": 15, "nombre": "Viento Hielo", "daño": 55, "tipo": "Hielo" }
@@ -692,20 +1452,44 @@
   "69": {
     "nombre": "Glalie",
     "tipos": ["Hielo"],
-    "statsBase": { "hp": 80, "ataque": 80, "defensa": 80, "velocidad": 80 },
+    "habilidad": "Cuerpo Helado",
+    "habilidad_oculta": "Armadura Fría",
+    "grupo_huevo": ["Hada", "Mineral"],
+    "ratio_captura": 75,
+    "ratio_genero": 0.5,
+    "base_experiencia": 168,
+    "statsBase": {
+      "hp": 80,
+      "ataque": 80,
+      "defensa": 80,
+      "ataqueEspecial": 80,
+      "defensaEspecial": 80,
+      "velocidad": 80
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Colmillo Hielo", "daño": 65, "tipo": "Hielo" },
       { "nivel": 45, "nombre": "Frío Agudo", "daño": 150, "tipo": "Hielo" }
     ],
     "spawn": { "rango_nivel": [42, 60] },
     "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/362.png"
-  }
-}
-{
+  },
   "70": {
     "nombre": "Froslass",
     "tipos": ["Hielo", "Fantasma"],
-    "statsBase": { "hp": 70, "ataque": 80, "defensa": 70, "velocidad": 110 },
+    "habilidad": "Nevada",
+    "habilidad_oculta": "Cuerpo Maldito",
+    "grupo_huevo": ["Hada", "Mineral"],
+    "ratio_captura": 75,
+    "ratio_genero": 1.0,
+    "base_experiencia": 168,
+    "statsBase": {
+      "hp": 70,
+      "ataque": 80,
+      "defensa": 70,
+      "ataqueEspecial": 80,
+      "defensaEspecial": 70,
+      "velocidad": 110
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Canto Helado", "daño": 40, "tipo": "Hielo" },
       { "nivel": 25, "nombre": "Bola Sombra", "daño": 80, "tipo": "Fantasma" },
@@ -717,7 +1501,20 @@
   "71": {
     "nombre": "Meditite",
     "tipos": ["Lucha", "Psíquico"],
-    "statsBase": { "hp": 30, "ataque": 40, "defensa": 55, "velocidad": 60 },
+    "habilidad": "Fuerza Mental",
+    "habilidad_oculta": "Energía Pura",
+    "grupo_huevo": ["Humanoide"],
+    "ratio_captura": 180,
+    "ratio_genero": 0.5,
+    "base_experiencia": 56,
+    "statsBase": {
+      "hp": 30,
+      "ataque": 40,
+      "defensa": 55,
+      "ataqueEspecial": 40,
+      "defensaEspecial": 55,
+      "velocidad": 60
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Bofetón Lodo", "daño": 20, "tipo": "Tierra" },
       { "nivel": 12, "nombre": "Confusión", "daño": 50, "tipo": "Psíquico" }
@@ -729,7 +1526,20 @@
   "72": {
     "nombre": "Medicham",
     "tipos": ["Lucha", "Psíquico"],
-    "statsBase": { "hp": 60, "ataque": 60, "defensa": 75, "velocidad": 80 },
+    "habilidad": "Fuerza Mental",
+    "habilidad_oculta": "Energía Pura",
+    "grupo_huevo": ["Humanoide"],
+    "ratio_captura": 90,
+    "ratio_genero": 0.5,
+    "base_experiencia": 144,
+    "statsBase": {
+      "hp": 60,
+      "ataque": 60,
+      "defensa": 75,
+      "ataqueEspecial": 60,
+      "defensaEspecial": 75,
+      "velocidad": 80
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Puño Hielo", "daño": 75, "tipo": "Hielo" },
       { "nivel": 37, "nombre": "Patada Salto Alta", "daño": 130, "tipo": "Lucha" }
@@ -740,7 +1550,20 @@
   "73": {
     "nombre": "Snover",
     "tipos": ["Planta", "Hielo"],
-    "statsBase": { "hp": 60, "ataque": 62, "defensa": 50, "velocidad": 40 },
+    "habilidad": "Nevada",
+    "habilidad_oculta": "Insonorizar",
+    "grupo_huevo": ["Monstruo", "Planta"],
+    "ratio_captura": 120,
+    "ratio_genero": 0.5,
+    "base_experiencia": 67,
+    "statsBase": {
+      "hp": 60,
+      "ataque": 62,
+      "defensa": 50,
+      "ataqueEspecial": 62,
+      "defensaEspecial": 60,
+      "velocidad": 40
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Nieve Polvo", "daño": 40, "tipo": "Hielo" },
       { "nivel": 13, "nombre": "Hoja Afilada", "daño": 55, "tipo": "Planta" }
@@ -752,7 +1575,20 @@
   "74": {
     "nombre": "Abomasnow",
     "tipos": ["Planta", "Hielo"],
-    "statsBase": { "hp": 90, "ataque": 92, "defensa": 75, "velocidad": 60 },
+    "habilidad": "Nevada",
+    "habilidad_oculta": "Insonorizar",
+    "grupo_huevo": ["Monstruo", "Planta"],
+    "ratio_captura": 60,
+    "ratio_genero": 0.5,
+    "base_experiencia": 173,
+    "statsBase": {
+      "hp": 90,
+      "ataque": 92,
+      "defensa": 75,
+      "ataqueEspecial": 92,
+      "defensaEspecial": 85,
+      "velocidad": 60
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Mazazo", "daño": 120, "tipo": "Planta" },
       { "nivel": 45, "nombre": "Ventisca", "daño": 110, "tipo": "Hielo" }
@@ -763,7 +1599,20 @@
   "75": {
     "nombre": "Rhyhorn",
     "tipos": ["Tierra", "Roca"],
-    "statsBase": { "hp": 80, "ataque": 85, "defensa": 95, "velocidad": 25 },
+    "habilidad": "Pararrayos",
+    "habilidad_oculta": "Rompepiedras",
+    "grupo_huevo": ["Monstruo", "Campo"],
+    "ratio_captura": 120,
+    "ratio_genero": 0.5,
+    "base_experiencia": 69,
+    "statsBase": {
+      "hp": 80,
+      "ataque": 85,
+      "defensa": 95,
+      "ataqueEspecial": 30,
+      "defensaEspecial": 30,
+      "velocidad": 25
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Cornada", "daño": 65, "tipo": "Normal" },
       { "nivel": 15, "nombre": "Pisotón", "daño": 65, "tipo": "Normal" }
@@ -775,7 +1624,20 @@
   "76": {
     "nombre": "Rhydon",
     "tipos": ["Tierra", "Roca"],
-    "statsBase": { "hp": 105, "ataque": 130, "defensa": 120, "velocidad": 40 },
+    "habilidad": "Pararrayos",
+    "habilidad_oculta": "Rompepiedras",
+    "grupo_huevo": ["Monstruo", "Campo"],
+    "ratio_captura": 60,
+    "ratio_genero": 0.5,
+    "base_experiencia": 170,
+    "statsBase": {
+      "hp": 105,
+      "ataque": 130,
+      "defensa": 120,
+      "ataqueEspecial": 45,
+      "defensaEspecial": 45,
+      "velocidad": 40
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Perforador", "daño": 100, "tipo": "Normal" },
       { "nivel": 45, "nombre": "Terremoto", "daño": 100, "tipo": "Tierra" }
@@ -787,7 +1649,20 @@
   "77": {
     "nombre": "Rhyperior",
     "tipos": ["Tierra", "Roca"],
-    "statsBase": { "hp": 115, "ataque": 140, "defensa": 130, "velocidad": 40 },
+    "habilidad": "Pararrayos",
+    "habilidad_oculta": "Solid Rock",
+    "grupo_huevo": ["Monstruo", "Campo"],
+    "ratio_captura": 30,
+    "ratio_genero": 0.5,
+    "base_experiencia": 241,
+    "statsBase": {
+      "hp": 115,
+      "ataque": 140,
+      "defensa": 130,
+      "ataqueEspecial": 55,
+      "defensaEspecial": 55,
+      "velocidad": 40
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Romperrocas", "daño": 150, "tipo": "Roca" },
       { "nivel": 55, "nombre": "Brazo Pintxo", "daño": 100, "tipo": "Planta" }
@@ -798,7 +1673,20 @@
   "78": {
     "nombre": "Mareep",
     "tipos": ["Eléctrico"],
-    "statsBase": { "hp": 55, "ataque": 40, "defensa": 40, "velocidad": 35 },
+    "habilidad": "Estático",
+    "habilidad_oculta": "Más",
+    "grupo_huevo": ["Monstruo", "Campo"],
+    "ratio_captura": 235,
+    "ratio_genero": 0.5,
+    "base_experiencia": 56,
+    "statsBase": {
+      "hp": 55,
+      "ataque": 40,
+      "defensa": 40,
+      "ataqueEspecial": 65,
+      "defensaEspecial": 45,
+      "velocidad": 35
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Impactrueno", "daño": 40, "tipo": "Eléctrico" },
       { "nivel": 10, "nombre": "Onda Trueno", "daño": 0, "tipo": "Eléctrico" }
@@ -810,7 +1698,20 @@
   "79": {
     "nombre": "Flaaffy",
     "tipos": ["Eléctrico"],
-    "statsBase": { "hp": 70, "ataque": 55, "defensa": 55, "velocidad": 45 },
+    "habilidad": "Estático",
+    "habilidad_oculta": "Más",
+    "grupo_huevo": ["Monstruo", "Campo"],
+    "ratio_captura": 120,
+    "ratio_genero": 0.5,
+    "base_experiencia": 128,
+    "statsBase": {
+      "hp": 70,
+      "ataque": 55,
+      "defensa": 55,
+      "ataqueEspecial": 80,
+      "defensaEspecial": 60,
+      "velocidad": 45
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Puño Trueno", "daño": 75, "tipo": "Eléctrico" },
       { "nivel": 18, "nombre": "Joya de Luz", "daño": 80, "tipo": "Roca" }
@@ -822,7 +1723,20 @@
   "80": {
     "nombre": "Ampharos",
     "tipos": ["Eléctrico"],
-    "statsBase": { "hp": 90, "ataque": 75, "defensa": 85, "velocidad": 55 },
+    "habilidad": "Estático",
+    "habilidad_oculta": "Más",
+    "grupo_huevo": ["Monstruo", "Campo"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.5,
+    "base_experiencia": 230,
+    "statsBase": {
+      "hp": 90,
+      "ataque": 75,
+      "defensa": 85,
+      "ataqueEspecial": 115,
+      "defensaEspecial": 90,
+      "velocidad": 55
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Rayo", "daño": 90, "tipo": "Eléctrico" },
       { "nivel": 40, "nombre": "Trueno", "daño": 110, "tipo": "Eléctrico" }
@@ -833,7 +1747,20 @@
   "81": {
     "nombre": "Ponyta",
     "tipos": ["Fuego"],
-    "statsBase": { "hp": 50, "ataque": 85, "defensa": 55, "velocidad": 90 },
+    "habilidad": "Fuga",
+    "habilidad_oculta": "Absorbe Fuego",
+    "grupo_huevo": ["Campo"],
+    "ratio_captura": 190,
+    "ratio_genero": 0.5,
+    "base_experiencia": 82,
+    "statsBase": {
+      "hp": 50,
+      "ataque": 85,
+      "defensa": 55,
+      "ataqueEspecial": 65,
+      "defensaEspecial": 65,
+      "velocidad": 90
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Ascuas", "daño": 40, "tipo": "Fuego" },
       { "nivel": 15, "nombre": "Rueda Fuego", "daño": 60, "tipo": "Fuego" }
@@ -845,7 +1772,20 @@
   "82": {
     "nombre": "Rapidash",
     "tipos": ["Fuego"],
-    "statsBase": { "hp": 65, "ataque": 100, "defensa": 70, "velocidad": 105 },
+    "habilidad": "Fuga",
+    "habilidad_oculta": "Absorbe Fuego",
+    "grupo_huevo": ["Campo"],
+    "ratio_captura": 60,
+    "ratio_genero": 0.5,
+    "base_experiencia": 175,
+    "statsBase": {
+      "hp": 65,
+      "ataque": 100,
+      "defensa": 70,
+      "ataqueEspecial": 80,
+      "defensaEspecial": 80,
+      "velocidad": 105
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Envite Ígneo", "daño": 120, "tipo": "Fuego" },
       { "nivel": 45, "nombre": "Megacuerno", "daño": 120, "tipo": "Bicho" }
@@ -856,7 +1796,20 @@
   "83": {
     "nombre": "Skarmory",
     "tipos": ["Acero", "Volador"],
-    "statsBase": { "hp": 65, "ataque": 80, "defensa": 140, "velocidad": 70 },
+    "habilidad": "Armadura Férrea",
+    "habilidad_oculta": "Armadura Fría",
+    "grupo_huevo": ["Volador"],
+    "ratio_captura": 25,
+    "ratio_genero": 0.5,
+    "base_experiencia": 163,
+    "statsBase": {
+      "hp": 65,
+      "ataque": 80,
+      "defensa": 140,
+      "ataqueEspecial": 40,
+      "defensaEspecial": 70,
+      "velocidad": 70
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Ala de Acero", "daño": 70, "tipo": "Acero" },
       { "nivel": 25, "nombre": "Pico Taladro", "daño": 80, "tipo": "Volador" }
@@ -867,7 +1820,20 @@
   "84": {
     "nombre": "Murkrow",
     "tipos": ["Siniestro", "Volador"],
-    "statsBase": { "hp": 60, "ataque": 85, "defensa": 42, "velocidad": 91 },
+    "habilidad": "Fortuna",
+    "habilidad_oculta": "Allanamiento",
+    "grupo_huevo": ["Volador"],
+    "ratio_captura": 30,
+    "ratio_genero": 0.5,
+    "base_experiencia": 81,
+    "statsBase": {
+      "hp": 60,
+      "ataque": 85,
+      "defensa": 42,
+      "ataqueEspecial": 85,
+      "defensaEspecial": 42,
+      "velocidad": 91
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Persecución", "daño": 40, "tipo": "Siniestro" },
       { "nivel": 11, "nombre": "Tajo Umbrío", "daño": 70, "tipo": "Siniestro" }
@@ -879,7 +1845,20 @@
   "85": {
     "nombre": "Honchkrow",
     "tipos": ["Siniestro", "Volador"],
-    "statsBase": { "hp": 100, "ataque": 125, "defensa": 52, "velocidad": 71 },
+    "habilidad": "Fortuna",
+    "habilidad_oculta": "Allanamiento",
+    "grupo_huevo": ["Volador"],
+    "ratio_captura": 30,
+    "ratio_genero": 0.5,
+    "base_experiencia": 177,
+    "statsBase": {
+      "hp": 100,
+      "ataque": 125,
+      "defensa": 52,
+      "ataqueEspecial": 105,
+      "defensaEspecial": 52,
+      "velocidad": 71
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Golpe Bajo", "daño": 70, "tipo": "Siniestro" },
       { "nivel": 40, "nombre": "Pájaro Osado", "daño": 120, "tipo": "Volador" }
@@ -890,7 +1869,19 @@
   "86": {
     "nombre": "Misdreavus",
     "tipos": ["Fantasma"],
-    "statsBase": { "hp": 60, "ataque": 60, "defensa": 60, "velocidad": 85 },
+    "habilidad": "Levitación",
+    "grupo_huevo": ["Amorfo"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.5,
+    "base_experiencia": 87,
+    "statsBase": {
+      "hp": 60,
+      "ataque": 60,
+      "defensa": 60,
+      "ataqueEspecial": 85,
+      "defensaEspecial": 85,
+      "velocidad": 85
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Rencor", "daño": 0, "tipo": "Fantasma" },
       { "nivel": 14, "nombre": "Psicorrayo", "daño": 65, "tipo": "Psíquico" }
@@ -902,7 +1893,19 @@
   "87": {
     "nombre": "Mismagius",
     "tipos": ["Fantasma"],
-    "statsBase": { "hp": 60, "ataque": 60, "defensa": 60, "velocidad": 105 },
+    "habilidad": "Levitación",
+    "grupo_huevo": ["Amorfo"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.5,
+    "base_experiencia": 177,
+    "statsBase": {
+      "hp": 60,
+      "ataque": 60,
+      "defensa": 60,
+      "ataqueEspecial": 105,
+      "defensaEspecial": 105,
+      "velocidad": 105
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Bola Sombra", "daño": 80, "tipo": "Fantasma" },
       { "nivel": 40, "nombre": "Joyas de Luz", "daño": 80, "tipo": "Roca" }
@@ -913,7 +1916,20 @@
   "88": {
     "nombre": "Shuppet",
     "tipos": ["Fantasma"],
-    "statsBase": { "hp": 44, "ataque": 75, "defensa": 35, "velocidad": 45 },
+    "habilidad": "Foco Interno",
+    "habilidad_oculta": "Cuerpo Maldito",
+    "grupo_huevo": ["Amorfo"],
+    "ratio_captura": 225,
+    "ratio_genero": 0.5,
+    "base_experiencia": 59,
+    "statsBase": {
+      "hp": 44,
+      "ataque": 75,
+      "defensa": 35,
+      "ataqueEspecial": 63,
+      "defensaEspecial": 33,
+      "velocidad": 45
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Tinieblas", "daño": 0, "tipo": "Fantasma" },
       { "nivel": 13, "nombre": "Sombra Vil", "daño": 40, "tipo": "Fantasma" }
@@ -925,20 +1941,43 @@
   "89": {
     "nombre": "Banette",
     "tipos": ["Fantasma"],
-    "statsBase": { "hp": 64, "ataque": 115, "defensa": 65, "velocidad": 65 },
+    "habilidad": "Foco Interno",
+    "habilidad_oculta": "Cuerpo Maldito",
+    "grupo_huevo": ["Amorfo"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.5,
+    "base_experiencia": 159,
+    "statsBase": {
+      "hp": 64,
+      "ataque": 115,
+      "defensa": 65,
+      "ataqueEspecial": 83,
+      "defensaEspecial": 63,
+      "velocidad": 65
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Garra Sombría", "daño": 70, "tipo": "Fantasma" },
       { "nivel": 45, "nombre": "Infortunio", "daño": 65, "tipo": "Fantasma" }
     ],
     "spawn": { "rango_nivel": [37, 55] },
     "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/354.png"
-  }
-}
-{
+  },
   "90": {
     "nombre": "Duskull",
     "tipos": ["Fantasma"],
-    "statsBase": { "hp": 20, "ataque": 40, "defensa": 90, "velocidad": 25 },
+    "habilidad": "Levitación",
+    "grupo_huevo": ["Amorfo"],
+    "ratio_captura": 190,
+    "ratio_genero": 0.5,
+    "base_experiencia": 59,
+    "statsBase": {
+      "hp": 20,
+      "ataque": 40,
+      "defensa": 90,
+      "ataqueEspecial": 30,
+      "defensaEspecial": 90,
+      "velocidad": 25
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Impresionar", "daño": 30, "tipo": "Fantasma" },
       { "nivel": 12, "nombre": "Sombra Vil", "daño": 40, "tipo": "Fantasma" }
@@ -950,7 +1989,19 @@
   "91": {
     "nombre": "Dusclops",
     "tipos": ["Fantasma"],
-    "statsBase": { "hp": 40, "ataque": 70, "defensa": 130, "velocidad": 25 },
+    "habilidad": "Presión",
+    "grupo_huevo": ["Amorfo"],
+    "ratio_captura": 90,
+    "ratio_genero": 0.5,
+    "base_experiencia": 159,
+    "statsBase": {
+      "hp": 40,
+      "ataque": 70,
+      "defensa": 130,
+      "ataqueEspecial": 60,
+      "defensaEspecial": 130,
+      "velocidad": 25
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Puño Sombra", "daño": 60, "tipo": "Fantasma" },
       { "nivel": 37, "nombre": "Fuego Fatuo", "daño": 0, "tipo": "Fuego" }
@@ -962,7 +2013,19 @@
   "92": {
     "nombre": "Dusknoir",
     "tipos": ["Fantasma"],
-    "statsBase": { "hp": 45, "ataque": 100, "defensa": 135, "velocidad": 45 },
+    "habilidad": "Presión",
+    "grupo_huevo": ["Amorfo"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.5,
+    "base_experiencia": 236,
+    "statsBase": {
+      "hp": 45,
+      "ataque": 100,
+      "defensa": 135,
+      "ataqueEspecial": 65,
+      "defensaEspecial": 135,
+      "velocidad": 45
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Puño Dinámico", "daño": 100, "tipo": "Lucha" },
       { "nivel": 50, "nombre": "Poltergeist", "daño": 110, "tipo": "Fantasma" }
@@ -973,7 +2036,20 @@
   "93": {
     "nombre": "Eevee",
     "tipos": ["Normal"],
-    "statsBase": { "hp": 55, "ataque": 55, "defensa": 50, "velocidad": 55 },
+    "habilidad": "Fuga",
+    "habilidad_oculta": "Adaptable",
+    "grupo_huevo": ["Campo"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.875,
+    "base_experiencia": 65,
+    "statsBase": {
+      "hp": 55,
+      "ataque": 55,
+      "defensa": 50,
+      "ataqueEspecial": 45,
+      "defensaEspecial": 65,
+      "velocidad": 55
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Placaje", "daño": 40, "tipo": "Normal" },
       { "nivel": 10, "nombre": "Rapidez", "daño": 60, "tipo": "Normal" }
@@ -989,7 +2065,20 @@
   "94": {
     "nombre": "Vaporeon",
     "tipos": ["Agua"],
-    "statsBase": { "hp": 130, "ataque": 65, "defensa": 60, "velocidad": 65 },
+    "habilidad": "Absorbe Agua",
+    "habilidad_oculta": "Hidratación",
+    "grupo_huevo": ["Campo"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.875,
+    "base_experiencia": 184,
+    "statsBase": {
+      "hp": 130,
+      "ataque": 65,
+      "defensa": 60,
+      "ataqueEspecial": 110,
+      "defensaEspecial": 95,
+      "velocidad": 65
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Pistola Agua", "daño": 40, "tipo": "Agua" },
       { "nivel": 25, "nombre": "Surf", "daño": 90, "tipo": "Agua" }
@@ -999,7 +2088,20 @@
   "95": {
     "nombre": "Jolteon",
     "tipos": ["Eléctrico"],
-    "statsBase": { "hp": 65, "ataque": 65, "defensa": 60, "velocidad": 130 },
+    "habilidad": "Absorbe Electricidad",
+    "habilidad_oculta": "Pies Rápidos",
+    "grupo_huevo": ["Campo"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.875,
+    "base_experiencia": 184,
+    "statsBase": {
+      "hp": 65,
+      "ataque": 65,
+      "defensa": 60,
+      "ataqueEspecial": 110,
+      "defensaEspecial": 95,
+      "velocidad": 130
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Impactrueno", "daño": 40, "tipo": "Eléctrico" },
       { "nivel": 25, "nombre": "Rayo", "daño": 90, "tipo": "Eléctrico" }
@@ -1009,7 +2111,20 @@
   "96": {
     "nombre": "Flareon",
     "tipos": ["Fuego"],
-    "statsBase": { "hp": 65, "ataque": 130, "defensa": 60, "velocidad": 65 },
+    "habilidad": "Absorbe Fuego",
+    "habilidad_oculta": "Agallas",
+    "grupo_huevo": ["Campo"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.875,
+    "base_experiencia": 184,
+    "statsBase": {
+      "hp": 65,
+      "ataque": 130,
+      "defensa": 60,
+      "ataqueEspecial": 95,
+      "defensaEspecial": 110,
+      "velocidad": 65
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Ascuas", "daño": 40, "tipo": "Fuego" },
       { "nivel": 25, "nombre": "Llamarada", "daño": 110, "tipo": "Fuego" }
@@ -1019,7 +2134,20 @@
   "97": {
     "nombre": "Espeon",
     "tipos": ["Psíquico"],
-    "statsBase": { "hp": 65, "ataque": 65, "defensa": 60, "velocidad": 110 },
+    "habilidad": "Sincronía",
+    "habilidad_oculta": "Filtro Mágico",
+    "grupo_huevo": ["Campo"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.875,
+    "base_experiencia": 184,
+    "statsBase": {
+      "hp": 65,
+      "ataque": 65,
+      "defensa": 60,
+      "ataqueEspecial": 130,
+      "defensaEspecial": 95,
+      "velocidad": 110
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Confusión", "daño": 50, "tipo": "Psíquico" },
       { "nivel": 25, "nombre": "Psíquico", "daño": 90, "tipo": "Psíquico" }
@@ -1029,7 +2157,20 @@
   "98": {
     "nombre": "Umbreon",
     "tipos": ["Siniestro"],
-    "statsBase": { "hp": 95, "ataque": 65, "defensa": 110, "velocidad": 65 },
+    "habilidad": "Sincronía",
+    "habilidad_oculta": "Foco Interno",
+    "grupo_huevo": ["Campo"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.875,
+    "base_experiencia": 184,
+    "statsBase": {
+      "hp": 95,
+      "ataque": 65,
+      "defensa": 110,
+      "ataqueEspecial": 60,
+      "defensaEspecial": 130,
+      "velocidad": 65
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Persecución", "daño": 40, "tipo": "Siniestro" },
       { "nivel": 25, "nombre": "Pulso Umbrío", "daño": 80, "tipo": "Siniestro" }
@@ -1039,7 +2180,20 @@
   "99": {
     "nombre": "Leafeon",
     "tipos": ["Planta"],
-    "statsBase": { "hp": 65, "ataque": 110, "defensa": 130, "velocidad": 95 },
+    "habilidad": "Defensa Hoja",
+    "habilidad_oculta": "Clorofila",
+    "grupo_huevo": ["Campo"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.875,
+    "base_experiencia": 184,
+    "statsBase": {
+      "hp": 65,
+      "ataque": 110,
+      "defensa": 130,
+      "ataqueEspecial": 60,
+      "defensaEspecial": 65,
+      "velocidad": 95
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Hoja Afilada", "daño": 55, "tipo": "Planta" },
       { "nivel": 25, "nombre": "Hoja Aguda", "daño": 90, "tipo": "Planta" }
@@ -1049,7 +2203,20 @@
   "100": {
     "nombre": "Glaceon",
     "tipos": ["Hielo"],
-    "statsBase": { "hp": 65, "ataque": 60, "defensa": 110, "velocidad": 65 },
+    "habilidad": "Manto Níveo",
+    "habilidad_oculta": "Gélido",
+    "grupo_huevo": ["Campo"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.875,
+    "base_experiencia": 184,
+    "statsBase": {
+      "hp": 65,
+      "ataque": 60,
+      "defensa": 110,
+      "ataqueEspecial": 130,
+      "defensaEspecial": 95,
+      "velocidad": 65
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Viento Hielo", "daño": 55, "tipo": "Hielo" },
       { "nivel": 25, "nombre": "Rayo Hielo", "daño": 90, "tipo": "Hielo" }
@@ -1059,7 +2226,20 @@
   "101": {
     "nombre": "Sylveon",
     "tipos": ["Hada"],
-    "statsBase": { "hp": 95, "ataque": 65, "defensa": 65, "velocidad": 60 },
+    "habilidad": "Gran Encanto",
+    "habilidad_oculta": "Piel Feérica",
+    "grupo_huevo": ["Campo"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.875,
+    "base_experiencia": 184,
+    "statsBase": {
+      "hp": 95,
+      "ataque": 65,
+      "defensa": 65,
+      "ataqueEspecial": 110,
+      "defensaEspecial": 130,
+      "velocidad": 60
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Voz Cautivadora", "daño": 40, "tipo": "Hada" },
       { "nivel": 25, "nombre": "Fuerza Lunar", "daño": 95, "tipo": "Hada" }
@@ -1069,7 +2249,20 @@
   "102": {
     "nombre": "Voltorb",
     "tipos": ["Eléctrico"],
-    "statsBase": { "hp": 40, "ataque": 30, "defensa": 50, "velocidad": 100 },
+    "habilidad": "Absorbe Electricidad",
+    "habilidad_oculta": "Insonorizar",
+    "grupo_huevo": ["Mineral"],
+    "ratio_captura": 190,
+    "ratio_genero": null,
+    "base_experiencia": 66,
+    "statsBase": {
+      "hp": 40,
+      "ataque": 30,
+      "defensa": 50,
+      "ataqueEspecial": 55,
+      "defensaEspecial": 55,
+      "velocidad": 100
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Carga", "daño": 0, "tipo": "Eléctrico" },
       { "nivel": 10, "nombre": "Chispa", "daño": 65, "tipo": "Eléctrico" }
@@ -1081,7 +2274,20 @@
   "103": {
     "nombre": "Electrode",
     "tipos": ["Eléctrico"],
-    "statsBase": { "hp": 60, "ataque": 50, "defensa": 70, "velocidad": 150 },
+    "habilidad": "Absorbe Electricidad",
+    "habilidad_oculta": "Insonorizar",
+    "grupo_huevo": ["Mineral"],
+    "ratio_captura": 60,
+    "ratio_genero": null,
+    "base_experiencia": 172,
+    "statsBase": {
+      "hp": 60,
+      "ataque": 50,
+      "defensa": 70,
+      "ataqueEspecial": 80,
+      "defensaEspecial": 80,
+      "velocidad": 150
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Bola Voltio", "daño": 60, "tipo": "Eléctrico" },
       { "nivel": 35, "nombre": "Explosión", "daño": 250, "tipo": "Normal" }
@@ -1092,7 +2298,20 @@
   "104": {
     "nombre": "Electabuzz",
     "tipos": ["Eléctrico"],
-    "statsBase": { "hp": 65, "ataque": 83, "defensa": 57, "velocidad": 105 },
+    "habilidad": "Electricidad Estática",
+    "habilidad_oculta": "Espíritu Vital",
+    "grupo_huevo": ["Humanoide"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.75,
+    "base_experiencia": 172,
+    "statsBase": {
+      "hp": 65,
+      "ataque": 83,
+      "defensa": 57,
+      "ataqueEspecial": 95,
+      "defensaEspecial": 85,
+      "velocidad": 105
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Puño Trueno", "daño": 75, "tipo": "Eléctrico" },
       { "nivel": 15, "nombre": "Rayo", "daño": 90, "tipo": "Eléctrico" }
@@ -1104,7 +2323,20 @@
   "105": {
     "nombre": "Electivire",
     "tipos": ["Eléctrico"],
-    "statsBase": { "hp": 75, "ataque": 123, "defensa": 67, "velocidad": 95 },
+    "habilidad": "Electricidad Estática",
+    "habilidad_oculta": "Espíritu Vital",
+    "grupo_huevo": ["Humanoide"],
+    "ratio_captura": 30,
+    "ratio_genero": 0.75,
+    "base_experiencia": 243,
+    "statsBase": {
+      "hp": 75,
+      "ataque": 123,
+      "defensa": 67,
+      "ataqueEspecial": 95,
+      "defensaEspecial": 85,
+      "velocidad": 95
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Voltio Cruel", "daño": 90, "tipo": "Eléctrico" },
       { "nivel": 50, "nombre": "Giga Impacto", "daño": 150, "tipo": "Normal" }
@@ -1115,7 +2347,20 @@
   "106": {
     "nombre": "Magnemite",
     "tipos": ["Eléctrico", "Acero"],
-    "statsBase": { "hp": 25, "ataque": 35, "defensa": 70, "velocidad": 45 },
+    "habilidad": "Imán",
+    "habilidad_oculta": "Robustez",
+    "grupo_huevo": ["Mineral"],
+    "ratio_captura": 190,
+    "ratio_genero": null,
+    "base_experiencia": 65,
+    "statsBase": {
+      "hp": 25,
+      "ataque": 35,
+      "defensa": 70,
+      "ataqueEspecial": 95,
+      "defensaEspecial": 55,
+      "velocidad": 45
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Impactrueno", "daño": 40, "tipo": "Eléctrico" },
       { "nivel": 10, "nombre": "Bomba Imán", "daño": 60, "tipo": "Acero" }
@@ -1127,7 +2372,20 @@
   "107": {
     "nombre": "Magneton",
     "tipos": ["Eléctrico", "Acero"],
-    "statsBase": { "hp": 50, "ataque": 60, "defensa": 95, "velocidad": 70 },
+    "habilidad": "Imán",
+    "habilidad_oculta": "Robustez",
+    "grupo_huevo": ["Mineral"],
+    "ratio_captura": 60,
+    "ratio_genero": null,
+    "base_experiencia": 163,
+    "statsBase": {
+      "hp": 50,
+      "ataque": 60,
+      "defensa": 95,
+      "ataqueEspecial": 120,
+      "defensaEspecial": 70,
+      "velocidad": 70
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Triataque", "daño": 80, "tipo": "Normal" },
       { "nivel": 35, "nombre": "Foco Resplandor", "daño": 80, "tipo": "Acero" }
@@ -1139,7 +2397,20 @@
   "108": {
     "nombre": "Magnezone",
     "tipos": ["Eléctrico", "Acero"],
-    "statsBase": { "hp": 70, "ataque": 70, "defensa": 115, "velocidad": 60 },
+    "habilidad": "Imán",
+    "habilidad_oculta": "Robustez",
+    "grupo_huevo": ["Mineral"],
+    "ratio_captura": 30,
+    "ratio_genero": null,
+    "base_experiencia": 241,
+    "statsBase": {
+      "hp": 70,
+      "ataque": 70,
+      "defensa": 115,
+      "ataqueEspecial": 130,
+      "defensaEspecial": 90,
+      "velocidad": 60
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Trueno", "daño": 110, "tipo": "Eléctrico" },
       { "nivel": 50, "nombre": "Electrocañón", "daño": 120, "tipo": "Eléctrico" }
@@ -1150,7 +2421,20 @@
   "109": {
     "nombre": "Porygon",
     "tipos": ["Normal"],
-    "statsBase": { "hp": 65, "ataque": 60, "defensa": 70, "velocidad": 40 },
+    "habilidad": "Rastro",
+    "habilidad_oculta": "Descarga",
+    "grupo_huevo": ["Mineral"],
+    "ratio_captura": 45,
+    "ratio_genero": null,
+    "base_experiencia": 79,
+    "statsBase": {
+      "hp": 65,
+      "ataque": 60,
+      "defensa": 70,
+      "ataqueEspecial": 85,
+      "defensaEspecial": 75,
+      "velocidad": 40
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Conversión", "daño": 0, "tipo": "Normal" },
       { "nivel": 15, "nombre": "Psicorrayo", "daño": 65, "tipo": "Psíquico" }
@@ -1158,13 +2442,24 @@
     "evolucion": { "nivel": 30, "id": "110" },
     "spawn": { "rango_nivel": [10, 30] },
     "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/137.png"
-  }
-}
-{
+  },
   "110": {
     "nombre": "Porygon2",
     "tipos": ["Normal"],
-    "statsBase": { "hp": 85, "ataque": 80, "defensa": 90, "velocidad": 60 },
+    "habilidad": "Rastro",
+    "habilidad_oculta": "Descarga",
+    "grupo_huevo": ["Mineral"],
+    "ratio_captura": 45,
+    "ratio_genero": null,
+    "base_experiencia": 180,
+    "statsBase": {
+      "hp": 85,
+      "ataque": 80,
+      "defensa": 90,
+      "ataqueEspecial": 105,
+      "defensaEspecial": 95,
+      "velocidad": 60
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Chispazo", "daño": 80, "tipo": "Eléctrico" },
       { "nivel": 30, "nombre": "Triataque", "daño": 80, "tipo": "Normal" }
@@ -1176,7 +2471,20 @@
   "111": {
     "nombre": "Porygon-Z",
     "tipos": ["Normal"],
-    "statsBase": { "hp": 85, "ataque": 80, "defensa": 70, "velocidad": 90 },
+    "habilidad": "Adaptable",
+    "habilidad_oculta": "Descarga",
+    "grupo_huevo": ["Mineral"],
+    "ratio_captura": 30,
+    "ratio_genero": null,
+    "base_experiencia": 241,
+    "statsBase": {
+      "hp": 85,
+      "ataque": 80,
+      "defensa": 70,
+      "ataqueEspecial": 135,
+      "defensaEspecial": 75,
+      "velocidad": 90
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Electrocañón", "daño": 120, "tipo": "Eléctrico" },
       { "nivel": 50, "nombre": "Hiperrayo", "daño": 150, "tipo": "Normal" }
@@ -1187,7 +2495,19 @@
   "112": {
     "nombre": "Rotom",
     "tipos": ["Eléctrico", "Fantasma"],
-    "statsBase": { "hp": 50, "ataque": 50, "defensa": 77, "velocidad": 91 },
+    "habilidad": "Levitación",
+    "grupo_huevo": ["Amorfo"],
+    "ratio_captura": 45,
+    "ratio_genero": null,
+    "base_experiencia": 154,
+    "statsBase": {
+      "hp": 50,
+      "ataque": 50,
+      "defensa": 77,
+      "ataqueEspecial": 95,
+      "defensaEspecial": 77,
+      "velocidad": 91
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Impactrueno", "daño": 40, "tipo": "Eléctrico" },
       { "nivel": 15, "nombre": "Infortunio", "daño": 65, "tipo": "Fantasma" }
@@ -1198,7 +2518,20 @@
   "113": {
     "nombre": "Spiritomb",
     "tipos": ["Fantasma", "Siniestro"],
-    "statsBase": { "hp": 50, "ataque": 92, "defensa": 108, "velocidad": 35 },
+    "habilidad": "Presión",
+    "habilidad_oculta": "Cacheo",
+    "grupo_huevo": ["Amorfo"],
+    "ratio_captura": 100,
+    "ratio_genero": 0.5,
+    "base_experiencia": 170,
+    "statsBase": {
+      "hp": 50,
+      "ataque": 92,
+      "defensa": 108,
+      "ataqueEspecial": 92,
+      "defensaEspecial": 108,
+      "velocidad": 35
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Sombra Vil", "daño": 40, "tipo": "Fantasma" },
       { "nivel": 25, "nombre": "Pulso Umbrío", "daño": 80, "tipo": "Siniestro" }
@@ -1209,7 +2542,20 @@
   "114": {
     "nombre": "Sableye",
     "tipos": ["Siniestro", "Fantasma"],
-    "statsBase": { "hp": 50, "ataque": 75, "defensa": 75, "velocidad": 50 },
+    "habilidad": "Cacheo",
+    "habilidad_oculta": "Allanamiento",
+    "grupo_huevo": ["Humanoide"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.5,
+    "base_experiencia": 133,
+    "statsBase": {
+      "hp": 50,
+      "ataque": 75,
+      "defensa": 75,
+      "ataqueEspecial": 65,
+      "defensaEspecial": 65,
+      "velocidad": 50
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Finta", "daño": 60, "tipo": "Siniestro" },
       { "nivel": 20, "nombre": "Garra Sombría", "daño": 70, "tipo": "Fantasma" }
@@ -1220,7 +2566,20 @@
   "115": {
     "nombre": "Absol",
     "tipos": ["Siniestro"],
-    "statsBase": { "hp": 65, "ataque": 130, "defensa": 60, "velocidad": 75 },
+    "habilidad": "Presión",
+    "habilidad_oculta": "Afortunado",
+    "grupo_huevo": ["Campo"],
+    "ratio_captura": 30,
+    "ratio_genero": 0.5,
+    "base_experiencia": 163,
+    "statsBase": {
+      "hp": 65,
+      "ataque": 130,
+      "defensa": 60,
+      "ataqueEspecial": 75,
+      "defensaEspecial": 60,
+      "velocidad": 75
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Ataque Rápido", "daño": 40, "tipo": "Normal" },
       { "nivel": 25, "nombre": "Tajo Umbrío", "daño": 70, "tipo": "Siniestro" }
@@ -1231,7 +2590,20 @@
   "116": {
     "nombre": "Sneasel",
     "tipos": ["Siniestro", "Hielo"],
-    "statsBase": { "hp": 55, "ataque": 95, "defensa": 55, "velocidad": 115 },
+    "habilidad": "Foco Interno",
+    "habilidad_oculta": "Cacheo",
+    "grupo_huevo": ["Campo"],
+    "ratio_captura": 60,
+    "ratio_genero": 0.5,
+    "base_experiencia": 86,
+    "statsBase": {
+      "hp": 55,
+      "ataque": 95,
+      "defensa": 55,
+      "ataqueEspecial": 35,
+      "defensaEspecial": 75,
+      "velocidad": 115
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Ataque Arena", "daño": 0, "tipo": "Tierra" },
       { "nivel": 15, "nombre": "Canto Helado", "daño": 40, "tipo": "Hielo" }
@@ -1243,7 +2615,20 @@
   "117": {
     "nombre": "Weavile",
     "tipos": ["Siniestro", "Hielo"],
-    "statsBase": { "hp": 70, "ataque": 120, "defensa": 65, "velocidad": 125 },
+    "habilidad": "Presión",
+    "habilidad_oculta": "Cacheo",
+    "grupo_huevo": ["Campo"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.5,
+    "base_experiencia": 179,
+    "statsBase": {
+      "hp": 70,
+      "ataque": 120,
+      "defensa": 65,
+      "ataqueEspecial": 45,
+      "defensaEspecial": 85,
+      "velocidad": 125
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Tajo Umbrío", "daño": 70, "tipo": "Siniestro" },
       { "nivel": 45, "nombre": "Cuchillada", "daño": 70, "tipo": "Normal" }
@@ -1254,7 +2639,20 @@
   "118": {
     "nombre": "Swinub",
     "tipos": ["Hielo", "Tierra"],
-    "statsBase": { "hp": 50, "ataque": 50, "defensa": 40, "velocidad": 50 },
+    "habilidad": "Dicha",
+    "habilidad_oculta": "Nevada",
+    "grupo_huevo": ["Campo"],
+    "ratio_captura": 225,
+    "ratio_genero": 0.5,
+    "base_experiencia": 50,
+    "statsBase": {
+      "hp": 50,
+      "ataque": 50,
+      "defensa": 40,
+      "ataqueEspecial": 30,
+      "defensaEspecial": 30,
+      "velocidad": 50
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Nieve Polvo", "daño": 40, "tipo": "Hielo" },
       { "nivel": 10, "nombre": "Bofetón Lodo", "daño": 20, "tipo": "Tierra" }
@@ -1266,7 +2664,20 @@
   "119": {
     "nombre": "Piloswine",
     "tipos": ["Hielo", "Tierra"],
-    "statsBase": { "hp": 100, "ataque": 100, "defensa": 80, "velocidad": 50 },
+    "habilidad": "Dicha",
+    "habilidad_oculta": "Nevada",
+    "grupo_huevo": ["Campo"],
+    "ratio_captura": 75,
+    "ratio_genero": 0.5,
+    "base_experiencia": 158,
+    "statsBase": {
+      "hp": 100,
+      "ataque": 100,
+      "defensa": 80,
+      "ataqueEspecial": 60,
+      "defensaEspecial": 60,
+      "velocidad": 50
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Viento Hielo", "daño": 55, "tipo": "Hielo" },
       { "nivel": 33, "nombre": "Terremoto", "daño": 100, "tipo": "Tierra" }
@@ -1278,7 +2689,20 @@
   "120": {
     "nombre": "Mamoswine",
     "tipos": ["Hielo", "Tierra"],
-    "statsBase": { "hp": 110, "ataque": 130, "defensa": 80, "velocidad": 80 },
+    "habilidad": "Dicha",
+    "habilidad_oculta": "Nevada",
+    "grupo_huevo": ["Campo"],
+    "ratio_captura": 50,
+    "ratio_genero": 0.5,
+    "base_experiencia": 239,
+    "statsBase": {
+      "hp": 110,
+      "ataque": 130,
+      "defensa": 80,
+      "ataqueEspecial": 70,
+      "defensaEspecial": 60,
+      "velocidad": 80
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Colmillo Hielo", "daño": 65, "tipo": "Hielo" },
       { "nivel": 55, "nombre": "Fuerza Bruta", "daño": 120, "tipo": "Lucha" }
@@ -1289,7 +2713,20 @@
   "121": {
     "nombre": "Shroomish",
     "tipos": ["Planta"],
-    "statsBase": { "hp": 60, "ataque": 40, "defensa": 60, "velocidad": 35 },
+    "habilidad": "Efecto Espora",
+    "habilidad_oculta": "Cura Natural",
+    "grupo_huevo": ["Hada", "Planta"],
+    "ratio_captura": 255,
+    "ratio_genero": 0.5,
+    "base_experiencia": 59,
+    "statsBase": {
+      "hp": 60,
+      "ataque": 40,
+      "defensa": 60,
+      "ataqueEspecial": 40,
+      "defensaEspecial": 60,
+      "velocidad": 35
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Absorber", "daño": 20, "tipo": "Planta" },
       { "nivel": 12, "nombre": "Paralizador", "daño": 0, "tipo": "Planta" }
@@ -1301,7 +2738,20 @@
   "122": {
     "nombre": "Breloom",
     "tipos": ["Planta", "Lucha"],
-    "statsBase": { "hp": 60, "ataque": 130, "defensa": 80, "velocidad": 70 },
+    "habilidad": "Efecto Espora",
+    "habilidad_oculta": "Cura Natural",
+    "grupo_huevo": ["Hada", "Planta"],
+    "ratio_captura": 90,
+    "ratio_genero": 0.5,
+    "base_experiencia": 161,
+    "statsBase": {
+      "hp": 60,
+      "ataque": 130,
+      "defensa": 80,
+      "ataqueEspecial": 60,
+      "defensaEspecial": 60,
+      "velocidad": 70
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Ultrapuño", "daño": 40, "tipo": "Lucha" },
       { "nivel": 25, "nombre": "Bomba Germen", "daño": 80, "tipo": "Planta" }
@@ -1312,7 +2762,20 @@
   "123": {
     "nombre": "Gible",
     "tipos": ["Dragón", "Tierra"],
-    "statsBase": { "hp": 58, "ataque": 70, "defensa": 45, "velocidad": 42 },
+    "habilidad": "Velo Arena",
+    "habilidad_oculta": "Poder Arena",
+    "grupo_huevo": ["Monstruo", "Dragón"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.5,
+    "base_experiencia": 60,
+    "statsBase": {
+      "hp": 58,
+      "ataque": 70,
+      "defensa": 45,
+      "ataqueEspecial": 40,
+      "defensaEspecial": 45,
+      "velocidad": 42
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Placaje", "daño": 40, "tipo": "Normal" },
       { "nivel": 15, "nombre": "Bucle Arena", "daño": 35, "tipo": "Tierra" }
@@ -1324,7 +2787,20 @@
   "124": {
     "nombre": "Gabite",
     "tipos": ["Dragón", "Tierra"],
-    "statsBase": { "hp": 68, "ataque": 90, "defensa": 65, "velocidad": 82 },
+    "habilidad": "Velo Arena",
+    "habilidad_oculta": "Poder Arena",
+    "grupo_huevo": ["Monstruo", "Dragón"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.5,
+    "base_experiencia": 144,
+    "statsBase": {
+      "hp": 68,
+      "ataque": 90,
+      "defensa": 65,
+      "ataqueEspecial": 50,
+      "defensaEspecial": 55,
+      "velocidad": 82
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Cuchillada", "daño": 70, "tipo": "Normal" },
       { "nivel": 24, "nombre": "Garra Dragón", "daño": 80, "tipo": "Dragón" }
@@ -1336,7 +2812,20 @@
   "125": {
     "nombre": "Garchomp",
     "tipos": ["Dragón", "Tierra"],
-    "statsBase": { "hp": 108, "ataque": 130, "defensa": 95, "velocidad": 102 },
+    "habilidad": "Velo Arena",
+    "habilidad_oculta": "Poder Arena",
+    "grupo_huevo": ["Monstruo", "Dragón"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.5,
+    "base_experiencia": 270,
+    "statsBase": {
+      "hp": 108,
+      "ataque": 130,
+      "defensa": 95,
+      "ataqueEspecial": 80,
+      "defensaEspecial": 85,
+      "velocidad": 102
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Carga Dragón", "daño": 100, "tipo": "Dragón" },
       { "nivel": 50, "nombre": "Terremoto", "daño": 100, "tipo": "Tierra" }
@@ -1347,7 +2836,20 @@
   "126": {
     "nombre": "Meowth",
     "tipos": ["Normal"],
-    "statsBase": { "hp": 40, "ataque": 45, "defensa": 35, "velocidad": 90 },
+    "habilidad": "Recogida",
+    "habilidad_oculta": "Experto",
+    "grupo_huevo": ["Campo"],
+    "ratio_captura": 255,
+    "ratio_genero": 0.5,
+    "base_experiencia": 58,
+    "statsBase": {
+      "hp": 40,
+      "ataque": 45,
+      "defensa": 35,
+      "ataqueEspecial": 40,
+      "defensaEspecial": 40,
+      "velocidad": 90
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Arañazo", "daño": 40, "tipo": "Normal" },
       { "nivel": 12, "nombre": "Mordisco", "daño": 60, "tipo": "Siniestro" }
@@ -1359,7 +2861,20 @@
   "127": {
     "nombre": "Persian",
     "tipos": ["Normal"],
-    "statsBase": { "hp": 65, "ataque": 70, "defensa": 60, "velocidad": 115 },
+    "habilidad": "Flexibilidad",
+    "habilidad_oculta": "Experto",
+    "grupo_huevo": ["Campo"],
+    "ratio_captura": 90,
+    "ratio_genero": 0.5,
+    "base_experiencia": 154,
+    "statsBase": {
+      "hp": 65,
+      "ataque": 70,
+      "defensa": 60,
+      "ataqueEspecial": 65,
+      "defensaEspecial": 65,
+      "velocidad": 115
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Sorpresa", "daño": 40, "tipo": "Normal" },
       { "nivel": 30, "nombre": "Cuchillada", "daño": 70, "tipo": "Normal" }
@@ -1370,7 +2885,20 @@
   "128": {
     "nombre": "Buneary",
     "tipos": ["Normal"],
-    "statsBase": { "hp": 55, "ataque": 66, "defensa": 44, "velocidad": 85 },
+    "habilidad": "Fuga",
+    "habilidad_oculta": "Liviano",
+    "grupo_huevo": ["Campo", "Humanoide"],
+    "ratio_captura": 190,
+    "ratio_genero": 0.5,
+    "base_experiencia": 70,
+    "statsBase": {
+      "hp": 55,
+      "ataque": 66,
+      "defensa": 44,
+      "ataqueEspecial": 44,
+      "defensaEspecial": 56,
+      "velocidad": 85
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Destructor", "daño": 40, "tipo": "Normal" },
       { "nivel": 13, "nombre": "Patada Salto", "daño": 70, "tipo": "Lucha" }
@@ -1382,20 +2910,44 @@
   "129": {
     "nombre": "Lopunny",
     "tipos": ["Normal"],
-    "statsBase": { "hp": 65, "ataque": 76, "defensa": 84, "velocidad": 105 },
+    "habilidad": "Fuga",
+    "habilidad_oculta": "Liviano",
+    "grupo_huevo": ["Campo", "Humanoide"],
+    "ratio_captura": 60,
+    "ratio_genero": 0.5,
+    "base_experiencia": 168,
+    "statsBase": {
+      "hp": 65,
+      "ataque": 76,
+      "defensa": 84,
+      "ataqueEspecial": 54,
+      "defensaEspecial": 96,
+      "velocidad": 105
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Puño Mareo", "daño": 70, "tipo": "Normal" },
       { "nivel": 35, "nombre": "Patada Salto Alta", "daño": 130, "tipo": "Lucha" }
     ],
     "spawn": { "rango_nivel": [30, 55] },
     "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/428.png"
-  }
-}
-{
+  },
   "130": {
     "nombre": "Oddish",
     "tipos": ["Planta", "Veneno"],
-    "statsBase": { "hp": 45, "ataque": 50, "defensa": 55, "velocidad": 30 },
+    "habilidad": "Clorofila",
+    "habilidad_oculta": "Fuga",
+    "grupo_huevo": ["Planta"],
+    "ratio_captura": 255,
+    "ratio_genero": 0.5,
+    "base_experiencia": 64,
+    "statsBase": {
+      "hp": 45,
+      "ataque": 50,
+      "defensa": 55,
+      "ataqueEspecial": 75,
+      "defensaEspecial": 65,
+      "velocidad": 30
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Absorber", "daño": 20, "tipo": "Planta" },
       { "nivel": 10, "nombre": "Ácido", "daño": 40, "tipo": "Veneno" }
@@ -1407,7 +2959,20 @@
   "131": {
     "nombre": "Gloom",
     "tipos": ["Planta", "Veneno"],
-    "statsBase": { "hp": 60, "ataque": 65, "defensa": 70, "velocidad": 40 },
+    "habilidad": "Clorofila",
+    "habilidad_oculta": "Hedor",
+    "grupo_huevo": ["Planta"],
+    "ratio_captura": 120,
+    "ratio_genero": 0.5,
+    "base_experiencia": 138,
+    "statsBase": {
+      "hp": 60,
+      "ataque": 65,
+      "defensa": 70,
+      "ataqueEspecial": 85,
+      "defensaEspecial": 75,
+      "velocidad": 40
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Polvo Veneno", "daño": 0, "tipo": "Veneno" },
       { "nivel": 21, "nombre": "Megaagotar", "daño": 40, "tipo": "Planta" }
@@ -1419,7 +2984,20 @@
   "132": {
     "nombre": "Vileplume",
     "tipos": ["Planta", "Veneno"],
-    "statsBase": { "hp": 75, "ataque": 80, "defensa": 85, "velocidad": 50 },
+    "habilidad": "Clorofila",
+    "habilidad_oculta": "Efecto Espora",
+    "grupo_huevo": ["Planta"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.5,
+    "base_experiencia": 221,
+    "statsBase": {
+      "hp": 75,
+      "ataque": 80,
+      "defensa": 85,
+      "ataqueEspecial": 110,
+      "defensaEspecial": 90,
+      "velocidad": 50
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Danza Pétalo", "daño": 120, "tipo": "Planta" },
       { "nivel": 40, "nombre": "Bomba Lodo", "daño": 90, "tipo": "Veneno" }
@@ -1430,7 +3008,20 @@
   "133": {
     "nombre": "Bellossom",
     "tipos": ["Planta"],
-    "statsBase": { "hp": 75, "ataque": 80, "defensa": 95, "velocidad": 50 },
+    "habilidad": "Clorofila",
+    "habilidad_oculta": "Cura Cura",
+    "grupo_huevo": ["Planta"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.5,
+    "base_experiencia": 221,
+    "statsBase": {
+      "hp": 75,
+      "ataque": 80,
+      "defensa": 95,
+      "ataqueEspecial": 90,
+      "defensaEspecial": 100,
+      "velocidad": 50
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Hoja Mágica", "daño": 60, "tipo": "Planta" },
       { "nivel": 40, "nombre": "Tormenta de Hojas", "daño": 130, "tipo": "Planta" }
@@ -1441,7 +3032,20 @@
   "134": {
     "nombre": "Pineco",
     "tipos": ["Bicho"],
-    "statsBase": { "hp": 50, "ataque": 65, "defensa": 90, "velocidad": 15 },
+    "habilidad": "Robustez",
+    "habilidad_oculta": "Armadura Batalla",
+    "grupo_huevo": ["Bicho"],
+    "ratio_captura": 190,
+    "ratio_genero": 0.5,
+    "base_experiencia": 58,
+    "statsBase": {
+      "hp": 50,
+      "ataque": 65,
+      "defensa": 90,
+      "ataqueEspecial": 35,
+      "defensaEspecial": 35,
+      "velocidad": 15
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Autodestrucción", "daño": 200, "tipo": "Normal" },
       { "nivel": 12, "nombre": "Picadura", "daño": 60, "tipo": "Bicho" }
@@ -1453,7 +3057,20 @@
   "135": {
     "nombre": "Forretress",
     "tipos": ["Bicho", "Acero"],
-    "statsBase": { "hp": 75, "ataque": 90, "defensa": 140, "velocidad": 40 },
+    "habilidad": "Robustez",
+    "habilidad_oculta": "Armadura Batalla",
+    "grupo_huevo": ["Bicho"],
+    "ratio_captura": 75,
+    "ratio_genero": 0.5,
+    "base_experiencia": 163,
+    "statsBase": {
+      "hp": 75,
+      "ataque": 90,
+      "defensa": 140,
+      "ataqueEspecial": 60,
+      "defensaEspecial": 60,
+      "velocidad": 40
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Giro Rápido", "daño": 50, "tipo": "Normal" },
       { "nivel": 31, "nombre": "Foco Resplandor", "daño": 80, "tipo": "Acero" }
@@ -1464,7 +3081,20 @@
   "136": {
     "nombre": "Burmy",
     "tipos": ["Bicho"],
-    "statsBase": { "hp": 40, "ataque": 29, "defensa": 45, "velocidad": 36 },
+    "habilidad": "Mudar",
+    "habilidad_oculta": "Funda",
+    "grupo_huevo": ["Bicho"],
+    "ratio_captura": 120,
+    "ratio_genero": 0.5,
+    "base_experiencia": 45,
+    "statsBase": {
+      "hp": 40,
+      "ataque": 29,
+      "defensa": 45,
+      "ataqueEspecial": 29,
+      "defensaEspecial": 45,
+      "velocidad": 36
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Placaje", "daño": 40, "tipo": "Normal" },
       { "nivel": 10, "nombre": "Picadura", "daño": 60, "tipo": "Bicho" }
@@ -1476,7 +3106,20 @@
   "137": {
     "nombre": "Wormadam",
     "tipos": ["Bicho", "Planta"],
-    "statsBase": { "hp": 60, "ataque": 59, "defensa": 85, "velocidad": 36 },
+    "habilidad": "Funda",
+    "habilidad_oculta": "Alerta",
+    "grupo_huevo": ["Bicho"],
+    "ratio_captura": 45,
+    "ratio_genero": 1.0,
+    "base_experiencia": 148,
+    "statsBase": {
+      "hp": 60,
+      "ataque": 59,
+      "defensa": 85,
+      "ataqueEspecial": 79,
+      "defensaEspecial": 105,
+      "velocidad": 36
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Confusión", "daño": 50, "tipo": "Psíquico" },
       { "nivel": 20, "nombre": "Hoja Mágica", "daño": 60, "tipo": "Planta" }
@@ -1487,7 +3130,20 @@
   "138": {
     "nombre": "Mothim",
     "tipos": ["Bicho", "Volador"],
-    "statsBase": { "hp": 70, "ataque": 94, "defensa": 50, "velocidad": 66 },
+    "habilidad": "Enjambre",
+    "habilidad_oculta": "Cacheo",
+    "grupo_huevo": ["Bicho"],
+    "ratio_captura": 45,
+    "ratio_genero": 1.0,
+    "base_experiencia": 148,
+    "statsBase": {
+      "hp": 70,
+      "ataque": 94,
+      "defensa": 50,
+      "ataqueEspecial": 94,
+      "defensaEspecial": 50,
+      "velocidad": 66
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Tornado", "daño": 40, "tipo": "Volador" },
       { "nivel": 20, "nombre": "Tajo Aéreo", "daño": 75, "tipo": "Volador" }
@@ -1498,7 +3154,20 @@
   "139": {
     "nombre": "Combee",
     "tipos": ["Bicho", "Volador"],
-    "statsBase": { "hp": 30, "ataque": 30, "defensa": 42, "velocidad": 70 },
+    "habilidad": "Recogida Miel",
+    "habilidad_oculta": "Nerviosismo",
+    "grupo_huevo": ["Bicho"],
+    "ratio_captura": 120,
+    "ratio_genero": 0.875,
+    "base_experiencia": 49,
+    "statsBase": {
+      "hp": 30,
+      "ataque": 30,
+      "defensa": 42,
+      "ataqueEspecial": 30,
+      "defensaEspecial": 42,
+      "velocidad": 70
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Tornado", "daño": 40, "tipo": "Volador" },
       { "nivel": 10, "nombre": "Picadura", "daño": 60, "tipo": "Bicho" }
@@ -1510,7 +3179,20 @@
   "140": {
     "nombre": "Vespiquen",
     "tipos": ["Bicho", "Volador"],
-    "statsBase": { "hp": 70, "ataque": 80, "defensa": 102, "velocidad": 40 },
+    "habilidad": "Presión",
+    "habilidad_oculta": "Alerta",
+    "grupo_huevo": ["Bicho"],
+    "ratio_captura": 45,
+    "ratio_genero": 1.0,
+    "base_experiencia": 166,
+    "statsBase": {
+      "hp": 70,
+      "ataque": 80,
+      "defensa": 102,
+      "ataqueEspecial": 80,
+      "defensaEspecial": 102,
+      "velocidad": 40
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Al Ataque", "daño": 90, "tipo": "Bicho" },
       { "nivel": 21, "nombre": "Joyas de Luz", "daño": 80, "tipo": "Roca" }
@@ -1521,7 +3203,19 @@
   "141": {
     "nombre": "Cherubi",
     "tipos": ["Planta"],
-    "statsBase": { "hp": 45, "ataque": 35, "defensa": 45, "velocidad": 35 },
+    "habilidad": "Clorofila",
+    "grupo_huevo": ["Hada", "Planta"],
+    "ratio_captura": 190,
+    "ratio_genero": 0.5,
+    "base_experiencia": 55,
+    "statsBase": {
+      "hp": 45,
+      "ataque": 35,
+      "defensa": 45,
+      "ataqueEspecial": 62,
+      "defensaEspecial": 53,
+      "velocidad": 35
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Drenadoras", "daño": 0, "tipo": "Planta" },
       { "nivel": 12, "nombre": "Hoja Mágica", "daño": 60, "tipo": "Planta" }
@@ -1533,7 +3227,19 @@
   "142": {
     "nombre": "Cherrim",
     "tipos": ["Planta"],
-    "statsBase": { "hp": 70, "ataque": 60, "defensa": 70, "velocidad": 85 },
+    "habilidad": "Florecer",
+    "grupo_huevo": ["Hada", "Planta"],
+    "ratio_captura": 75,
+    "ratio_genero": 0.5,
+    "base_experiencia": 158,
+    "statsBase": {
+      "hp": 70,
+      "ataque": 60,
+      "defensa": 70,
+      "ataqueEspecial": 87,
+      "defensaEspecial": 78,
+      "velocidad": 85
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Danza Pétalo", "daño": 120, "tipo": "Planta" },
       { "nivel": 30, "nombre": "Rayo Solar", "daño": 120, "tipo": "Planta" }
@@ -1544,7 +3250,20 @@
   "143": {
     "nombre": "Omanyte",
     "tipos": ["Roca", "Agua"],
-    "statsBase": { "hp": 35, "ataque": 40, "defensa": 100, "velocidad": 35 },
+    "habilidad": "Nado Rápido",
+    "habilidad_oculta": "Caparazón",
+    "grupo_huevo": ["Agua 1", "Agua 3"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.875,
+    "base_experiencia": 71,
+    "statsBase": {
+      "hp": 35,
+      "ataque": 40,
+      "defensa": 100,
+      "ataqueEspecial": 90,
+      "defensaEspecial": 55,
+      "velocidad": 35
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Refugio", "daño": 0, "tipo": "Agua" },
       { "nivel": 10, "nombre": "Pistola Agua", "daño": 40, "tipo": "Agua" }
@@ -1556,7 +3275,20 @@
   "144": {
     "nombre": "Omastar",
     "tipos": ["Roca", "Agua"],
-    "statsBase": { "hp": 70, "ataque": 60, "defensa": 125, "velocidad": 55 },
+    "habilidad": "Nado Rápido",
+    "habilidad_oculta": "Caparazón",
+    "grupo_huevo": ["Agua 1", "Agua 3"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.875,
+    "base_experiencia": 173,
+    "statsBase": {
+      "hp": 70,
+      "ataque": 60,
+      "defensa": 125,
+      "ataqueEspecial": 115,
+      "defensaEspecial": 70,
+      "velocidad": 55
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Poder Pasado", "daño": 60, "tipo": "Roca" },
       { "nivel": 40, "nombre": "Hidrobomba", "daño": 110, "tipo": "Agua" }
@@ -1567,7 +3299,20 @@
   "145": {
     "nombre": "Kabuto",
     "tipos": ["Roca", "Agua"],
-    "statsBase": { "hp": 30, "ataque": 80, "defensa": 90, "velocidad": 55 },
+    "habilidad": "Nado Rápido",
+    "habilidad_oculta": "Armadura Batalla",
+    "grupo_huevo": ["Agua 1", "Agua 3"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.875,
+    "base_experiencia": 71,
+    "statsBase": {
+      "hp": 30,
+      "ataque": 80,
+      "defensa": 90,
+      "ataqueEspecial": 55,
+      "defensaEspecial": 45,
+      "velocidad": 55
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Arañazo", "daño": 40, "tipo": "Normal" },
       { "nivel": 10, "nombre": "Absorber", "daño": 20, "tipo": "Planta" }
@@ -1579,7 +3324,20 @@
   "146": {
     "nombre": "Kabutops",
     "tipos": ["Roca", "Agua"],
-    "statsBase": { "hp": 60, "ataque": 115, "defensa": 105, "velocidad": 80 },
+    "habilidad": "Nado Rápido",
+    "habilidad_oculta": "Armadura Batalla",
+    "grupo_huevo": ["Agua 1", "Agua 3"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.875,
+    "base_experiencia": 173,
+    "statsBase": {
+      "hp": 60,
+      "ataque": 115,
+      "defensa": 105,
+      "ataqueEspecial": 65,
+      "defensaEspecial": 70,
+      "velocidad": 80
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Corte", "daño": 50, "tipo": "Normal" },
       { "nivel": 40, "nombre": "Acua Jet", "daño": 40, "tipo": "Agua" }
@@ -1590,7 +3348,20 @@
   "147": {
     "nombre": "Aerodactyl",
     "tipos": ["Roca", "Volador"],
-    "statsBase": { "hp": 80, "ataque": 105, "defensa": 65, "velocidad": 130 },
+    "habilidad": "Cabeza Roca",
+    "habilidad_oculta": "Presión",
+    "grupo_huevo": ["Volador"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.875,
+    "base_experiencia": 180,
+    "statsBase": {
+      "hp": 80,
+      "ataque": 105,
+      "defensa": 65,
+      "ataqueEspecial": 60,
+      "defensaEspecial": 75,
+      "velocidad": 130
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Mordisco", "daño": 60, "tipo": "Siniestro" },
       { "nivel": 30, "nombre": "Poder Pasado", "daño": 60, "tipo": "Roca" },
@@ -1602,7 +3373,20 @@
   "148": {
     "nombre": "Lileep",
     "tipos": ["Roca", "Planta"],
-    "statsBase": { "hp": 66, "ataque": 41, "defensa": 77, "velocidad": 23 },
+    "habilidad": "Ventosas",
+    "habilidad_oculta": "Cura Lluvia",
+    "grupo_huevo": ["Agua 3"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.875,
+    "base_experiencia": 71,
+    "statsBase": {
+      "hp": 66,
+      "ataque": 41,
+      "defensa": 77,
+      "ataqueEspecial": 61,
+      "defensaEspecial": 87,
+      "velocidad": 23
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Constricción", "daño": 10, "tipo": "Normal" },
       { "nivel": 12, "nombre": "Ácido", "daño": 40, "tipo": "Veneno" }
@@ -1614,20 +3398,44 @@
   "149": {
     "nombre": "Cradily",
     "tipos": ["Roca", "Planta"],
-    "statsBase": { "hp": 86, "ataque": 81, "defensa": 97, "velocidad": 43 },
+    "habilidad": "Ventosas",
+    "habilidad_oculta": "Cura Lluvia",
+    "grupo_huevo": ["Agua 3"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.875,
+    "base_experiencia": 173,
+    "statsBase": {
+      "hp": 86,
+      "ataque": 81,
+      "defensa": 97,
+      "ataqueEspecial": 81,
+      "defensaEspecial": 107,
+      "velocidad": 43
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Gigadrenado", "daño": 75, "tipo": "Planta" },
       { "nivel": 40, "nombre": "Bomba Lodo", "daño": 90, "tipo": "Veneno" }
     ],
     "spawn": { "rango_nivel": [40, 60] },
     "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/346.png"
-  }
-}
-{
+  },
   "150": {
     "nombre": "Anorith",
     "tipos": ["Roca", "Bicho"],
-    "statsBase": { "hp": 45, "ataque": 95, "defensa": 50, "velocidad": 75 },
+    "habilidad": "Armadura Batalla",
+    "habilidad_oculta": "Nado Rápido",
+    "grupo_huevo": ["Agua 3"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.875,
+    "base_experiencia": 71,
+    "statsBase": {
+      "hp": 45,
+      "ataque": 95,
+      "defensa": 50,
+      "ataqueEspecial": 40,
+      "defensaEspecial": 50,
+      "velocidad": 75
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Arañazo", "daño": 40, "tipo": "Normal" },
       { "nivel": 10, "nombre": "Pistola Agua", "daño": 40, "tipo": "Agua" }
@@ -1639,7 +3447,20 @@
   "151": {
     "nombre": "Armaldo",
     "tipos": ["Roca", "Bicho"],
-    "statsBase": { "hp": 75, "ataque": 125, "defensa": 100, "velocidad": 45 },
+    "habilidad": "Armadura Batalla",
+    "habilidad_oculta": "Nado Rápido",
+    "grupo_huevo": ["Agua 3"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.875,
+    "base_experiencia": 173,
+    "statsBase": {
+      "hp": 75,
+      "ataque": 125,
+      "defensa": 100,
+      "ataqueEspecial": 70,
+      "defensaEspecial": 80,
+      "velocidad": 45
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Cuchillada", "daño": 70, "tipo": "Normal" },
       { "nivel": 40, "nombre": "Tijera X", "daño": 80, "tipo": "Bicho" }
@@ -1650,7 +3471,20 @@
   "152": {
     "nombre": "Beldum",
     "tipos": ["Acero", "Psíquico"],
-    "statsBase": { "hp": 40, "ataque": 55, "defensa": 80, "velocidad": 30 },
+    "habilidad": "Cuerpo Puro",
+    "habilidad_oculta": "Liviano",
+    "grupo_huevo": ["Mineral"],
+    "ratio_captura": 3,
+    "ratio_genero": null,
+    "base_experiencia": 60,
+    "statsBase": {
+      "hp": 40,
+      "ataque": 55,
+      "defensa": 80,
+      "ataqueEspecial": 35,
+      "defensaEspecial": 60,
+      "velocidad": 30
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Derribo", "daño": 90, "tipo": "Normal" }
     ],
@@ -1661,7 +3495,20 @@
   "153": {
     "nombre": "Metang",
     "tipos": ["Acero", "Psíquico"],
-    "statsBase": { "hp": 60, "ataque": 75, "defensa": 100, "velocidad": 50 },
+    "habilidad": "Cuerpo Puro",
+    "habilidad_oculta": "Liviano",
+    "grupo_huevo": ["Mineral"],
+    "ratio_captura": 3,
+    "ratio_genero": null,
+    "base_experiencia": 147,
+    "statsBase": {
+      "hp": 60,
+      "ataque": 75,
+      "defensa": 100,
+      "ataqueEspecial": 55,
+      "defensaEspecial": 80,
+      "velocidad": 50
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Confusión", "daño": 50, "tipo": "Psíquico" },
       { "nivel": 20, "nombre": "Garra Metal", "daño": 50, "tipo": "Acero" }
@@ -1673,7 +3520,20 @@
   "154": {
     "nombre": "Metagross",
     "tipos": ["Acero", "Psíquico"],
-    "statsBase": { "hp": 80, "ataque": 135, "defensa": 130, "velocidad": 70 },
+    "habilidad": "Cuerpo Puro",
+    "habilidad_oculta": "Liviano",
+    "grupo_huevo": ["Mineral"],
+    "ratio_captura": 3,
+    "ratio_genero": null,
+    "base_experiencia": 270,
+    "statsBase": {
+      "hp": 80,
+      "ataque": 135,
+      "defensa": 130,
+      "ataqueEspecial": 95,
+      "defensaEspecial": 90,
+      "velocidad": 70
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Puño Meteoro", "daño": 90, "tipo": "Acero" },
       { "nivel": 45, "nombre": "Psíquico", "daño": 90, "tipo": "Psíquico" }
@@ -1684,7 +3544,20 @@
   "155": {
     "nombre": "Bagon",
     "tipos": ["Dragón"],
-    "statsBase": { "hp": 45, "ataque": 75, "defensa": 60, "velocidad": 50 },
+    "habilidad": "Cabeza Roca",
+    "habilidad_oculta": "Potencia Bruta",
+    "grupo_huevo": ["Dragón"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.5,
+    "base_experiencia": 60,
+    "statsBase": {
+      "hp": 45,
+      "ataque": 75,
+      "defensa": 60,
+      "ataqueEspecial": 40,
+      "defensaEspecial": 30,
+      "velocidad": 50
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Furia", "daño": 40, "tipo": "Normal" },
       { "nivel": 10, "nombre": "Ascuas", "daño": 40, "tipo": "Fuego" }
@@ -1696,7 +3569,20 @@
   "156": {
     "nombre": "Shelgon",
     "tipos": ["Dragón"],
-    "statsBase": { "hp": 65, "ataque": 95, "defensa": 100, "velocidad": 50 },
+    "habilidad": "Robustez",
+    "habilidad_oculta": "Caparazón",
+    "grupo_huevo": ["Dragón"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.5,
+    "base_experiencia": 147,
+    "statsBase": {
+      "hp": 65,
+      "ataque": 95,
+      "defensa": 100,
+      "ataqueEspecial": 60,
+      "defensaEspecial": 50,
+      "velocidad": 50
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Protección", "daño": 0, "tipo": "Normal" },
       { "nivel": 30, "nombre": "Garra Dragón", "daño": 80, "tipo": "Dragón" }
@@ -1708,7 +3594,20 @@
   "157": {
     "nombre": "Salamence",
     "tipos": ["Dragón", "Volador"],
-    "statsBase": { "hp": 95, "ataque": 135, "defensa": 80, "velocidad": 100 },
+    "habilidad": "Intimidación",
+    "habilidad_oculta": "Nerviosismo",
+    "grupo_huevo": ["Dragón"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.5,
+    "base_experiencia": 270,
+    "statsBase": {
+      "hp": 95,
+      "ataque": 135,
+      "defensa": 80,
+      "ataqueEspecial": 110,
+      "defensaEspecial": 80,
+      "velocidad": 100
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Vuelo", "daño": 90, "tipo": "Volador" },
       { "nivel": 50, "nombre": "Carga Dragón", "daño": 100, "tipo": "Dragón" }
@@ -1719,7 +3618,20 @@
   "158": {
     "nombre": "Articuno",
     "tipos": ["Hielo", "Volador"],
-    "statsBase": { "hp": 90, "ataque": 85, "defensa": 100, "velocidad": 85 },
+    "habilidad": "Presión",
+    "habilidad_oculta": "Manto Níveo",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 3,
+    "ratio_genero": null,
+    "base_experiencia": 290,
+    "statsBase": {
+      "hp": 90,
+      "ataque": 85,
+      "defensa": 100,
+      "ataqueEspecial": 95,
+      "defensaEspecial": 125,
+      "velocidad": 85
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Rayo Hielo", "daño": 90, "tipo": "Hielo" },
       { "nivel": 50, "nombre": "Ventisca", "daño": 110, "tipo": "Hielo" }
@@ -1730,7 +3642,20 @@
   "159": {
     "nombre": "Zapdos",
     "tipos": ["Eléctrico", "Volador"],
-    "statsBase": { "hp": 90, "ataque": 90, "defensa": 85, "velocidad": 100 },
+    "habilidad": "Presión",
+    "habilidad_oculta": "Pies Rápidos",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 3,
+    "ratio_genero": null,
+    "base_experiencia": 290,
+    "statsBase": {
+      "hp": 90,
+      "ataque": 90,
+      "defensa": 85,
+      "ataqueEspecial": 125,
+      "defensaEspecial": 90,
+      "velocidad": 100
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Pico Taladro", "daño": 80, "tipo": "Volador" },
       { "nivel": 50, "nombre": "Trueno", "daño": 110, "tipo": "Eléctrico" }
@@ -1741,7 +3666,20 @@
   "160": {
     "nombre": "Moltres",
     "tipos": ["Fuego", "Volador"],
-    "statsBase": { "hp": 90, "ataque": 100, "defensa": 90, "velocidad": 90 },
+    "habilidad": "Presión",
+    "habilidad_oculta": "Cuerpo Llama",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 3,
+    "ratio_genero": null,
+    "base_experiencia": 290,
+    "statsBase": {
+      "hp": 90,
+      "ataque": 100,
+      "defensa": 90,
+      "ataqueEspecial": 125,
+      "defensaEspecial": 85,
+      "velocidad": 90
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Lanzallamas", "daño": 90, "tipo": "Fuego" },
       { "nivel": 50, "nombre": "Ataque Aéreo", "daño": 140, "tipo": "Volador" }
@@ -1752,7 +3690,20 @@
   "161": {
     "nombre": "Dratini",
     "tipos": ["Dragón"],
-    "statsBase": { "hp": 41, "ataque": 64, "defensa": 45, "velocidad": 50 },
+    "habilidad": "Mudar",
+    "habilidad_oculta": "Piel Milagro",
+    "grupo_huevo": ["Agua 1", "Dragón"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.5,
+    "base_experiencia": 60,
+    "statsBase": {
+      "hp": 41,
+      "ataque": 64,
+      "defensa": 45,
+      "ataqueEspecial": 50,
+      "defensaEspecial": 50,
+      "velocidad": 50
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Constricción", "daño": 10, "tipo": "Normal" },
       { "nivel": 10, "nombre": "Ciclón", "daño": 40, "tipo": "Dragón" }
@@ -1764,7 +3715,20 @@
   "162": {
     "nombre": "Dragonair",
     "tipos": ["Dragón"],
-    "statsBase": { "hp": 61, "ataque": 84, "defensa": 65, "velocidad": 70 },
+    "habilidad": "Mudar",
+    "habilidad_oculta": "Piel Milagro",
+    "grupo_huevo": ["Agua 1", "Dragón"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.5,
+    "base_experiencia": 147,
+    "statsBase": {
+      "hp": 61,
+      "ataque": 84,
+      "defensa": 65,
+      "ataqueEspecial": 70,
+      "defensaEspecial": 70,
+      "velocidad": 70
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Acua Cola", "daño": 90, "tipo": "Agua" },
       { "nivel": 30, "nombre": "Pulso Dragón", "daño": 85, "tipo": "Dragón" }
@@ -1776,7 +3740,20 @@
   "163": {
     "nombre": "Dragonite",
     "tipos": ["Dragón", "Volador"],
-    "statsBase": { "hp": 91, "ataque": 134, "defensa": 95, "velocidad": 80 },
+    "habilidad": "Foco Interno",
+    "habilidad_oculta": "Poder Multiuso",
+    "grupo_huevo": ["Agua 1", "Dragón"],
+    "ratio_captura": 45,
+    "ratio_genero": 0.5,
+    "base_experiencia": 300,
+    "statsBase": {
+      "hp": 91,
+      "ataque": 134,
+      "defensa": 95,
+      "ataqueEspecial": 100,
+      "defensaEspecial": 100,
+      "velocidad": 80
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Velocidad Extrema", "daño": 80, "tipo": "Normal" },
       { "nivel": 55, "nombre": "Enfado", "daño": 120, "tipo": "Dragón" }
@@ -1787,7 +3764,20 @@
   "164": {
     "nombre": "Mewtwo",
     "tipos": ["Psíquico"],
-    "statsBase": { "hp": 106, "ataque": 110, "defensa": 90, "velocidad": 130 },
+    "habilidad": "Presión",
+    "habilidad_oculta": "Nerviosismo",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 3,
+    "ratio_genero": null,
+    "base_experiencia": 340,
+    "statsBase": {
+      "hp": 106,
+      "ataque": 110,
+      "defensa": 90,
+      "ataqueEspecial": 154,
+      "defensaEspecial": 90,
+      "velocidad": 130
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Psicocorte", "daño": 70, "tipo": "Psíquico" },
       { "nivel": 70, "nombre": "Onda Mental", "daño": 100, "tipo": "Psíquico" }
@@ -1798,7 +3788,19 @@
   "165": {
     "nombre": "Mew",
     "tipos": ["Psíquico"],
-    "statsBase": { "hp": 100, "ataque": 100, "defensa": 100, "velocidad": 100 },
+    "habilidad": "Sincronía",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 45,
+    "ratio_genero": null,
+    "base_experiencia": 300,
+    "statsBase": {
+      "hp": 100,
+      "ataque": 100,
+      "defensa": 100,
+      "ataqueEspecial": 100,
+      "defensaEspecial": 100,
+      "velocidad": 100
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Destructor", "daño": 40, "tipo": "Normal" },
       { "nivel": 30, "nombre": "Metrónomo", "daño": 0, "tipo": "Normal" },
@@ -1810,7 +3812,20 @@
   "166": {
     "nombre": "Raikou",
     "tipos": ["Eléctrico"],
-    "statsBase": { "hp": 90, "ataque": 85, "defensa": 75, "velocidad": 115 },
+    "habilidad": "Presión",
+    "habilidad_oculta": "Absorbe Electricidad",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 3,
+    "ratio_genero": null,
+    "base_experiencia": 290,
+    "statsBase": {
+      "hp": 90,
+      "ataque": 85,
+      "defensa": 75,
+      "ataqueEspecial": 115,
+      "defensaEspecial": 100,
+      "velocidad": 115
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Chispazo", "daño": 80, "tipo": "Eléctrico" },
       { "nivel": 50, "nombre": "Trueno", "daño": 110, "tipo": "Eléctrico" }
@@ -1821,7 +3836,20 @@
   "167": {
     "nombre": "Entei",
     "tipos": ["Fuego"],
-    "statsBase": { "hp": 115, "ataque": 115, "defensa": 85, "velocidad": 100 },
+    "habilidad": "Presión",
+    "habilidad_oculta": "Cuerpo Llama",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 3,
+    "ratio_genero": null,
+    "base_experiencia": 290,
+    "statsBase": {
+      "hp": 115,
+      "ataque": 115,
+      "defensa": 85,
+      "ataqueEspecial": 90,
+      "defensaEspecial": 75,
+      "velocidad": 100
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Colmillo Ígneo", "daño": 65, "tipo": "Fuego" },
       { "nivel": 50, "nombre": "Erupción", "daño": 150, "tipo": "Fuego" }
@@ -1832,7 +3860,20 @@
   "168": {
     "nombre": "Suicune",
     "tipos": ["Agua"],
-    "statsBase": { "hp": 100, "ataque": 75, "defensa": 115, "velocidad": 85 },
+    "habilidad": "Presión",
+    "habilidad_oculta": "Cura Lluvia",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 3,
+    "ratio_genero": null,
+    "base_experiencia": 290,
+    "statsBase": {
+      "hp": 100,
+      "ataque": 75,
+      "defensa": 115,
+      "ataqueEspecial": 90,
+      "defensaEspecial": 115,
+      "velocidad": 85
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Rayo Burbuja", "daño": 65, "tipo": "Agua" },
       { "nivel": 50, "nombre": "Hidrobomba", "daño": 110, "tipo": "Agua" }
@@ -1843,20 +3884,44 @@
   "169": {
     "nombre": "Lugia",
     "tipos": ["Psíquico", "Volador"],
-    "statsBase": { "hp": 106, "ataque": 90, "defensa": 130, "velocidad": 110 },
+    "habilidad": "Presión",
+    "habilidad_oculta": "Multiscopio",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 3,
+    "ratio_genero": null,
+    "base_experiencia": 340,
+    "statsBase": {
+      "hp": 106,
+      "ataque": 90,
+      "defensa": 130,
+      "ataqueEspecial": 90,
+      "defensaEspecial": 154,
+      "velocidad": 110
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Recuperación", "daño": 0, "tipo": "Normal" },
       { "nivel": 50, "nombre": "Aerochorro", "daño": 100, "tipo": "Volador" }
     ],
     "spawn": { "rango_nivel": [70, 70], "nota": "Legendario" },
     "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/249.png"
-  }
-}
-{
+  },
   "170": {
     "nombre": "Ho-Oh",
     "tipos": ["Fuego", "Volador"],
-    "statsBase": { "hp": 106, "ataque": 130, "defensa": 90, "velocidad": 90 },
+    "habilidad": "Presión",
+    "habilidad_oculta": "Regeneración",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 3,
+    "ratio_genero": null,
+    "base_experiencia": 340,
+    "statsBase": {
+      "hp": 106,
+      "ataque": 130,
+      "defensa": 90,
+      "ataqueEspecial": 110,
+      "defensaEspecial": 154,
+      "velocidad": 90
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Fuego Sagrado", "daño": 100, "tipo": "Fuego" },
       { "nivel": 50, "nombre": "Pájaro Osado", "daño": 120, "tipo": "Volador" }
@@ -1867,7 +3932,19 @@
   "171": {
     "nombre": "Celebi",
     "tipos": ["Psíquico", "Planta"],
-    "statsBase": { "hp": 100, "ataque": 100, "defensa": 100, "velocidad": 100 },
+    "habilidad": "Cura Natural",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 45,
+    "ratio_genero": null,
+    "base_experiencia": 300,
+    "statsBase": {
+      "hp": 100,
+      "ataque": 100,
+      "defensa": 100,
+      "ataqueEspecial": 100,
+      "defensaEspecial": 100,
+      "velocidad": 100
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Cura Natural", "daño": 0, "tipo": "Planta" },
       { "nivel": 30, "nombre": "Hoja Mágica", "daño": 60, "tipo": "Planta" }
@@ -1878,7 +3955,20 @@
   "172": {
     "nombre": "Regirock",
     "tipos": ["Roca"],
-    "statsBase": { "hp": 80, "ataque": 100, "defensa": 200, "velocidad": 50 },
+    "habilidad": "Cuerpo Puro",
+    "habilidad_oculta": "Robustez",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 3,
+    "ratio_genero": null,
+    "base_experiencia": 290,
+    "statsBase": {
+      "hp": 80,
+      "ataque": 100,
+      "defensa": 200,
+      "ataqueEspecial": 50,
+      "defensaEspecial": 100,
+      "velocidad": 50
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Lanzarrocas", "daño": 50, "tipo": "Roca" },
       { "nivel": 40, "nombre": "Explosión", "daño": 250, "tipo": "Normal" }
@@ -1889,7 +3979,20 @@
   "173": {
     "nombre": "Regice",
     "tipos": ["Hielo"],
-    "statsBase": { "hp": 80, "ataque": 50, "defensa": 100, "velocidad": 50 },
+    "habilidad": "Cuerpo Puro",
+    "habilidad_oculta": "Cuerpo Helado",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 3,
+    "ratio_genero": null,
+    "base_experiencia": 290,
+    "statsBase": {
+      "hp": 80,
+      "ataque": 50,
+      "defensa": 100,
+      "ataqueEspecial": 100,
+      "defensaEspecial": 200,
+      "velocidad": 50
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Viento Hielo", "daño": 55, "tipo": "Hielo" },
       { "nivel": 40, "nombre": "Rayo Hielo", "daño": 90, "tipo": "Hielo" }
@@ -1900,7 +4003,20 @@
   "174": {
     "nombre": "Registeel",
     "tipos": ["Acero"],
-    "statsBase": { "hp": 80, "ataque": 75, "defensa": 150, "velocidad": 50 },
+    "habilidad": "Cuerpo Puro",
+    "habilidad_oculta": "Robustez",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 3,
+    "ratio_genero": null,
+    "base_experiencia": 290,
+    "statsBase": {
+      "hp": 80,
+      "ataque": 75,
+      "defensa": 150,
+      "ataqueEspecial": 75,
+      "defensaEspecial": 150,
+      "velocidad": 50
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Garra Metal", "daño": 50, "tipo": "Acero" },
       { "nivel": 40, "nombre": "Foco Resplandor", "daño": 80, "tipo": "Acero" }
@@ -1911,7 +4027,19 @@
   "175": {
     "nombre": "Latias",
     "tipos": ["Dragón", "Psíquico"],
-    "statsBase": { "hp": 80, "ataque": 80, "defensa": 90, "velocidad": 110 },
+    "habilidad": "Levitación",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 3,
+    "ratio_genero": 1.0,
+    "base_experiencia": 300,
+    "statsBase": {
+      "hp": 80,
+      "ataque": 80,
+      "defensa": 90,
+      "ataqueEspecial": 110,
+      "defensaEspecial": 130,
+      "velocidad": 110
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Alivio", "daño": 0, "tipo": "Normal" },
       { "nivel": 35, "nombre": "Neblina Purificadora", "daño": 70, "tipo": "Psíquico" }
@@ -1922,7 +4050,19 @@
   "176": {
     "nombre": "Latios",
     "tipos": ["Dragón", "Psíquico"],
-    "statsBase": { "hp": 80, "ataque": 90, "defensa": 80, "velocidad": 110 },
+    "habilidad": "Levitación",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 3,
+    "ratio_genero": 1.0,
+    "base_experiencia": 300,
+    "statsBase": {
+      "hp": 80,
+      "ataque": 90,
+      "defensa": 80,
+      "ataqueEspecial": 130,
+      "defensaEspecial": 110,
+      "velocidad": 110
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Resplandor", "daño": 70, "tipo": "Psíquico" },
       { "nivel": 35, "nombre": "Pulso Dragón", "daño": 85, "tipo": "Dragón" }
@@ -1933,7 +4073,19 @@
   "177": {
     "nombre": "Kyogre",
     "tipos": ["Agua"],
-    "statsBase": { "hp": 100, "ataque": 100, "defensa": 90, "velocidad": 90 },
+    "habilidad": "Llovizna",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 3,
+    "ratio_genero": null,
+    "base_experiencia": 335,
+    "statsBase": {
+      "hp": 100,
+      "ataque": 100,
+      "defensa": 90,
+      "ataqueEspecial": 150,
+      "defensaEspecial": 140,
+      "velocidad": 90
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Salmuera", "daño": 65, "tipo": "Agua" },
       { "nivel": 50, "nombre": "Primigenio", "daño": 110, "tipo": "Agua" }
@@ -1944,7 +4096,19 @@
   "178": {
     "nombre": "Groudon",
     "tipos": ["Tierra"],
-    "statsBase": { "hp": 100, "ataque": 150, "defensa": 140, "velocidad": 90 },
+    "habilidad": "Sequía",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 3,
+    "ratio_genero": null,
+    "base_experiencia": 335,
+    "statsBase": {
+      "hp": 100,
+      "ataque": 150,
+      "defensa": 140,
+      "ataqueEspecial": 100,
+      "defensaEspecial": 90,
+      "velocidad": 90
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Terremoto", "daño": 100, "tipo": "Tierra" },
       { "nivel": 50, "nombre": "Filo del Abismo", "daño": 120, "tipo": "Tierra" }
@@ -1955,7 +4119,19 @@
   "179": {
     "nombre": "Rayquaza",
     "tipos": ["Dragón", "Volador"],
-    "statsBase": { "hp": 105, "ataque": 150, "defensa": 90, "velocidad": 95 },
+    "habilidad": "Bucle Aire",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 45,
+    "ratio_genero": null,
+    "base_experiencia": 340,
+    "statsBase": {
+      "hp": 105,
+      "ataque": 150,
+      "defensa": 90,
+      "ataqueEspecial": 150,
+      "defensaEspecial": 90,
+      "velocidad": 95
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Velocidad Extrema", "daño": 80, "tipo": "Normal" },
       { "nivel": 50, "nombre": "Ascenso Draco", "daño": 120, "tipo": "Volador" }
@@ -1966,7 +4142,19 @@
   "180": {
     "nombre": "Jirachi",
     "tipos": ["Acero", "Psíquico"],
-    "statsBase": { "hp": 100, "ataque": 100, "defensa": 100, "velocidad": 100 },
+    "habilidad": "Dicha",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 3,
+    "ratio_genero": null,
+    "base_experiencia": 300,
+    "statsBase": {
+      "hp": 100,
+      "ataque": 100,
+      "defensa": 100,
+      "ataqueEspecial": 100,
+      "defensaEspecial": 100,
+      "velocidad": 100
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Deseo", "daño": 0, "tipo": "Normal" },
       { "nivel": 30, "nombre": "Deseo Oculto", "daño": 120, "tipo": "Acero" }
@@ -1977,7 +4165,19 @@
   "181": {
     "nombre": "Deoxys",
     "tipos": ["Psíquico"],
-    "statsBase": { "hp": 50, "ataque": 150, "defensa": 50, "velocidad": 150 },
+    "habilidad": "Presión",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 3,
+    "ratio_genero": null,
+    "base_experiencia": 300,
+    "statsBase": {
+      "hp": 50,
+      "ataque": 150,
+      "defensa": 50,
+      "ataqueEspecial": 150,
+      "defensaEspecial": 50,
+      "velocidad": 150
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Psicocorte", "daño": 70, "tipo": "Psíquico" },
       { "nivel": 50, "nombre": "Psicoataque", "daño": 140, "tipo": "Psíquico" }
@@ -1988,7 +4188,20 @@
   "182": {
     "nombre": "Dialga",
     "tipos": ["Acero", "Dragón"],
-    "statsBase": { "hp": 100, "ataque": 120, "defensa": 120, "velocidad": 90 },
+    "habilidad": "Presión",
+    "habilidad_oculta": "Cuerpo Puro",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 3,
+    "ratio_genero": null,
+    "base_experiencia": 340,
+    "statsBase": {
+      "hp": 100,
+      "ataque": 120,
+      "defensa": 120,
+      "ataqueEspecial": 150,
+      "defensaEspecial": 100,
+      "velocidad": 90
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Garra Dragón", "daño": 80, "tipo": "Dragón" },
       { "nivel": 50, "nombre": "Distorsión", "daño": 150, "tipo": "Dragón" }
@@ -1999,7 +4212,20 @@
   "183": {
     "nombre": "Palkia",
     "tipos": ["Agua", "Dragón"],
-    "statsBase": { "hp": 90, "ataque": 120, "defensa": 100, "velocidad": 100 },
+    "habilidad": "Presión",
+    "habilidad_oculta": "Cuerpo Puro",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 3,
+    "ratio_genero": null,
+    "base_experiencia": 340,
+    "statsBase": {
+      "hp": 90,
+      "ataque": 120,
+      "defensa": 100,
+      "ataqueEspecial": 150,
+      "defensaEspecial": 120,
+      "velocidad": 100
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Hidrobomba", "daño": 110, "tipo": "Agua" },
       { "nivel": 50, "nombre": "Corte Vacío", "daño": 100, "tipo": "Dragón" }
@@ -2010,7 +4236,20 @@
   "184": {
     "nombre": "Giratina",
     "tipos": ["Fantasma", "Dragón"],
-    "statsBase": { "hp": 150, "ataque": 100, "defensa": 120, "velocidad": 90 },
+    "habilidad": "Presión",
+    "habilidad_oculta": "Levitación",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 3,
+    "ratio_genero": null,
+    "base_experiencia": 340,
+    "statsBase": {
+      "hp": 150,
+      "ataque": 100,
+      "defensa": 120,
+      "ataqueEspecial": 100,
+      "defensaEspecial": 120,
+      "velocidad": 90
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Garra Sombría", "daño": 70, "tipo": "Fantasma" },
       { "nivel": 50, "nombre": "Golpe Umbrío", "daño": 120, "tipo": "Fantasma" }
@@ -2021,7 +4260,19 @@
   "185": {
     "nombre": "Cresselia",
     "tipos": ["Psíquico"],
-    "statsBase": { "hp": 120, "ataque": 70, "defensa": 120, "velocidad": 85 },
+    "habilidad": "Levitación",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 3,
+    "ratio_genero": 1.0,
+    "base_experiencia": 300,
+    "statsBase": {
+      "hp": 120,
+      "ataque": 70,
+      "defensa": 120,
+      "ataqueEspecial": 75,
+      "defensaEspecial": 130,
+      "velocidad": 85
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Confusión", "daño": 50, "tipo": "Psíquico" },
       { "nivel": 40, "nombre": "Fuerza Lunar", "daño": 95, "tipo": "Hada" }
@@ -2032,7 +4283,19 @@
   "186": {
     "nombre": "Darkrai",
     "tipos": ["Siniestro"],
-    "statsBase": { "hp": 70, "ataque": 90, "defensa": 90, "velocidad": 125 },
+    "habilidad": "Mal Sueño",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 3,
+    "ratio_genero": null,
+    "base_experiencia": 300,
+    "statsBase": {
+      "hp": 70,
+      "ataque": 90,
+      "defensa": 90,
+      "ataqueEspecial": 135,
+      "defensaEspecial": 90,
+      "velocidad": 125
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Brecha Negra", "daño": 0, "tipo": "Siniestro" },
       { "nivel": 50, "nombre": "Pulso Umbrío", "daño": 80, "tipo": "Siniestro" }
@@ -2043,7 +4306,19 @@
   "187": {
     "nombre": "Arceus",
     "tipos": ["Normal"],
-    "statsBase": { "hp": 120, "ataque": 120, "defensa": 120, "velocidad": 120 },
+    "habilidad": "Multitipo",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 3,
+    "ratio_genero": null,
+    "base_experiencia": 324,
+    "statsBase": {
+      "hp": 120,
+      "ataque": 120,
+      "defensa": 120,
+      "ataqueEspecial": 120,
+      "defensaEspecial": 120,
+      "velocidad": 120
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Velocidad Extrema", "daño": 80, "tipo": "Normal" },
       { "nivel": 80, "nombre": "Sentencia", "daño": 100, "tipo": "Normal" }
@@ -2054,7 +4329,19 @@
   "188": {
     "nombre": "Victini",
     "tipos": ["Psíquico", "Fuego"],
-    "statsBase": { "hp": 100, "ataque": 100, "defensa": 100, "velocidad": 100 },
+    "habilidad": "Triunfo",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 3,
+    "ratio_genero": null,
+    "base_experiencia": 300,
+    "statsBase": {
+      "hp": 100,
+      "ataque": 100,
+      "defensa": 100,
+      "ataqueEspecial": 100,
+      "defensaEspecial": 100,
+      "velocidad": 100
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Ataque Ígneo", "daño": 100, "tipo": "Fuego" },
       { "nivel": 30, "nombre": "V de Fuego", "daño": 180, "tipo": "Fuego" }
@@ -2065,20 +4352,42 @@
   "189": {
     "nombre": "Zekrom",
     "tipos": ["Dragón", "Eléctrico"],
-    "statsBase": { "hp": 100, "ataque": 150, "defensa": 120, "velocidad": 90 },
+    "habilidad": "Terravoltaje",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 3,
+    "ratio_genero": null,
+    "base_experiencia": 340,
+    "statsBase": {
+      "hp": 100,
+      "ataque": 150,
+      "defensa": 120,
+      "ataqueEspecial": 120,
+      "defensaEspecial": 100,
+      "velocidad": 90
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Ataque Fulgor", "daño": 130, "tipo": "Eléctrico" },
       { "nivel": 50, "nombre": "Garra Dragón", "daño": 80, "tipo": "Dragón" }
     ],
     "spawn": { "rango_nivel": [70, 70] },
     "imagen": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/644.png"
-  }
-}
-{
+  },
   "190": {
     "nombre": "Reshiram",
     "tipos": ["Dragón", "Fuego"],
-    "statsBase": { "hp": 100, "ataque": 120, "defensa": 100, "velocidad": 90 },
+    "habilidad": "Turbollama",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 3,
+    "ratio_genero": null,
+    "base_experiencia": 340,
+    "statsBase": {
+      "hp": 100,
+      "ataque": 120,
+      "defensa": 100,
+      "ataqueEspecial": 150,
+      "defensaEspecial": 120,
+      "velocidad": 90
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Llamarada", "daño": 110, "tipo": "Fuego" },
       { "nivel": 50, "nombre": "Llama Azul", "daño": 130, "tipo": "Fuego" }
@@ -2089,7 +4398,19 @@
   "191": {
     "nombre": "Kyurem",
     "tipos": ["Dragón", "Hielo"],
-    "statsBase": { "hp": 125, "ataque": 130, "defensa": 90, "velocidad": 95 },
+    "habilidad": "Presión",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 3,
+    "ratio_genero": null,
+    "base_experiencia": 330,
+    "statsBase": {
+      "hp": 125,
+      "ataque": 130,
+      "defensa": 90,
+      "ataqueEspecial": 130,
+      "defensaEspecial": 90,
+      "velocidad": 95
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Pulso Dragón", "daño": 85, "tipo": "Dragón" },
       { "nivel": 50, "nombre": "Mundo Gélido", "daño": 65, "tipo": "Hielo" }
@@ -2100,7 +4421,19 @@
   "192": {
     "nombre": "Xerneas",
     "tipos": ["Hada"],
-    "statsBase": { "hp": 126, "ataque": 131, "defensa": 95, "velocidad": 99 },
+    "habilidad": "Hada Aural",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 45,
+    "ratio_genero": null,
+    "base_experiencia": 340,
+    "statsBase": {
+      "hp": 126,
+      "ataque": 131,
+      "defensa": 95,
+      "ataqueEspecial": 131,
+      "defensaEspecial": 98,
+      "velocidad": 99
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Geocontrol", "daño": 0, "tipo": "Hada" },
       { "nivel": 50, "nombre": "Fuerza Lunar", "daño": 95, "tipo": "Hada" }
@@ -2111,7 +4444,19 @@
   "193": {
     "nombre": "Yveltal",
     "tipos": ["Siniestro", "Volador"],
-    "statsBase": { "hp": 126, "ataque": 131, "defensa": 95, "velocidad": 99 },
+    "habilidad": "Aura Oscura",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 45,
+    "ratio_genero": null,
+    "base_experiencia": 340,
+    "statsBase": {
+      "hp": 126,
+      "ataque": 131,
+      "defensa": 95,
+      "ataqueEspecial": 131,
+      "defensaEspecial": 98,
+      "velocidad": 99
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Ala Mortífera", "daño": 80, "tipo": "Volador" },
       { "nivel": 50, "nombre": "Pulso Umbrío", "daño": 80, "tipo": "Siniestro" }
@@ -2122,7 +4467,19 @@
   "194": {
     "nombre": "Zygarde",
     "tipos": ["Dragón", "Tierra"],
-    "statsBase": { "hp": 108, "ataque": 100, "defensa": 121, "velocidad": 95 },
+    "habilidad": "Agrupamiento",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 3,
+    "ratio_genero": null,
+    "base_experiencia": 300,
+    "statsBase": {
+      "hp": 108,
+      "ataque": 100,
+      "defensa": 121,
+      "ataqueEspecial": 81,
+      "defensaEspecial": 95,
+      "velocidad": 95
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Fuerza Telúrica", "daño": 90, "tipo": "Tierra" },
       { "nivel": 50, "nombre": "Núcleo Castigo", "daño": 100, "tipo": "Dragón" }
@@ -2133,7 +4490,19 @@
   "195": {
     "nombre": "Solgaleo",
     "tipos": ["Psíquico", "Acero"],
-    "statsBase": { "hp": 137, "ataque": 137, "defensa": 107, "velocidad": 97 },
+    "habilidad": "Guardia Metálica",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 45,
+    "ratio_genero": null,
+    "base_experiencia": 340,
+    "statsBase": {
+      "hp": 137,
+      "ataque": 137,
+      "defensa": 107,
+      "ataqueEspecial": 113,
+      "defensaEspecial": 89,
+      "velocidad": 97
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Meteoimpacto", "daño": 100, "tipo": "Acero" },
       { "nivel": 50, "nombre": "Cabezazo Zen", "daño": 80, "tipo": "Psíquico" }
@@ -2144,7 +4513,19 @@
   "196": {
     "nombre": "Lunala",
     "tipos": ["Psíquico", "Fantasma"],
-    "statsBase": { "hp": 137, "ataque": 113, "defensa": 89, "velocidad": 97 },
+    "habilidad": "Guardia Espectro",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 45,
+    "ratio_genero": null,
+    "base_experiencia": 340,
+    "statsBase": {
+      "hp": 137,
+      "ataque": 113,
+      "defensa": 89,
+      "ataqueEspecial": 137,
+      "defensaEspecial": 107,
+      "velocidad": 97
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Rayo Umbrío", "daño": 100, "tipo": "Fantasma" },
       { "nivel": 50, "nombre": "Psíquico", "daño": 90, "tipo": "Psíquico" }
@@ -2155,7 +4536,19 @@
   "197": {
     "nombre": "Necrozma",
     "tipos": ["Psíquico"],
-    "statsBase": { "hp": 97, "ataque": 107, "defensa": 101, "velocidad": 79 },
+    "habilidad": "Armadura Prisma",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 3,
+    "ratio_genero": null,
+    "base_experiencia": 300,
+    "statsBase": {
+      "hp": 97,
+      "ataque": 107,
+      "defensa": 101,
+      "ataqueEspecial": 127,
+      "defensaEspecial": 89,
+      "velocidad": 79
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Láser Prisma", "daño": 160, "tipo": "Psíquico" },
       { "nivel": 50, "nombre": "Garra Umbría", "daño": 70, "tipo": "Fantasma" }
@@ -2166,7 +4559,19 @@
   "198": {
     "nombre": "Zacian",
     "tipos": ["Hada", "Acero"],
-    "statsBase": { "hp": 92, "ataque": 130, "defensa": 115, "velocidad": 138 },
+    "habilidad": "Filo Absoluto",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 10,
+    "ratio_genero": null,
+    "base_experiencia": 360,
+    "statsBase": {
+      "hp": 92,
+      "ataque": 150,
+      "defensa": 115,
+      "ataqueEspecial": 80,
+      "defensaEspecial": 115,
+      "velocidad": 138
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Tajo Supremo", "daño": 100, "tipo": "Acero" },
       { "nivel": 50, "nombre": "Carantoña", "daño": 90, "tipo": "Hada" }
@@ -2177,7 +4582,19 @@
   "199": {
     "nombre": "Zamazenta",
     "tipos": ["Lucha", "Acero"],
-    "statsBase": { "hp": 92, "ataque": 130, "defensa": 115, "velocidad": 138 },
+    "habilidad": "Escudo Supremo",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 10,
+    "ratio_genero": null,
+    "base_experiencia": 360,
+    "statsBase": {
+      "hp": 92,
+      "ataque": 130,
+      "defensa": 115,
+      "ataqueEspecial": 80,
+      "defensaEspecial": 115,
+      "velocidad": 138
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Embate Supremo", "daño": 100, "tipo": "Acero" },
       { "nivel": 50, "nombre": "A bocajarro", "daño": 120, "tipo": "Lucha" }
@@ -2188,7 +4605,19 @@
   "200": {
     "nombre": "Eternatus",
     "tipos": ["Veneno", "Dragón"],
-    "statsBase": { "hp": 140, "ataque": 85, "defensa": 95, "velocidad": 130 },
+    "habilidad": "Presión",
+    "grupo_huevo": ["Ninguno"],
+    "ratio_captura": 255,
+    "ratio_genero": null,
+    "base_experiencia": 345,
+    "statsBase": {
+      "hp": 140,
+      "ataque": 85,
+      "defensa": 95,
+      "ataqueEspecial": 145,
+      "defensaEspecial": 95,
+      "velocidad": 130
+    },
     "movimientos": [
       { "nivel": 1, "nombre": "Caudal Dragón", "daño": 100, "tipo": "Dragón" },
       { "nivel": 60, "nombre": "Rayo Infinito", "daño": 160, "tipo": "Dragón" }
