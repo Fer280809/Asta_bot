@@ -70,18 +70,19 @@ function convertToWhatsAppAudio(inputPath, outputPath) {
             '-compression_level', '10',
             '-frame_duration', '60',
             '-application', 'voip',
+            '-y',
             outputPath
         ])
 
         ffmpeg.stderr.on('data', (data) => {
-            console.log('FFmpeg:', data.toString())
+            console.log('FFmpeg stderr:', data.toString())
         })
 
         ffmpeg.on('close', (code) => {
             if (code === 0) {
                 resolve(true)
             } else {
-                reject(new Error(`FFmpeg failed with code ${code}`))
+                reject(new Error(`FFmpeg falló con código ${code}`))
             }
         })
 
@@ -95,11 +96,13 @@ async function resizeImage(buffer, size = 300) {
     try {
         const image = await Jimp.read(buffer)
         return await image.resize(size, size).getBufferAsync(Jimp.MIME_JPEG)
-    } catch {
+    } catch (e) {
+        console.error('Error redimensionando imagen:', e)
         return buffer
     }
 }
 
+// Sistema Savetube corregido
 const savetube = {
     api: {
         base: "https://media.savetube.me/api",
@@ -112,7 +115,7 @@ const savetube = {
         "content-type": "application/json",
         origin: "https://yt.savetube.me",
         referer: "https://yt.savetube.me/",
-        "user-agent": "Postify/1.0.0"
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
     },
     crypto: {
         hexToBuffer: (hexString) => {
@@ -120,22 +123,31 @@ const savetube = {
             return Buffer.from(matches.join(""), "hex")
         },
         decrypt: async (enc) => {
-            const secretKey = "C5D58EF67A7584E4A29F6C35BBC4EB12"
-            const data = Buffer.from(enc, "base64")
-            const iv = data.slice(0, 16)
-            const content = data.slice(16)
-            const key = savetube.crypto.hexToBuffer(secretKey)
-            const decipher = crypto.createDecipheriv("aes-128-cbc", key, iv)
-            let decrypted = decipher.update(content)
-            decrypted = Buffer.concat([decrypted, decipher.final()])
-            return JSON.parse(decrypted.toString())
+            try {
+                const secretKey = "C5D58EF67A7584E4A29F6C35BBC4EB12"
+                const data = Buffer.from(enc, "base64")
+                const iv = data.slice(0, 16)
+                const content = data.slice(16)
+                const key = savetube.crypto.hexToBuffer(secretKey)
+                
+                const decipher = crypto.createDecipheriv("aes-128-cbc", key, iv)
+                decipher.setAutoPadding(true)
+                
+                let decrypted = decipher.update(content)
+                decrypted = Buffer.concat([decrypted, decipher.final()])
+                return JSON.parse(decrypted.toString())
+            } catch (error) {
+                console.error('Error decrypting:', error)
+                throw error
+            }
         }
     },
     youtube: (url) => {
         const patterns = [
-            /youtube.com\/watch\?v=([a-zA-Z0-9_-]{11})/,
-            /youtube.com\/embed\/([a-zA-Z0-9_-]{11})/,
-            /youtu.be\/([a-zA-Z0-9_-]{11})/
+            /youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/,
+            /youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/,
+            /youtu\.be\/([a-zA-Z0-9_-]{11})/,
+            /v=([a-zA-Z0-9_-]{11})/
         ]
         for (let pattern of patterns) {
             const match = url.match(pattern)
@@ -145,16 +157,22 @@ const savetube = {
     },
     request: async (endpoint, data = {}, method = "post") => {
         try {
-            const { data: response } = await axios({
+            const response = await axios({
                 method,
                 url: `${endpoint.startsWith("http") ? "" : savetube.api.base}${endpoint}`,
                 data: method === "post" ? data : undefined,
                 params: method === "get" ? data : undefined,
-                headers: savetube.headers
+                headers: savetube.headers,
+                timeout: 30000
             })
-            return { status: true, code: 200, data: response }
+            return { status: true, code: 200, data: response.data }
         } catch (error) {
-            return { status: false, code: error.response?.status || 500, error: error.message }
+            console.error('Request error:', error.message)
+            return { 
+                status: false, 
+                code: error.response?.status || 500, 
+                error: error.message 
+            }
         }
     },
     getCDN: async () => {
@@ -163,20 +181,57 @@ const savetube = {
         return { status: true, code: 200, data: response.data.cdn }
     },
     download: async (link) => {
-        const id = savetube.youtube(link)
-        if (!id) return { status: false, code: 400, error: "No se pudo obtener el ID del video" }
         try {
+            const id = savetube.youtube(link)
+            if (!id) return { status: false, code: 400, error: "ID de YouTube no válido" }
+            
+            console.log(`Obteniendo info para video ID: ${id}`)
+            
             const cdnx = await savetube.getCDN()
-            if (!cdnx.status) return cdnx
+            if (!cdnx.status) {
+                console.error('Error obteniendo CDN:', cdnx.error)
+                return cdnx
+            }
+            
             const cdn = cdnx.data
-            const videoInfo = await savetube.request(`https://${cdn}${savetube.api.info}`, { url: `https://www.youtube.com/watch?v=${id}` })
-            if (!videoInfo.status || !videoInfo.data?.data) return { status: false, code: 500, error: "No se pudo obtener información del video" }
+            console.log(`CDN seleccionado: ${cdn}`)
+            
+            const videoInfo = await savetube.request(
+                `https://${cdn}${savetube.api.info}`,
+                { url: `https://www.youtube.com/watch?v=${id}` }
+            )
+            
+            if (!videoInfo.status || !videoInfo.data?.data) {
+                console.error('Error info video:', videoInfo.error)
+                return { 
+                    status: false, 
+                    code: 500, 
+                    error: "No se pudo obtener información del video" 
+                }
+            }
+            
+            console.log('Info obtenida, descifrando...')
             const decrypted = await savetube.crypto.decrypt(videoInfo.data.data)
+            
             const downloadData = await savetube.request(
                 `https://${cdn}${savetube.api.download}`,
-                { id, downloadType: "audio", quality: "mp3", key: decrypted.key }
+                { 
+                    id, 
+                    downloadType: "audio", 
+                    quality: "mp3", 
+                    key: decrypted.key 
+                }
             )
-            if (!downloadData?.data?.data?.downloadUrl) return { status: false, code: 500, error: "No se pudo obtener link de descarga" }
+            
+            if (!downloadData?.data?.data?.downloadUrl) {
+                console.error('No hay URL de descarga:', downloadData)
+                return { 
+                    status: false, 
+                    code: 500, 
+                    error: "No se pudo obtener enlace de descarga" 
+                }
+            }
+            
             return {
                 status: true,
                 code: 200,
@@ -184,10 +239,13 @@ const savetube = {
                     title: decrypted.title || "Desconocido",
                     author: decrypted.channel || "Desconocido",
                     download: downloadData.data.data.downloadUrl,
-                    thumbnail: decrypted.thumbnail || null
+                    thumbnail: decrypted.thumbnail || null,
+                    duration: decrypted.duration || 0
                 }
             }
+            
         } catch (error) {
+            console.error('Error en download:', error)
             return { status: false, code: 500, error: error.message }
         }
     }
@@ -197,10 +255,15 @@ async function getSize(url) {
     try {
         const res = await axios.head(url, {
             timeout: 10000,
-            headers: { 'User-Agent': 'Mozilla/5.0' }
+            headers: { 
+                'User-Agent': 'Mozilla/5.0',
+                'Accept': '*/*'
+            }
         })
-        return parseInt(res.headers['content-length'], 10) || 0
-    } catch {
+        const contentLength = res.headers['content-length']
+        return contentLength ? parseInt(contentLength, 10) : 0
+    } catch (error) {
+        console.error('Error obteniendo tamaño:', error.message)
         return 0
     }
 }
@@ -212,117 +275,183 @@ const handler = async (m, { conn, usedPrefix }) => {
         // Seleccionar canción navideña aleatoria
         const cancionAleatoria = cancionesNavidenas[Math.floor(Math.random() * cancionesNavidenas.length)]
         
-        console.log(`🎵 Buscando: ${cancionAleatoria}`)
+        console.log(`🎵 Buscando villancico: "${cancionAleatoria}"`)
 
-        // Buscar en YouTube
-        const search = await yts(cancionAleatoria)
-        const videoInfo = search.all?.[0]
+        // Buscar en YouTube usando yts (como en el comando que funciona)
+        const searchResults = await yts(cancionAleatoria)
+        const videoInfo = searchResults.videos?.[0]
 
         if (!videoInfo) {
-            throw '❌ No se encontró la canción navideña'
+            throw new Error('❌ No se encontró el villancico')
         }
 
-        const { title, thumbnail, url, author } = videoInfo
+        const { title, thumbnail, url, author, timestamp } = videoInfo
+        
+        console.log(`🎯 Encontrado: "${title}"`)
 
         await conn.reply(m.chat, 
-            `🎄 *¡Descargando música navideña!* 🎅\n\n` +
-            `🎵 *Preparando tu villancico...*\n` +
-            `❄️ *Los elfos están trabajando...*`, 
+            `🎄 *¡Los elfos están trabajando!* 🎅\n\n` +
+            `🎵 *Preparando:* ${title}\n` +
+            `👤 *Artista:* ${author?.name || 'Desconocido'}\n` +
+            `⏱️ *Duración:* ${timestamp || 'Desconocida'}\n\n` +
+            `✨ *Descargando villancico...*`, 
             m
         )
 
-        console.log(`🎯 Descargando: ${title}`)
+        // Procesar miniatura
+        let thumbResized = null
+        try {
+            const thumbResponse = await fetch(thumbnail)
+            if (thumbResponse.ok) {
+                const thumbBuffer = await thumbResponse.arrayBuffer()
+                thumbResized = await resizeImage(Buffer.from(thumbBuffer), 300)
+            }
+        } catch (thumbError) {
+            console.warn('Error con miniatura:', thumbError.message)
+        }
 
-        const thumbResized = await resizeImage(await (await fetch(thumbnail)).buffer(), 300)
-
-        // Descargar audio
+        // Descargar audio usando savetube
+        console.log(`🔗 Descargando: ${url}`)
         const dl = await savetube.download(url)
-        if (!dl.status) throw dl.error || '❌ Error al descargar'
+        
+        if (!dl.status) {
+            console.error('Error savetube:', dl.error)
+            throw new Error(dl.error || 'Error al descargar el audio')
+        }
 
+        console.log(`✅ Audio obtenido: ${dl.result.title}`)
+
+        // Verificar tamaño
         const size = await getSize(dl.result.download)
-        console.log(`📦 Tamaño: ${size} bytes`)
+        console.log(`📦 Tamaño del archivo: ${size} bytes`)
 
+        // Crear objeto de cita similar al otro comando
         const fkontak = {
-            key: { fromMe: false, participant: "0@s.whatsapp.net" },
+            key: { 
+                fromMe: false, 
+                participant: "0@s.whatsapp.net",
+                remoteJid: "0@s.whatsapp.net"
+            },
             message: {
-                documentMessage: {
-                    title: `🎵 ${title}`,
-                    fileName: `Música Navideña`,
-                    jpegThumbnail: thumbResized
+                extendedTextMessage: {
+                    text: `🎄 *${dl.result.title}*\n\n✨ ¡Feliz Navidad! 🎅`,
+                    contextInfo: {
+                        externalAdReply: {
+                            title: dl.result.title.substring(0, 50),
+                            body: author?.name || 'Navidad',
+                            thumbnail: thumbResized,
+                            sourceUrl: url,
+                            mediaType: 1,
+                            renderLargerThumbnail: true
+                        }
+                    }
                 }
             }
         }
 
         // Si es muy grande, enviar como documento
-        if (size > AUDIO_DOC_THRESHOLD) {
+        if (size > AUDIO_DOC_THRESHOLD || size === 0) {
+            console.log('📄 Enviando como documento')
             await conn.sendMessage(m.chat, {
                 document: { url: dl.result.download },
                 mimetype: 'audio/mpeg',
-                fileName: `${title}.mp3`,
+                fileName: `${dl.result.title.substring(0, 50)}.mp3`,
                 jpegThumbnail: thumbResized
             }, { quoted: fkontak })
         } else {
-            // Convertir y enviar como audio de WhatsApp
+            console.log('🔊 Procesando como audio WhatsApp...')
+            
+            // Crear carpeta temporal
             const tempDir = path.join(__dirname, 'temp')
-            if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir, { recursive: true })
+            if (!fs.existsSync(tempDir)) {
+                fs.mkdirSync(tempDir, { recursive: true })
+            }
 
-            const timestamp = Date.now()
-            const tempInput = path.join(tempDir, `input_${timestamp}.mp3`)
-            const tempOutput = path.join(tempDir, `output_${timestamp}.opus`)
+            const timestampId = Date.now()
+            const tempInput = path.join(tempDir, `input_${timestampId}.mp3`)
+            const tempOutput = path.join(tempDir, `output_${timestampId}.opus`)
 
             try {
                 // Descargar el audio
-                const audioResponse = await fetch(dl.result.download)
-                const buffer = await audioResponse.arrayBuffer()
-                fs.writeFileSync(tempInput, Buffer.from(buffer))
+                console.log('⬇️ Descargando archivo...')
+                const audioResponse = await fetch(dl.result.download, {
+                    headers: {
+                        'User-Agent': 'Mozilla/5.0',
+                        'Accept': 'audio/mpeg,audio/*;q=0.9,*/*;q=0.8'
+                    }
+                })
+                
+                if (!audioResponse.ok) {
+                    throw new Error(`HTTP ${audioResponse.status}`)
+                }
+                
+                const audioBuffer = await audioResponse.arrayBuffer()
+                fs.writeFileSync(tempInput, Buffer.from(audioBuffer))
+                console.log('✅ Archivo descargado')
 
                 // Convertir a formato WhatsApp
+                console.log('🔄 Convirtiendo a formato WhatsApp...')
                 await convertToWhatsAppAudio(tempInput, tempOutput)
+                console.log('✅ Conversión completada')
 
-                // Leer el audio convertido
-                const audioBuffer = fs.readFileSync(tempOutput)
-
+                // Leer archivo convertido
+                const convertedBuffer = fs.readFileSync(tempOutput)
+                
                 // Enviar como audio
+                console.log('📤 Enviando audio...')
                 await conn.sendMessage(m.chat, {
-                    audio: audioBuffer,
+                    audio: convertedBuffer,
                     mimetype: 'audio/ogg; codecs=opus',
-                    ptt: true,
-                    fileName: `${title}.ogg`
+                    ptt: false,
+                    fileName: `${dl.result.title.substring(0, 50)}.ogg`,
+                    seconds: dl.result.duration || 180
                 }, { quoted: fkontak })
+                console.log('✅ Audio enviado')
 
                 // Limpiar archivos temporales
-                if (fs.existsSync(tempInput)) fs.unlinkSync(tempInput)
-                if (fs.existsSync(tempOutput)) fs.unlinkSync(tempOutput)
+                try {
+                    if (fs.existsSync(tempInput)) fs.unlinkSync(tempInput)
+                    if (fs.existsSync(tempOutput)) fs.unlinkSync(tempOutput)
+                } catch (cleanError) {
+                    console.warn('⚠️ Error limpiando temporales:', cleanError.message)
+                }
 
             } catch (conversionError) {
-                console.error('Error en conversión:', conversionError)
+                console.error('❌ Error en conversión:', conversionError.message)
+                
                 // Fallback: enviar como audio normal
+                console.log('🔄 Usando fallback (audio directo)')
                 await conn.sendMessage(m.chat, {
                     audio: { url: dl.result.download },
                     mimetype: 'audio/mpeg',
-                    fileName: `${title}.mp3`
+                    fileName: `${dl.result.title.substring(0, 50)}.mp3`,
+                    seconds: dl.result.duration || 180
                 }, { quoted: fkontak })
             }
         }
 
         await m.react('🎁')
+        console.log('✅ Completado exitosamente')
 
-    } catch (e) {
+    } catch (error) {
+        console.error('❌ Error en handler:', error)
         await m.react('❌')
-        console.error('❌ Error:', e)
-        return conn.reply(m.chat, 
-            `⚠️ *¡El Grinch bloqueó la música!* 🎄\n\n` +
-            `Error: ${typeof e === 'string' ? e : e.message}\n\n` +
-            `🎅 Intenta de nuevo con *${usedPrefix}musicanavi*`, 
-            m
-        )
+        
+        const errorMessage = 
+            `🎅 *¡Los renos se perdieron!* 🎄\n\n` +
+            `El villancico no pudo ser entregado.\n\n` +
+            `🔧 *Error:* ${error.message || 'Desconocido'}\n\n` +
+            `✨ Intenta de nuevo con *${usedPrefix}musicanavi*`
+        
+        return conn.reply(m.chat, errorMessage, m)
     }
 }
 
 handler.help = ['musicanavi', 'navimusic', 'villancico']
-handler.tags = ['descargas', 'navidad']
-handler.command = ['musicanavi', 'navimusic', 'musicanavidad']
+handler.tags = ['descargas', 'navidad', 'audio']
+handler.command = ['musicanavi', 'navimusic', 'musicanavidad', 'villancico']
 handler.register = false
 handler.group = false
+handler.limit = true
 
 export default handler
