@@ -590,7 +590,7 @@ ${currentMenu.body}
         }
 
         // 5. Enviar nuevo mensaje y guardar referencia
-        let mediaUrl = 'https://files.catbox.moe/lajq7h.jpg';
+        let mediaUrl = 'https://files.catbox.moe/nqvhaq.jpg';
         
         const sentMsg = await conn.sendMessage(m.chat, {
             image: { url: mediaUrl },
