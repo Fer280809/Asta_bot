@@ -172,5 +172,5 @@ let handler = async (m, { conn, usedPrefix, command, text }) => {
 
 handler.help = ['inventario', 'inv', 'inventory']
 handler.tags = ['economy']
-handler.command = ['inventario', 'inv', 'inventory']
+handler.command = ['inventario2', 'inv2', 'inventory2']
 export default handler
