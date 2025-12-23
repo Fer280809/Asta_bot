@@ -1,11 +1,5 @@
-// plugins/menu2.js
 
 // --- 1. DEFINICIÓN ESTÁTICA DEL MENÚ ---
-
-/**
- * Objeto que contiene el contenido estático de cada sección del menú.
- * Nota: La función .trim() elimina saltos de línea y espacios innecesarios al inicio y final.
- */
 const MenuData = {
     "MENU_INICIO": {
         title: "¡FELIZ NAVIDAD! 🎄",
@@ -82,6 +76,7 @@ Me llamo 『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』🎅
         ╰┈➤ Explorar mazmorras para ganar coins y exp
 `.trim()
     },
+    
     
     "DOWNLOAD": {
         title: "📥 DOWNLOAD",
@@ -465,7 +460,7 @@ Me llamo 『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』🎅
     },
 
     "NSFW": {
-        title: "🔞 NSFW",
+        title: " 🔞 NSFW",
         body: `
 ╰┈➤ ✿ Comandos NSFW  
 
@@ -484,7 +479,6 @@ Me llamo 『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』🎅
     }
 };
 
-// Array para definir el ORDEN EXACTO de la navegación entre categorías
 const MenuOrder = [
     "MENU_INICIO",
     "ECONOMY",
@@ -497,48 +491,44 @@ const MenuOrder = [
     "ANIME",
     "NSFW"
 ];
-// ----------------------------------------------------
 
+// Almacenar los últimos mensajes de menú por chat
+const menuMessages = new Map();
 
 let handler = async (m, { conn, usedPrefix, text }) => {
-    if (MenuOrder.length === 0) return m.reply('❌ El menú está vacío o no configurado.');
-    
-    let totalreg = Object.keys(global.db.data.users).length;
-    let userId = m.sender;
-    const totalCategories = MenuOrder.length;
-    
-    // 1. Determinar la categoría actual
-    let currentCategoryKey = MenuOrder[0];
-    let currentIndex = 0;
-
-    // Si se pasa un argumento numérico (desde un botón), úsalo como índice
-    if (text && !isNaN(parseInt(text))) {
-        currentIndex = parseInt(text);
+    try {
+        if (MenuOrder.length === 0) return m.reply('❌ El menú está vacío o no configurado.');
         
-        // Asegurar que el índice esté dentro del rango
-        if (currentIndex >= 0 && currentIndex < totalCategories) {
-            currentCategoryKey = MenuOrder[currentIndex];
-        } else {
-            currentIndex = 0;
-            currentCategoryKey = MenuOrder[0];
+        let totalreg = Object.keys(global.db.data.users).length;
+        let userId = m.sender;
+        const totalCategories = MenuOrder.length;
+        
+        // 1. Determinar la categoría actual
+        let currentCategoryKey = MenuOrder[0];
+        let currentIndex = 0;
+
+        if (text && !isNaN(parseInt(text))) {
+            currentIndex = parseInt(text);
+            
+            if (currentIndex >= 0 && currentIndex < totalCategories) {
+                currentCategoryKey = MenuOrder[currentIndex];
+            } else {
+                currentIndex = 0;
+                currentCategoryKey = MenuOrder[0];
+            }
         }
-    }
 
-    const currentMenu = MenuData[currentCategoryKey];
+        const currentMenu = MenuData[currentCategoryKey];
+        if (!currentMenu) return m.reply('❌ Categoría de menú no encontrada.');
 
-    if (!currentMenu) return m.reply('❌ Categoría de menú no encontrada. Intente de nuevo.');
-
-    // 2. Generar el cuerpo del mensaje
-    let bodyContent = '';
-    
-    if (typeof currentMenu.body === 'function') {
-        // Para la página de inicio (con datos dinámicos)
-        bodyContent = currentMenu.body(totalreg, userId, conn);
-    } else {
-        // Para las páginas de comandos (estáticas)
-        const currentPageNumber = currentIndex + 1;
+        // 2. Generar el cuerpo del mensaje
+        let bodyContent = '';
         
-        bodyContent = `
+        if (typeof currentMenu.body === 'function') {
+            bodyContent = currentMenu.body(totalreg, userId, conn);
+        } else {
+            const currentPageNumber = currentIndex + 1;
+            bodyContent = `
 ╭ *Página ${currentPageNumber}/${totalCategories}*
 ╰──────────────────
 
@@ -547,47 +537,62 @@ let handler = async (m, { conn, usedPrefix, text }) => {
 ┗━━━━━━━━━━━━━━┛
 ${currentMenu.body}
 `.trim();
-    }
-    
-    let infoText = bodyContent;
-    
-    // 3. Lógica de Botones Siguiente/Anterior
-    let buttons = [];
+        }
+        
+        let infoText = bodyContent;
+        
+        // 3. Lógica de Botones Siguiente/Anterior
+        let buttons = [];
 
-    // Botón ANTERIOR
-    if (currentIndex > 0) {
-        const prevIndex = currentIndex - 1;
-        buttons.push({ 
-            // Envía el índice de la categoría anterior
-            buttonId: usedPrefix + 'menu2 ' + prevIndex, 
-            buttonText: { displayText: '◀️ Anterior' },
-type: 1 
-        });
-    }
+        // Botón ANTERIOR
+        if (currentIndex > 0) {
+            const prevIndex = currentIndex - 1;
+            buttons.push({ 
+                buttonId: usedPrefix + 'menu2 ' + prevIndex, 
+                buttonText: { displayText: '◀️ Anterior' },
+                type: 1 
+            });
+        }
 
-    // Botón SIGUIENTE
-    if (currentIndex < totalCategories - 1) {
-        const nextIndex = currentIndex + 1;
+        // Botón SIGUIENTE
+        if (currentIndex < totalCategories - 1) {
+            const nextIndex = currentIndex + 1;
+            buttons.push({ 
+                buttonId: usedPrefix + 'menu2 ' + nextIndex, 
+                buttonText: { displayText: 'Siguiente ▶️' }, 
+                type: 1 
+            });
+        }
+        
+        // Botón Fijo
         buttons.push({ 
-            // Envía el índice de la categoría siguiente
-            buttonId: usedPrefix + 'menu2 ' + nextIndex, 
-            buttonText: { displayText: 'Siguiente ▶️' }, 
+            buttonId: usedPrefix + 'code', 
+            buttonText: { displayText: '🤖 Sup-Bot' }, 
             type: 1 
         });
-    }
-    
-    // Botón Fijo (Sup-Bot/code)
-    buttons.push({ 
-        buttonId: usedPrefix + 'code', 
-        buttonText: { displayText: '🤖 Sup-Bot' }, 
-        type: 1 
-    });
 
-    // --- 4. ENVÍO DEL MENSAJE ---
-    let mediaUrl = 'https://files.catbox.moe/lajq7h.jpg';
+        // 4. Eliminar mensaje anterior si existe
+        const chatKey = m.chat;
+        if (menuMessages.has(chatKey)) {
+            try {
+                const oldMsg = menuMessages.get(chatKey);
+                await conn.sendMessage(m.chat, {
+                    delete: {
+                        id: oldMsg.key.id,
+                        remoteJid: m.chat,
+                        fromMe: true
+                    }
+                });
+            } catch (e) {
+                // Si falla al eliminar, continuamos igual
+                console.log('No se pudo eliminar el mensaje anterior:', e);
+            }
+        }
 
-    try {
-        await conn.sendMessage(m.chat, {
+        // 5. Enviar nuevo mensaje y guardar referencia
+        let mediaUrl = 'https://files.catbox.moe/lajq7h.jpg';
+        
+        const sentMsg = await conn.sendMessage(m.chat, {
             image: { url: mediaUrl },
             caption: infoText,
             footer: "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』⚡",
@@ -595,23 +600,36 @@ type: 1
             headerType: 4,
             mentions: [userId]
         }, { quoted: m });
-    } catch (e) {
-        // Fallback sin imagen (HeaderType 1)
-        let buttonMessage = {
-            text: infoText,
-            footer: "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』⚡",
-            buttons: buttons,
-            headerType: 1,
-            mentions: [userId]
-        };
-        await conn.sendMessage(m.chat, buttonMessage, { quoted: m });
+        
+        // Guardar referencia al nuevo mensaje
+        menuMessages.set(chatKey, sentMsg);
+        
+        // Limpiar mensajes antiguos después de 5 minutos
+        setTimeout(() => {
+            if (menuMessages.has(chatKey)) {
+                menuMessages.delete(chatKey);
+            }
+        }, 5 * 60 * 1000);
+        
+    } catch (error) {
+        console.error('Error en el menú:', error);
+        m.reply('❌ Ocurrió un error al mostrar el menú. Intenta nuevamente.');
     }
 };
 
-// 5. Configuración del comando: ¡Mantener los nombres originales!
+// Configuración del comando
 handler.help = ['menu2'];
 handler.tags = ['main'];
 handler.command = ['menú2', 'menu2', 'help2'];
 
+// Limpiar almacenamiento periódicamente
+setInterval(() => {
+    const now = Date.now();
+    for (const [key, msg] of menuMessages.entries()) {
+        if (now - msg.messageTimestamp * 1000 > 10 * 60 * 1000) {
+            menuMessages.delete(key);
+        }
+    }
+}, 30 * 60 * 1000);
+
 export default handler;
- 
