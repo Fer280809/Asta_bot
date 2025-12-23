@@ -1,5 +1,6 @@
 let handler = async (m, { conn, usedPrefix }) => {
-    if (!db.data.chats[m.chat].economy && m.isGroup) {
+    // CORRECCIÓN: Usar global.db en lugar de db
+    if (!global.db.data.chats[m.chat].economy && m.isGroup) {
         return m.reply(`🎄 *¡Oh no!* Los chistes navideños están *congelados* en este grupo.\n\n🎅 Un *elfo administrador* puede descongelarlos con:\n» *${usedPrefix}economy on*`)
     }
     
@@ -21,6 +22,7 @@ let handler = async (m, { conn, usedPrefix }) => {
     await conn.reply(m.chat, respuesta, m)
 }
 
+// CORRECCIÓN: Debe ser handler.command, NO handler.commad
 handler.help = ['chiste', 'chistenavi']
 handler.tags = ['fun', 'navidad']
 handler.command = ['chiste', 'chistenavi']
