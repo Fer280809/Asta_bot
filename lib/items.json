@@ -711,5 +711,485 @@
       "tipo": "huevo",
       "obtenible": "Criadora Susi"
     }
+  },
+  "mt01": {
+    "nombre": "MT01 Foco Resplandor",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Foco Resplandor a un Pokémon compatible.",
+    "precio_venta": 3000,
+    "precio_compra": 1000,
+    "efecto": "enseña_movimiento"
+  },
+  "mt02": {
+    "nombre": "MT02 Puño Draco",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Puño Draco a un Pokémon compatible.",
+    "precio_venta": 3000,
+    "precio_compra": 1000,
+    "efecto": "enseña_movimiento"
+  },
+  "mt03": {
+    "nombre": "MT03 Psíquico",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Psíquico a un Pokémon compatible.",
+    "precio_venta": 3000,
+    "precio_compra": 1000,
+    "efecto": "enseña_movimiento"
+  },
+  "mt04": {
+    "nombre": "MT04 Rugido",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Rugido a un Pokémon compatible.",
+    "precio_venta": 1000,
+    "precio_compra": 300,
+    "efecto": "enseña_movimiento"
+  },
+  "mt05": {
+    "nombre": "MT05 Ataque Arena",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Ataque Arena a un Pokémon compatible.",
+    "precio_venta": 2000,
+    "precio_compra": 500,
+    "efecto": "enseña_movimiento"
+  },
+  "mt06": {
+    "nombre": "MT06 Tóxico",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Tóxico a un Pokémon compatible.",
+    "precio_venta": 3000,
+    "precio_compra": 1000,
+    "efecto": "enseña_movimiento"
+  },
+  "mt07": {
+    "nombre": "MT07 Granizo",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Granizo a un Pokémon compatible.",
+    "precio_venta": 2000,
+    "precio_compra": 500,
+    "efecto": "enseña_movimiento"
+  },
+  "mt08": {
+    "nombre": "MT08 Refuerzo",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Refuerzo a un Pokémon compatible.",
+    "precio_venta": 2000,
+    "precio_compra": 500,
+    "efecto": "enseña_movimiento"
+  },
+  "mt09": {
+    "nombre": "MT09 Vendetta",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Vendetta a un Pokémon compatible.",
+    "precio_venta": 2000,
+    "precio_compra": 500,
+    "efecto": "enseña_movimiento"
+  },
+  "mt10": {
+    "nombre": "MT10 Día de Pago",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Día de Pago a un Pokémon compatible.",
+    "precio_venta": 3000,
+    "precio_compra": 1000,
+    "efecto": "enseña_movimiento"
+  },
+  "mt11": {
+    "nombre": "MT11 Día Soleado",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Día Soleado a un Pokémon compatible.",
+    "precio_venta": 2000,
+    "precio_compra": 500,
+    "efecto": "enseña_movimiento"
+  },
+  "mt12": {
+    "nombre": "MT12 Provocación",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Provocación a un Pokémon compatible.",
+    "precio_venta": 2000,
+    "precio_compra": 500,
+    "efecto": "enseña_movimiento"
+  },
+  "mt13": {
+    "nombre": "MT13 Rayo Hielo",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Rayo Hielo a un Pokémon compatible.",
+    "precio_venta": 3000,
+    "precio_compra": 1000,
+    "efecto": "enseña_movimiento"
+  },
+  "mt14": {
+    "nombre": "MT14 Ventisca",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Ventisca a un Pokémon compatible.",
+    "precio_venta": 3000,
+    "precio_compra": 1000,
+    "efecto": "enseña_movimiento"
+  },
+  "mt15": {
+    "nombre": "MT15 Hiperrayo",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Hiperrayo a un Pokémon compatible.",
+    "precio_venta": 5000,
+    "precio_compra": 2000,
+    "efecto": "enseña_movimiento"
+  },
+  "mt16": {
+    "nombre": "MT16 Protección",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Protección a un Pokémon compatible.",
+    "precio_venta": 2000,
+    "precio_compra": 500,
+    "efecto": "enseña_movimiento"
+  },
+  "mt17": {
+    "nombre": "MT17 Descanso",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Descanso a un Pokémon compatible.",
+    "precio_venta": 2000,
+    "precio_compra": 500,
+    "efecto": "enseña_movimiento"
+  },
+  "mt18": {
+    "nombre": "MT18 Lluvia",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Lluvia a un Pokémon compatible.",
+    "precio_venta": 2000,
+    "precio_compra": 500,
+    "efecto": "enseña_movimiento"
+  },
+  "mt19": {
+    "nombre": "MT19 Gigadrenado",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Gigadrenado a un Pokémon compatible.",
+    "precio_venta": 3000,
+    "precio_compra": 1000,
+    "efecto": "enseña_movimiento"
+  },
+  "mt20": {
+    "nombre": "MT20 Salvaguarda",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Salvaguarda a un Pokémon compatible.",
+    "precio_venta": 2000,
+    "precio_compra": 500,
+    "efecto": "enseña_movimiento"
+  },
+  "mt21": {
+    "nombre": "MT21 Frustración",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Frustración a un Pokémon compatible.",
+    "precio_venta": 2000,
+    "precio_compra": 500,
+    "efecto": "enseña_movimiento"
+  },
+  "mt22": {
+    "nombre": "MT22 Rayo Solar",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Rayo Solar a un Pokémon compatible.",
+    "precio_venta": 3000,
+    "precio_compra": 1000,
+    "efecto": "enseña_movimiento"
+  },
+  "mt23": {
+    "nombre": "MT23 Derribo",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Derribo a un Pokémon compatible.",
+    "precio_venta": 3000,
+    "precio_compra": 1000,
+    "efecto": "enseña_movimiento"
+  },
+  "mt24": {
+    "nombre": "MT24 Rayo",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Rayo a un Pokémon compatible.",
+    "precio_venta": 5000,
+    "precio_compra": 2000,
+    "efecto": "enseña_movimiento"
+  },
+  "mt25": {
+    "nombre": "MT25 Trueno",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Trueno a un Pokémon compatible.",
+    "precio_venta": 5000,
+    "precio_compra": 2000,
+    "efecto": "enseña_movimiento"
+  },
+  "mt26": {
+    "nombre": "MT26 Terremoto",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Terremoto a un Pokémon compatible.",
+    "precio_venta": 5000,
+    "precio_compra": 2000,
+    "efecto": "enseña_movimiento"
+  },
+  "mt27": {
+    "nombre": "MT27 Furia",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Furia a un Pokémon compatible.",
+    "precio_venta": 1000,
+    "precio_compra": 300,
+    "efecto": "enseña_movimiento"
+  },
+  "mt28": {
+    "nombre": "MT28 Excavar",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Excavar a un Pokémon compatible.",
+    "precio_venta": 2000,
+    "precio_compra": 500,
+    "efecto": "enseña_movimiento"
+  },
+  "mt29": {
+    "nombre": "MT29 Pulso Umbrío",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Pulso Umbrío a un Pokémon compatible.",
+    "precio_venta": 3000,
+    "precio_compra": 1000,
+    "efecto": "enseña_movimiento"
+  },
+  "mt30": {
+    "nombre": "MT30 Sombra Vil",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Sombra Vil a un Pokémon compatible.",
+    "precio_venta": 3000,
+    "precio_compra": 1000,
+    "efecto": "enseña_movimiento"
+  },
+  "mt31": {
+    "nombre": "MT31 Golpe Roca",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Golpe Roca a un Pokémon compatible.",
+    "precio_venta": 2000,
+    "precio_compra": 500,
+    "efecto": "enseña_movimiento"
+  },
+  "mt32": {
+    "nombre": "MT32 Doble Equipo",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Doble Equipo a un Pokémon compatible.",
+    "precio_venta": 2000,
+    "precio_compra": 500,
+    "efecto": "enseña_movimiento"
+  },
+  "mt33": {
+    "nombre": "MT33 Reflector",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Reflector a un Pokémon compatible.",
+    "precio_venta": 2000,
+    "precio_compra": 500,
+    "efecto": "enseña_movimiento"
+  },
+  "mt34": {
+    "nombre": "MT34 Choque Psíquico",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Choque Psíquico a un Pokémon compatible.",
+    "precio_venta": 3000,
+    "precio_compra": 1000,
+    "efecto": "enseña_movimiento"
+  },
+  "mt35": {
+    "nombre": "MT35 Lanzallamas",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Lanzallamas a un Pokémon compatible.",
+    "precio_venta": 5000,
+    "precio_compra": 2000,
+    "efecto": "enseña_movimiento"
+  },
+  "mt36": {
+    "nombre": "MT36 Bola Sombra",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Bola Sombra a un Pokémon compatible.",
+    "precio_venta": 3000,
+    "precio_compra": 1000,
+    "efecto": "enseña_movimiento"
+  },
+  "mt37": {
+    "nombre": "MT37 Tormenta Arena",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Tormenta Arena a un Pokémon compatible.",
+    "precio_venta": 2000,
+    "precio_compra": 500,
+    "efecto": "enseña_movimiento"
+  },
+  "mt38": {
+    "nombre": "MT38 Llamarada",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Llamarada a un Pokémon compatible.",
+    "precio_venta": 5000,
+    "precio_compra": 2000,
+    "efecto": "enseña_movimiento"
+  },
+  "mt39": {
+    "nombre": "MT39 Roca Afilada",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Roca Afilada a un Pokémon compatible.",
+    "precio_venta": 2000,
+    "precio_compra": 500,
+    "efecto": "enseña_movimiento"
+  },
+  "mt40": {
+    "nombre": "MT40 Picotazo",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Picotazo a un Pokémon compatible.",
+    "precio_venta": 1000,
+    "precio_compra": 300,
+    "efecto": "enseña_movimiento"
+  },
+  "mt41": {
+    "nombre": "MT41 Engaño",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Engaño a un Pokémon compatible.",
+    "precio_venta": 2000,
+    "precio_compra": 500,
+    "efecto": "enseña_movimiento"
+  },
+  "mt42": {
+    "nombre": "MT42 Facasada",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Facasada a un Pokémon compatible.",
+    "precio_venta": 3000,
+    "precio_compra": 1000,
+    "efecto": "enseña_movimiento"
+  },
+  "mt43": {
+    "nombre": "MT43 Tajo Cruzado",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Tajo Cruzado a un Pokémon compatible.",
+    "precio_venta": 3000,
+    "precio_compra": 1000,
+    "efecto": "enseña_movimiento"
+  },
+  "mt44": {
+    "nombre": "MT44 Sueño",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Sueño a un Pokémon compatible.",
+    "precio_venta": 2000,
+    "precio_compra": 500,
+    "efecto": "enseña_movimiento"
+  },
+  "mt45": {
+    "nombre": "MT45 Atracción",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Atracción a un Pokémon compatible.",
+    "precio_venta": 2000,
+    "precio_compra": 500,
+    "efecto": "enseña_movimiento"
+  },
+  "mt46": {
+    "nombre": "MT46 Ladrón",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Ladrón a un Pokémon compatible.",
+    "precio_venta": 2000,
+    "precio_compra": 500,
+    "efecto": "enseña_movimiento"
+  },
+  "mt47": {
+    "nombre": "MT47 Ala de Acero",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Ala de Acero a un Pokémon compatible.",
+    "precio_venta": 3000,
+    "precio_compra": 1000,
+    "efecto": "enseña_movimiento"
+  },
+  "mt48": {
+    "nombre": "MT48 Ciclón",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Ciclón a un Pokémon compatible.",
+    "precio_venta": 3000,
+    "precio_compra": 1000,
+    "efecto": "enseña_movimiento"
+  },
+  "mt49": {
+    "nombre": "MT49 Robo de Escamas",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Robo de Escamas a un Pokémon compatible.",
+    "precio_venta": 2000,
+    "precio_compra": 500,
+    "efecto": "enseña_movimiento"
+  },
+  "mt50": {
+    "nombre": "MT50 Sobrecalentamiento",
+    "tipo": "mt",
+    "descripcion": "Enseña el movimiento Sobrecalentamiento a un Pokémon compatible.",
+    "precio_venta": 5000,
+    "precio_compra": 2000,
+    "efecto": "enseña_movimiento"
+  },
+  "mo01": {
+    "nombre": "MO01 Corte",
+    "tipo": "mo",
+    "descripcion": "Enseña el movimiento Corte a un Pokémon compatible. Puede usarse fuera de combate para cortar árboles pequeños.",
+    "precio_venta": 0,
+    "precio_compra": 0,
+    "efecto": "enseña_movimiento"
+  },
+  "mo02": {
+    "nombre": "MO02 Vuelo",
+    "tipo": "mo",
+    "descripcion": "Enseña el movimiento Vuelo a un Pokémon compatible. Puede usarse fuera de combate para volar a ciudades visitadas.",
+    "precio_venta": 0,
+    "precio_compra": 0,
+    "efecto": "enseña_movimiento"
+  },
+  "mo03": {
+    "nombre": "MO03 Surf",
+    "tipo": "mo",
+    "descripcion": "Enseña el movimiento Surf a un Pokémon compatible. Puede usarse fuera de combate para navegar por el agua.",
+    "precio_venta": 0,
+    "precio_compra": 0,
+    "efecto": "enseña_movimiento"
+  },
+  "mo04": {
+    "nombre": "MO04 Fuerza",
+    "tipo": "mo",
+    "descripcion": "Enseña el movimiento Fuerza a un Pokémon compatible. Puede usarse fuera de combate para mover rocas.",
+    "precio_venta": 0,
+    "precio_compra": 0,
+    "efecto": "enseña_movimiento"
+  },
+  "mo05": {
+    "nombre": "MO05 Cascada",
+    "tipo": "mo",
+    "descripcion": "Enseña el movimiento Cascada a un Pokémon compatible. Puede usarse fuera de combate para subir cascadas.",
+    "precio_venta": 0,
+    "precio_compra": 0,
+    "efecto": "enseña_movimiento"
+  },
+  "mo06": {
+    "nombre": "MO06 Buceo",
+    "tipo": "mo",
+    "descripcion": "Enseña el movimiento Buceo a un Pokémon compatible. Puede usarse fuera de combate para sumergirse en el agua.",
+    "precio_venta": 0,
+    "precio_compra": 0,
+    "efecto": "enseña_movimiento"
+  },
+  "mo07": {
+    "nombre": "MO07 Salto Rocas",
+    "tipo": "mo",
+    "descripcion": "Enseña el movimiento Salto Rocas a un Pokémon compatible. Puede usarse fuera de combate para saltar cascadas de rocas.",
+    "precio_venta": 0,
+    "precio_compra": 0,
+    "efecto": "enseña_movimiento"
+  },
+  "mo08": {
+    "nombre": "MO08 Escalada",
+    "tipo": "mo",
+    "descripcion": "Enseña el movimiento Escalada a un Pokémon compatible. Puede usarse fuera de combate para escalar paredes rocosas.",
+    "precio_venta": 0,
+    "precio_compra": 0,
+    "efecto": "enseña_movimiento"
+  },
+  "bicicleta": {
+    "nombre": "Bicicleta",
+    "tipo": "key",
+    "descripcion": "Una bicicleta que permite viajar más rápido por las rutas.",
+    "precio_venta": 0,
+    "precio_compra": 0,
+    "efecto": "movimiento_rapido"
+  },
+  "cuerda_huevo": {
+    "nombre": "Cuerda Huevo",
+    "tipo": "key",
+    "descripcion": "Una cuerda especial que ayuda a eclosionar huevos Pokémon más rápido.",
+    "precio_venta": 0,
+    "precio_compra": 0,
+    "efecto": "acelera_eclosion"
   }
 }
