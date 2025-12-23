@@ -1,26 +1,176 @@
 {
   "balls": {
-    "pokeball": { "nombre": "Pokéball", "descripcion": "Captura Pokémon salvajes.", "precio": 200, "ratio": 1.0, "emoji": "⚪" },
-    "superball": { "nombre": "Superball", "descripcion": "Mejor que una Pokéball.", "precio": 600, "ratio": 1.5, "emoji": "🔵" },
-    "ultraball": { "nombre": "Ultraball", "descripcion": "Alta tasa de éxito.", "precio": 1200, "ratio": 2.0, "emoji": "🟡" },
-    "masterball": { "nombre": "Masterball", "descripcion": "Captura infalible.", "precio": 50000, "ratio": 100.0, "emoji": "🟣" }
+    "pokeball": {
+      "nombre": "Pokéball",
+      "descripcion": "Captura Pokémon salvajes.",
+      "precio": 200,
+      "ratio": 1.0,
+      "emoji": "⚪"
+    },
+    "superball": {
+      "nombre": "Superball",
+      "descripcion": "Mejor que una Pokéball.",
+      "precio": 600,
+      "ratio": 1.5,
+      "emoji": "🔵"
+    },
+    "ultraball": {
+      "nombre": "Ultraball",
+      "descripcion": "Alta tasa de éxito.",
+      "precio": 1200,
+      "ratio": 2.0,
+      "emoji": "🟡"
+    },
+    "masterball": {
+      "nombre": "Masterball",
+      "descripcion": "Captura infalible.",
+      "precio": 50000,
+      "ratio": 100.0,
+      "emoji": "🟣"
+    }
   },
   "curacion": {
-    "pocion": { "nombre": "Poción", "descripcion": "Cura 20 HP.", "precio": 300, "curacion": 20, "emoji": "🧪" },
-    "superpocion": { "nombre": "Superpoción", "descripcion": "Cura 50 HP.", "precio": 700, "curacion": 50, "emoji": "🥤" },
-    "hiperpocion": { "nombre": "Hiperpoción", "descripcion": "Cura 200 HP.", "precio": 1500, "curacion": 200, "emoji": "🍶" },
-    "revivir": { "nombre": "Revivir", "descripcion": "Revive con 50% HP.", "precio": 1500, "revive": true, "emoji": "✨" }
+    "pocion": {
+      "nombre": "Poción",
+      "descripcion": "Cura 20 HP.",
+      "precio": 300,
+      "curacion": 20,
+      "emoji": "🧪"
+    },
+    "superpocion": {
+      "nombre": "Superpoción",
+      "descripcion": "Cura 50 HP.",
+      "precio": 700,
+      "curacion": 50,
+      "emoji": "🥤"
+    },
+    "hiperpocion": {
+      "nombre": "Hiperpoción",
+      "descripcion": "Cura 200 HP.",
+      "precio": 1500,
+      "curacion": 200,
+      "emoji": "🍶"
+    },
+    "revivir": {
+      "nombre": "Revivir",
+      "descripcion": "Revive con 50% HP.",
+      "precio": 1500,
+      "revive": true,
+      "emoji": "✨"
+    }
   },
   "aventura": {
-    "hacha": { "nombre": "Hacha Antigua", "descripcion": "Corta arbustos.", "precio": 0, "emoji": "🪓" },
-    "linterna": { "nombre": "Linterna", "descripcion": "Ilumina cuevas.", "precio": 0, "emoji": "🔦" },
-    "ticket_barco": { "nombre": "Ticket Barco", "descripcion": "Acceso al S.S. Anne.", "precio": 0, "emoji": "🎫" },
-    "surf": { "nombre": "Tabla de Surf", "descripcion": "Cruza mares.", "precio": 0, "emoji": "🏄" },
-    "traje_buceo": { "nombre": "Traje de Buceo", "descripcion": "Explora el fondo.", "precio": 0, "emoji": "🤿" }
+    "aventura": {
+      "hacha": {
+        "nombre": "Hacha Antigua",
+        "descripcion": "Corta arbustos. Obtenible del Leñador Hugo.",
+        "precio": null,
+        "obtenible": "NPC Leñador Hugo",
+        "emoji": "🪓"
+      },
+      "linterna": {
+        "nombre": "Linterna",
+        "descripcion": "Ilumina cuevas. Obtenible del Minero Ciego.",
+        "precio": null,
+        "obtenible": "NPC Minero Ciego",
+        "emoji": "🔦"
+      }
+    },
+    "ticket_barco": {
+      "nombre": "Ticket Barco",
+      "descripcion": "Acceso al S.S. Anne.",
+      "precio": 0,
+      "emoji": "🎫"
+    },
+    "surf": {
+      "nombre": "Tabla de Surf",
+      "descripcion": "Cruza mares.",
+      "precio": 0,
+      "emoji": "🏄"
+    },
+    "traje_buceo": {
+      "nombre": "Traje de Buceo",
+      "descripcion": "Explora el fondo.",
+      "precio": 0,
+      "emoji": "🤿"
+    }
   },
   "evolucion": {
-    "piedra_fuego": { "nombre": "Piedra Fuego", "precio": 2500, "emoji": "🔥" },
-    "piedra_agua": { "nombre": "Piedra Agua", "precio": 2500, "emoji": "💧" },
-    "piedra_trueno": { "nombre": "Piedra Trueno", "precio": 2500, "emoji": "⚡" }
+    "piedra_fuego": {
+      "nombre": "Piedra Fuego",
+      "precio": 2500,
+      "emoji": "🔥"
+    },
+    "piedra_agua": {
+      "nombre": "Piedra Agua",
+      "precio": 2500,
+      "emoji": "💧"
+    },
+    "piedra_trueno": {
+      "nombre": "Piedra Trueno",
+      "precio": 2500,
+      "emoji": "⚡"
+    }
+  },
+  "estados": {
+    "antidoto": {
+      "nombre": "Antídoto",
+      "cura": "envenenado"
+    },
+    "antiquemar": {
+      "nombre": "Antiquemar",
+      "cura": "quemado"
+    },
+    "antiparalizador": {
+      "nombre": "Antiparalizador",
+      "cura": "paralizado"
+    },
+    "despertar": {
+      "nombre": "Despertar",
+      "cura": "dormido"
+    },
+    "antihielo": {
+      "nombre": "Antihielo",
+      "cura": "congelado"
+    }
+  },
+  "ev_entrenamiento": {
+    "peso_potencia": {
+      "nombre": "Peso Potencia",
+      "ev": "ataque"
+    },
+    "peso_defensa": {
+      "nombre": "Peso Defensa",
+      "ev": "defensa"
+    },
+    "peso_velocidad": {
+      "nombre": "Peso Velocidad",
+      "ev": "velocidad"
+    },
+    "peso_hp": {
+      "nombre": "Peso HP",
+      "ev": "hp"
+    }
+  },
+  "cintas_concurso": {
+    "cinta_belleza": {
+      "nombre": "Cinta Belleza",
+      "categoria": "belleza"
+    },
+    "cinta_dureza": {
+      "nombre": "Cinta Dureza",
+      "categoria": "dureza"
+    },
+    "cinta_carisma": {
+      "nombre": "Cinta Carisma",
+      "categoria": "carisma"
+    }
+  },
+  "megapiedras": {
+    "megapiedra_charizard": {
+      "nombre": "Megapiedra Charizard",
+      "pokemon": "Charizard",
+      "precio": 50000
+    }
   }
 }

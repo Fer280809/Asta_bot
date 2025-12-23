@@ -1,17 +1,267 @@
 {
-  "Profesor Cerezo": "¡Hola! Bienvenido al mundo de Auralis. He registrado tu primer Pokémon. ¡Tu aventura comienza ahora!",
-  "Mamá": "Ten cuidado ahí fuera, hijo. No olvides que siempre puedes volver a casa a descansar.",
-  "Joven Chano": "¡Oye! No puedes pasar por la Ruta 1 sin probar la velocidad de mis Rattata.",
-  "Leñador Hugo": "Este bosque es denso. Si quieres mi Hacha Antigua para pasar, ¡tendrás que vencerme!",
-  "Anciano MT": "La sabiduría se encuentra en los movimientos. Visítame cuando seas más fuerte.",
-  "Líder Ferrum": "¡Bienvenido a Ciudad Férrea! Mis Pokémon de roca son un muro impenetrable.",
-  "Capitán Estribor": "¡Hola, grumete! El barco no zarpa sin un Ticket Barco.",
-  "Explorador Roy": "¡Uff! El Túnel Oscuro da miedo. Toma esta Linterna, yo ya no la necesito.",
-  "Líder Marina": "¡Mis Pokémon de agua te hundirán en un abrir y cerrar de ojos!",
-  "Sacerdotisa Draconia": "Estás en suelo sagrado. Los antiguos dragones protegieron Auralis hace milenios.",
-  "Líder Orion": "Puedo leer tus movimientos antes de que los ordenes. El poder mental es superior.",
-  "Líder Zephyr": "¡Siente la brisa de Villa Nidada! Solo los que dominan el cielo pueden retarme.",
-  "Glacia": "Tu equipo quedará congelado en el tiempo.",
-  "Veterano Logan": "Este es el filtro final antes de la Liga. Muchos fallan aquí.",
-  "Campeón Fernando": "Has demostrado valor. ¡Pero para ser el Campeón, debes superarme a mí!"
+  "Albavera": {
+    "Profesor Cerezo": {
+      "saludo": "¡Hola! Bienvenido al mundo de Auralis. He registrado tu primer Pokémon. ¡Tu aventura comienza ahora!",
+      "despedida": "¡Buena suerte en tu viaje! Recuerda visitar los Centros Pokémon.",
+      "mision": "Necesito que investigues los Pokémon de la Ruta 1 para mi estudio."
+    },
+    "Mamá": {
+      "saludo": "Ten cuidado ahí fuera, hijo. No olvides que siempre puedes volver a casa a descansar.",
+      "despedida": "Cuídate mucho, ¡y dale de comer a tus Pokémon!",
+      "consejo": "Las Pociones son esenciales para cualquier aventura."
+    },
+    "Investigadora Ana": {
+      "saludo": "¡Hola! Estoy estudiando el comportamiento de los Pokémon salvajes.",
+      "informacion": "Los Pokémon de tipo Planta son más comunes en zonas boscosas."
+    },
+    "Abuelo Kai": {
+      "saludo": "En mis tiempos, los Pokémon eran más salvajes...",
+      "historia": "La Liga Pokémon fue fundada hace más de 100 años."
+    }
+  },
+  
+  "Ruta 1": {
+    "Joven Chano": {
+      "combate": "¡Oye! No puedes pasar por la Ruta 1 sin probar la velocidad de mis Rattata.",
+      "derrota": "¡Vaya! Tus Pokémon son rápidos también...",
+      "victoria": "¡Todavía tengo mucho que aprender!"
+    }
+  },
+  
+  "Villa Raíz": {
+    "Criadora Susi": {
+      "saludo": "Cuido de los Pokémon bebés en la guardería.",
+      "servicio": "Si dejas dos Pokémon, pueden criar un huevo.",
+      "consejo": "Los Pokémon suben de nivel más rápido si están felices."
+    },
+    "Anciano MT": {
+      "saludo": "La sabiduría se encuentra en los movimientos.",
+      "mision": "Visítame cuando seas más fuerte, tengo algo para ti.",
+      "recompensa": "Toma esta MT, te será útil en tu viaje."
+    },
+    "Comerciante": {
+      "saludo": "¡Bienvenido a mi tienda! Tenemos todo para entrenadores.",
+      "tienda": "Puedes comprar Poké Balls y Pociones aquí."
+    }
+  },
+  
+  "Bosque Musgo": {
+    "Leñador Hugo": {
+      "combate": "Este bosque es denso. Si quieres mi Hacha Antigua para pasar, ¡tendrás que vencerme!",
+      "derrota": "Muy bien, toma el Hacha...",
+      "recompensa": "Aquí tienes el Hacha Antigua. Ahora puedes cortar arbustos."
+    }
+  },
+  
+  "Ruta 3": {
+    "Montañero Pedro": {
+      "combate": "¡Rocas duras como mi voluntad!",
+      "derrota": "Tu determinación es más fuerte que la roca..."
+    }
+  },
+  
+  "Ciudad Férrea": {
+    "Líder Ferrum": {
+      "pre_combate": "¡Bienvenido a Ciudad Férrea! Mis Pokémon de roca son un muro impenetrable.",
+      "combate": "¡Inquebrantable!",
+      "derrota": "Tu fuerza ha roto incluso la roca...",
+      "medalla": "Toma la Medalla Roca. Has demostrado tu valor."
+    },
+    "Minero Juan": {
+      "saludo": "Extraemos minerales de estas montañas.",
+      "consejo": "Los Pokémon de tipo Roca son resistentes pero lentos.",
+      "regalo": "Toma esta Piedra Fuego, puede que la necesites."
+    }
+  },
+  
+  "Ruta 4": {
+    "Pescador Simón": {
+      "combate": "¡Pican el anzuelo!",
+      "derrota": "Me has dejado sin peces..."
+    }
+  },
+  
+  "Puerto Brisa": {
+    "Capitán Estribor": {
+      "saludo": "¡Hola, grumete! El barco no zarpa sin un Ticket Barco.",
+      "mision": "Busca al Comerciante Misterioso, él tiene Tickets.",
+      "viaje": "Con el Ticket, puedo llevarte a la Isla Remota."
+    },
+    "Marinero Bob": {
+      "saludo": "¡Ahoy! El mar está bravo hoy.",
+      "consejo": "Los Pokémon de tipo Agua son fuertes contra el fuego."
+    }
+  },
+  
+  "Isla Remota": {
+    "Superentrenador": {
+      "combate": "Solo los mejores llegan hasta aquí. ¡Demuestra tu valía!",
+      "derrota": "¡Impresionante! Eres un verdadero maestro."
+    }
+  },
+  
+  "Ruta 5": {
+    "Excursionista": {
+      "saludo": "El cañón del eco es peligroso, ten cuidado.",
+      "consejo": "Lleva siempre Pociones extra en zonas salvajes."
+    }
+  },
+  
+  "Pueblo Vapor": {
+    "Explorador Roy": {
+      "saludo": "¡Uff! El Túnel Oscuro da miedo.",
+      "regalo": "Toma esta Linterna, yo ya no la necesito.",
+      "consejo": "La Linterna es esencial para explorar cuevas."
+    },
+    "Masajista Pokémon": {
+      "saludo": "¡Hola! Puedo aumentar la felicidad de tus Pokémon.",
+      "servicio": "Por 1000 monedas, tus Pokémon serán más felices.",
+      "efecto": "Los Pokémon felices luchan mejor y evolucionan antes."
+    }
+  },
+  
+  "Túnel Oscuro": {
+    "Minero Ciego": {
+      "saludo": "En la oscuridad total, solo confío en mi oído.",
+      "historia": "Esta cueva esconde fósiles de Pokémon antiguos."
+    }
+  },
+  
+  "Ruta 6": {
+    "Dama Clara": {
+      "saludo": "¡Qué hermosas flores!",
+      "regalo": "Toma esta Baya Aranja para tu Pokémon.",
+      "consejo": "Las bayas pueden curar a tus Pokémon en combate."
+    }
+  },
+  
+  "Ciudad Luminaria": {
+    "Líder Marina": {
+      "pre_combate": "¡Mis Pokémon de agua te hundirán en un abrir y cerrar de ojos!",
+      "combate": "¡Directo al abismo!",
+      "derrota": "Has navegado a través de mi defensa...",
+      "medalla": "La Medalla Trueno es tuya. ¡Felicidades!"
+    },
+    "Revisor del Tren": {
+      "saludo": "El tren conecta todas las ciudades principales.",
+      "servicio": "Por 500 monedas, puedo llevarte a cualquier ciudad visitada."
+    }
+  },
+  
+  "Ruta 7": {
+    "Cazabichos Kike": {
+      "combate": "¡Mis insectos son los más fuertes!",
+      "derrota": "¡Mis bichos han sido aplastados!"
+    }
+  },
+  
+  "Pueblo Ancestral": {
+    "Sacerdotisa Draconia": {
+      "saludo": "Estás en suelo sagrado.",
+      "historia": "Los antiguos dragones protegieron Auralis hace milenios.",
+      "leyenda": "Se dice que un Pokémon legendario duerme bajo este templo."
+    }
+  },
+  
+  "Ruta 8": {
+    "Nadador Javi": {
+      "combate": "¡Cuidado con el calambre!",
+      "derrota": "Me ahogo en mi propia derrota..."
+    }
+  },
+  
+  "Ciudad Cénit": {
+    "Líder Orion": {
+      "pre_combate": "Puedo leer tus movimientos antes de que los ordenes.",
+      "combate": "¡Lo vi venir!",
+      "derrota": "Tu mente es más aguda que la mía...",
+      "medalla": "Toma la Medalla Mental. Tu potencial es enorme."
+    },
+    "Científico": {
+      "saludo": "Estudio la genética Pokémon.",
+      "informacion": "Algunos Pokémon evolucionan por felicidad o amistad."
+    }
+  },
+  
+  "Ruta 11": {
+    "Nómada": {
+      "saludo": "El desierto enseña paciencia.",
+      "consejo": "Los Pokémon de tipo Tierra son fuertes aquí.",
+      "regalo": "Toma esta Arena Fina, aumenta la velocidad de tipo Tierra."
+    }
+  },
+  
+  "Villa Nidada": {
+    "Líder Zephyr": {
+      "pre_combate": "¡Siente la brisa de Villa Nidada!",
+      "combate": "¡Vuela alto!",
+      "derrota": "Has cortado mis alas...",
+      "medalla": "La Medalla Brisa es tuya. ¡Eres libre como el viento!"
+    }
+  },
+  
+  "Ruta 9": {
+    "Guía de Montaña": {
+      "saludo": "El ascenso es peligroso sin equipo adecuado.",
+      "consejo": "Los Pokémon de tipo Hielo son nativos de esta zona."
+    }
+  },
+  
+  "Ciudad Pico": {
+    "Glacia": {
+      "pre_combate": "Tu equipo quedará congelado en el tiempo.",
+      "combate": "¡Cero absoluto!",
+      "derrota": "Tu calor ha derretido mi hielo...",
+      "medalla": "La Medalla Glaciar. Has demostrado resistencia extrema."
+    },
+    "Alpinista": {
+      "saludo": "¡Brrr! Hace frío incluso aquí.",
+      "equipo": "Vendo equipo para clima frío.",
+      "regalo": "Toma este Anticongelante, protege de congelación."
+    }
+  },
+  
+  "Ruta 10": {
+    "Cazador de Dragones": {
+      "combate": "¡Los dragones son los Pokémon más poderosos!",
+      "derrota": "¡Increíble! Has domado al dragón..."
+    }
+  },
+  
+  "Foso Marino": {
+    "Buzo Legendario": {
+      "saludo": "Las profundidades esconden secretos antiguos.",
+      "historia": "Se dice que Kyogre duerme en el abismo más profundo."
+    }
+  },
+  
+  "Cueva Victoria": {
+    "Veterano Logan": {
+      "pre_combate": "Este es el filtro final antes de la Liga.",
+      "combate": "¡La Liga es solo para la élite!",
+      "derrota": "Eres digno de enfrentar al Campeón...",
+      "permiso": "Puedes pasar. La Liga Pokémon te espera."
+    }
+  },
+  
+  "Liga Pokémon": {
+    "Campeón Fernando": {
+      "pre_combate": "Has demostrado valor al llegar hasta aquí.",
+      "combate": "¡Este es el poder de un Campeón!",
+      "derrota": "¡Increíble! Eres el nuevo Campeón de Auralis!",
+      "coronacion": "¡Felicidades! Has conquistado la Liga Pokémon."
+    }
+  },
+  
+  "Eventos Especiales": {
+    "Comerciante Misterioso": {
+      "saludo": "Tengo objetos raros... por un precio.",
+      "ticket": "El Ticket Barco cuesta 5000 monedas.",
+      "masterball": "La Master Ball es 50000 monedas, pero captura cualquier Pokémon."
+    },
+    "Vendedor Ambulante": {
+      "saludo": "¡Ofertas especiales solo hoy!",
+      "items": "Vendo bayas y objetos coleccionables."
+    }
+  }
 }
