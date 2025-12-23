@@ -1,0 +1,92 @@
+{
+  "Normal": {
+    "debil": ["Lucha"],
+    "resistente": [],
+    "inmune": ["Fantasma"]
+  },
+  "Fuego": {
+    "debil": ["Agua", "Roca", "Tierra"],
+    "resistente": ["Fuego", "Planta", "Hielo", "Bicho", "Hada", "Acero"],
+    "inmune": []
+  },
+  "Agua": {
+    "debil": ["Planta", "Eléctrico"],
+    "resistente": ["Fuego", "Agua", "Hielo", "Acero"],
+    "inmune": []
+  },
+  "Eléctrico": {
+    "debil": ["Tierra"],
+    "resistente": ["Eléctrico", "Volador", "Acero"],
+    "inmune": []
+  },
+  "Planta": {
+    "debil": ["Fuego", "Hielo", "Veneno", "Volador", "Bicho"],
+    "resistente": ["Agua", "Planta", "Eléctrico", "Tierra"],
+    "inmune": []
+  },
+  "Hielo": {
+    "debil": ["Fuego", "Lucha", "Roca", "Acero"],
+    "resistente": ["Hielo"],
+    "inmune": []
+  },
+  "Lucha": {
+    "debil": ["Volador", "Psíquico", "Hada"],
+    "resistente": ["Bicho", "Roca", "Siniestro"],
+    "inmune": []
+  },
+  "Veneno": {
+    "debil": ["Tierra", "Psíquico"],
+    "resistente": ["Planta", "Lucha", "Veneno", "Bicho", "Hada"],
+    "inmune": []
+  },
+  "Tierra": {
+    "debil": ["Agua", "Planta", "Hielo"],
+    "resistente": ["Veneno", "Roca"],
+    "inmune": ["Eléctrico"]
+  },
+  "Volador": {
+    "debil": ["Eléctrico", "Hielo", "Roca"],
+    "resistente": ["Planta", "Lucha", "Bicho"],
+    "inmune": ["Tierra"]
+  },
+  "Psíquico": {
+    "debil": ["Bicho", "Fantasma", "Siniestro"],
+    "resistente": ["Lucha", "Psíquico"],
+    "inmune": []
+  },
+  "Bicho": {
+    "debil": ["Fuego", "Volador", "Roca"],
+    "resistente": ["Planta", "Lucha", "Tierra"],
+    "inmune": []
+  },
+  "Roca": {
+    "debil": ["Agua", "Planta", "Lucha", "Tierra", "Acero"],
+    "resistente": ["Normal", "Fuego", "Veneno", "Volador"],
+    "inmune": []
+  },
+  "Fantasma": {
+    "debil": ["Fantasma", "Siniestro"],
+    "resistente": ["Veneno", "Bicho"],
+    "inmune": ["Normal", "Lucha"]
+  },
+  "Dragón": {
+    "debil": ["Hielo", "Dragón", "Hada"],
+    "resistente": ["Fuego", "Agua", "Planta", "Eléctrico"],
+    "inmune": []
+  },
+  "Siniestro": {
+    "debil": ["Lucha", "Bicho", "Hada"],
+    "resistente": ["Fantasma", "Siniestro"],
+    "inmune": ["Psíquico"]
+  },
+  "Acero": {
+    "debil": ["Fuego", "Lucha", "Tierra"],
+    "resistente": ["Normal", "Planta", "Hielo", "Volador", "Psíquico", "Bicho", "Roca", "Dragón", "Acero", "Hada"],
+    "inmune": ["Veneno"]
+  },
+  "Hada": {
+    "debil": ["Veneno", "Acero"],
+    "resistente": ["Lucha", "Bicho", "Siniestro"],
+    "inmune": ["Dragón"]
+  }
+}
