@@ -1,5 +1,5 @@
 const handler = async (m, { conn, usedPrefix }) => {
-  const logo = 'https://files.catbox.moe/j7gfwf.jpg'
+  const logo = 'https://files.catbox.moe/nqvhaq.jpg'
 
   const body = `╭─◉ 🎄 *¡ACTUALIZACIÓN NAVIDEÑA 1.4!* ◉─╮
 │
@@ -66,7 +66,7 @@ const handler = async (m, { conn, usedPrefix }) => {
   const buttons = [
     { buttonId: `${usedPrefix}tienda`, buttonText: { displayText: '🛍️ Tienda' }, type: 1 },
     { buttonId: `${usedPrefix}craft`, buttonText: { displayText: '⚒️ Crafteo' }, type: 1 },
-    { buttonId: `${usedPrefix}inventario`, buttonText: { displayText: '🎒 Inventario' }, type: 1 },
+    { buttonId: `${usedPrefix}inventario2`, buttonText: { displayText: '🎒 Inventario' }, type: 1 },
     { buttonId: `${usedPrefix}tutorial`, buttonText: { displayText: '📚 Ayuda' }, type: 1 }
   ]
 
