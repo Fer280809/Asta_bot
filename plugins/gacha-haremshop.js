@@ -67,7 +67,7 @@ const handler = async (m, { conn, args }) => {
 
 handler.help = ['haremshop', 'tiendawaifus', 'wshop'];
 handler.tags = ['gacha'];
-handler.command = ['haremshop', 'tiendawaifus', 'wshop'];
+handler.command = ['haremshop', 'tiendagacha', 'wshop'];
 handler.group = true;
 
 export default handler;
