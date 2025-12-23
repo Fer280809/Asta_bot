@@ -1,56 +1,94 @@
 const handler = async (m, { conn, usedPrefix }) => {
   const logo = 'https://files.catbox.moe/j7gfwf.jpg'
 
-  const body = `╭─◉ 🎉 *BIENVENIDOS A LA ACTUALIZACIÓN 1.3* ◉
+  const body = `╭─◉ 🎄 *¡ACTUALIZACIÓN NAVIDEÑA 1.4!* ◉─╮
 │
-│ ✨ *¡Aquí encontrarás todas las novedades!*
+│ ❄️ *¡Santa trajo nuevos sistemas para ti!*
 │
-│ 📌 *COMANDOS DE CLANES NUEVOS:*
+│ 🪓 *NUEVO: SISTEMA DE TALAR*
+│ • Usa: *${usedPrefix}talar*
+│ • Corta árboles navideños
+│ • Consigue madera, manzanas, brotes
+│ • Necesitas hacha (compra o craftea)
 │
-│ • 🏰 #crearclan – Crea tu clan con estilo
-│ • 🏹 #unirclan – Solicita unirte a un clan
-│ • ✅ #aceptarclan – Acepta invitaciones con botones
-│ • 📤 #invitarclan – Invita por mención/número con botones
-│ • ⚙️ #veropciones – Menú con botones para activar/desactivar
-│ • ⚔️ #misataques – Ver ataques con botones
-│ • 🛒 #tiendaclan – Tienda unificada con botones
-│ • 🏥 #curarclan – Cura al clan con tu XP
-│ • 🔥 #atacarclan – Ataques solo en combate (máx 200 daño)
+│ 🏹 *NUEVO: SISTEMA DE CAZAR*
+│ • Usa: *${usedPrefix}cazar*
+│ • Caza animales invernales
+│ • Consigue carne, cuero, plumas
+│ • Necesitas arco y flechas
 │
-│ 🔧 *OPTIMIZACIONES:*
+│ 🎣 *NUEVO: SISTEMA DE PESCAR*
+│ • Usa: *${usedPrefix}pescar*
+│ • Pesca en lagos congelados
+│ • Consigue pescado, tesoros, perlas
+│ • Necesitas caña de pescar
 │
-│ • 🔇 #mute – Ahora detecta mención/cita/número
-│ • 🛡️ #antispam – Mejorado y sin falsos positivos
-│ • ⚙️ #veropciones – Botones dinámicos por opción
-│ • 📥 #invitarclan – Botones de aceptar/rechazar en privado
+│ ⛏️ *MINERÍA MEJORADA*
+│ • Usa: *${usedPrefix}minar*
+│ • 5 tipos de picos mejorados
+│ • Carbón, hierro, oro, diamantes
+│ • Sistema de durabilidad
 │
-│ 💡 *NUEVO:* Todos los comandos de clanes usan tu XP/nivel del sistema global.
+│ 🛍️ *TIENDA NAVIDEÑA*
+│ • Usa: *${usedPrefix}tienda*
+│ • Compra herramientas
+│ • Vende recursos por monedas
+│ • Precios especiales navideños
 │
-│ *Explora los clanes y sube de rango con estilo:*
-╰─────────────────
-  `.trim()
+│ ⚒️ *SISTEMA DE CRAFTEO*
+│ • Usa: *${usedPrefix}craft*
+│ • Crea herramientas
+│ • Mejora equipos
+│ • Recetas navideñas
+│
+│ 🎒 *INVENTARIO MEJORADO*
+│ • Usa: *${usedPrefix}inventario*
+│ • Ver todos tus recursos
+│ • Organizado por categorías
+│ • Sistema de almacenamiento
+│
+│ 🎁 *MECÁNICAS NUEVAS:*
+│ • Energía y salud
+│ • Durabilidad de herramientas
+│ • Niveles de habilidad
+│ • Eventos diarios navideños
+│
+│ ⚡ *¿CÓMO EMPEZAR?*
+│ 1. Compra una herramienta básica
+│ 2. Usa el comando de la actividad
+│ 3. Junta recursos
+│ 4. Mejora tus herramientas
+│ 5. Participa en eventos
+│
+╰─────────────────────────────────╯
+`.trim()
 
-  // Botones de acceso rápido
   const buttons = [
-    { buttonId: `${usedPrefix}veropciones`, buttonText: { displayText: '⚙️ Configurar Bot' } },
-    { buttonId: `${usedPrefix}listaclanes`, buttonText: { displayText: '🏰 Ver Clanes' } },
-    { buttonId: `${usedPrefix}verinfoclan`, buttonText: { displayText: '🛡️ Mi Clan' } },
-    { buttonId: `${usedPrefix}tiendaclan`, buttonText: { displayText: '🛒 Tienda' } }
+    { buttonId: `${usedPrefix}tienda`, buttonText: { displayText: '🛍️ Tienda' }, type: 1 },
+    { buttonId: `${usedPrefix}craft`, buttonText: { displayText: '⚒️ Crafteo' }, type: 1 },
+    { buttonId: `${usedPrefix}inventario`, buttonText: { displayText: '🎒 Inventario' }, type: 1 },
+    { buttonId: `${usedPrefix}tutorial`, buttonText: { displayText: '📚 Ayuda' }, type: 1 }
   ]
 
-  await conn.sendMessage(m.chat, {
-    image: { url: logo },
-    caption: body,
-    footer: `『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』⚡`,
-    buttons,
-    viewOnce: true,
-    headerType: 4,
-  }, { quoted: m })
+  try {
+    await conn.sendMessage(m.chat, {
+      image: { url: logo },
+      caption: body,
+      footer: '🎅 ASTA-BOT - VERSIÓN NAVIDEÑA 1.4',
+      buttons: buttons,
+      headerType: 4
+    }, { quoted: m })
+  } catch (error) {
+    // Fallback sin imagen
+    await conn.sendMessage(m.chat, {
+      text: body,
+      footer: '🎅 ASTA-BOT - VERSIÓN NAVIDEÑA 1.4',
+      buttons: buttons
+    }, { quoted: m })
+  }
 }
 
-handler.command = ['actualizaciones', 'novedades', 'nuevos']
+handler.help = ['actualizaciones', 'novedades', 'update']
 handler.tags = ['info']
-handler.desc = 'Bienvenida a v1.3 con estilo mejorado (bordes, emojis, espacios)'
-handler.register = true
-
+handler.command = ['actualizaciones', 'novedades', 'update', 'nuevo']
 export default handler
