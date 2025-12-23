@@ -49,17 +49,22 @@ let handler = async (m, { conn, usedPrefix, command }) => {
 
     // PERÍODO ESPECIAL: 24 de diciembre al 6 de enero
     const fechaInicio = new Date(Date.UTC(añoActual, 11, 24, 0, 0, 0))
-    const fechaFin = new Date(Date.UTC(añoActual + (mes === 12 ? 0 : 1), 0, 6, 23, 59, 59))
+    const fechaFin = new Date(Date.UTC(añoActual, 0, 6, 23, 59, 59))
 
-    if (horaMexico < fechaInicio) {
-        const diasParaInicio = Math.ceil((fechaInicio - horaMexico) / (1000 * 60 * 60 * 24))
+    // Ajustar año para enero
+    if (mes === 1) {
+        fechaInicio.setUTCFullYear(añoActual - 1)
+    }
+
+    if (horaMexico.getTime() < fechaInicio.getTime()) {
+        const diasParaInicio = Math.ceil((fechaInicio.getTime() - horaMexico.getTime()) / (1000 * 60 * 60 * 24))
         return conn.reply(m.chat, 
             `🎄 *¡El calendario navideño especial aún no ha comenzado!*\n\n⏰ *Hora México:* ${hora}:${minutos.toString().padStart(2, '0')}\n📅 Faltan *${diasParaInicio} días* para que comience el calendario especial.\n\n✨ Comienza el *24 de diciembre* hasta el *6 de enero*.`, 
             m
         )
     }
 
-    if (horaMexico > fechaFin) {
+    if (mes === 1 && horaMexico.getTime() > fechaFin.getTime()) {
         return conn.reply(m.chat, 
             `🎅 *¡El calendario navideño especial ha terminado!*\n\n⏰ *Hora México:* ${hora}:${minutos.toString().padStart(2, '0')}\nEl calendario especial estuvo disponible del *24 de diciembre* al *6 de enero*.\n\n¡Nos vemos el próximo año! 🎁`, 
             m
@@ -69,14 +74,20 @@ let handler = async (m, { conn, usedPrefix, command }) => {
     // Calcular día del calendario (1-14)
     let diaCalendario
     if (mes === 12) {
-        diaCalendario = dia - 23
+        diaCalendario = dia - 23  // 24 dic = día 1, 25 dic = día 2, etc.
     } else if (mes === 1) {
-        diaCalendario = dia + 8
-    }
-
-    if (diaCalendario < 1 || diaCalendario > 14) {
+        diaCalendario = dia + 8    // 1 ene = día 9, 2 ene = día 10, etc.
+    } else {
         return conn.reply(m.chat, 
             `❄️ *Error en el calendario*\n\n⏰ *Hora México:* ${hora}:${minutos.toString().padStart(2, '0')}\nEl calendario especial solo funciona del *24 de diciembre* al *6 de enero*.\n\nDía actual: ${dia}/${mes}`, 
+            m
+        )
+    }
+
+    // Validar rango
+    if (diaCalendario < 1 || diaCalendario > 14) {
+        return conn.reply(m.chat, 
+            `❄️ *Fuera del período especial*\n\n⏰ *Hora México:* ${hora}:${minutos.toString().padStart(2, '0')}\nSolo disponible del 24/12 al 6/1.\nDía actual: ${dia}/${mes}`, 
             m
         )
     }
@@ -84,10 +95,10 @@ let handler = async (m, { conn, usedPrefix, command }) => {
     // Verificar cooldown (24 horas)
     const cooldown = 24 * 60 * 60 * 1000
 
-    const yaReclamoHoy = calendario.rewards[diaCalendario] && 
-                         (Date.now() - calendario.lastClaim) < cooldown
+    const yaReclamoHoy = calendario.rewards[diaCalendario] !== undefined
+    const enCooldown = (Date.now() - calendario.lastClaim) < cooldown
 
-    if (yaReclamoHoy) {
+    if (yaReclamoHoy && enCooldown) {
         const tiempoRestante = formatTime(calendario.lastClaim + cooldown - Date.now())
         return conn.reply(m.chat, 
             `⛄ *¡Ya reclamaste el regalo de hoy!*\n\n⏰ *Hora México:* ${hora}:${minutos.toString().padStart(2, '0')}\nDebes esperar *${tiempoRestante}* para reclamar el regalo del próximo día.\n\n📅 Día actual del calendario: *${diaCalendario}/14*`, 
@@ -132,6 +143,9 @@ let handler = async (m, { conn, usedPrefix, command }) => {
     } else if (diaCalendario === 2) {
         bonusMultiplicador = 4
         bonusEspecial = '🎅 *BONUS NAVIDAD x4*'
+    } else if (diaCalendario === 7) {
+        bonusMultiplicador = 3.5
+        bonusEspecial = '🎆 *BONUS NOCHEVIEJA x3.5*'
     } else if (diaCalendario === 8) {
         bonusMultiplicador = 5
         bonusEspecial = '✨ *BONUS AÑO NUEVO x5*'
@@ -145,9 +159,6 @@ let handler = async (m, { conn, usedPrefix, command }) => {
             calendario.perfectStreakReward = true
             bonusEspecial += `\n🏆 *¡RACHA PERFECTA!* +¥1,000,000`
         }
-    } else if (diaCalendario === 7) {
-        bonusMultiplicador = 3.5
-        bonusEspecial = '🎆 *BONUS NOCHEVIEJA x3.5*'
     }
 
     // Aplicar multiplicador especial
@@ -189,6 +200,9 @@ let handler = async (m, { conn, usedPrefix, command }) => {
         fecha: new Date().toISOString(),
         recompensa: { monedas, recursos: recompensaBase }
     })
+
+    // Guardar cambios
+    user.calendarData = calendario
 
     // Mensaje
     let mensajeCalendario = `🎄 *CALENDARIO NAVIDEÑO ESPECIAL ${añoActual}* 🎅\n`
@@ -249,7 +263,7 @@ let handler = async (m, { conn, usedPrefix, command }) => {
         mensajeCalendario += `\n🏆 *RACHA PERFECTA:* ${diasFaltantes} días para ganar *¥1,000,000* extra\n`
     }
 
-    const tiempoSiguiente = formatTime(cooldown)
+    const tiempoSiguiente = formatTime(calendario.lastClaim + cooldown - Date.now())
     mensajeCalendario += `⏰ *Próxima recompensa:* en ${tiempoSiguiente}\n`
 
     await conn.reply(m.chat, mensajeCalendario, m)
@@ -292,6 +306,8 @@ function calcularRecompensaEspecial(diaCalendario) {
 }
 
 function formatTime(ms) {
+    if (ms <= 0) return "0 segundos"
+    
     const totalSec = Math.ceil(ms / 1000)
     const hours = Math.floor(totalSec / 3600)
     const minutes = Math.floor((totalSec % 3600) / 60)
@@ -301,7 +317,8 @@ function formatTime(ms) {
     if (hours > 0) parts.push(`${hours} hora${hours !== 1 ? 's' : ''}`)
     if (minutes > 0) parts.push(`${minutes} minuto${minutes !== 1 ? 's' : ''}`)
     if (seconds > 0) parts.push(`${seconds} segundo${seconds !== 1 ? 's' : ''}`)
-
+    if (parts.length === 0) parts.push('0 segundos')
+    
     return parts.join(' ')
 }
 
