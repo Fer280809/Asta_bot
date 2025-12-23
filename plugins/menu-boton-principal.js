@@ -35,7 +35,7 @@ Selecciona una opción:`;
   ];
   
   // URL de la imagen o video (cambia por tu propia URL)
-  let mediaUrl = 'https://files.catbox.moe/lajq7h.jpg'; // Cambia esto por tu imagen
+  let mediaUrl = 'https://files.catbox.moe/nqvhaq.jpg'; // Cambia esto por tu imagen
   // let mediaUrl = 'https://example.com/video.mp4'; // O usa un video
   
   try {
