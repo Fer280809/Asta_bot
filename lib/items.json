@@ -5,172 +5,711 @@
       "descripcion": "Captura Pokémon salvajes.",
       "precio": 200,
       "ratio": 1.0,
-      "emoji": "⚪"
+      "emoji": "⚪",
+      "tipo": "ball"
     },
     "superball": {
       "nombre": "Superball",
       "descripcion": "Mejor que una Pokéball.",
       "precio": 600,
       "ratio": 1.5,
-      "emoji": "🔵"
+      "emoji": "🔵",
+      "tipo": "ball"
     },
     "ultraball": {
       "nombre": "Ultraball",
       "descripcion": "Alta tasa de éxito.",
       "precio": 1200,
       "ratio": 2.0,
-      "emoji": "🟡"
+      "emoji": "🟡",
+      "tipo": "ball"
     },
     "masterball": {
       "nombre": "Masterball",
       "descripcion": "Captura infalible.",
       "precio": 50000,
       "ratio": 100.0,
-      "emoji": "🟣"
+      "emoji": "🟣",
+      "tipo": "ball"
+    },
+    "safariball": {
+      "nombre": "Safariball",
+      "descripcion": "Usada en zonas Safari.",
+      "precio": 0,
+      "ratio": 1.5,
+      "emoji": "🟤",
+      "tipo": "ball",
+      "zona_especial": "zona_safari"
     }
   },
+
   "curacion": {
     "pocion": {
       "nombre": "Poción",
       "descripcion": "Cura 20 HP.",
       "precio": 300,
       "curacion": 20,
-      "emoji": "🧪"
+      "emoji": "🧪",
+      "tipo": "curacion"
     },
     "superpocion": {
       "nombre": "Superpoción",
       "descripcion": "Cura 50 HP.",
       "precio": 700,
       "curacion": 50,
-      "emoji": "🥤"
+      "emoji": "🥤",
+      "tipo": "curacion"
     },
     "hiperpocion": {
       "nombre": "Hiperpoción",
       "descripcion": "Cura 200 HP.",
       "precio": 1500,
       "curacion": 200,
-      "emoji": "🍶"
+      "emoji": "🍶",
+      "tipo": "curacion"
+    },
+    "pocion_max": {
+      "nombre": "Poción Máxima",
+      "descripcion": "Cura todos los HP.",
+      "precio": 2500,
+      "curacion": "max",
+      "emoji": "💊",
+      "tipo": "curacion"
     },
     "revivir": {
       "nombre": "Revivir",
       "descripcion": "Revive con 50% HP.",
       "precio": 1500,
       "revive": true,
-      "emoji": "✨"
+      "hp_porcentaje": 50,
+      "emoji": "✨",
+      "tipo": "curacion"
+    },
+    "revivir_max": {
+      "nombre": "Revivir Máximo",
+      "descripcion": "Revive con todos los HP.",
+      "precio": 4000,
+      "revive": true,
+      "hp_porcentaje": 100,
+      "emoji": "🌟",
+      "tipo": "curacion"
     }
   },
+
   "aventura": {
-    "aventura": {
-      "hacha": {
-        "nombre": "Hacha Antigua",
-        "descripcion": "Corta arbustos. Obtenible del Leñador Hugo.",
-        "precio": null,
-        "obtenible": "NPC Leñador Hugo",
-        "emoji": "🪓"
-      },
-      "linterna": {
-        "nombre": "Linterna",
-        "descripcion": "Ilumina cuevas. Obtenible del Minero Ciego.",
-        "precio": null,
-        "obtenible": "NPC Minero Ciego",
-        "emoji": "🔦"
-      }
+    "hacha": {
+      "nombre": "Hacha Antigua",
+      "descripcion": "Corta arbustos. Obtenible del Leñador Hugo.",
+      "precio": null,
+      "obtenible": "NPC Leñador Hugo",
+      "emoji": "🪓",
+      "tipo": "herramienta",
+      "efecto_mapa": "cortar_arbustos",
+      "requiere_derrotar": "Leñador Hugo"
+    },
+    "linterna": {
+      "nombre": "Linterna",
+      "descripcion": "Ilumina cuevas. Obtenible del Minero Ciego.",
+      "precio": null,
+      "obtenible": "NPC Minero Ciego",
+      "emoji": "🔦",
+      "tipo": "herramienta",
+      "efecto_mapa": "iluminar_cuevas",
+      "requiere_derrotar": "Explorador Roy"
     },
     "ticket_barco": {
       "nombre": "Ticket Barco",
       "descripcion": "Acceso al S.S. Anne.",
       "precio": 0,
-      "emoji": "🎫"
+      "emoji": "🎫",
+      "tipo": "acceso",
+      "efecto_mapa": "acceder_barco",
+      "obtenible": "Comerciante Misterioso (5000 monedas)"
     },
     "surf": {
       "nombre": "Tabla de Surf",
-      "descripcion": "Cruza mares.",
+      "descripcion": "Cruza mares. También se puede usar en combate como movimiento MO03.",
       "precio": 0,
-      "emoji": "🏄"
+      "emoji": "🏄",
+      "tipo": "movimiento_oculto",
+      "movimiento_asociado": "Surf",
+      "efecto_mapa": "cruzar_agua",
+      "obtenible": "Derrotar a Líder Marina"
     },
     "traje_buceo": {
       "nombre": "Traje de Buceo",
-      "descripcion": "Explora el fondo.",
+      "descripcion": "Explora el fondo marino.",
       "precio": 0,
-      "emoji": "🤿"
+      "emoji": "🤿",
+      "tipo": "herramienta",
+      "efecto_mapa": "bucear",
+      "obtenible": "Derrotar a Líder Marina"
+    },
+    "bicicleta": {
+      "nombre": "Bicicleta",
+      "descripcion": "Te permite moverte más rápido por las rutas.",
+      "precio": 1000000,
+      "emoji": "🚲",
+      "tipo": "herramienta",
+      "efecto_mapa": "movimiento_rapido",
+      "obtenible": "Tienda de Bicicletas (Ciudad Férrea)"
+    },
+    "cuerda_huida": {
+      "nombre": "Cuerda Huida",
+      "descripcion": "Escapa de cuevas y mazmorras.",
+      "precio": 550,
+      "emoji": "🧵",
+      "tipo": "herramienta",
+      "efecto_mapa": "escapar_cueva"
     }
   },
+
   "evolucion": {
     "piedra_fuego": {
       "nombre": "Piedra Fuego",
       "precio": 2500,
-      "emoji": "🔥"
+      "emoji": "🔥",
+      "tipo": "piedra_evolucion",
+      "pokemon_compatibles": ["Vulpix", "Growlithe", "Eevee"]
     },
     "piedra_agua": {
       "nombre": "Piedra Agua",
       "precio": 2500,
-      "emoji": "💧"
+      "emoji": "💧",
+      "tipo": "piedra_evolucion",
+      "pokemon_compatibles": ["Poliwhirl", "Shellder", "Eevee", "Staryu"]
     },
     "piedra_trueno": {
       "nombre": "Piedra Trueno",
       "precio": 2500,
-      "emoji": "⚡"
+      "emoji": "⚡",
+      "tipo": "piedra_evolucion",
+      "pokemon_compatibles": ["Pikachu", "Eevee"]
+    },
+    "piedra_hoja": {
+      "nombre": "Piedra Hoja",
+      "precio": 2500,
+      "emoji": "🍃",
+      "tipo": "piedra_evolucion",
+      "pokemon_compatibles": ["Gloom", "Weepinbell", "Exeggcute"]
+    },
+    "piedra_lunar": {
+      "nombre": "Piedra Lunar",
+      "precio": 2500,
+      "emoji": "🌙",
+      "tipo": "piedra_evolucion",
+      "pokemon_compatibles": ["Nidorina", "Nidorino", "Clefairy", "Jigglypuff"]
+    },
+    "piedra_solar": {
+      "nombre": "Piedra Solar",
+      "precio": 2500,
+      "emoji": "☀️",
+      "tipo": "piedra_evolucion",
+      "pokemon_compatibles": ["Gloom", "Sunkern", "Petilil"]
     }
   },
+
   "estados": {
     "antidoto": {
       "nombre": "Antídoto",
-      "cura": "envenenado"
+      "cura": "envenenado",
+      "precio": 100,
+      "emoji": "💚",
+      "tipo": "cura_estado"
     },
     "antiquemar": {
       "nombre": "Antiquemar",
-      "cura": "quemado"
+      "cura": "quemado",
+      "precio": 250,
+      "emoji": "🧊",
+      "tipo": "cura_estado"
     },
     "antiparalizador": {
       "nombre": "Antiparalizador",
-      "cura": "paralizado"
+      "cura": "paralizado",
+      "precio": 200,
+      "emoji": "⚡",
+      "tipo": "cura_estado"
     },
     "despertar": {
       "nombre": "Despertar",
-      "cura": "dormido"
+      "cura": "dormido",
+      "precio": 250,
+      "emoji": "🔔",
+      "tipo": "cura_estado"
     },
     "antihielo": {
       "nombre": "Antihielo",
-      "cura": "congelado"
+      "cura": "congelado",
+      "precio": 250,
+      "emoji": "🔥",
+      "tipo": "cura_estado"
+    },
+    "cura_total": {
+      "nombre": "Cura Total",
+      "cura": ["envenenado", "quemado", "paralizado", "dormido", "congelado"],
+      "precio": 600,
+      "emoji": "🌈",
+      "tipo": "cura_estado"
     }
   },
+
   "ev_entrenamiento": {
     "peso_potencia": {
       "nombre": "Peso Potencia",
-      "ev": "ataque"
+      "ev": "ataque",
+      "cantidad_ev": 10,
+      "precio": 10000,
+      "emoji": "💪",
+      "tipo": "ev_training"
     },
     "peso_defensa": {
       "nombre": "Peso Defensa",
-      "ev": "defensa"
+      "ev": "defensa",
+      "cantidad_ev": 10,
+      "precio": 10000,
+      "emoji": "🛡️",
+      "tipo": "ev_training"
     },
     "peso_velocidad": {
       "nombre": "Peso Velocidad",
-      "ev": "velocidad"
+      "ev": "velocidad",
+      "cantidad_ev": 10,
+      "precio": 10000,
+      "emoji": "⚡",
+      "tipo": "ev_training"
     },
     "peso_hp": {
       "nombre": "Peso HP",
-      "ev": "hp"
+      "ev": "hp",
+      "cantidad_ev": 10,
+      "precio": 10000,
+      "emoji": "❤️",
+      "tipo": "ev_training"
+    },
+    "peso_ataque_especial": {
+      "nombre": "Peso Ataque Especial",
+      "ev": "ataqueEspecial",
+      "cantidad_ev": 10,
+      "precio": 10000,
+      "emoji": "🔮",
+      "tipo": "ev_training"
+    },
+    "peso_defensa_especial": {
+      "nombre": "Peso Defensa Especial",
+      "ev": "defensaEspecial",
+      "cantidad_ev": 10,
+      "precio": 10000,
+      "emoji": "🔰",
+      "tipo": "ev_training"
     }
   },
+
   "cintas_concurso": {
     "cinta_belleza": {
       "nombre": "Cinta Belleza",
-      "categoria": "belleza"
+      "categoria": "belleza",
+      "precio": 5000,
+      "emoji": "💖",
+      "tipo": "cinta_concurso"
     },
     "cinta_dureza": {
       "nombre": "Cinta Dureza",
-      "categoria": "dureza"
+      "categoria": "dureza",
+      "precio": 5000,
+      "emoji": "💪",
+      "tipo": "cinta_concurso"
     },
     "cinta_carisma": {
       "nombre": "Cinta Carisma",
-      "categoria": "carisma"
+      "categoria": "carisma",
+      "precio": 5000,
+      "emoji": "😎",
+      "tipo": "cinta_concurso"
+    },
+    "cinta_inteligencia": {
+      "nombre": "Cinta Inteligencia",
+      "categoria": "inteligencia",
+      "precio": 5000,
+      "emoji": "🧠",
+      "tipo": "cinta_concurso"
+    },
+    "cinta_velocidad": {
+      "nombre": "Cinta Velocidad",
+      "categoria": "velocidad",
+      "precio": 5000,
+      "emoji": "⚡",
+      "tipo": "cinta_concurso"
     }
   },
+
   "megapiedras": {
     "megapiedra_charizard": {
       "nombre": "Megapiedra Charizard",
       "pokemon": "Charizard",
-      "precio": 50000
+      "precio": 50000,
+      "emoji": "🔥",
+      "tipo": "megapiedra"
+    },
+    "megapiedra_blastoise": {
+      "nombre": "Megapiedra Blastoise",
+      "pokemon": "Blastoise",
+      "precio": 50000,
+      "emoji": "💧",
+      "tipo": "megapiedra"
+    },
+    "megapiedra_venusaur": {
+      "nombre": "Megapiedra Venusaur",
+      "pokemon": "Venusaur",
+      "precio": 50000,
+      "emoji": "🍃",
+      "tipo": "megapiedra"
+    },
+    "megapiedra_mewtwo": {
+      "nombre": "Megapiedra Mewtwo",
+      "pokemon": "Mewtwo",
+      "precio": 100000,
+      "emoji": "🌀",
+      "tipo": "megapiedra"
+    },
+    "megapiedra_gengar": {
+      "nombre": "Megapiedra Gengar",
+      "pokemon": "Gengar",
+      "precio": 50000,
+      "emoji": "👻",
+      "tipo": "megapiedra"
+    },
+    "megapiedra_lucario": {
+      "nombre": "Megapiedra Lucario",
+      "pokemon": "Lucario",
+      "precio": 50000,
+      "emoji": "🥋",
+      "tipo": "megapiedra"
+    }
+  },
+
+  "mt_mo": {
+    "mt01": {
+      "nombre": "MT01 - Puño Incremento",
+      "descripcion": "Enseña el movimiento Puño Incremento a un Pokémon compatible.",
+      "movimiento": "Puño Incremento",
+      "precio": 3000,
+      "tipo": "mt",
+      "emoji": "💿",
+      "usos": 1,
+      "categoria_movimiento": "fisico",
+      "compatible_tipos": ["Lucha", "Normal"]
+    },
+    "mt02": {
+      "nombre": "MT02 - Rayo Dragon",
+      "descripcion": "Enseña el movimiento Rayo Dragon a un Pokémon compatible.",
+      "movimiento": "Rayo Dragon",
+      "precio": 4000,
+      "tipo": "mt",
+      "emoji": "💿",
+      "usos": 1,
+      "categoria_movimiento": "especial",
+      "compatible_tipos": ["Dragón"]
+    },
+    "mt03": {
+      "nombre": "MT03 - Psicocorte",
+      "descripcion": "Enseña el movimiento Psicocorte a un Pokémon compatible.",
+      "movimiento": "Psicocorte",
+      "precio": 3500,
+      "tipo": "mt",
+      "emoji": "💿",
+      "usos": 1,
+      "categoria_movimiento": "fisico",
+      "compatible_tipos": ["Psíquico", "Lucha"]
+    },
+    "mt04": {
+      "nombre": "MT04 - Fuerza Bruta",
+      "descripcion": "Enseña el movimiento Fuerza Bruta a un Pokémon compatible.",
+      "movimiento": "Fuerza Bruta",
+      "precio": 5000,
+      "tipo": "mt",
+      "emoji": "💿",
+      "usos": 1,
+      "categoria_movimiento": "fisico",
+      "compatible_tipos": ["Lucha"]
+    },
+    "mt05": {
+      "nombre": "MT05 - Rugido",
+      "descripcion": "Enseña el movimiento Rugido a un Pokémon compatible.",
+      "movimiento": "Rugido",
+      "precio": 2000,
+      "tipo": "mt",
+      "emoji": "💿",
+      "usos": 1,
+      "categoria_movimiento": "estado",
+      "compatible_tipos": ["Normal"]
+    },
+    "mt06": {
+      "nombre": "MT06 - Tóxico",
+      "descripcion": "Enseña el movimiento Tóxico a un Pokémon compatible.",
+      "movimiento": "Tóxico",
+      "precio": 4000,
+      "tipo": "mt",
+      "emoji": "💿",
+      "usos": 1,
+      "categoria_movimiento": "estado",
+      "compatible_tipos": ["Veneno"]
+    },
+    "mt07": {
+      "nombre": "MT07 - Granizo",
+      "descripcion": "Enseña el movimiento Granizo a un Pokémon compatible.",
+      "movimiento": "Granizo",
+      "precio": 4500,
+      "tipo": "mt",
+      "emoji": "💿",
+      "usos": 1,
+      "categoria_movimiento": "estado",
+      "compatible_tipos": ["Hielo"]
+    },
+    "mt08": {
+      "nombre": "MT08 - Fortaleza",
+      "descripcion": "Enseña el movimiento Fortaleza a un Pokémon compatible.",
+      "movimiento": "Fortaleza",
+      "precio": 3000,
+      "tipo": "mt",
+      "emoji": "💿",
+      "usos": 1,
+      "categoria_movimiento": "estado",
+      "compatible_tipos": ["Normal"]
+    },
+    "mo01": {
+      "nombre": "MO01 - Corte",
+      "descripcion": "Corta árboles pequeños fuera de combate.",
+      "movimiento": "Corte",
+      "precio": 0,
+      "tipo": "mo",
+      "emoji": "🪓",
+      "usos": "infinito",
+      "efecto_exploracion": "cortar_arboles",
+      "obtenible": "Gimnasio Pueblo Raíz"
+    },
+    "mo02": {
+      "nombre": "MO02 - Vuelo",
+      "descripcion": "Vuela a ciudades visitadas previamente.",
+      "movimiento": "Vuelo",
+      "precio": 0,
+      "tipo": "mo",
+      "emoji": "✈️",
+      "usos": "infinito",
+      "efecto_exploracion": "volar_ciudades",
+      "obtenible": "Derrotar a Líder Zephyr"
+    },
+    "mo03": {
+      "nombre": "MO03 - Surf",
+      "descripcion": "Cruza mares. También se puede usar en combate.",
+      "movimiento": "Surf",
+      "precio": 0,
+      "tipo": "mo",
+      "emoji": "🏄",
+      "usos": "infinito",
+      "efecto_exploracion": "cruzar_agua",
+      "obtenible": "Derrotar a Líder Marina"
+    },
+    "mo04": {
+      "nombre": "MO04 - Fuerza",
+      "descripcion": "Empuja rocas pesadas.",
+      "movimiento": "Fuerza",
+      "precio": 0,
+      "tipo": "mo",
+      "emoji": "💪",
+      "usos": "infinito",
+      "efecto_exploracion": "mover_rocas",
+      "obtenible": "Gimnasio Ciudad Férrea"
+    },
+    "mo05": {
+      "nombre": "MO05 - Cascada",
+      "descripcion": "Sube cascadas.",
+      "movimiento": "Cascada",
+      "precio": 0,
+      "tipo": "mo",
+      "emoji": "🌊",
+      "usos": "infinito",
+      "efecto_exploracion": "subir_cascadas",
+      "obtenible": "Liga Pokémon (Elite Four)"
+    },
+    "mo06": {
+      "nombre": "MO06 - Excavar",
+      "descripcion": "Escapa de cuevas.",
+      "movimiento": "Excavar",
+      "precio": 0,
+      "tipo": "mo",
+      "emoji": "⛏️",
+      "usos": "infinito",
+      "efecto_exploracion": "escapar_cuevas",
+      "obtenible": "Gimnasio Ciudad Férrea"
+    },
+    "mo07": {
+      "nombre": "MO07 - Buceo",
+      "descripcion": "Explora el fondo marino.",
+      "movimiento": "Buceo",
+      "precio": 0,
+      "tipo": "mo",
+      "emoji": "🤿",
+      "usos": "infinito",
+      "efecto_exploracion": "bucear",
+      "obtenible": "Derrotar a Líder Marina"
+    }
+  },
+
+  "bayas": {
+    "baya_ciruela": {
+      "nombre": "Baya Ciruela",
+      "descripcion": "Cura el envenenamiento.",
+      "precio": 20,
+      "emoji": "🍇",
+      "tipo": "baya",
+      "cura_estado": "envenenado"
+    },
+    "baya_sandia": {
+      "nombre": "Baya Sandía",
+      "descripcion": "Cura las quemaduras.",
+      "precio": 30,
+      "emoji": "🍉",
+      "tipo": "baya",
+      "cura_estado": "quemado"
+    },
+    "baya_mora": {
+      "nombre": "Baya Mora",
+      "descripcion": "Cura la parálisis.",
+      "precio": 25,
+      "emoji": "🫐",
+      "tipo": "baya",
+      "cura_estado": "paralizado"
+    },
+    "baya_lecha": {
+      "nombre": "Baya Lecha",
+      "descripcion": "Despierta al Pokémon.",
+      "precio": 30,
+      "emoji": "🍈",
+      "tipo": "baya",
+      "cura_estado": "dormido"
+    },
+    "baya_perasi": {
+      "nombre": "Baya Perasi",
+      "descripcion": "Descongela al Pokémon.",
+      "precio": 30,
+      "emoji": "🍐",
+      "tipo": "baya",
+      "cura_estado": "congelado"
+    },
+    "baya_aranja": {
+      "nombre": "Baya Aranja",
+      "descripcion": "Cura 10 HP.",
+      "precio": 10,
+      "emoji": "🍊",
+      "tipo": "baya",
+      "curacion": 10
+    }
+  },
+
+  "mochila_equipo": {
+    "mochila_pequena": {
+      "nombre": "Mochila Pequeña",
+      "descripcion": "Capacidad para 20 ítems.",
+      "precio": 0,
+      "emoji": "🎒",
+      "tipo": "mochila",
+      "capacidad": 20,
+      "obtenible": "Inicio del juego"
+    },
+    "mochila_mediana": {
+      "nombre": "Mochila Mediana",
+      "descripcion": "Capacidad para 50 ítems.",
+      "precio": 5000,
+      "emoji": "🎒",
+      "tipo": "mochila",
+      "capacidad": 50,
+      "obtenible": "Tienda Ciudad Férrea"
+    },
+    "mochila_grande": {
+      "nombre": "Mochila Grande",
+      "descripcion": "Capacidad para 100 ítems.",
+      "precio": 20000,
+      "emoji": "🎒",
+      "tipo": "mochila",
+      "capacidad": 100,
+      "obtenible": "Tienda Ciudad Luminaria"
+    },
+    "cinturon_basico": {
+      "nombre": "Cinturón Básico",
+      "descripcion": "Lleva 6 Pokémon.",
+      "precio": 0,
+      "emoji": "📿",
+      "tipo": "cinturon",
+      "capacidad": 6,
+      "obtenible": "Inicio del juego"
+    },
+    "caja_pc_portatil": {
+      "nombre": "Caja PC Portátil",
+      "descripcion": "Accede al PC desde cualquier lugar.",
+      "precio": 10000,
+      "emoji": "💻",
+      "tipo": "equipo",
+      "obtenible": "Profesor Cerezo (después de 4 medallas)"
+    }
+  },
+
+  "coleccionables": {
+    "trofeo_campeon": {
+      "nombre": "Trofeo Campeón",
+      "descripcion": "Prueba de haber vencido a la Liga Pokémon.",
+      "precio": 0,
+      "emoji": "🏆",
+      "tipo": "trofeo",
+      "obtenible": "Derrotar al Campeón"
+    },
+    "medalla_roca": {
+      "nombre": "Medalla Roca",
+      "descripcion": "Medalla del Gimnasio Ciudad Férrea.",
+      "precio": 0,
+      "emoji": "🪨",
+      "tipo": "medalla",
+      "obtenible": "Derrotar a Líder Ferrum"
+    },
+    "medalla_trueno": {
+      "nombre": "Medalla Trueno",
+      "descripcion": "Medalla del Gimnasio Ciudad Luminaria.",
+      "precio": 0,
+      "emoji": "⚡",
+      "tipo": "medalla",
+      "obtenible": "Derrotar a Líder Marina"
+    },
+    "medalla_mental": {
+      "nombre": "Medalla Mental",
+      "descripcion": "Medalla del Gimnasio Ciudad Cénit.",
+      "precio": 0,
+      "emoji": "🧠",
+      "tipo": "medalla",
+      "obtenible": "Derrotar a Líder Orion"
+    },
+    "medalla_brisa": {
+      "nombre": "Medalla Brisa",
+      "descripcion": "Medalla del Gimnasio Villa Nidada.",
+      "precio": 0,
+      "emoji": "💨",
+      "tipo": "medalla",
+      "obtenible": "Derrotar a Líder Zephyr"
+    },
+    "medalla_glaciar": {
+      "nombre": "Medalla Glaciar",
+      "descripcion": "Medalla del Gimnasio Ciudad Pico.",
+      "precio": 0,
+      "emoji": "❄️",
+      "tipo": "medalla",
+      "obtenible": "Derrotar a Líder Glacia"
+    },
+    "huevo_pokemon": {
+      "nombre": "Huevo Pokémon",
+      "descripcion": "Un huevo misterioso. ¿Qué Pokémon saldrá?",
+      "precio": 0,
+      "emoji": "🥚",
+      "tipo": "huevo",
+      "obtenible": "Criadora Susi"
     }
   }
 }
