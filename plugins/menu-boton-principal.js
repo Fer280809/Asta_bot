@@ -4,7 +4,7 @@ let handler = async (m, { conn, usedPrefix }) => {
     (v) => v.help && v.tags
   ).length;
   let libreria = 'Baileys';
-  let vs = '1.3';
+  let vs = '1.4';
   let userId = m.sender;
   
   let infoText = `╭─━━━━━━━━━━━━━━━─╮
@@ -28,7 +28,7 @@ Me llamo『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』⚡
 Selecciona una opción:`;
 
   let buttons = [
-    { buttonId: usedPrefix + 'menu1', buttonText: { displayText: '📜 Menú' }, type: 1 },
+    { buttonId: usedPrefix + 'menu2', buttonText: { displayText: '📜 Menú' }, type: 1 },
     { buttonId: usedPrefix + 'code', buttonText: { displayText: '🤖 Sub-Bot' }, type: 1 },
     { buttonId: usedPrefix + 'nuevos', buttonText: { displayText: '📌 Novedades' }, type: 1 },
     { buttonId: usedPrefix + 'creador', buttonText: { displayText: '👑 CREADOR' }, type: 1 },
