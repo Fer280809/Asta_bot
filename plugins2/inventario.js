@@ -138,10 +138,9 @@ let handler = async (m, { conn, usedPrefix, command, text }) => {
     }
     
     message += `\n📌 *Ver categorías específicas:*\n`
-    message += `• ${usedPrefix}inventario dinero\n`
-    message += `• ${usedPrefix}inventario minerales\n`
-    message += `• ${usedPrefix}inventario herramientas\n`
-    message += `• ${usedPrefix}inventario comida`
+    message += `• ${usedPrefix}inventario2 minerales\n`
+    message += `• ${usedPrefix}inventario2 herramientas\n`
+    message += `• ${usedPrefix}inventario2 comida`
     
     await conn.reply(m.chat, message, m, { mentions: [m.sender] })
     return
@@ -170,7 +169,7 @@ let handler = async (m, { conn, usedPrefix, command, text }) => {
   }
 }
 
-handler.help = ['inventario', 'inv', 'inventory']
+handler.help = ['inventario2', 'inv2', 'inventory2']
 handler.tags = ['economy']
 handler.command = ['inventario2', 'inv2', 'inventory2']
 export default handler
