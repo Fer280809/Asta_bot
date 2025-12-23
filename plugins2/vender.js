@@ -185,5 +185,5 @@ function formatearNombre(recurso) {
 
 handler.help = ['vender', 'sell']
 handler.tags = ['economy']
-handler.command = ['vender', 'sell']
+handler.command = ['venderp', 'sellp']
 export default handler
