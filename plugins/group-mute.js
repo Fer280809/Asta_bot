@@ -1,124 +1,163 @@
 let handler = async (m, { conn, command, usedPrefix, text, args, isAdmin, isBotAdmin }) => {
     let chat = global.db.data.chats[m.chat]
-    if (!chat.muted) chat.muted = []
-
-    // 🎁 FUNCIÓN: VER LISTA DE NAVIDAD
-    if (command === 'mutelist' || args[0] === 'list') {
-        if (chat.muted.length === 0) {
-            return m.reply('🎄 *Lista de Carbón Vacía*\n━━━━━━━━━━━━━━━━━━━━━━━\n¡Por suerte todos se han portado bien! Nadie está en la lista de carbón.')
-        }
-        let list = chat.muted.map((v, i) => `${i + 1}. 🎅 @${v.split`@`[0]}`).join('\n')
-        return conn.reply(m.chat, 
-            `🎅 *LISTA DE CARBÓN NAVIDEÑO*\n━━━━━━━━━━━━━━━━━━━━━━━\n${list}\n━━━━━━━━━━━━━━━━━━━━━━━\n✨ Usa ${usedPrefix}unmute @usuario para darles un regalo de nuevo.`,
-            m, 
-            { mentions: chat.muted }
-        )
+    
+    // 🔥 FORZAR sincronización con la base de datos
+    if (!chat.muted || !Array.isArray(chat.muted)) {
+        // Si no existe, crearla en la DB
+        chat.muted = []
+        // Guardar inmediatamente en la base de datos
+        await global.saveDatabase()
     }
 
-    // 🎄 IDENTIFICAR AL GRINCH
+    // --- FUNCIÓN: VER LISTA ---
+    if (command === 'mutelist' || args[0] === 'list') {
+        // Verificar sincronización
+        const dbChat = global.db.data.chats[m.chat]
+        const mutedList = dbChat.muted || []
+        
+        if (mutedList.length === 0) {
+            return m.reply('❄️ No hay usuarios silenciados en este grupo.')
+        }
+        
+        let list = mutedList.map((v, i) => `${i + 1}. @${v.split`@`[0]}`).join('\n')
+        return conn.reply(m.chat, `📜 *LISTA DE USUARIOS SILENCIADOS*\n━━━━━━━━━━━━━━━━━━━━━━━\n${list}\n━━━━━━━━━━━━━━━━━━━━━━━\n> Usa ${usedPrefix}unmute @usuario para desilenciar.`, m, { mentions: mutedList })
+    }
+
+    // --- IDENTIFICAR USUARIO ---
     let who = m.mentionedJid && m.mentionedJid[0] || m.quoted && m.quoted.sender || null
     
     if (!who && (command === 'mute' || command === 'unmute')) {
         return conn.sendMessage(m.chat, {
-            text: `🎅 *FÁBRICA DE REGALOS SANTA*\n━━━━━━━━━━━━━━━━━━━━━━━\nDebes etiquetar a alguien o responder a un mensaje.\n\n🌟 *Opciones navideñas:*`,
+            text: `❄️ *MENÚ DE MUTE*\n━━━━━━━━━━━━━━━━━━━━━━━\nDebes etiquetar a alguien o responder a un mensaje.\n\n✨ *Acciones rápidas:*`,
             buttons: [
-                { buttonId: `${usedPrefix}mutelist`, buttonText: { displayText: '📜 Ver Lista de Carbón' }, type: 1 }
+                { buttonId: `${usedPrefix}mutelist`, buttonText: { displayText: '📜 Ver Silenciados' }, type: 1 }
             ],
             headerType: 1
         }, { quoted: m })
     }
 
-    // 🎁 COMANDO: MUTE (DAR CARBÓN)
+    // --- COMANDO: MUTE ---
     if (command === 'mute' || command === 'silenciar') {
-        if (who === conn.user.jid) return m.reply('🦌 ¡No puedo darme carbón a mí mismo! Soy el ayudante de Santa.')
-        if (who === m.sender) return m.reply('🎄 ¡No puedes darte carbón a ti mismo! Eso sería muy triste.')
-        if (chat.muted.includes(who)) return m.reply('❄️ Este elfo ya tiene suficiente carbón en su calcetín.')
+        if (who === conn.user.jid) return m.reply('⚠️ No puedo silenciarme a mí mismo.')
+        if (who === m.sender) return m.reply('⚠️ No puedes silenciarte a ti mismo.')
         
-        // Verificar si es un elfo importante
+        // Verificar si ya está silenciado (usando DB actualizada)
+        const dbChat = global.db.data.chats[m.chat]
+        const isAlreadyMuted = dbChat.muted && dbChat.muted.includes(who)
+        
+        if (isAlreadyMuted) return m.reply('🌟 Este usuario ya está silenciado.')
+        
+        // Verificar si es admin del grupo
         try {
             const groupMetadata = await conn.groupMetadata(m.chat)
             const participant = groupMetadata.participants.find(p => p.id === who)
             
             if (!participant) {
-                return m.reply('🎁 Este duende no está en el taller de Santa.')
+                return m.reply('⚠️ Este usuario no está en el grupo.')
             }
             
             if (participant.admin === 'admin' || participant.admin === 'superadmin') {
-                return m.reply('🎅 ¡No puedes dar carbón a uno de los *elfos mayores* del taller!')
+                return m.reply('⚠️ No puedes silenciar a un *administrador* del grupo.')
             }
             
-            // Verificar si quien da el carbón es un elfo mayor
+            // Verificar si quien ejecuta el comando es admin
             const senderParticipant = groupMetadata.participants.find(p => p.id === m.sender)
             if (!senderParticipant || (!senderParticipant.admin && !isOwner && !isROwner)) {
-                return m.reply('🔔 Solo los elfos mayores pueden repartir carbón.')
+                return m.reply('⚠️ Solo los administradores pueden usar este comando.')
             }
             
         } catch (e) {
-            console.error(`Error en el taller: ${e.message}`)
-            return m.reply('🎄 ¡El trineo tuvo un problema! Intenta de nuevo.')
+            console.error(`Error obteniendo metadatos: ${e.message}`)
+            return m.reply('⚠️ Error al verificar permisos.')
         }
 
-        // Añadir a la lista de carbón
-        chat.muted.push(who)
-        await m.react('🪵')
+        // 🔥 AGREGAR y GUARDAR en DB
+        if (!dbChat.muted) dbChat.muted = []
+        dbChat.muted.push(who)
         
-        // Notificar al taller
+        // GUARDAR CAMBIOS PERSISTENTEMENTE
+        await global.saveDatabase()
+        
+        await m.react('🔇')
+        
+        // Notificar al grupo
         await conn.sendMessage(m.chat, {
-            text: `🪵 *¡CARBÓN ENTREGADO!*\n━━━━━━━━━━━━━━━━━━━━━━━\n@${who.split`@`[0]} recibió carbón en su calcetín.\n\n🎁 Sus mensajes serán como regalos perdidos.\n✨ Para cambiar por regalos: ${usedPrefix}unmute @${who.split`@`[0]}\n━━━━━━━━━━━━━━━━━━━━━━━`,
+            text: `🔇 *USUARIO SILENCIADO*\n━━━━━━━━━━━━━━━━━━━━━━━\n@${who.split`@`[0]} ha sido silenciado.\n\n❌ Sus mensajes serán eliminados automáticamente.\n🔓 Para desilenciar: ${usedPrefix}unmute @${who.split`@`[0]}\n━━━━━━━━━━━━━━━━━━━━━━━`,
             mentions: [who]
         }, { quoted: m })
         
-        // Notificar al duende silenciado
+        // Notificar al usuario silenciado
         try {
             await conn.sendMessage(who, {
-                text: `🎄 *¡OH NO! CARBÓN NAVIDEÑO*\n\nHas recibido carbón en el taller *${m.chatName || 'de Santa'}*.\n\n🏠 Taller: ${m.chatName || 'Taller Mágico'}\n🎅 Por: @${m.sender.split`@`[0]}\n\nTus mensajes desaparecerán como copos de nieve hasta que seas perdonado.`,
+                text: `🔇 *HAS SIDO SILENCIADO*\n\nHas sido silenciado en el grupo *${groupMetadata?.subject || 'grupo'}*.\n\n📍 Grupo: ${groupMetadata?.subject || 'Desconocido'}\n👤 Por: @${m.sender.split`@`[0]}\n\nNo podrás enviar mensajes hasta que un admin te desilencie.`,
                 mentions: [m.sender]
             })
         } catch (dmErr) {
-            console.log('[MUTE] El trineo no pudo entregar el mensaje')
+            console.log('[MUTE] No se pudo enviar DM al usuario')
         }
     }
 
-    // 🎄 COMANDO: UNMUTE (REGALO ESPECIAL)
+    // --- COMANDO: UNMUTE ---
     if (command === 'unmute' || command === 'desmutear') {
-        if (!chat.muted.includes(who)) {
-            return m.reply('✨ ¡Este elfo ya tiene sus regalos! No está en la lista de carbón.')
+        // 🔥 Obtener datos FRESCOS de la DB
+        const dbChat = global.db.data.chats[m.chat]
+        const mutedList = dbChat.muted || []
+        
+        if (!mutedList.includes(who)) {
+            return m.reply('❄️ Este usuario no está en la lista de silenciados.')
         }
         
-        // Verificar permisos de elfo mayor
+        // Verificar permisos
         try {
             const groupMetadata = await conn.groupMetadata(m.chat)
             const senderParticipant = groupMetadata.participants.find(p => p.id === m.sender)
             if (!senderParticipant || (!senderParticipant.admin && !isOwner && !isROwner)) {
-                return m.reply('🔔 Solo los elfos mayores pueden dar regalos especiales.')
+                return m.reply('⚠️ Solo los administradores pueden usar este comando.')
             }
         } catch (e) {
-            console.error(`Error en la fábrica: ${e.message}`)
+            console.error(`Error verificando permisos: ${e.message}`)
         }
         
-        // Cambiar carbón por regalos
-        chat.muted = chat.muted.filter(u => u !== who)
-        await m.react('🎁')
+        // 🔥 REMOVER y GUARDAR en DB
+        // Filtrar el usuario de la lista
+        dbChat.muted = mutedList.filter(u => u !== who)
         
-        // Anunciar en el taller
+        // GUARDAR CAMBIOS PERSISTENTEMENTE
+        await global.saveDatabase()
+        
+        // 🔥 FORZAR recarga del handler para aplicar cambios inmediatos
+        try {
+            // Forzar actualización de la caché del handler
+            if (global.reloadHandler) {
+                await global.reloadHandler()
+            }
+        } catch (reloadErr) {
+            console.error('[UNMUTE] Error recargando handler:', reloadErr)
+        }
+        
+        await m.react('🔊')
+        
+        // Notificar al grupo
         await conn.reply(m.chat, 
-            `🎁 *¡REGALO ESPECIAL!*\n━━━━━━━━━━━━━━━━━━━━━━━\n@${who.split`@`[0]} cambió su carbón por regalos mágicos.\n\n✨ Ahora puede cantar villancicos normalmente.`,
+            `🔊 *USUARIO DESILENCIADO*\n━━━━━━━━━━━━━━━━━━━━━━━\n@${who.split`@`[0]} ya puede hablar normalmente.\n\n✅ Lista actualizada en la base de datos.`, 
             m, 
             { mentions: [who] }
         )
         
-        // Notificar al duende feliz
+        // Verificación de que se removió correctamente
+        console.log(`[UNMUTE] Usuario ${who} removido. Lista actual:`, dbChat.muted)
+        
+        // Notificar al usuario
         try {
             await conn.sendMessage(who, {
-                text: `🌟 *¡FELICIDADES!*\n\nSanta te ha perdonado en el taller *${m.chatName || 'navideño'}*.\n\n🎄 ¡Tu carbón se convirtió en regalos!\n🔔 Ahora puedes compartir la magia navideña.`
+                text: `🔊 *YA PUEDES HABLAR*\n\nHas sido desilenciado en el grupo *${groupMetadata?.subject || 'grupo'}*.\n\nAhora puedes enviar mensajes normalmente.`
             })
         } catch (dmErr) {
-            console.log('[UNMUTE] El duende no recibió la noticia')
+            console.log('[UNMUTE] No se pudo notificar al usuario')
         }
     }
 }
 
-// 🎅 Configuración del Comando Navideño
 handler.help = ['mute @usuario', 'unmute @usuario', 'mutelist']
 handler.tags = ['group']
 handler.command = ['mute', 'silenciar', 'unmute', 'desmutear', 'mutelist']
