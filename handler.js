@@ -136,7 +136,7 @@ export async function handler(chatUpdate) {
             if (typeof nuevo === "string" && nuevo.trim() && nuevo !== actual) {
                 user.name = nuevo
             }
-        } catch {}
+        } catch { }
         const chat = global.db.data.chats[m.chat]
         const settings = global.db.data.settings[this.user.jid]
         const isROwner = [...global.owner.map((number) => number)].map(v => v.replace(/[^0-9]/g, "") + "@s.whatsapp.net").includes(m.sender)
@@ -160,13 +160,13 @@ export async function handler(chatUpdate) {
         m.exp += Math.ceil(Math.random() * 10)
         let usedPrefix
 
-                // INICIO DE NUEVA LÓGICA ROBUSTA DE ADMINS
-                const groupMetadata = m.isGroup 
-            ? (global.cachedGroupMetadata 
-                ? await global.cachedGroupMetadata(m.chat).catch((_) => null) 
-                : await this.groupMetadata(m.chat).catch((_) => null)) || {} 
+        // INICIO DE NUEVA LÓGICA ROBUSTA DE ADMINS
+        const groupMetadata = m.isGroup
+            ? (global.cachedGroupMetadata
+                ? await global.cachedGroupMetadata(m.chat).catch((_) => null)
+                : await this.groupMetadata(m.chat).catch((_) => null)) || {}
             : {}
-            
+
         const participants = Array.isArray(groupMetadata?.participants) ? groupMetadata.participants : []
 
         // Funciones auxiliares para normalizar IDs
@@ -175,8 +175,8 @@ export async function handler(chatUpdate) {
         const numOnly = (j) => String(decode(j)).split('@')[0].replace(/[^0-9]/g, '')
 
         // Identificación robusta del propio Bot
-        const meIdRaw = this.user?.id || this.user?.jid 
-        const meLidRaw = (this.user?.lid || conn?.user?.lid || '').toString().replace(/:.*/, '') || null 
+        const meIdRaw = this.user?.id || this.user?.jid
+        const meLidRaw = (this.user?.lid || conn?.user?.lid || '').toString().replace(/:.*/, '') || null
         const botNum = numOnly(meIdRaw)
 
         const botCandidates = [
@@ -214,58 +214,85 @@ export async function handler(chatUpdate) {
         const isRAdmin = userGroup?.admin === 'superadmin'
         const isAdmin = isRAdmin || userGroup?.admin === 'admin' || userGroup?.admin === true
         const isBotAdmin = botGroup?.admin === 'admin' || botGroup?.admin === 'superadmin' || botGroup?.admin === true
-        
+
+        // EN TU HANDLER.JS - Modifica solo la sección del mute (~líneas 180-220):
+
         // ============================================
-        // ✅ SISTEMA DE MUTE - BLOQUEO DE USUARIOS
+        // ✅ SISTEMA DE MUTE - BLOQUEO DE USUARIOS (VERSIÓN MEJORADA)
         // ============================================
-        if (m.isGroup && chat.muted && Array.isArray(chat.muted)) {
-            // Verificar si el usuario está en la lista de silenciados
-            const isUserMuted = chat.muted.includes(m.sender)
-            
-            if (isUserMuted) {
-                // Verificar si el usuario es admin/owner (excepción)
-                const isAdminOrOwner = isAdmin || isOwner || isROwner || m.fromMe
-                
-                // Comandos permitidos incluso estando silenciado
-                const allowedCommands = ['unmute', 'help', 'owner', 'report', 'menu']
-                const isCommandAllowed = usedPrefix && allowedCommands.some(cmd => 
-                    m.text.toLowerCase().startsWith(usedPrefix + cmd)
-                )
-                
-                if (!isAdminOrOwner && !isCommandAllowed) {
-                    console.log(`[MUTE] Bloqueando mensaje de ${m.sender} en ${m.chat}`)
-                    
-                    // Opción 1: Eliminar el mensaje automáticamente si el bot es admin
-                    if (isBotAdmin) {
-                        try {
-                            await this.sendMessage(m.chat, { 
-                                delete: {
-                                    remoteJid: m.chat,
-                                    fromMe: false,
-                                    id: m.id,
-                                    participant: m.sender
+        if (m.isGroup) {
+            // 🔥 Obtener datos FRESCOS de la DB cada vez
+            const currentChat = global.db.data.chats[m.chat]
+            const mutedUsers = currentChat?.muted
+
+            if (mutedUsers && Array.isArray(mutedUsers)) {
+                // Verificar si el usuario está en la lista de silenciados
+                const isUserMuted = mutedUsers.includes(m.sender)
+
+                if (isUserMuted) {
+                    // Verificar si el usuario es admin/owner (excepción)
+                    const isAdminOrOwner = isAdmin || isOwner || isROwner || m.fromMe
+
+                    // Comandos permitidos incluso estando silenciado
+                    const allowedCommands = ['unmute', 'help', 'owner', 'report', 'menu', 'admins']
+                    const isCommandAllowed = m.text && allowedCommands.some(cmd =>
+                        m.text.toLowerCase().startsWith(usedPrefix + cmd) ||
+                        m.text.toLowerCase().includes(usedPrefix + cmd)
+                    )
+
+                    if (!isAdminOrOwner && !isCommandAllowed) {
+                        console.log(`[MUTE] Bloqueando mensaje de ${m.sender} en ${m.chat}`)
+                        console.log(`[MUTE] Lista actual:`, mutedUsers)
+
+                        // Opción 1: Eliminar el mensaje automáticamente si el bot es admin
+                        if (isBotAdmin) {
+                            try {
+                                await this.sendMessage(m.chat, {
+                                    delete: {
+                                        remoteJid: m.chat,
+                                        fromMe: false,
+                                        id: m.id,
+                                        participant: m.sender
+                                    }
+                                })
+
+                                // 🔥 Verificación extra: Re-leer la DB después de eliminar
+                                const updatedChat = global.db.data.chats[m.chat]
+                                const stillMuted = updatedChat?.muted?.includes(m.sender)
+
+                                if (!stillMuted) {
+                                    console.log(`[MUTE] ⚠️ Usuario ${m.sender} NO está en la lista después de verificar DB`)
+                                    return // Permitir el mensaje si ya no está muteado
                                 }
-                            })
-                        } catch (deleteErr) {
-                            console.error('[MUTE] Error al eliminar mensaje:', deleteErr)
+
+                            } catch (deleteErr) {
+                                console.error('[MUTE] Error al eliminar mensaje:', deleteErr)
+                            }
+                        }
+
+                        // 🔥 Verificar una vez más antes de bloquear completamente
+                        const finalCheck = global.db.data.chats[m.chat]?.muted?.includes(m.sender)
+                        if (!finalCheck) {
+                            console.log(`[MUTE] ✅ Usuario ${m.sender} ya NO está muteado, permitiendo mensaje`)
+                            // Continuar con el procesamiento normal
+                        } else {
+                            // Bloqueo definitivo
+                            try {
+                                await this.sendMessage(m.sender, {
+                                    text: `🔇 *ESTÁS SILENCIADO*\n\nNo puedes enviar mensajes en este grupo.\n\n📍 Si crees que es un error, contacta a un administrador.\n\nUsuario: @${m.sender.split('@')[0]}\nListado: ${finalCheck ? 'SÍ' : 'NO'}`
+                                })
+                            } catch (noticeErr) {
+                                // Ignorar si no se puede enviar DM
+                            }
+                            return // Detener el procesamiento del mensaje
                         }
                     }
-                    
-                    // Opción 2: Notificar al usuario por privado (opcional)
-                    try {
-                        await this.sendMessage(m.sender, {
-                            text: `🔇 *ESTÁS SILENCIADO*\n\nNo puedes enviar mensajes en el grupo *${groupMetadata.subject || 'este grupo'}*.\n\n📍 Si crees que es un error, contacta a un administrador.\n\n🔊 Para ser desilenciado, pide a un admin usar:\n${usedPrefix}unmute @${m.sender.split('@')[0]}`
-                        })
-                    } catch (noticeErr) {
-                        // Ignorar si no se puede enviar DM
-                    }
-                    
-                    return // Detener el procesamiento del mensaje
                 }
             }
         }
+
         // ============================================
-        
+
         const ___dirname = path.join(path.dirname(fileURLToPath(import.meta.url)), "./plugins")
         for (const name in global.plugins) {
             const plugin = global.plugins[name]
@@ -297,40 +324,40 @@ export async function handler(chatUpdate) {
                     [pluginPrefix.exec(m.text), pluginPrefix]
                 ] :
                 Array.isArray(pluginPrefix) ?
-                pluginPrefix.map(prefix => {
-                    const regex = prefix instanceof RegExp ?
-                        prefix : new RegExp(strRegex(prefix))
-                    return [regex.exec(m.text), regex]
-                }) : typeof pluginPrefix === "string" ?
-                [
-                    [new RegExp(strRegex(pluginPrefix)).exec(m.text), new RegExp(strRegex(pluginPrefix))]
-                ] :
-                [
-                    [
-                        [], new RegExp
-                    ]
-                ]).find(prefix => prefix[1])
+                    pluginPrefix.map(prefix => {
+                        const regex = prefix instanceof RegExp ?
+                            prefix : new RegExp(strRegex(prefix))
+                        return [regex.exec(m.text), regex]
+                    }) : typeof pluginPrefix === "string" ?
+                        [
+                            [new RegExp(strRegex(pluginPrefix)).exec(m.text), new RegExp(strRegex(pluginPrefix))]
+                        ] :
+                        [
+                            [
+                                [], new RegExp
+                            ]
+                        ]).find(prefix => prefix[1])
             if (typeof plugin.before === "function") {
                 if (await plugin.before.call(this, m, {
-                        match,
-                        conn: this,
-                        participants,
-                        groupMetadata,
-                        userGroup,
-                        botGroup,
-                        isROwner,
-                        isOwner,
-                        isRAdmin,
-                        isAdmin,
-                        isBotAdmin,
-                        isPrems,
-                        chatUpdate,
-                        __dirname: ___dirname,
-                        __filename,
-                        user,
-                        chat,
-                        settings
-                    })) {
+                    match,
+                    conn: this,
+                    participants,
+                    groupMetadata,
+                    userGroup,
+                    botGroup,
+                    isROwner,
+                    isOwner,
+                    isRAdmin,
+                    isAdmin,
+                    isBotAdmin,
+                    isPrems,
+                    chatUpdate,
+                    __dirname: ___dirname,
+                    __filename,
+                    user,
+                    chat,
+                    settings
+                })) {
                     continue
                 }
             }
@@ -348,10 +375,10 @@ export async function handler(chatUpdate) {
                 const isAccept = plugin.command instanceof RegExp ?
                     plugin.command.test(command) :
                     Array.isArray(plugin.command) ?
-                    plugin.command.some(cmd => cmd instanceof RegExp ?
-                        cmd.test(command) : cmd === command) :
-                    typeof plugin.command === "string" ?
-                    plugin.command === command : false
+                        plugin.command.some(cmd => cmd instanceof RegExp ?
+                            cmd.test(command) : cmd === command) :
+                        typeof plugin.command === "string" ?
+                            plugin.command === command : false
                 global.comando = command
 
                 if ((m.id.startsWith("NJX-") || (m.id.startsWith("BAE5") && m.id.length === 16) || (m.id.startsWith("B24E") && m.id.length === 20))) return
@@ -368,7 +395,7 @@ export async function handler(chatUpdate) {
                     } else {
                         global.db.data.chats[m.chat].primaryBot = null
                     }
-                } else {}
+                } else { }
 
                 if (!isAccept) continue
                 m.plugin = name
@@ -503,7 +530,7 @@ export async function handler(chatUpdate) {
             admin: `🎄 *¡ELFO MAYOR REQUERIDO!*\n\nNecesitas ser administrador del grupo.\n\n🧝 ¡Pídele a Santa el ascenso! ⭐`,
             botAdmin: `🎅 *¡SANTA NECESITA PODERES!*\n\nEl bot debe ser administrador del grupo.\n\n🧝‍♂️ ¡Hazme supervisor! 🔑`,
             restrict: ` *¡REGALO CONGELADO!*\n\nEsta función está temporalmente deshabilitada.\n\n🛷 ¡Vuelve en Año Nuevo! ⏳`
-        } [type]
+        }[type]
         if (msg) return conn.reply(m.chat, msg, m, rcanal).then(_ => m.react('✖️'))
     }
     let file = global.__filename(import.meta.url, true)
