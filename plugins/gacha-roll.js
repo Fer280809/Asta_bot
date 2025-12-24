@@ -121,7 +121,6 @@ handler.help = ['roll', 'rollwaifu', 'gacharoll', 'tirada'];
 handler.tags = ['gacha', 'navidad'];
 handler.command = ['roll', 'rollwaifu', 'gacharoll', 'rw'];
 handler.group = true;
-handler.private = true;
 
 // Información del comando
 handler.description = 'Hacer una tirada gratuita para obtener un adorno navideño';
