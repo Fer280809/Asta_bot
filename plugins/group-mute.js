@@ -31,18 +31,25 @@ let handler = async (m, { conn, command, usedPrefix, text, args }) => {
         
         try {
             const groupMetadata = await conn.groupMetadata(m.chat)
-            const isAdmin = groupMetadata.participants.find(p => p.id === who)?.admin
-            if (isAdmin) return m.reply('⚠️ No puedes silenciar a un *administrador* del grupo.')
+            const participant = groupMetadata.participants.find(p => p.id === who)
+            if (!participant) return m.reply('⚠️ No encontré al usuario en el grupo.')
+            
+            // Verificar si es admin
+            if (participant.admin === 'admin' || participant.admin === 'superadmin') {
+                return m.reply('⚠️ No puedes silenciar a un *administrador* del grupo.')
+            }
         } catch (e) {
             console.error(`Error obteniendo metadatos del grupo: ${e.message}`)
             return m.reply('⚠️ No pude obtener los datos del grupo para verificar el estado del usuario.')
         }
 
+        // Agregar a la lista de silenciados
         chat.muted.push(who)
         await m.react('🔇')
         
+        // Enviar confirmación
         await conn.sendMessage(m.chat, {
-            text: `🤐 *USUARIO MUTEADO* ✨\n━━━━━━━━━━━━━━━━━━━━━━━\n@${who.split`@`[0]} ha sido silenciado.\n━━━━━━━━━━━━━━━━━━━━━━━`,
+            text: `🤐 *USUARIO MUTEADO* ✨\n━━━━━━━━━━━━━━━━━━━━━━━\n@${who.split`@`[0]} ha sido silenciado.\nSe eliminarán automáticamente sus mensajes.\n━━━━━━━━━━━━━━━━━━━━━━━`,
             buttons: [
                 { buttonId: `${usedPrefix}unmute @${who.split`@`[0]}`, buttonText: { displayText: '🔊 Desilenciar' }, type: 1 },
                 { buttonId: `${usedPrefix}mutelist`, buttonText: { displayText: '📜 Ver Lista' }, type: 1 }
@@ -58,6 +65,7 @@ let handler = async (m, { conn, command, usedPrefix, text, args }) => {
             return m.reply('❄️ Este usuario no está en la lista de silenciados.')
         }
         
+        // Remover de la lista
         chat.muted = chat.muted.filter(u => u !== who)
         await m.react('🔊')
         await conn.reply(m.chat, `🔔 *USUARIO DESMUTEADO*\n━━━━━━━━━━━━━━━━━━━━━━━\n@${who.split`@`[0]} ya puede hablar.`, m, { mentions: [who] })
