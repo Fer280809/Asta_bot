@@ -218,80 +218,96 @@ export async function handler(chatUpdate) {
         // EN TU HANDLER.JS - Modifica solo la sección del mute (~líneas 180-220):
 
         // ============================================
-        // ✅ SISTEMA DE MUTE - BLOQUEO DE USUARIOS (VERSIÓN MEJORADA)
-        // ============================================
-        if (m.isGroup) {
-            // 🔥 Obtener datos FRESCOS de la DB cada vez
-            const currentChat = global.db.data.chats[m.chat]
-            const mutedUsers = currentChat?.muted
-
-            if (mutedUsers && Array.isArray(mutedUsers)) {
-                // Verificar si el usuario está en la lista de silenciados
-                const isUserMuted = mutedUsers.includes(m.sender)
-
-                if (isUserMuted) {
-                    // Verificar si el usuario es admin/owner (excepción)
-                    const isAdminOrOwner = isAdmin || isOwner || isROwner || m.fromMe
-
-                    // Comandos permitidos incluso estando silenciado
-                    const allowedCommands = ['unmute', 'help', 'owner', 'report', 'menu', 'admins']
-                    const isCommandAllowed = m.text && allowedCommands.some(cmd =>
-                        m.text.toLowerCase().startsWith(usedPrefix + cmd) ||
-                        m.text.toLowerCase().includes(usedPrefix + cmd)
-                    )
-
-                    if (!isAdminOrOwner && !isCommandAllowed) {
-                        console.log(`[MUTE] Bloqueando mensaje de ${m.sender} en ${m.chat}`)
-                        console.log(`[MUTE] Lista actual:`, mutedUsers)
-
-                        // Opción 1: Eliminar el mensaje automáticamente si el bot es admin
-                        if (isBotAdmin) {
-                            try {
-                                await this.sendMessage(m.chat, {
-                                    delete: {
-                                        remoteJid: m.chat,
-                                        fromMe: false,
-                                        id: m.id,
-                                        participant: m.sender
-                                    }
-                                })
-
-                                // 🔥 Verificación extra: Re-leer la DB después de eliminar
-                                const updatedChat = global.db.data.chats[m.chat]
-                                const stillMuted = updatedChat?.muted?.includes(m.sender)
-
-                                if (!stillMuted) {
-                                    console.log(`[MUTE] ⚠️ Usuario ${m.sender} NO está en la lista después de verificar DB`)
-                                    return // Permitir el mensaje si ya no está muteado
+// ✅ SISTEMA DE MUTE - BLOQUEO DE USUARIOS (VERSIÓN CORREGIDA)
+// ============================================
+if (m.isGroup) {
+    // 🔥 Obtener datos FRESCOS de la DB cada vez
+    const currentChat = global.db.data.chats[m.chat];
+    
+    // Verificar si la propiedad muted existe y es un array
+    if (!currentChat.muted || !Array.isArray(currentChat.muted)) {
+        currentChat.muted = [];
+    }
+    
+    const mutedUsers = currentChat.muted;
+    
+    // Solo procesar si hay usuarios silenciados
+    if (mutedUsers && mutedUsers.length > 0) {
+        // Verificar si el usuario está en la lista de silenciados
+        const userJid = m.sender;
+        const isUserMuted = mutedUsers.some(mutedJid => 
+            mutedJid === userJid || 
+            mutedJid.replace(/[^0-9]/g, '') === userJid.replace(/[^0-9]/g, '')
+        );
+        
+        if (isUserMuted) {
+            // Verificar si el usuario es admin/owner (excepción)
+            const isAdminOrOwner = isAdmin || isOwner || isROwner || m.fromMe;
+            
+            // Comandos permitidos incluso estando silenciado
+            const allowedCommands = ['unmute', 'help', 'owner', 'report', 'menu', 'admins', 'mutelist'];
+            const isCommandAllowed = m.text && allowedCommands.some(cmd =>
+                m.text.toLowerCase().startsWith(usedPrefix + cmd) ||
+                m.text.toLowerCase().includes(usedPrefix + cmd)
+            );
+            
+            if (!isAdminOrOwner && !isCommandAllowed) {
+                console.log(`[MUTE] Bloqueando mensaje de ${userJid} en ${m.chat}`);
+                console.log(`[MUTE] Usuario en lista: ${isUserMuted}`);
+                
+                // Verificar si el mensaje es del propio usuario silenciado
+                if (m.key && m.key.participant && m.key.participant === userJid) {
+                    // Opción 1: Intentar eliminar el mensaje si el bot es admin
+                    if (isBotAdmin) {
+                        try {
+                            console.log(`[MUTE] Intentando eliminar mensaje ID: ${m.id}`);
+                            
+                            await this.sendMessage(m.chat, {
+                                delete: {
+                                    remoteJid: m.chat,
+                                    id: m.id,
+                                    participant: userJid,
+                                    fromMe: false
                                 }
-
-                            } catch (deleteErr) {
-                                console.error('[MUTE] Error al eliminar mensaje:', deleteErr)
-                            }
-                        }
-
-                        // 🔥 Verificar una vez más antes de bloquear completamente
-                        const finalCheck = global.db.data.chats[m.chat]?.muted?.includes(m.sender)
-                        if (!finalCheck) {
-                            console.log(`[MUTE] ✅ Usuario ${m.sender} ya NO está muteado, permitiendo mensaje`)
-                            // Continuar con el procesamiento normal
-                        } else {
-                            // Bloqueo definitivo
-                            try {
-                                await this.sendMessage(m.sender, {
-                                    text: `🔇 *ESTÁS SILENCIADO*\n\nNo puedes enviar mensajes en este grupo.\n\n📍 Si crees que es un error, contacta a un administrador.\n\nUsuario: @${m.sender.split('@')[0]}\nListado: ${finalCheck ? 'SÍ' : 'NO'}`
-                                })
-                            } catch (noticeErr) {
-                                // Ignorar si no se puede enviar DM
-                            }
-                            return // Detener el procesamiento del mensaje
+                            });
+                            
+                            console.log(`[MUTE] Mensaje eliminado exitosamente`);
+                            
+                            // También enviar un mensaje temporal informativo
+                            setTimeout(async () => {
+                                try {
+                                    const deleteMsg = await this.sendMessage(m.chat, {
+                                        text: `🔇 @${userJid.split('@')[0]} está silenciado y no puede enviar mensajes.`,
+                                        mentions: [userJid]
+                                    }, { quoted: m });
+                                    
+                                    // Eliminar el mensaje informativo después de 3 segundos
+                                    setTimeout(async () => {
+                                        try {
+                                            await this.sendMessage(m.chat, {
+                                                delete: {
+                                                    remoteJid: m.chat,
+                                                    id: deleteMsg.key.id,
+                                                    fromMe: true
+                                                }
+                                            });
+                                        } catch (e) {}
+                                    }, 3000);
+                                } catch (e) {}
+                            }, 500);
+                            
+                        } catch (deleteErr) {
+                            console.error('[MUTE] Error al eliminar mensaje:', deleteErr);
                         }
                     }
                 }
+                
+                // IMPORTANTE: Retornar aquí para no procesar el mensaje
+                return;
             }
         }
-
-        // ============================================
+    }
+}
 
         const ___dirname = path.join(path.dirname(fileURLToPath(import.meta.url)), "./plugins")
         for (const name in global.plugins) {
