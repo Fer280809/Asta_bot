@@ -1,9 +1,10 @@
 {
   "pueblo_paleta": {
     "name": "Pueblo Paleta",
-    "description": "Un pequeño y tranquilo pueblo. Es donde comienzas tu aventura.",
+    "description": "Un pequeño y tranquilo pueblo rodeado de naturaleza. Es donde comienzas tu aventura Pokémon.",
     "type": "town",
     "connections": ["ruta_1"],
+    "requirements": [],
     "services": {
       "center": false,
       "shop": false,
@@ -11,43 +12,47 @@
       "special": ["professor_oak"]
     },
     "wild_pokemon": [],
-    "trainers": []
+    "trainers": [],
+    "music": "town_theme"
   },
-  
+
   "ruta_1": {
     "name": "Ruta 1",
-    "description": "Un camino corto que conecta Pueblo Paleta con Pueblo Verde. Ideal para entrenar Pokémon novatos.",
+    "description": "Un camino corto y sencillo que conecta Pueblo Paleta con Pueblo Verde. Ideal para entrenadores novatos.",
     "type": "route",
     "connections": ["pueblo_paleta", "pueblo_verde"],
     "requirements": [],
     "wild_pokemon": [
-      { "id": 16, "level": [2, 5], "rate": 50 },  // Pidgey
-      { "id": 19, "level": [2, 4], "rate": 40 },  // Rattata
-      { "id": 10, "level": [2, 3], "rate": 10 }   // Caterpie
+      { "id": 16, "name": "Pidgey", "level": [2, 5], "rate": 50 },
+      { "id": 19, "name": "Rattata", "level": [2, 4], "rate": 40 },
+      { "id": 10, "name": "Caterpie", "level": [2, 3], "rate": 5 },
+      { "id": 13, "name": "Weedle", "level": [2, 3], "rate": 5 }
     ],
     "trainers": [
       {
         "id": "youngster_joey",
         "name": "Joven Joey",
         "team": [
-          { "id": 19, "level": 5, "moves": ["Placaje", "Persecución"] }
+          { "id": 19, "name": "Rattata", "level": 5, "moves": ["Placaje", "Persecución"] }
         ],
         "reward": { "money": 150, "exp": 50 },
         "dialogue": {
-          "start": "¡Mi Rattata es el mejor de todos! ¡Te mostraré!",
+          "start": "¡Mi Rattata es el mejor de todos! ¡Te mostraré por qué!",
           "win": "¡No puede ser! Mi Rattata...",
-          "lose": "¡Sí! ¡Mi Rattata es el número uno!"
+          "lose": "¡Sí! ¡Te dije que mi Rattata es el número uno!"
         },
         "defeated": false
       }
-    ]
+    ],
+    "music": "route_theme"
   },
-  
+
   "pueblo_verde": {
     "name": "Pueblo Verde",
-    "description": "Un pueblo un poco más grande con tienda y centro Pokémon.",
+    "description": "Un pueblo un poco más grande donde los entrenadores se preparan para su primer gimnasio.",
     "type": "town",
-    "connections": ["ruta_1", "ruta_2"],
+    "connections": ["ruta_1", "ruta_2", "ruta_22"],
+    "requirements": [],
     "services": {
       "center": true,
       "shop": true,
@@ -55,39 +60,202 @@
       "special": []
     },
     "wild_pokemon": [],
-    "trainers": []
+    "trainers": [],
+    "music": "town_theme"
   },
-  
-  "gym_pewter": {
+
+  "ruta_22": {
+    "name": "Ruta 22",
+    "description": "Un camino que lleva a la Liga Pokémon. Los entrenadores fuertes entrenan aquí.",
+    "type": "route",
+    "connections": ["pueblo_verde", "liga_pokemon_entrada"],
+    "requirements": ["badge_earth"],
+    "wild_pokemon": [
+      { "id": 19, "name": "Rattata", "level": [3, 5], "rate": 30 },
+      { "id": 21, "name": "Spearow", "level": [3, 5], "rate": 30 },
+      { "id": 56, "name": "Mankey", "level": [4, 6], "rate": 30 },
+      { "id": 27, "name": "Sandshrew", "level": [4, 6], "rate": 10 }
+    ],
+    "trainers": [
+      {
+        "id": "rival_first",
+        "name": "Rival Blue",
+        "team": [
+          { "id": 4, "name": "Charmander", "level": 5, "moves": ["Ascuas", "Gruñido"] },
+          { "id": 1, "name": "Bulbasaur", "level": 5, "moves": ["Látigo Cepa", "Gruñido"] },
+          { "id": 7, "name": "Squirtle", "level": 5, "moves": ["Pistola Agua", "Gruñido"] }
+        ],
+        "reward": { "money": 300, "exp": 100 },
+        "dialogue": {
+          "start": "¡Ah! ¡Eres tú! Pensaba que eras solo otro entrenador novato. ¡Vamos a ver qué tan fuerte te has vuelto!",
+          "win": "¿Qué? ¿Cómo puede ser?",
+          "lose": "¡Ja! ¡Todavía me falta mucho por aprender!"
+        },
+        "defeated": false,
+        "special": true
+      }
+    ],
+    "music": "route_theme"
+  },
+
+  "ruta_2": {
+    "name": "Ruta 2",
+    "description": "Un camino que atraviesa un pequeño bosque. Conecta Pueblo Verde con Ciudad Plateada.",
+    "type": "route",
+    "connections": ["pueblo_verde", "ciudad_plateada", "bosque_verde"],
+    "requirements": [],
+    "wild_pokemon": [
+      { "id": 10, "name": "Caterpie", "level": [3, 5], "rate": 25 },
+      { "id": 13, "name": "Weedle", "level": [3, 5], "rate": 25 },
+      { "id": 16, "name": "Pidgey", "level": [4, 6], "rate": 25 },
+      { "id": 19, "name": "Rattata", "level": [4, 6], "rate": 20 },
+      { "id": 25, "name": "Pikachu", "level": [5, 7], "rate": 5 }
+    ],
+    "trainers": [
+      {
+        "id": "bug_catcher_rick",
+        "name": "Cazabichos Rick",
+        "team": [
+          { "id": 10, "name": "Caterpie", "level": 6, "moves": ["Placaje", "Drenadoras"] },
+          { "id": 13, "name": "Weedle", "level": 6, "moves": ["Picotazo Veneno", "Drenadoras"] }
+        ],
+        "reward": { "money": 120, "exp": 60 },
+        "dialogue": {
+          "start": "¡Shhh! ¡No asustes a los bichos! Oh... ¿quieres luchar?",
+          "win": "¡Mis bichos! ¡Volveré más fuerte!",
+          "lose": "¡Los bichos son los mejores!"
+        },
+        "defeated": false
+      },
+      {
+        "id": "lass_meg",
+        "name": "Chica Meg",
+        "team": [
+          { "id": 16, "name": "Pidgey", "level": 7, "moves": ["Tornado", "Arenilla"] },
+          { "id": 19, "name": "Rattata", "level": 7, "moves": ["Placaje", "Persecución"] }
+        ],
+        "reward": { "money": 140, "exp": 70 },
+        "dialogue": {
+          "start": "¡Hola! ¿Te gustan los Pokémon? ¡A mí me encantan! ¡Luchemos!",
+          "win": "Eres muy fuerte...",
+          "lose": "¡Yay! ¡Gané!"
+        },
+        "defeated": false
+      }
+    ],
+    "music": "route_theme"
+  },
+
+  "bosque_verde": {
+    "name": "Bosque Verde",
+    "description": "Un denso bosque lleno de Pokémon tipo Bicho. Es fácil perderse aquí.",
+    "type": "dungeon",
+    "connections": ["ruta_2"],
+    "requirements": [],
+    "wild_pokemon": [
+      { "id": 10, "name": "Caterpie", "level": [4, 6], "rate": 30 },
+      { "id": 13, "name": "Weedle", "level": [4, 6], "rate": 30 },
+      { "id": 11, "name": "Metapod", "level": [5, 7], "rate": 15 },
+      { "id": 14, "name": "Kakuna", "level": [5, 7], "rate": 15 },
+      { "id": 25, "name": "Pikachu", "level": [5, 7], "rate": 10 }
+    ],
+    "trainers": [
+      {
+        "id": "bug_catcher_sam",
+        "name": "Cazabichos Sam",
+        "team": [
+          { "id": 10, "name": "Caterpie", "level": 7, "moves": ["Placaje", "Drenadoras"] },
+          { "id": 10, "name": "Caterpie", "level": 8, "moves": ["Placaje", "Drenadoras"] }
+        ],
+        "reward": { "money": 112, "exp": 56 },
+        "dialogue": {
+          "start": "¡El bosque es el hogar de los Pokémon bicho! ¿Quieres ver mi colección?",
+          "win": "¡Mis bichos necesitan más entrenamiento!",
+          "lose": "¡Los bichos rulean!"
+        },
+        "defeated": false
+      },
+      {
+        "id": "bug_catcher_colton",
+        "name": "Cazabichos Colton",
+        "team": [
+          { "id": 13, "name": "Weedle", "level": 7, "moves": ["Picotazo Veneno", "Drenadoras"] },
+          { "id": 13, "name": "Weedle", "level": 7, "moves": ["Picotazo Veneno", "Drenadoras"] },
+          { "id": 13, "name": "Weedle", "level": 7, "moves": ["Picotazo Veneno", "Drenadoras"] }
+        ],
+        "reward": { "money": 140, "exp": 70 },
+        "dialogue": {
+          "start": "¡Tengo tres Weedles! ¡Son súper fuertes!",
+          "win": "¡Tres no fueron suficientes!",
+          "lose": "¡Te dije que eran fuertes!"
+        },
+        "defeated": false
+      }
+    ],
+    "music": "forest_theme"
+  },
+
+  "ciudad_plateada": {
+    "name": "Ciudad Plateada",
+    "description": "Una ciudad histórica conocida por sus fósiles y su gimnasio de tipo Roca.",
+    "type": "city",
+    "connections": ["ruta_2", "ruta_3", "cueva_plateada"],
+    "requirements": [],
+    "services": {
+      "center": true,
+      "shop": true,
+      "gym": true,
+      "special": ["museo"]
+    },
+    "wild_pokemon": [],
+    "trainers": [],
+    "music": "city_theme"
+  },
+
+  "gimnasio_plateada": {
     "name": "Gimnasio de Ciudad Plateada",
-    "description": "Gimnasio de tipo Roca. Brock es el líder.",
+    "description": "Gimnasio de tipo Roca. Brock es el líder, conocido por su resistencia.",
     "type": "gym",
-    "requirements": ["badge_boulder"],
+    "connections": ["ciudad_plateada"],
+    "requirements": [],
     "trainers": [
       {
         "id": "camper_liam",
         "name": "Campista Liam",
         "team": [
-          { "id": 74, "level": 10, "moves": ["Lanzarrocas", "Defensa Férrea"] },
-          { "id": 95, "level": 11, "moves": ["Lanzarrocas", "Atadura"] }
+          { "id": 74, "name": "Geodude", "level": 10, "moves": ["Lanzarrocas", "Defensa Férrea"] },
+          { "id": 95, "name": "Onix", "level": 11, "moves": ["Lanzarrocas", "Atadura"] }
         ],
-        "reward": { "money": 300, "exp": 120 }
+        "reward": { "money": 300, "exp": 120 },
+        "dialogue": {
+          "start": "¡Las rocas son duras, pero mi determinación es aún más dura!",
+          "win": "¡Mis rocas se han hecho añicos!",
+          "lose": "¡La dureza prevalece!"
+        },
+        "defeated": false
       },
       {
         "id": "hiker_marcus",
         "name": "Montañero Marcus",
         "team": [
-          { "id": 74, "level": 11, "moves": ["Lanzarrocas", "Golpe Roca"] }
+          { "id": 74, "name": "Geodude", "level": 11, "moves": ["Lanzarrocas", "Golpe Roca"] }
         ],
-        "reward": { "money": 350, "exp": 130 }
+        "reward": { "money": 350, "exp": 130 },
+        "dialogue": {
+          "start": "¡Las montañas son mi hogar! ¡Mis Pokémon son duros como la roca!",
+          "win": "¡La montaña ha caído!",
+          "lose": "¡La montaña permanece firme!"
+        },
+        "defeated": false
       }
     ],
     "leader": {
       "id": "brock",
       "name": "Brock",
+      "type": "Roca",
       "team": [
-        { "id": 74, "level": 12, "moves": ["Lanzarrocas", "Defensa Férrea", "Terremoto"] },
-        { "id": 95, "level": 14, "moves": ["Lanzarrocas", "Atadura", "Excavar"] }
+        { "id": 74, "name": "Geodude", "level": 12, "moves": ["Lanzarrocas", "Defensa Férrea", "Terremoto"] },
+        { "id": 95, "name": "Onix", "level": 14, "moves": ["Lanzarrocas", "Atadura", "Excavar"] }
       ],
       "reward": {
         "money": 1000,
@@ -99,6 +267,1378 @@
         "win": "¡Increíble! Eres más fuerte de lo que parecías. Toma la Medalla Roca como prueba de tu victoria.",
         "lose": "¡La determinación es importante, pero también la estrategia! Vuelve cuando estés listo."
       }
-    }
+    },
+    "music": "gym_theme"
+  },
+
+  "cueva_plateada": {
+    "name": "Cueva Plateada",
+    "description": "Una cueva oscura llena de Pokémon terrestres. Se necesita Flash para ver bien.",
+    "type": "cave",
+    "connections": ["ciudad_plateada"],
+    "requirements": ["hm_flash"],
+    "wild_pokemon": [
+      { "id": 74, "name": "Geodude", "level": [6, 8], "rate": 30 },
+      { "id": 41, "name": "Zubat", "level": [6, 8], "rate": 30 },
+      { "id": 27, "name": "Sandshrew", "level": [7, 9], "rate": 20 },
+      { "id": 50, "name": "Diglett", "level": [7, 9], "rate": 15 },
+      { "id": 35, "name": "Clefairy", "level": [8, 10], "rate": 5 }
+    ],
+    "trainers": [
+      {
+        "id": "hiker_franklin",
+        "name": "Montañero Franklin",
+        "team": [
+          { "id": 74, "name": "Geodude", "level": 10, "moves": ["Lanzarrocas", "Defensa Férrea"] },
+          { "id": 74, "name": "Geodude", "level": 10, "moves": ["Lanzarrocas", "Golpe Roca"] },
+          { "id": 75, "name": "Graveler", "level": 12, "moves": ["Lanzarrocas", "Terremoto"] }
+        ],
+        "reward": { "money": 480, "exp": 160 },
+        "dialogue": {
+          "start": "¡Las cuevas son mi segundo hogar! ¡Prepárate para temblar!",
+          "win": "¡La cueva se derrumbó sobre mí!",
+          "lose": "¡Las cuevas siempre ganan!"
+        },
+        "defeated": false
+      }
+    ],
+    "music": "cave_theme"
+  },
+
+  "ruta_3": {
+    "name": "Ruta 3",
+    "description": "Un camino montañoso que lleva a Ciudad Celeste. Muchos entrenadores jóvenes practican aquí.",
+    "type": "route",
+    "connections": ["ciudad_plateada", "ciudad_celeste"],
+    "requirements": ["badge_boulder"],
+    "wild_pokemon": [
+      { "id": 16, "name": "Pidgey", "level": [6, 8], "rate": 25 },
+      { "id": 19, "name": "Rattata", "level": [6, 8], "rate": 25 },
+      { "id": 21, "name": "Spearow", "level": [7, 9], "rate": 25 },
+      { "id": 56, "name": "Mankey", "level": [7, 9], "rate": 20 },
+      { "id": 39, "name": "Jigglypuff", "level": [8, 10], "rate": 5 }
+    ],
+    "trainers": [
+      {
+        "id": "youngster_ben",
+        "name": "Joven Ben",
+        "team": [
+          { "id": 16, "name": "Pidgey", "level": 9, "moves": ["Tornado", "Arenilla", "Ataque Rápido"] },
+          { "id": 19, "name": "Rattata", "level": 9, "moves": ["Placaje", "Persecución", "Mordisco"] }
+        ],
+        "reward": { "money": 180, "exp": 90 },
+        "dialogue": {
+          "start": "¡Acabo de vencer a mi primer gimnasio! ¡Ahora soy invencible!",
+          "win": "Quizás no soy tan invencible...",
+          "lose": "¡Te dije que era fuerte!"
+        },
+        "defeated": false
+      },
+      {
+        "id": "bug_catcher_colton",
+        "name": "Cazabichos Colton",
+        "team": [
+          { "id": 11, "name": "Metapod", "level": 9, "moves": ["Drenadoras", "Fortaleza"] },
+          { "id": 11, "name": "Metapod", "level": 9, "moves": ["Drenadoras", "Fortaleza"] },
+          { "id": 11, "name": "Metapod", "level": 9, "moves": ["Drenadoras", "Fortaleza"] }
+        ],
+        "reward": { "money": 216, "exp": 108 },
+        "dialogue": {
+          "start": "¡Mis Metapods son indestructibles! ¡Nada puede dañarlos!",
+          "win": "¡Mis Metapods! ¡Han sido dañados!",
+          "lose": "¡Indestructibles te dije!"
+        },
+        "defeated": false
+      },
+      {
+        "id": "lass_janie",
+        "name": "Chica Janie",
+        "team": [
+          { "id": 39, "name": "Jigglypuff", "level": 10, "moves": ["Canto", "Destructor", "Doble Bofetón"] },
+          { "id": 21, "name": "Spearow", "level": 10, "moves": ["Picotazo", "Ataque Rápido"] }
+        ],
+        "reward": { "money": 200, "exp": 100 },
+        "dialogue": {
+          "start": "¡Mis Pokémon son tan lindos! Pero también son fuertes, ¿sabes?",
+          "win": "¡Mis bebés! ¿Están bien?",
+          "lose": "¡Mis bebés son los más fuertes!"
+        },
+        "defeated": false
+      }
+    ],
+    "music": "route_theme"
+  },
+
+  "ciudad_celeste": {
+    "name": "Ciudad Celeste",
+    "description": "Una ciudad costera famosa por sus cascadas y su gimnasio de tipo Agua.",
+    "type": "city",
+    "connections": ["ruta_3", "ruta_4", "ruta_5", "ruta_24", "ruta_25"],
+    "requirements": ["badge_boulder"],
+    "services": {
+      "center": true,
+      "shop": true,
+      "gym": true,
+      "special": ["casa_bill", "pokemon_center_upstairs"]
+    },
+    "wild_pokemon": [],
+    "trainers": [],
+    "music": "city_theme"
+  },
+
+  "gimnasio_celeste": {
+    "name": "Gimnasio de Ciudad Celeste",
+    "description": "Gimnasio de tipo Agua. Misty es la líder, conocida por su temperamento.",
+    "type": "gym",
+    "connections": ["ciudad_celeste"],
+    "requirements": ["badge_boulder"],
+    "trainers": [
+      {
+        "id": "swimmer_finn",
+        "name": "Nadador Finn",
+        "team": [
+          { "id": 118, "name": "Goldeen", "level": 18, "moves": ["Pistola Agua", "Cornada", "Supersónico"] }
+        ],
+        "reward": { "money": 360, "exp": 180 },
+        "dialogue": {
+          "start": "¡El agua es mi elemento! ¡Prepárate para mojarte!",
+          "win": "¡Me ahogo en la derrota!",
+          "lose": "¡El agua fluye hacia la victoria!"
+        },
+        "defeated": false
+      },
+      {
+        "id": "swimmer_sharon",
+        "name": "Nadadora Sharon",
+        "team": [
+          { "id": 120, "name": "Staryu", "level": 17, "moves": ["Pistola Agua", "Rayo Burbuja", "Recuperación"] },
+          { "id": 118, "name": "Goldeen", "level": 17, "moves": ["Pistola Agua", "Cornada"] }
+        ],
+        "reward": { "money": 340, "exp": 170 },
+        "dialogue": {
+          "start": "¡Misty es mi ídolo! ¡Voy a ser tan fuerte como ella!",
+          "win": "Todavía tengo mucho que aprender...",
+          "lose": "¡Un paso más cerca de ser como Misty!"
+        },
+        "defeated": false
+      }
+    ],
+    "leader": {
+      "id": "misty",
+      "name": "Misty",
+      "type": "Agua",
+      "team": [
+        { "id": 120, "name": "Staryu", "level": 18, "moves": ["Pistola Agua", "Rayo Burbuja", "Recuperación", "Rayo Confuso"] },
+        { "id": 121, "name": "Starmie", "level": 21, "moves": ["Pistola Agua", "Rayo Burbuja", "Recuperación", "Psíquico"] }
+      ],
+      "reward": {
+        "money": 1500,
+        "badge": "badge_cascade",
+        "tm": "tm11"
+      },
+      "dialogue": {
+        "start": "Soy Misty, la líder de gimnasio de Ciudad Celeste. Mis Pokémon de agua son elegantes y poderosos. ¿Crees que puedes enfrentarte a mis olas?",
+        "win": "¡Wow, eres increíble! Toma la Medalla Cascada. La has ganado con creces.",
+        "lose": "¡El poder del agua es implacable! Regresa cuando estés mejor preparado."
+      }
+    },
+    "music": "gym_theme"
+  },
+
+  "ruta_4": {
+    "name": "Ruta 4",
+    "description": "Un camino desértico que conecta Ciudad Celeste con el Monte Moon.",
+    "type": "route",
+    "connections": ["ciudad_celeste", "monte_moon"],
+    "requirements": ["badge_boulder"],
+    "wild_pokemon": [
+      { "id": 21, "name": "Spearow", "level": [10, 12], "rate": 30 },
+      { "id": 27, "name": "Sandshrew", "level": [10, 12], "rate": 30 },
+      { "id": 23, "name": "Ekans", "level": [11, 13], "rate": 30 },
+      { "id": 56, "name": "Mankey", "level": [11, 13], "rate": 10 }
+    ],
+    "trainers": [
+      {
+        "id": "picnicker_diana",
+        "name": "Excursionista Diana",
+        "team": [
+          { "id": 39, "name": "Jigglypuff", "level": 14, "moves": ["Canto", "Destructor", "Doble Bofetón"] },
+          { "id": 52, "name": "Meowth", "level": 14, "moves": ["Arañazo", "Mordisco", "Gruñido"] }
+        ],
+        "reward": { "money": 280, "exp": 140 },
+        "dialogue": {
+          "start": "¡Hola! ¿Vas al Monte Moon? ¡Cuidado con los Zubats!",
+          "win": "¡Ay! Me ganaste...",
+          "lose": "¡Yay! ¡Gané el picnic!"
+        },
+        "defeated": false
+      }
+    ],
+    "music": "route_theme"
+  },
+
+  "monte_moon": {
+    "name": "Monte Moon",
+    "description": "Una enorme montaña llena de cuevas. Es famosa por los fósiles y los Clefairy.",
+    "type": "cave",
+    "connections": ["ruta_4", "ruta_3_salida"],
+    "requirements": ["badge_boulder"],
+    "wild_pokemon": [
+      { "id": 41, "name": "Zubat", "level": [8, 10], "rate": 40 },
+      { "id": 74, "name": "Geodude", "level": [8, 10], "rate": 30 },
+      { "id": 35, "name": "Clefairy", "level": [9, 11], "rate": 15 },
+      { "id": 46, "name": "Paras", "level": [9, 11], "rate": 10 },
+      { "id": 95, "name": "Onix", "level": [10, 12], "rate": 5 }
+    ],
+    "trainers": [
+      {
+        "id": "super_nerd_miguel",
+        "name": "Supernerd Miguel",
+        "team": [
+          { "id": 81, "name": "Magnemite", "level": 11, "moves": ["Chispazo", "Sonic Boom"] },
+          { "id": 100, "name": "Voltorb", "level": 11, "moves": ["Chispazo", "Sonámbulo"] }
+        ],
+        "reward": { "money": 220, "exp": 110 },
+        "dialogue": {
+          "start": "¡Los fósiles son fascinantes! ¿Quieres ver mi colección de datos?",
+          "win": "¡Mis cálculos fallaron!",
+          "lose": "¡La ciencia siempre gana!"
+        },
+        "defeated": false
+      },
+      {
+        "id": "team_rocket_grunt_1",
+        "name": "Team Rocket Grunt",
+        "team": [
+          { "id": 23, "name": "Ekans", "level": 12, "moves": ["Mordisco", "Ácido", "Constricción"] },
+          { "id": 23, "name": "Ekans", "level": 12, "moves": ["Mordisco", "Ácido", "Constricción"] }
+        ],
+        "reward": { "money": 240, "exp": 120 },
+        "dialogue": {
+          "start": "¡El Team Rocket está tomando control del Monte Moon! ¡No te interpongas!",
+          "win": "¡El Team Rocket... retrocederá... por ahora!",
+          "lose": "¡El Team Rocket prevalece!"
+        },
+        "defeated": false,
+        "special": true
+      }
+    ],
+    "music": "cave_theme"
+  },
+
+  "ruta_3_salida": {
+    "name": "Salida del Monte Moon",
+    "description": "La salida este del Monte Moon que lleva a Ciudad Carmín.",
+    "type": "route",
+    "connections": ["monte_moon", "ciudad_carmin"],
+    "requirements": [],
+    "wild_pokemon": [
+      { "id": 21, "name": "Spearow", "level": [10, 13], "rate": 35 },
+      { "id": 27, "name": "Sandshrew", "level": [10, 13], "rate": 35 },
+      { "id": 23, "name": "Ekans", "level": [11, 14], "rate": 25 },
+      { "id": 96, "name": "Drowzee", "level": [12, 15], "rate": 5 }
+    ],
+    "trainers": [],
+    "music": "route_theme"
+  },
+
+  "ciudad_carmin": {
+    "name": "Ciudad Carmín",
+    "description": "Una gran ciudad industrial con la Torre Pokémon y el segundo gimnasio.",
+    "type": "city",
+    "connections": ["ruta_3_salida", "ruta_5", "ruta_6", "ruta_8"],
+    "requirements": [],
+    "services": {
+      "center": true,
+      "shop": true,
+      "gym": true,
+      "special": ["torre_pokemon", "casa_mr_fuji"]
+    },
+    "wild_pokemon": [],
+    "trainers": [],
+    "music": "city_theme"
+  },
+
+  "gimnasio_carmin": {
+    "name": "Gimnasio de Ciudad Carmín",
+    "description": "Gimnasio de tipo Fantasma. Sabrina es la líder, conocida por sus poderes psíquicos.",
+    "type": "gym",
+    "connections": ["ciudad_carmin"],
+    "requirements": ["badge_cascade"],
+    "trainers": [
+      {
+        "id": "medium_rebecca",
+        "name": "Médium Rebecca",
+        "team": [
+          { "id": 92, "name": "Gastly", "level": 21, "moves": ["Lengüetazo", "Confusión", "Niebla"] },
+          { "id": 93, "name": "Haunter", "level": 21, "moves": ["Lengüetazo", "Confusión", "Hipnosis"] }
+        ],
+        "reward": { "money": 420, "exp": 210 },
+        "dialogue": {
+          "start": "Veo... veo tu derrota en el futuro cercano...",
+          "win": "Mi visión... estaba nublada...",
+          "lose": "El futuro que vi... se ha cumplido..."
+        },
+        "defeated": false
+      },
+      {
+        "id": "channeler_stacy",
+        "name": "Medium Stacy",
+        "team": [
+          { "id": 92, "name": "Gastly", "level": 22, "moves": ["Lengüetazo", "Hipnosis", "Rayo Confuso"] },
+          { "id": 92, "name": "Gastly", "level": 22, "moves": ["Lengüetazo", "Hipnosis", "Rayo Confuso"] },
+          { "id": 92, "name": "Gastly", "level": 22, "moves": ["Lengüetazo", "Hipnosis", "Rayo Confuso"] }
+        ],
+        "reward": { "money": 440, "exp": 220 },
+        "dialogue": {
+          "start": "Los espíritus están inquietos hoy... ¡Te mostraré su poder!",
+          "win": "Los espíritus... se han calmado...",
+          "lose": "Los espíritus... están furiosos..."
+        },
+        "defeated": false
+      }
+    ],
+    "leader": {
+      "id": "sabrina",
+      "name": "Sabrina",
+      "type": "Psíquico",
+      "team": [
+        { "id": 63, "name": "Abra", "level": 20, "moves": ["Telequinesis", "Psicoonda"] },
+        { "id": 64, "name": "Kadabra", "level": 20, "moves": ["Confusión", "Psicoonda", "Recuperación"] },
+        { "id": 65, "name": "Alakazam", "level": 25, "moves": ["Psíquico", "Recuperación", "Reflejo", "Psicoonda"] }
+      ],
+      "reward": {
+        "money": 2000,
+        "badge": "badge_marsh",
+        "tm": "tm04"
+      },
+      "dialogue": {
+        "start": "Soy Sabrina. Mis poderes psíquicos me permiten ver tu futuro. Veo... una derrota. ¿O me equivoco?",
+        "win": "Tu fuerza... es real. No pude predecirla. Toma la Medalla Pantano.",
+        "lose": "Como predije... tu derrota era inevitable."
+      }
+    },
+    "music": "gym_theme"
+  },
+
+  "torre_pokemon": {
+    "name": "Torre Pokémon",
+    "description": "Una torre de 7 pisos que sirve como cementerio para Pokémon. Está llena de entrenadores de tipo Fantasma.",
+    "type": "dungeon",
+    "connections": ["ciudad_carmin"],
+    "requirements": ["hm_flash"],
+    "wild_pokemon": [
+      { "id": 41, "name": "Zubat", "level": [15, 18], "rate": 40 },
+      { "id": 92, "name": "Gastly", "level": [16, 19], "rate": 40 },
+      { "id": 93, "name": "Haunter", "level": [18, 21], "rate": 15 },
+      { "id": 104, "name": "Cubone", "level": [17, 20], "rate": 5 }
+    ],
+    "trainers": [
+      {
+        "id": "channeler_hope",
+        "name": "Medium Hope",
+        "team": [
+          { "id": 92, "name": "Gastly", "level": 22, "moves": ["Lengüetazo", "Hipnosis", "Rayo Confuso"] },
+          { "id": 92, "name": "Gastly", "level": 22, "moves": ["Lengüetazo", "Hipnosis", "Rayo Confuso"] }
+        ],
+        "reward": { "money": 440, "exp": 220 },
+        "dialogue": {
+          "start": "Los espíritus de Pokémon descansan aquí... Respétalos.",
+          "win": "Los espíritus... te respetan...",
+          "lose": "Los espíritus... están molestos..."
+        },
+        "defeated": false
+      }
+    ],
+    "music": "tower_theme",
+    "floors": 7
+  },
+
+  "ruta_5": {
+    "name": "Ruta 5",
+    "description": "Un camino que conecta Ciudad Carmín con Ciudad Azafrán. Hay una casa de descanso en el camino.",
+    "type": "route",
+    "connections": ["ciudad_carmin", "ciudad_azafran"],
+    "requirements": ["badge_cascade"],
+    "wild_pokemon": [
+      { "id": 16, "name": "Pidgey", "level": [13, 16], "rate": 30 },
+      { "id": 43, "name": "Oddish", "level": [13, 16], "rate": 30 },
+      { "id": 69, "name": "Bellsprout", "level": [14, 17], "rate": 30 },
+      { "id": 96, "name": "Drowzee", "level": [15, 18], "rate": 10 }
+    ],
+    "trainers": [
+      {
+        "id": "gentleman_arthur",
+        "name": "Caballero Arthur",
+        "team": [
+          { "id": 58, "name": "Growlithe", "level": 18, "moves": ["Ascuas", "Mordisco", "Rugido"] },
+          { "id": 37, "name": "Vulpix", "level": 18, "moves": ["Ascuas", "Confusión", "Rapidez"] }
+        ],
+        "reward": { "money": 720, "exp": 360 },
+        "dialogue": {
+          "start": "Un verdadero caballero cuida bien de sus Pokémon. ¿Permites que luchemos?",
+          "win": "Una batalla justa y honorable.",
+          "lose": "La victoria es para el más noble."
+        },
+        "defeated": false
+      }
+    ],
+    "music": "route_theme"
+  },
+
+  "ciudad_azafran": {
+    "name": "Ciudad Azafrán",
+    "description": "La ciudad más grande de Kanto, famosa por la Torre Silph y su gimnasio de tipo Psíquico.",
+    "type": "metropolis",
+    "connections": ["ruta_5", "ruta_6", "ruta_7", "ruta_8"],
+    "requirements": [],
+    "services": {
+      "center": true,
+      "shop": true,
+      "gym": true,
+      "special": ["torre_silph", "casa_dojo", "centro_comercial"]
+    },
+    "wild_pokemon": [],
+    "trainers": [],
+    "music": "metropolis_theme"
+  },
+
+  "ruta_6": {
+    "name": "Ruta 6",
+    "description": "Un camino con muchos cuerpos de agua, conecta Ciudad Azafrán con Ciudad Celeste.",
+    "type": "route",
+    "connections": ["ciudad_azafran", "ciudad_celeste"],
+    "requirements": ["badge_cascade"],
+    "wild_pokemon": [
+      { "id": 16, "name": "Pidgey", "level": [13, 16], "rate": 25 },
+      { "id": 17, "name": "Pidgeotto", "level": [15, 18], "rate": 10 },
+      { "id": 43, "name": "Oddish", "level": [13, 16], "rate": 25 },
+      { "id": 69, "name": "Bellsprout", "level": [14, 17], "rate": 25 },
+      { "id": 118, "name": "Goldeen", "level": [15, 18], "rate": 15 }
+    ],
+    "trainers": [
+      {
+        "id": "bug_catcher_keigo",
+        "name": "Cazabichos Keigo",
+        "team": [
+          { "id": 48, "name": "Venonat", "level": 16, "moves": ["Confusión", "Polvo Veneno", "Supersónico"] },
+          { "id": 48, "name": "Venonat", "level": 16, "moves": ["Confusión", "Polvo Veneno", "Supersónico"] },
+          { "id": 49, "name": "Venomoth", "level": 20, "moves": ["Confusión", "Polvo Veneno", "Psíquico"] }
+        ],
+        "reward": { "money": 400, "exp": 200 },
+        "dialogue": {
+          "start": "¡Mis Pokémon bicho han evolucionado! ¡Ahora son mucho más fuertes!",
+          "win": "Todavía necesitan evolucionar más...",
+          "lose": "¡La evolución es poder!"
+        },
+        "defeated": false
+      }
+    ],
+    "music": "route_theme"
+  },
+
+  "ruta_7": {
+    "name": "Ruta 7",
+    "description": "Un camino urbano que conecta Ciudad Azafrán con Ciudad Carmín.",
+    "type": "route",
+    "connections": ["ciudad_azafran", "ciudad_carmin"],
+    "requirements": [],
+    "wild_pokemon": [
+      { "id": 19, "name": "Rattata", "level": [16, 19], "rate": 30 },
+      { "id": 20, "name": "Raticate", "level": [18, 21], "rate": 10 },
+      { "id": 52, "name": "Meowth", "level": [16, 19], "rate": 30 },
+      { "id": 53, "name": "Persian", "level": [18, 21], "rate": 10 },
+      { "id": 39, "name": "Jigglypuff", "level": [17, 20], "rate": 20 }
+    ],
+    "trainers": [
+      {
+        "id": "team_rocket_grunt_2",
+        "name": "Team Rocket Grunt",
+        "team": [
+          { "id": 20, "name": "Raticate", "level": 20, "moves": ["Hipercolmillo", "Persecución", "Foco Energía"] },
+          { "id": 24, "name": "Arbok", "level": 20, "moves": ["Mordisco", "Ácido", "Golpe Cabeza"] }
+        ],
+        "reward": { "money": 400, "exp": 200 },
+        "dialogue": {
+          "start": "¡El Team Rocket controla esta área! ¡Lárgate si no quieres problemas!",
+          "win": "¡El jefe no estará contento con esto!",
+          "lose": "¡Así se hace! ¡Por el Team Rocket!"
+        },
+        "defeated": false,
+        "special": true
+      }
+    ],
+    "music": "route_theme"
+  },
+
+  "ruta_8": {
+    "name": "Ruta 8",
+    "description": "Un camino que conecta Ciudad Azafrán con Ciudad Lavanda. Hay muchos entrenadores.",
+    "type": "route",
+    "connections": ["ciudad_azafran", "ciudad_lavanda"],
+    "requirements": [],
+    "wild_pokemon": [
+      { "id": 21, "name": "Spearow", "level": [18, 21], "rate": 30 },
+      { "id": 22, "name": "Fearow", "level": [20, 23], "rate": 5 },
+      { "id": 23, "name": "Ekans", "level": [18, 21], "rate": 30 },
+      { "id": 27, "name": "Sandshrew", "level": [18, 21], "rate": 30 },
+      { "id": 96, "name": "Drowzee", "level": [19, 22], "rate": 5 }
+    ],
+    "trainers": [
+      {
+        "id": "super_nerd_tom",
+        "name": "Supernerd Tom",
+        "team": [
+          { "id": 81, "name": "Magnemite", "level": 22, "moves": ["Chispazo", "Sonic Boom", "Trueno"] },
+          { "id": 100, "name": "Voltorb", "level": 22, "moves": ["Chispazo", "Sonámbulo", "Bomba Sónica"] },
+          { "id": 82, "name": "Magneton", "level": 22, "moves": ["Chispazo", "Trueno", "Rayo Confuso"] }
+        ],
+        "reward": { "money": 440, "exp": 220 },
+        "dialogue": {
+          "start": "¡La tecnología es poder! ¡Mis Pokémon eléctricos son la prueba!",
+          "win": "¡Mi tecnología falló!",
+          "lose": "¡La tecnología siempre avanza!"
+        },
+        "defeated": false
+      }
+    ],
+    "music": "route_theme"
+  },
+
+  "ciudad_lavanda": {
+    "name": "Ciudad Lavanda",
+    "description": "Una ciudad tranquila conocida por su Torre Pokémon y la Casa de los Pokémon.",
+    "type": "town",
+    "connections": ["ruta_8", "ruta_10", "ruta_12"],
+    "requirements": [],
+    "services": {
+      "center": true,
+      "shop": true,
+      "gym": false,
+      "special": ["casa_pokemon_fantasma", "radio_tower"]
+    },
+    "wild_pokemon": [],
+    "trainers": [],
+    "music": "lavender_theme"
+  },
+
+  "ruta_10": {
+    "name": "Ruta 10",
+    "description": "Un camino que lleva a la Central Energía y a Ciudad Azulona.",
+    "type": "route",
+    "connections": ["ciudad_lavanda", "ciudad_azulona", "central_energia"],
+    "requirements": [],
+    "wild_pokemon": [
+      { "id": 21, "name": "Spearow", "level": [16, 19], "rate": 30 },
+      { "id": 22, "name": "Fearow", "level": [18, 21], "rate": 5 },
+      { "id": 100, "name": "Voltorb", "level": [17, 20], "rate": 30 },
+      { "id": 81, "name": "Magnemite", "level": [17, 20], "rate": 30 },
+      { "id": 125, "name": "Electabuzz", "level": [20, 23], "rate": 5 }
+    ],
+    "trainers": [
+      {
+        "id": "engineer_bernard",
+        "name": "Ingeniero Bernard",
+        "team": [
+          { "id": 100, "name": "Voltorb", "level": 21, "moves": ["Chispazo", "Sonámbulo", "Bomba Sónica"] },
+          { "id": 82, "name": "Magneton", "level": 21, "moves": ["Chispazo", "Trueno", "Rayo Confuso"] }
+        ],
+        "reward": { "money": 840, "exp": 420 },
+        "dialogue": {
+          "start": "¡La electricidad es mi vida! ¡Mis Pokémon también son eléctricos!",
+          "win": "¡Corto circuito!",
+          "lose": "¡La energía fluye hacia la victoria!"
+        },
+        "defeated": false
+      }
+    ],
+    "music": "route_theme"
+  },
+
+  "ciudad_azulona": {
+    "name": "Ciudad Azulona",
+    "description": "Una ciudad portuaria con un famoso gimnasio de tipo Eléctrico y el SS Anne.",
+    "type": "city",
+    "connections": ["ruta_10", "ruta_11", "ruta_12_alternativo"],
+    "requirements": [],
+    "services": {
+      "center": true,
+      "shop": true,
+      "gym": true,
+      "special": ["ss_anne", "puerto"]
+    },
+    "wild_pokemon": [],
+    "trainers": [],
+    "music": "port_theme"
+  },
+
+  "gimnasio_azulona": {
+    "name": "Gimnasio de Ciudad Azulona",
+    "description": "Gimnasio de tipo Eléctrico. Lt. Surge es el líder, un veterano de guerra.",
+    "type": "gym",
+    "connections": ["ciudad_azulona"],
+    "requirements": ["badge_marsh"],
+    "trainers": [
+      {
+        "id": "sailor_edmond",
+        "name": "Marinero Edmond",
+        "team": [
+          { "id": 100, "name": "Voltorb", "level": 21, "moves": ["Chispazo", "Sonámbulo", "Bomba Sónica"] },
+          { "id": 25, "name": "Pikachu", "level": 21, "moves": ["Impactrueno", "Ataque Rápido", "Onda Trueno"] }
+        ],
+        "reward": { "money": 420, "exp": 210 },
+        "dialogue": {
+          "start": "¡Un marinero siempre está preparado para la tormenta! ¡Y para la batalla!",
+          "win": "¡La tormenta me ha hundido!",
+          "lose": "¡Navegando hacia la victoria!"
+        },
+        "defeated": false
+      },
+      {
+        "id": "gentleman_tucker",
+        "name": "Caballero Tucker",
+        "team": [
+          { "id": 101, "name": "Electrode", "level": 23, "moves": ["Chispazo", "Sonámbulo", "Bomba Sónica", "Rayo"] },
+          { "id": 26, "name": "Raichu", "level": 23, "moves": ["Impactrueno", "Ataque Rápido", "Trueno", "Cola Férrea"] }
+        ],
+        "reward": { "money": 920, "exp": 460 },
+        "dialogue": {
+          "start": "La electricidad es la fuerza del futuro. Permíteme mostrártelo.",
+          "win": "Mi visión del futuro... necesita ajustes.",
+          "lose": "El futuro es eléctrico, y es mío."
+        },
+        "defeated": false
+      }
+    ],
+    "leader": {
+      "id": "lt_surge",
+      "name": "Teniente Surge",
+      "type": "Eléctrico",
+      "team": [
+        { "id": 100, "name": "Voltorb", "level": 21, "moves": ["Chispazo", "Sonámbulo", "Bomba Sónica"] },
+        { "id": 25, "name": "Pikachu", "level": 18, "moves": ["Impactrueno", "Ataque Rápido", "Onda Trueno"] },
+        { "id": 26, "name": "Raichu", "level": 24, "moves": ["Impactrueno", "Ataque Rápido", "Trueno", "Megapatada"] }
+      ],
+      "reward": {
+        "money": 2500,
+        "badge": "badge_thunder",
+        "tm": "tm24"
+      },
+      "dialogue": {
+        "start": "¡Soy el Teniente Surge, héroe de guerra! En el campo de batalla, la electricidad es mi mejor aliado. ¿Listo para ser electrocutado?",
+        "win": "¡Vaya descarga! Eres realmente fuerte. Toma la Medalla Trueno.",
+        "lose": "¡Un retirado estratégico! ¡Pero volveré con más fuerza!"
+      }
+    },
+    "music": "gym_theme"
+  },
+
+  "ruta_11": {
+    "name": "Ruta 11",
+    "description": "Un camino que conecta Ciudad Azulona con Ciudad Fucsia.",
+    "type": "route",
+    "connections": ["ciudad_azulona", "ciudad_fucsia"],
+    "requirements": ["badge_thunder"],
+    "wild_pokemon": [
+      { "id": 19, "name": "Rattata", "level": [17, 20], "rate": 30 },
+      { "id": 20, "name": "Raticate", "level": [19, 22], "rate": 10 },
+      { "id": 21, "name": "Spearow", "level": [17, 20], "rate": 30 },
+      { "id": 22, "name": "Fearow", "level": [19, 22], "rate": 5 },
+      { "id": 96, "name": "Drowzee", "level": [18, 21], "rate": 20 },
+      { "id": 97, "name": "Hypno", "level": [20, 23], "rate": 5 }
+    ],
+    "trainers": [
+      {
+        "id": "youngster_eddie",
+        "name": "Joven Eddie",
+        "team": [
+          { "id": 19, "name": "Rattata", "level": 21, "moves": ["Hipercolmillo", "Persecución", "Foco Energía"] }
+        ],
+        "reward": { "money": 210, "exp": 105 },
+        "dialogue": {
+          "start": "¡Mi Rattata está en el top porcentaje de los Rattata!",
+          "win": "¿Cómo? ¿Mi Rattata perdió?",
+          "lose": "¡Te lo dije! ¡Es el mejor!"
+        },
+        "defeated": false
+      }
+    ],
+    "music": "route_theme"
+  },
+
+  "ciudad_fucsia": {
+    "name": "Ciudad Fucsia",
+    "description": "Una ciudad famosa por su Safari Zone y su gimnasio de tipo Veneno.",
+    "type": "city",
+    "connections": ["ruta_11", "ruta_12", "ruta_13", "ruta_14", "ruta_15", "safari_zone"],
+    "requirements": [],
+    "services": {
+      "center": true,
+      "shop": true,
+      "gym": true,
+      "special": ["safari_zone", "casa_guarda_safari"]
+    },
+    "wild_pokemon": [],
+    "trainers": [],
+    "music": "city_theme"
+  },
+
+  "safari_zone": {
+    "name": "Safari Zone",
+    "description": "Una enorme reserva natural donde puedes capturar Pokémon raros. Tienes tiempo limitado.",
+    "type": "special",
+    "connections": ["ciudad_fucsia"],
+    "requirements": ["hm_surf"],
+    "wild_pokemon": [
+      { "id": 29, "name": "Nidoran♀", "level": [22, 25], "rate": 15 },
+      { "id": 30, "name": "Nidorina", "level": [24, 27], "rate": 5 },
+      { "id": 32, "name": "Nidoran♂", "level": [22, 25], "rate": 15 },
+      { "id": 33, "name": "Nidorino", "level": [24, 27], "rate": 5 },
+      { "id": 113, "name": "Chansey", "level": [23, 26], "rate": 4 },
+      { "id": 128, "name": "Tauros", "level": [25, 28], "rate": 4 },
+      { "id": 115, "name": "Kangaskhan", "level": [25, 28], "rate": 4 },
+      { "id": 111, "name": "Rhyhorn", "level": [24, 27], "rate": 15 },
+      { "id": 46, "name": "Paras", "level": [22, 25], "rate": 20 },
+      { "id": 102, "name": "Exeggcute", "level": [23, 26], "rate": 15 },
+      { "id": 48, "name": "Venonat", "level": [22, 25], "rate": 20 },
+      { "id": 123, "name": "Scyther", "level": [25, 28], "rate": 4 },
+      { "id": 127, "name": "Pinsir", "level": [25, 28], "rate": 4 }
+    ],
+    "trainers": [],
+    "music": "safari_theme",
+    "entry_fee": 500,
+    "time_limit": 500
+  },
+
+  "ruta_12": {
+    "name": "Ruta 12",
+    "description": "Una ruta con muchos cuerpos de agua, ideal para pescar.",
+    "type": "route",
+    "connections": ["ciudad_lavanda", "ruta_13"],
+    "requirements": ["hm_surf"],
+    "wild_pokemon": [
+      { "id": 43, "name": "Oddish", "level": [22, 25], "rate": 25 },
+      { "id": 69, "name": "Bellsprout", "level": [22, 25], "rate": 25 },
+      { "id": 16, "name": "Pidgey", "level": [23, 26], "rate": 15 },
+      { "id": 17, "name": "Pidgeotto", "level": [25, 28], "rate": 10 },
+      { "id": 60, "name": "Poliwag", "level": [22, 25], "rate": 15 },
+      { "id": 118, "name": "Goldeen", "level": [22, 25], "rate": 10 }
+    ],
+    "trainers": [
+      {
+        "id": "fisherman_ned",
+        "name": "Pescador Ned",
+        "team": [
+          { "id": 118, "name": "Goldeen", "level": 22, "moves": ["Pistola Agua", "Cornada", "Supersónico"] },
+          { "id": 118, "name": "Goldeen", "level": 22, "moves": ["Pistola Agua", "Cornada", "Supersónico"] },
+          { "id": 118, "name": "Goldeen", "level": 22, "moves": ["Pistola Agua", "Cornada", "Supersónico"] },
+          { "id": 118, "name": "Goldeen", "level": 22, "moves": ["Pistola Agua", "Cornada", "Supersónico"] }
+        ],
+        "reward": { "money": 440, "exp": 220 },
+        "dialogue": {
+          "start": "¡La pesca es mi vida! ¡Y los Goldeen son los mejores!",
+          "win": "¡Mi caña se ha roto!",
+          "lose": "¡La pesca del día fue buena!"
+        },
+        "defeated": false
+      }
+    ],
+    "music": "route_theme"
+  },
+
+  "ruta_13": {
+    "name": "Ruta 13",
+    "description": "Una ruta con muchos entrenadores y áreas de hierba alta.",
+    "type": "route",
+    "connections": ["ruta_12", "ruta_14"],
+    "requirements": ["hm_surf"],
+    "wild_pokemon": [
+      { "id": 43, "name": "Oddish", "level": [24, 27], "rate": 20 },
+      { "id": 69, "name": "Bellsprout", "level": [24, 27], "rate": 20 },
+      { "id": 16, "name": "Pidgey", "level": [25, 28], "rate": 15 },
+      { "id": 17, "name": "Pidgeotto", "level": [27, 30], "rate": 10 },
+      { "id": 48, "name": "Venonat", "level": [24, 27], "rate": 20 },
+      { "id": 49, "name": "Venomoth", "level": [26, 29], "rate": 5 },
+      { "id": 132, "name": "Ditto", "level": [25, 28], "rate": 10 }
+    ],
+    "trainers": [
+      {
+        "id": "bird_keeper_perry",
+        "name": "Pajarero Perry",
+        "team": [
+          { "id": 17, "name": "Pidgeotto", "level": 29, "moves": ["Tornado", "Arenilla", "Ataque Rápido", "Tajo Aéreo"] },
+          { "id": 17, "name": "Pidgeotto", "level": 29, "moves": ["Tornado", "Arenilla", "Ataque Rápido", "Tajo Aéreo"] }
+        ],
+        "reward": { "money": 580, "exp": 290 },
+        "dialogue": {
+          "start": "¡Mis pájaros vuelan alto! ¡Nadie puede alcanzarlos!",
+          "win": "¡Han caído del cielo!",
+          "lose": "¡Volando hacia la victoria!"
+        },
+        "defeated": false
+      }
+    ],
+    "music": "route_theme"
+  },
+
+  "ruta_14": {
+    "name": "Ruta 14",
+    "description": "Una ruta que lleva a Ciudad Fucsia, con muchos cuerpos de agua.",
+    "type": "route",
+    "connections": ["ruta_13", "ruta_15"],
+    "requirements": ["hm_surf"],
+    "wild_pokemon": [
+      { "id": 43, "name": "Oddish", "level": [26, 29], "rate": 20 },
+      { "id": 44, "name": "Gloom", "level": [28, 31], "rate": 10 },
+      { "id": 69, "name": "Bellsprout", "level": [26, 29], "rate": 20 },
+      { "id": 70, "name": "Weepinbell", "level": [28, 31], "rate": 10 },
+      { "id": 48, "name": "Venonat", "level": [26, 29], "rate": 20 },
+      { "id": 49, "name": "Venomoth", "level": [28, 31], "rate": 5 },
+      { "id": 132, "name": "Ditto", "level": [27, 30], "rate": 15 }
+    ],
+    "trainers": [],
+    "music": "route_theme"
+  },
+
+  "ruta_15": {
+    "name": "Ruta 15",
+    "description": "La última ruta antes de Ciudad Fucsia desde el oeste.",
+    "type": "route",
+    "connections": ["ruta_14", "ciudad_fucsia"],
+    "requirements": ["hm_surf"],
+    "wild_pokemon": [
+      { "id": 43, "name": "Oddish", "level": [28, 31], "rate": 20 },
+      { "id": 44, "name": "Gloom", "level": [30, 33], "rate": 10 },
+      { "id": 69, "name": "Bellsprout", "level": [28, 31], "rate": 20 },
+      { "id": 70, "name": "Weepinbell", "level": [30, 33], "rate": 10 },
+      { "id": 113, "name": "Chansey", "level": [29, 32], "rate": 5 },
+      { "id": 132, "name": "Ditto", "level": [29, 32], "rate": 15 }
+    ],
+    "trainers": [
+      {
+        "id": "beauty_olivia",
+        "name": "Belleza Olivia",
+        "team": [
+          { "id": 113, "name": "Chansey", "level": 29, "moves": ["Doble Bofetón", "Canto", "Huevo Bomba"] }
+        ],
+        "reward": { "money": 1160, "exp": 580 },
+        "dialogue": {
+          "start": "¡La belleza y la fuerza pueden ir de la mano! ¡Mi Chansey es la prueba!",
+          "win": "¡Oh no! ¡Mi maquillaje!",
+          "lose": "¡La belleza prevalece!"
+        },
+        "defeated": false
+      }
+    ],
+    "music": "route_theme"
+  },
+
+  "ruta_16": {
+    "name": "Ruta 16",
+    "description": "Una ruta ciclista que conecta Ciudad Celeste con Ciudad Carmín.",
+    "type": "route",
+    "connections": ["ciudad_celeste", "ciudad_carmin"],
+    "requirements": [],
+    "wild_pokemon": [
+      { "id": 19, "name": "Rattata", "level": [20, 23], "rate": 30 },
+      { "id": 20, "name": "Raticate", "level": [22, 25], "rate": 10 },
+      { "id": 21, "name": "Spearow", "level": [20, 23], "rate": 30 },
+      { "id": 22, "name": "Fearow", "level": [22, 25], "rate": 5 },
+      { "id": 143, "name": "Snorlax", "level": 30, "rate": 100, "special": true, "blocking": true }
+    ],
+    "trainers": [],
+    "music": "route_theme"
+  },
+
+  "ruta_17": {
+    "name": "Ruta 17",
+    "description": "La ruta ciclista, un camino largo ideal para bicicletas.",
+    "type": "route",
+    "connections": ["ruta_16", "ruta_18"],
+    "requirements": ["bicycle"],
+    "wild_pokemon": [
+      { "id": 19, "name": "Rattata", "level": [22, 25], "rate": 30 },
+      { "id": 20, "name": "Raticate", "level": [24, 27], "rate": 10 },
+      { "id": 21, "name": "Spearow", "level": [22, 25], "rate": 30 },
+      { "id": 22, "name": "Fearow", "level": [24, 27], "rate": 5 },
+      { "id": 84, "name": "Doduo", "level": [23, 26], "rate": 20 },
+      { "id": 85, "name": "Dodrio", "level": [25, 28], "rate": 5 }
+    ],
+    "trainers": [
+      {
+        "id": "cue_ball_camron",
+        "name": "Bolichero Camron",
+        "team": [
+          { "id": 66, "name": "Machop", "level": 28, "moves": ["Patada Baja", "Sumisión", "Golpe Karate"] },
+          { "id": 66, "name": "Machop", "level": 28, "moves": ["Patada Baja", "Sumisión", "Golpe Karate"] },
+          { "id": 67, "name": "Machoke", "level": 28, "moves": ["Patada Baja", "Sumisión", "Golpe Karate"] }
+        ],
+        "reward": { "money": 560, "exp": 280 },
+        "dialogue": {
+          "start": "¡En el boliche y en las batallas, siempre busco el strike perfecto!",
+          "win": "¡Split!",
+          "lose": "¡Strike!"
+        },
+        "defeated": false
+      }
+    ],
+    "music": "bike_theme"
+  },
+
+  "ruta_18": {
+    "name": "Ruta 18",
+    "description": "La última parte de la ruta ciclista, lleva a Ciudad Fucsia.",
+    "type": "route",
+    "connections": ["ruta_17", "ciudad_fucsia"],
+    "requirements": ["bicycle"],
+    "wild_pokemon": [
+      { "id": 19, "name": "Rattata", "level": [24, 27], "rate": 30 },
+      { "id": 20, "name": "Raticate", "level": [26, 29], "rate": 10 },
+      { "id": 21, "name": "Spearow", "level": [24, 27], "rate": 30 },
+      { "id": 22, "name": "Fearow", "level": [26, 29], "rate": 5 },
+      { "id": 84, "name": "Doduo", "level": [25, 28], "rate": 20 },
+      { "id": 85, "name": "Dodrio", "level": [27, 30], "rate": 5 }
+    ],
+    "trainers": [],
+    "music": "bike_theme"
+  },
+
+  "ruta_19": {
+    "name": "Ruta 19",
+    "description": "Una ruta acuática que requiere Surf. Conecta Ciudad Fucsia con las Islas Espuma.",
+    "type": "water",
+    "connections": ["ciudad_fucsia", "islas_espuma"],
+    "requirements": ["hm_surf"],
+    "wild_pokemon": [
+      { "id": 72, "name": "Tentacool", "level": [5, 40], "rate": 60, "water": true },
+      { "id": 73, "name": "Tentacruel", "level": [15, 40], "rate": 10, "water": true },
+      { "id": 116, "name": "Horsea", "level": [5, 40], "rate": 30, "water": true },
+      { "id": 90, "name": "Shellder", "level": [5, 40], "rate": 30, "water": true },
+      { "id": 120, "name": "Staryu", "level": [5, 40], "rate": 30, "water": true }
+    ],
+    "trainers": [],
+    "music": "water_theme"
+  },
+
+  "islas_espuma": {
+    "name": "Islas Espuma",
+    "description": "Un archipiélago de pequeñas islas. La Isla 1 tiene una cueva con Articuno.",
+    "type": "island",
+    "connections": ["ruta_19", "ruta_20", "cueva_hielo"],
+    "requirements": ["hm_surf"],
+    "wild_pokemon": [
+      { "id": 72, "name": "Tentacool", "level": [30, 35], "rate": 40, "water": true },
+      { "id": 73, "name": "Tentacruel", "level": [32, 37], "rate": 10, "water": true },
+      { "id": 86, "name": "Seel", "level": [30, 35], "rate": 30, "water": true },
+      { "id": 90, "name": "Shellder", "level": [30, 35], "rate": 30, "water": true },
+      { "id": 87, "name": "Dewgong", "level": [32, 37], "rate": 5, "water": true }
+    ],
+    "trainers": [],
+    "music": "island_theme"
+  },
+
+  "cueva_hielo": {
+    "name": "Cueva de Hielo",
+    "description": "Una cueva helada en la Isla 4. Se necesita fuerza para mover las rocas.",
+    "type": "cave",
+    "connections": ["islas_espuma"],
+    "requirements": ["hm_strength"],
+    "wild_pokemon": [
+      { "id": 86, "name": "Seel", "level": [32, 37], "rate": 40 },
+      { "id": 87, "name": "Dewgong", "level": [34, 39], "rate": 10 },
+      { "id": 90, "name": "Shellder", "level": [32, 37], "rate": 30 },
+      { "id": 91, "name": "Cloyster", "level": [34, 39], "rate": 5 },
+      { "id": 124, "name": "Jynx", "level": [33, 38], "rate": 5 },
+      { "id": 144, "name": "Articuno", "level": 50, "rate": 100, "legendary": true, "one_time": true }
+    ],
+    "trainers": [],
+    "music": "ice_cave_theme"
+  },
+
+  "ruta_20": {
+    "name": "Ruta 20",
+    "description": "Otra ruta acuática que conecta las Islas Espuma con la Cueva Secreta.",
+    "type": "water",
+    "connections": ["islas_espuma", "cueva_secreta"],
+    "requirements": ["hm_surf"],
+    "wild_pokemon": [
+      { "id": 72, "name": "Tentacool", "level": [32, 37], "rate": 60, "water": true },
+      { "id": 73, "name": "Tentacruel", "level": [34, 39], "rate": 10, "water": true },
+      { "id": 116, "name": "Horsea", "level": [32, 37], "rate": 30, "water": true },
+      { "id": 117, "name": "Seadra", "level": [34, 39], "rate": 5, "water": true },
+      { "id": 129, "name": "Magikarp", "level": [5, 40], "rate": 30, "water": true },
+      { "id": 130, "name": "Gyarados", "level": [15, 40], "rate": 1, "water": true }
+    ],
+    "trainers": [],
+    "music": "water_theme"
+  },
+
+  "cueva_secreta": {
+    "name": "Cueva Secreta",
+    "description": "Una cueva oculta donde se dice que Mewtwo fue creado.",
+    "type": "cave",
+    "connections": ["ruta_20"],
+    "requirements": ["hm_surf", "hm_strength"],
+    "wild_pokemon": [
+      { "id": 41, "name": "Zubat", "level": [40, 45], "rate": 30 },
+      { "id": 42, "name": "Golbat", "level": [42, 47], "rate": 15 },
+      { "id": 74, "name": "Geodude", "level": [40, 45], "rate": 20 },
+      { "id": 75, "name": "Graveler", "level": [42, 47], "rate": 10 },
+      { "id": 95, "name": "Onix", "level": [41, 46], "rate": 15 },
+      { "id": 150, "name": "Mewtwo", "level": 70, "rate": 100, "legendary": true, "one_time": true }
+    ],
+    "trainers": [],
+    "music": "legendary_theme"
+  },
+
+  "ruta_21": {
+    "name": "Ruta 21",
+    "description": "Una ruta acuática que conecta las Islas Espuma con Pueblo Paleta.",
+    "type": "water",
+    "connections": ["islas_espuma", "pueblo_paleta"],
+    "requirements": ["hm_surf"],
+    "wild_pokemon": [
+      { "id": 72, "name": "Tentacool", "level": [34, 39], "rate": 60, "water": true },
+      { "id": 73, "name": "Tentacruel", "level": [36, 41], "rate": 10, "water": true },
+      { "id": 129, "name": "Magikarp", "level": [5, 40], "rate": 40, "water": true },
+      { "id": 130, "name": "Gyarados", "level": [15, 40], "rate": 1, "water": true },
+      { "id": 54, "name": "Psyduck", "level": [34, 39], "rate": 30, "water": true },
+      { "id": 55, "name": "Golduck", "level": [36, 41], "rate": 5, "water": true }
+    ],
+    "trainers": [],
+    "music": "water_theme"
+  },
+
+  "ruta_23": {
+    "name": "Ruta 23",
+    "description": "El camino final hacia la Liga Pokémon. Está lleno de entrenadores fuertes.",
+    "type": "route",
+    "connections": ["liga_pokemon_entrada", "ciudad_verde"],
+    "requirements": ["badge_earth"],
+    "wild_pokemon": [
+      { "id": 21, "name": "Spearow", "level": [32, 37], "rate": 20 },
+      { "id": 22, "name": "Fearow", "level": [34, 39], "rate": 10 },
+      { "id": 27, "name": "Sandshrew", "level": [32, 37], "rate": 20 },
+      { "id": 28, "name": "Sandslash", "level": [34, 39], "rate": 10 },
+      { "id": 56, "name": "Mankey", "level": [32, 37], "rate": 20 },
+      { "id": 57, "name": "Primeape", "level": [34, 39], "rate": 10 },
+      { "id": 96, "name": "Drowzee", "level": [33, 38], "rate": 15 },
+      { "id": 97, "name": "Hypno", "level": [35, 40], "rate": 5 }
+    ],
+    "trainers": [
+      {
+        "id": "cooltrainer_cody",
+        "name": "Entrenador Élite Cody",
+        "team": [
+          { "id": 65, "name": "Alakazam", "level": 44, "moves": ["Psíquico", "Recuperación", "Rayo Confuso", "Reflejo"] },
+          { "id": 103, "name": "Exeggutor", "level": 44, "moves": ["Rayo Solar", "Confusión", "Hipnosis", "Huevo Bomba"] }
+        ],
+        "reward": { "money": 1760, "exp": 880 },
+        "dialogue": {
+          "start": "Solo los más fuertes llegan hasta aquí. ¿Eres uno de ellos?",
+          "win": "Eres digno de la Liga Pokémon.",
+          "lose": "Todavía no estás listo."
+        },
+        "defeated": false
+      }
+    ],
+    "music": "victory_road_theme"
+  },
+
+  "victory_road": {
+    "name": "Camino Victoria",
+    "description": "Una cueva que es la última prueba antes de la Liga Pokémon.",
+    "type": "cave",
+    "connections": ["ruta_23", "liga_pokemon"],
+    "requirements": ["8_badges"],
+    "wild_pokemon": [
+      { "id": 74, "name": "Geodude", "level": [38, 43], "rate": 20 },
+      { "id": 75, "name": "Graveler", "level": [40, 45], "rate": 15 },
+      { "id": 95, "name": "Onix", "level": [39, 44], "rate": 20 },
+      { "id": 66, "name": "Machop", "level": [38, 43], "rate": 15 },
+      { "id": 67, "name": "Machoke", "level": [40, 45], "rate": 10 },
+      { "id": 41, "name": "Zubat", "level": [38, 43], "rate": 10 },
+      { "id": 42, "name": "Golbat", "level": [40, 45], "rate": 5 },
+      { "id": 111, "name": "Rhyhorn", "level": [39, 44], "rate": 5 }
+    ],
+    "trainers": [
+      {
+        "id": "cooltrainer_naomi",
+        "name": "Entrenadora Élite Naomi",
+        "team": [
+          { "id": 26, "name": "Raichu", "level": 42, "moves": ["Trueno", "Ataque Rápido", "Cola Férrea", "Agilidad"] },
+          { "id": 31, "name": "Nidoqueen", "level": 42, "moves": ["Terremoto", "Megapatada", "Lengüetazo", "Defensa Férrea"] }
+        ],
+        "reward": { "money": 1680, "exp": 840 },
+        "dialogue": {
+          "start": "Este es el último obstáculo. ¿Tienes lo que se necesita?",
+          "win": "Impresionante. Puedes seguir adelante.",
+          "lose": "El Camino Victoria te ha derrotado."
+        },
+        "defeated": false
+      }
+    ],
+    "music": "victory_road_theme"
+  },
+
+  "liga_pokemon": {
+    "name": "Liga Pokémon",
+    "description": "La cima del entrenamiento Pokémon. Aquí te enfrentarás al Alto Mando y al Campeón.",
+    "type": "elite",
+    "connections": ["victory_road"],
+    "requirements": ["8_badges"],
+    "trainers": [
+      {
+        "id": "lorelei",
+        "name": "Lorelei",
+        "type": "Hielo",
+        "team": [
+          { "id": 87, "name": "Dewgong", "level": 54, "moves": ["Rayo Burbuja", "Hielo Seco", "Descanso", "Canto"] },
+          { "id": 91, "name": "Cloyster", "level": 53, "moves": ["Rayo Burbuja", "Hielo Seco", "Concha Filo", "Explosión"] },
+          { "id": 80, "name": "Slowbro", "level": 54, "moves": ["Psíquico", "Rayo Burbuja", "Cabeza de Hierro", "Amnesia"] },
+          { "id": 124, "name": "Jynx", "level": 56, "moves": ["Hielo Seco", "Psíquico", "Lovely Kiss", "Doble Bofetón"] },
+          { "id": 131, "name": "Lapras", "level": 56, "moves": ["Rayo Burbuja", "Hielo Seco", "Cuerpo Pesado", "Confusión"] }
+        ],
+        "reward": { "money": 5600, "exp": 2800 },
+        "dialogue": {
+          "start": "Soy Lorelei del Alto Mando. Mis Pokémon de hielo son de una belleza gélida. ¿Podrás resistir su frío?",
+          "win": "Eres algo especial...",
+          "lose": "El frío te ha congelado."
+        },
+        "defeated": false,
+        "elite_four": true,
+        "order": 1
+      },
+      {
+        "id": "bruno",
+        "name": "Bruno",
+        "type": "Lucha",
+        "team": [
+          { "id": 95, "name": "Onix", "level": 53, "moves": ["Terremoto", "Roca Afilada", "Furia", "Excavar"] },
+          { "id": 107, "name": "Hitmonchan", "level": 55, "moves": ["Golpe Karate", "Megapatada", "Contraataque", "Agilidad"] },
+          { "id": 106, "name": "Hitmonlee", "level": 55, "moves": ["Patada Salto Alta", "Giro Patada", "Foco Energía", "Hiperrayo"] },
+          { "id": 95, "name": "Onix", "level": 56, "moves": ["Terremoto", "Roca Afilada", "Furia", "Excavar"] },
+          { "id": 68, "name": "Machamp", "level": 58, "moves": ["Sumisión", "Golpe Karate", "Foco Energía", "Demolición"] }
+        ],
+        "reward": { "money": 5800, "exp": 2900 },
+        "dialogue": {
+          "start": "¡Soy Bruno del Alto Mando! Entreno duro todos los días con mis Pokémon de lucha. ¡Preparate para una batalla intensa!",
+          "win": "¿Por qué? ¿Cómo pude perder?",
+          "lose": "¡La disciplina y el entrenamiento siempre ganan!"
+        },
+        "defeated": false,
+        "elite_four": true,
+        "order": 2
+      },
+      {
+        "id": "agatha",
+        "name": "Agatha",
+        "type": "Fantasma",
+        "team": [
+          { "id": 94, "name": "Gengar", "level": 56, "moves": ["Hipnosis", "Rayo Confuso", "Bola Sombra", "Megapuño"] },
+          { "id": 42, "name": "Golbat", "level": 56, "moves": ["Toxi", "Mordisco", "Confusión", "Ataque Ala"] },
+          { "id": 93, "name": "Haunter", "level": 55, "moves": ["Hipnosis", "Rayo Confuso", "Bola Sombra", "Megapuño"] },
+          { "id": 24, "name": "Arbok", "level": 58, "moves": ["Ácido", "Mordisco", "Golpe Cabeza", "Garra Dragón"] },
+          { "id": 94, "name": "Gengar", "level": 60, "moves": ["Hipnosis", "Rayo Confuso", "Bola Sombra", "Psíquico"] }
+        ],
+        "reward": { "money": 6000, "exp": 3000 },
+        "dialogue": {
+          "start": "Soy Agatha del Alto Mando. Oak es solo un viejo tonto. ¡Los Pokémon son para luchar! ¡Muéstrame de qué estás hecho!",
+          "win": "Eres un entrenador excepcional...",
+          "lose": "¡Joven e inexperto! ¡Vuelve cuando hayas aprendido!"
+        },
+        "defeated": false,
+        "elite_four": true,
+        "order": 3
+      },
+      {
+        "id": "lance",
+        "name": "Lance",
+        "type": "Dragón",
+        "team": [
+          { "id": 130, "name": "Gyarados", "level": 58, "moves": ["Hidrobomba", "Dragon Rage", "Hiperrayo", "Torbellino"] },
+          { "id": 149, "name": "Dragonite", "level": 60, "moves": ["Hiperrayo", "Dragon Rage", "Vuelo", "Agilidad"] },
+          { "id": 148, "name": "Dragonair", "level": 56, "moves": ["Dragon Rage", "Rayo", "Hidrobomba", "Wrap"] },
+          { "id": 148, "name": "Dragonair", "level": 56, "moves": ["Dragon Rage", "Rayo", "Hidrobomba", "Wrap"] },
+          { "id": 149, "name": "Dragonite", "level": 62, "moves": ["Hiperrayo", "Dragon Rage", "Vuelo", "Reflejo"] }
+        ],
+        "reward": { "money": 6200, "exp": 3100 },
+        "dialogue": {
+          "start": "Soy Lance del Alto Mando. He viajado por todo el mundo entrenando Pokémon dragón. Son casi legendarios. ¿Estás listo para enfrentarte a la leyenda?",
+          "win": "¡Eso fue increíble! Eres un verdadero maestro Pokémon.",
+          "lose": "Los dragones son los reyes de los Pokémon."
+        },
+        "defeated": false,
+        "elite_four": true,
+        "order": 4
+      },
+      {
+        "id": "champion_blue",
+        "name": "Campeón Blue",
+        "type": "Variado",
+        "team": [
+          { "id": 18, "name": "Pidgeot", "level": 61, "moves": ["Ataque Ala", "Vendaval", "Arenilla", "Agilidad"] },
+          { "id": 65, "name": "Alakazam", "level": 59, "moves": ["Psíquico", "Recuperación", "Rayo Confuso", "Reflejo"] },
+          { "id": 112, "name": "Rhydon", "level": 61, "moves": ["Terremoto", "Roca Afilada", "Megapatada", "Furia"] },
+          { "id": 103, "name": "Exeggutor", "level": 59, "moves": ["Rayo Solar", "Psíquico", "Huevo Bomba", "Reflejo"] },
+          { "id": 59, "name": "Arcanine", "level": 61, "moves": ["Lanzallamas", "Giro Fuego", "Mordisco", "Velocidad"] },
+          { "id": 6, "name": "Charizard", "level": 63, "moves": ["Lanzallamas", "Giro Fuego", "Garra Dragón", "Corte"] }
+        ],
+        "reward": {
+          "money": 10000,
+          "title": "Campeón de la Liga Pokémon",
+          "access": ["hall_of_fame"]
+        },
+        "dialogue": {
+          "start": "¡Yo soy el Campeón de la Liga Pokémon! ¡El más fuerte de todos! ¿Tú? ¿Qué haces aquí? Oh, ya veo... ¡Pensaste que podías retarme! ¡JA! ¡Mis Pokémon y yo te destruiremos!",
+          "win": "¡NO! ¡No puede ser! ¡He perdido! ¡Después de todo el entrenamiento...! ¡Tú eres el nuevo Campeón de la Liga Pokémon!",
+          "lose": "¡JA! ¡Te lo dije! ¡Nadie puede vencer al Campeón!"
+        },
+        "defeated": false,
+        "champion": true,
+        "order": 5
+      }
+    ],
+    "leader": null,
+    "music": "champion_theme",
+    "healing_between": true
+  },
+
+  "ciudad_verde": {
+    "name": "Ciudad Verde",
+    "description": "Una ciudad en la cima de una montaña con el último gimnasio de tipo Tierra.",
+    "type": "city",
+    "connections": ["ruta_23"],
+    "requirements": ["7_badges"],
+    "services": {
+      "center": true,
+      "shop": true,
+      "gym": true,
+      "special": []
+    },
+    "wild_pokemon": [],
+    "trainers": [],
+    "music": "mountain_theme"
+  },
+
+  "gimnasio_verde": {
+    "name": "Gimnasio de Ciudad Verde",
+    "description": "Gimnasio de tipo Tierra. Giovanni es el líder y jefe del Team Rocket.",
+    "type": "gym",
+    "connections": ["ciudad_verde"],
+    "requirements": ["7_badges"],
+    "trainers": [
+      {
+        "id": "cooltrainer_yuji",
+        "name": "Entrenador Élite Yuji",
+        "team": [
+          { "id": 31, "name": "Nidoqueen", "level": 42, "moves": ["Terremoto", "Megapatada", "Lengüetazo", "Defensa Férrea"] },
+          { "id": 34, "name": "Nidoking", "level": 42, "moves": ["Terremoto", "Megapatada", "Cornada", "Foco Energía"] }
+        ],
+        "reward": { "money": 1680, "exp": 840 },
+        "dialogue": {
+          "start": "Giovanni es el líder más fuerte. ¿Crees que puedes llegar hasta él?",
+          "win": "Impresionante... Quizás sí puedas.",
+          "lose": "Giovanni es aún más fuerte."
+        },
+        "defeated": false
+      }
+    ],
+    "leader": {
+      "id": "giovanni",
+      "name": "Giovanni",
+      "type": "Tierra",
+      "team": [
+        { "id": 50, "name": "Diglett", "level": 45, "moves": ["Excavar", "Ataque Rápido", "Tumba Rocas", "Corte"] },
+        { "id": 51, "name": "Dugtrio", "level": 42, "moves": ["Excavar", "Ataque Rápido", "Tumba Rocas", "Corte"] },
+        { "id": 53, "name": "Persian", "level": 44, "moves": ["Arañazo", "Mordisco", "Ataque Rápido", "Golpe"] },
+        { "id": 31, "name": "Nidoqueen", "level": 45, "moves": ["Terremoto", "Megapatada", "Lengüetazo", "Defensa Férrea"] },
+        { "id": 34, "name": "Nidoking", "level": 45, "moves": ["Terremoto", "Megapatada", "Cornada", "Foco Energía"] },
+        { "id": 112, "name": "Rhydon", "level": 50, "moves": ["Terremoto", "Roca Afilada", "Megapatada", "Furia"] }
+      ],
+      "reward": {
+        "money": 3500,
+        "badge": "badge_earth",
+        "tm": "tm27"
+      },
+      "dialogue": {
+        "start": "Soy Giovanni, el líder del gimnasio y del Team Rocket. El poder de la tierra es absoluto. ¡Prepárate para ser enterrado!",
+        "win": "¡No! El Team Rocket ha sido derrotado... Por ahora. Toma la Medalla Tierra. Has ganado las 8 medallas.",
+        "lose": "¡La tierra siempre gana! El Team Rocket prevalecerá."
+      }
+    },
+    "music": "gym_theme"
+  },
+
+  "central_energia": {
+    "name": "Central de Energía",
+    "description": "Una planta de energía abandonada infestada de Pokémon eléctricos.",
+    "type": "dungeon",
+    "connections": ["ruta_10"],
+    "requirements": ["hm_surf"],
+    "wild_pokemon": [
+      { "id": 100, "name": "Voltorb", "level": [22, 27], "rate": 40 },
+      { "id": 101, "name": "Electrode", "level": [24, 29], "rate": 10 },
+      { "id": 81, "name": "Magnemite", "level": [22, 27], "rate": 40 },
+      { "id": 82, "name": "Magneton", "level": [24, 29], "rate": 10 },
+      { "id": 125, "name": "Electabuzz", "level": [26, 31], "rate": 5 }
+    ],
+    "trainers": [
+      {
+        "id": "team_rocket_grunt_3",
+        "name": "Team Rocket Grunt",
+        "team": [
+          { "id": 100, "name": "Voltorb", "level": 23, "moves": ["Chispazo", "Sonámbulo", "Bomba Sónica"] },
+          { "id": 100, "name": "Voltorb", "level": 23, "moves": ["Chispazo", "Sonámbulo", "Bomba Sónica"] },
+          { "id": 81, "name": "Magnemite", "level": 23, "moves": ["Chispazo", "Sonic Boom", "Rayo Confuso"] }
+        ],
+        "reward": { "money": 460, "exp": 230 },
+        "dialogue": {
+          "start": "¡El Team Rocket está robando la energía de esta planta! ¡No te interpongas!",
+          "win": "¡El jefe no estará contento!",
+          "lose": "¡La energía es del Team Rocket!"
+        },
+        "defeated": false,
+        "special": true
+      }
+    ],
+    "music": "power_plant_theme"
+  },
+
+  "seafoam_islands": {
+    "name": "Islas Espuma",
+    "description": "Un archipiélago de islas heladas. La cueva principal contiene a Articuno.",
+    "type": "island",
+    "connections": ["ruta_19", "ruta_20"],
+    "requirements": ["hm_surf", "hm_strength"],
+    "wild_pokemon": [
+      { "id": 86, "name": "Seel", "level": [30, 35], "rate": 40 },
+      { "id": 87, "name": "Dewgong", "level": [32, 37], "rate": 10 },
+      { "id": 90, "name": "Shellder", "level": [30, 35], "rate": 30 },
+      { "id": 91, "name": "Cloyster", "level": [32, 37], "rate": 5 },
+      { "id": 144, "name": "Articuno", "level": 50, "rate": 100, "legendary": true, "one_time": true }
+    ],
+    "trainers": [],
+    "music": "ice_cave_theme"
+  },
+
+  "cerulean_cave": {
+    "name": "Cueva Celeste",
+    "description": "Una cueva extremadamente profunda y peligrosa. Se dice que Mewtwo vive aquí.",
+    "type": "cave",
+    "connections": ["ciudad_celeste"],
+    "requirements": ["become_champion"],
+    "wild_pokemon": [
+      { "id": 41, "name": "Zubat", "level": [52, 57], "rate": 20 },
+      { "id": 42, "name": "Golbat", "level": [54, 59], "rate": 15 },
+      { "id": 74, "name": "Geodude", "level": [52, 57], "rate": 15 },
+      { "id": 75, "name": "Graveler", "level": [54, 59], "rate": 10 },
+      { "id": 95, "name": "Onix", "level": [53, 58], "rate": 15 },
+      { "id": 64, "name": "Kadabra", "level": [53, 58], "rate": 10 },
+      { "id": 65, "name": "Alakazam", "level": [55, 60], "rate": 5 },
+      { "id": 150, "name": "Mewtwo", "level": 70, "rate": 100, "legendary": true, "one_time": true }
+    ],
+    "trainers": [],
+    "music": "legendary_theme"
   }
 }
