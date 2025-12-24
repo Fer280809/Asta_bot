@@ -1,4 +1,4 @@
-// handler.js - VERSIÓN OPTIMIZADA
+// handler.js - VERSIÓN COMPLETA OPTIMIZADA
 import { smsg } from "./lib/simple.js"
 import { format } from "util"
 import { fileURLToPath } from "url"
@@ -7,13 +7,14 @@ import fs, { unwatchFile, watchFile } from "fs"
 import chalk from "chalk"
 import fetch from "node-fetch"
 import ws from "ws"
+// Importación necesaria para la detección de admins
+import { jidNormalizedUser, areJidsSameUser } from '@whiskeysockets/baileys'
 
 // ============ MÓDULOS OPTIMIZADOS ============
 import { UserManager } from './lib/database/userManager.js'
 import { ChatManager } from './lib/database/chatManager.js'
 import { DatabaseCache } from './lib/database/cacheLayer.js'
 import { PermissionManager } from './lib/commandSystem/permissionManager.js'
-import { CommandLoader } from './lib/commandSystem/commandLoader.js'
 import { CommandExecutor } from './lib/commandSystem/commandExecutor.js'
 import { FloodProtection } from './lib/middlewares/antiFlood.js'
 import { StatsTracker } from './lib/middlewares/statsTracker.js'
@@ -63,25 +64,29 @@ export async function handler(chatUpdate) {
         
         // 7. GESTIÓN DE DATOS DEL USUARIO (OPTIMIZADO)
         const userData = await dbCache.getUser(m.sender, async () => {
-            return UserManager.ensureUserSchema(
-                global.db.data.users[m.sender] || {},
-                m.sender,
-                m.pushName || m.name
-            )
+            const user = global.db.data.users[m.sender] || {}
+            const userName = m.pushName || m.name || await this.getName(m.sender).catch(() => '')
+            return UserManager.ensureUserSchema(user, m.sender, userName)
         })
+        
+        // Actualizar en la base de datos global
+        global.db.data.users[m.sender] = userData
         
         // 8. GESTIÓN DE DATOS DEL CHAT (OPTIMIZADO)
-        const chatData = await dbCache.getChat(m.chat, async () => {
-            return ChatManager.ensureChatSchema(
-                global.db.data.chats[m.chat] || {},
-                m.chat
-            )
-        })
+        if (m.chat) {
+            const chatData = await dbCache.getChat(m.chat, async () => {
+                const chat = global.db.data.chats[m.chat] || {}
+                return ChatManager.ensureChatSchema(chat, m.chat)
+            })
+            global.db.data.chats[m.chat] = chatData
+        }
         
         // 9. GESTIÓN DE CONFIGURACIÓN
-        const settings = ChatManager.ensureSettingsSchema(
-            global.db.data.settings[this.user.jid] || {}
-        )
+        if (!global.db.data.settings[this.user.jid]) {
+            global.db.data.settings[this.user.jid] = {}
+        }
+        const settings = ChatManager.ensureSettingsSchema(global.db.data.settings[this.user.jid])
+        global.db.data.settings[this.user.jid] = settings
         
         // 10. ACTUALIZAR NOMBRE DEL USUARIO SI CAMBIÓ
         await UserManager.updateUserName(m.sender, m.pushName || await this.getName(m.sender).catch(() => null))
@@ -89,19 +94,20 @@ export async function handler(chatUpdate) {
         // 11. VERIFICAR PERMISOS (OPTIMIZADO)
         const permissions = await PermissionManager.checkAll(m, this, {
             userData,
-            chatData,
+            chatData: global.db.data.chats[m.chat] || {},
             settings
         })
         
         // 12. VALIDAR ACCESO BÁSICO
         if (settings.self && !permissions.isOwners) return
+        
         if (settings.gponly && !permissions.isOwners && !m.chat.endsWith('g.us')) {
-            const allowedCommands = /code|p|ping|qr|estado|status|infobot|botinfo|report|reportar|invite|join|logout|suggest|help|menu/i
-            if (!allowedCommands.test(m.text)) return
+            const allowedCommands = /^(code|p|ping|qr|estado|status|infobot|botinfo|report|reportar|invite|join|logout|suggest|help|menu)/i
+            if (!allowedCommands.test(m.text || '')) return
         }
         
         // 13. SISTEMA DE COLA OPTIMIZADO
-        if (opts["queque"] && m.text && !permissions.isPrems) {
+        if (opts && opts["queque"] && m.text && !permissions.isPrems) {
             const queque = this.msgqueque
             const time = 1000 * 5
             const previousID = queque[queque.length - 1]
@@ -121,7 +127,7 @@ export async function handler(chatUpdate) {
         if (m.text) {
             await processCommands(m, this, {
                 userData,
-                chatData,
+                chatData: global.db.data.chats[m.chat] || {},
                 settings,
                 permissions
             })
@@ -132,9 +138,19 @@ export async function handler(chatUpdate) {
         
     } catch (error) {
         console.error(chalk.red('❌ Error en handler:'), error)
+        statsTracker.trackError()
     } finally {
         // 17. LIMPIAR COLA DE MENSAJES
         cleanupMessageQueue(this, m)
+        
+        // 18. IMPRIMIR MENSAJE (SI ESTÁ ACTIVADO)
+        try {
+            if (!opts || !opts["noprint"]) {
+                await (await import("./lib/print.js")).default(m, this)
+            }
+        } catch (err) {
+            console.warn('Error en print.js:', err)
+        }
     }
 }
 
@@ -149,8 +165,10 @@ async function processCommands(m, conn, context) {
     
     // OBTENER METADATOS DEL GRUPO SI ES NECESARIO
     let groupMetadata = {}
+    let participants = []
     if (m.isGroup) {
         groupMetadata = await getGroupMetadata(m.chat, conn)
+        participants = Array.isArray(groupMetadata?.participants) ? groupMetadata.participants : []
     }
     
     // DIRECTORIO DE PLUGINS
@@ -180,7 +198,7 @@ async function processCommands(m, conn, context) {
         }
         
         // SI NO HAY RESTRICCIONES Y ES COMANDO DE ADMIN, CONTINUAR
-        if (!opts["restrict"] && plugin.tags && plugin.tags.includes("admin")) {
+        if (opts && opts["restrict"] !== true && plugin.tags && plugin.tags.includes("admin")) {
             continue
         }
         
@@ -204,13 +222,14 @@ async function processCommands(m, conn, context) {
         if (isSpecialMessageId(m.id)) return
         
         // VERIFICAR BOT PRINCIPAL
-        await checkPrimaryBot(m.chat, conn, chatData)
+        await checkPrimaryBot(m.chat, conn, chatData, m.plugin)
         
         // VERIFICAR SI EL COMANDO ES ACEPTADO
         if (!isCommandAccepted(plugin, command)) continue
         
         // MARCAR PLUGIN ACTUAL
         m.plugin = name
+        global.comando = command
         
         // INCREMENTAR CONTADOR DE COMANDOS
         if (userData) {
@@ -223,7 +242,7 @@ async function processCommands(m, conn, context) {
         }
         
         // VERIFICAR PERMISOS DEL COMANDO
-        const commandPermissions = await verifyCommandPermissions(plugin, permissions, m, conn)
+        const commandPermissions = await verifyCommandPermissions(plugin, permissions, m, conn, chatData)
         if (!commandPermissions.allowed) {
             global.dfail(commandPermissions.failType, m, conn)
             continue
@@ -239,7 +258,7 @@ async function processCommands(m, conn, context) {
             command,
             text,
             conn,
-            participants: groupMetadata.participants || [],
+            participants,
             groupMetadata,
             userGroup: permissions.userGroup,
             botGroup: permissions.botGroup,
@@ -257,8 +276,36 @@ async function processCommands(m, conn, context) {
             settings
         }
         
-        // EJECUTAR COMANDO
-        await CommandExecutor.execute(plugin, m, executionContext)
+        // EJECUTAR before() SI EXISTE
+        if (typeof plugin.before === "function") {
+            try {
+                const beforeResult = await plugin.before.call(conn, m, executionContext)
+                if (beforeResult === true) continue
+            } catch (err) {
+                console.error(chalk.red(`Error en plugin.before de ${name}:`), err)
+                continue
+            }
+        }
+        
+        // EJECUTAR COMANDO PRINCIPAL
+        m.isCommand = true
+        m.exp += plugin.exp ? parseInt(plugin.exp) : 10
+        
+        try {
+            await plugin.call(conn, m, executionContext)
+        } catch (err) {
+            m.error = err
+            console.error(chalk.red(`Error ejecutando comando ${name}:`), err)
+        } finally {
+            // EJECUTAR after() SI EXISTE
+            if (typeof plugin.after === "function") {
+                try {
+                    await plugin.after.call(conn, m, executionContext)
+                } catch (err) {
+                    console.error(chalk.red(`Error en plugin.after de ${name}:`), err)
+                }
+            }
+        }
     }
 }
 
@@ -280,22 +327,29 @@ async function getGroupMetadata(chatId, conn) {
  * Encuentra coincidencia de prefijo
  */
 function findPrefixMatch(text, pluginPrefix, strRegex) {
+    if (!text) return null
+    
     if (pluginPrefix instanceof RegExp) {
-        return [[pluginPrefix.exec(text), pluginPrefix]]
+        const result = pluginPrefix.exec(text)
+        return result ? [result[0], result] : null
     }
     
     if (Array.isArray(pluginPrefix)) {
-        return pluginPrefix.map(prefix => {
+        for (const prefix of pluginPrefix) {
             const regex = prefix instanceof RegExp ? 
-                prefix : new RegExp(strRegex(prefix))
-            return [regex.exec(text), regex]
-        }).find(prefix => prefix[0])
+                prefix : new RegExp(`^${strRegex(prefix)}`)
+            const result = regex.exec(text)
+            if (result) {
+                return [result[0], result]
+            }
+        }
+        return null
     }
     
     if (typeof pluginPrefix === "string") {
-        const regex = new RegExp(strRegex(pluginPrefix))
-        const exec = regex.exec(text)
-        return exec ? [[exec, regex]] : null
+        const regex = new RegExp(`^${strRegex(pluginPrefix)}`)
+        const result = regex.exec(text)
+        return result ? [result[0], result] : null
     }
     
     return null
@@ -305,6 +359,7 @@ function findPrefixMatch(text, pluginPrefix, strRegex) {
  * Verifica si es un ID de mensaje especial
  */
 function isSpecialMessageId(messageId) {
+    if (!messageId) return false
     return (
         messageId.startsWith("NJX-") ||
         (messageId.startsWith("BAE5") && messageId.length === 16) ||
@@ -315,26 +370,32 @@ function isSpecialMessageId(messageId) {
 /**
  * Verifica el bot principal del grupo
  */
-async function checkPrimaryBot(chatId, conn, chatData) {
+async function checkPrimaryBot(chatId, conn, chatData, pluginName) {
+    if (pluginName === "group-banchat.js") return
+    
     const botId = conn.user.jid
-    const primaryBotId = chatData.primaryBot
+    const primaryBotId = chatData?.primaryBot
     
     if (primaryBotId && primaryBotId !== botId) {
-        const primaryBotConn = global.conns?.find(conn => 
-            conn.user.jid === primaryBotId && 
-            conn.ws.socket && 
-            conn.ws.socket.readyState !== ws.CLOSED
-        )
-        
-        if (primaryBotConn) {
-            const participants = await conn.groupMetadata(chatId).catch(() => ({ participants: [] }))
-            const primaryBotInGroup = participants.participants?.some(p => p.jid === primaryBotId)
+        try {
+            const primaryBotConn = global.conns?.find(conn => 
+                conn && conn.user && conn.user.jid === primaryBotId && 
+                conn.ws && conn.ws.socket && 
+                conn.ws.socket.readyState !== ws.CLOSED
+            )
             
-            if (primaryBotInGroup || primaryBotId === conn.user.jid) {
-                throw new Error("Bot secundario - redirigiendo a bot principal")
-            } else {
-                chatData.primaryBot = null
+            if (primaryBotConn) {
+                const participants = await conn.groupMetadata(chatId).catch(() => ({ participants: [] }))
+                const primaryBotInGroup = participants.participants?.some(p => p.jid === primaryBotId)
+                
+                if (primaryBotInGroup || primaryBotId === conn.user.jid) {
+                    throw new Error("Bot secundario - redirigiendo a bot principal")
+                } else {
+                    chatData.primaryBot = null
+                }
             }
+        } catch (error) {
+            // Ignorar error, continuar ejecución
         }
     }
 }
@@ -343,6 +404,8 @@ async function checkPrimaryBot(chatId, conn, chatData) {
  * Verifica si el comando es aceptado por el plugin
  */
 function isCommandAccepted(plugin, command) {
+    if (!plugin.command || !command) return false
+    
     if (plugin.command instanceof RegExp) {
         return plugin.command.test(command)
     }
@@ -365,22 +428,22 @@ function isCommandAccepted(plugin, command) {
  */
 async function isChatRestricted(m, conn, chatData, userData, permissions, usedPrefix) {
     const botId = conn.user.jid
-    const primaryBotId = chatData.primaryBot
+    const primaryBotId = chatData?.primaryBot
     
     // 1. Verificar si el chat está baneado
     if (m.plugin !== "group-banchat.js" && chatData?.isBanned && !permissions.isROwner) {
         if (!primaryBotId || primaryBotId === botId) {
-            const aviso = `⚠️ El bot *${global.botname}* está desactivado en este grupo.\n\n> 🔹 Un *administrador* puede activarlo usando el comando:\n> » *${usedPrefix}bot on*`.trim()
-            await m.reply(aviso)
+            const aviso = `⚠️ El bot *${global.botname || 'Bot'}* está desactivado en este grupo.\n\n> 🔹 Un *administrador* puede activarlo usando el comando:\n> » *${usedPrefix}bot on*`.trim()
+            await m.reply(aviso).catch(() => {})
             return true
         }
     }
     
     // 2. Verificar si el usuario está baneado
-    if (m.text && userData.banned && !permissions.isROwner) {
+    if (m.text && userData?.banned && !permissions.isROwner) {
         if (!primaryBotId || primaryBotId === botId) {
-            const mensaje = `🚫 *Acceso Denegado* 🚫\nꕙ Has sido *baneado/a* y no puedes usar comandos en este bot.\n\n> ⚡ *Razón:* ${userData.bannedReason}\n> 🛡️ *Si crees que esto es un error*, y el bot es oficial, presenta tu caso ante un *moderador* para revisión.`.trim()
-            await m.reply(mensaje)
+            const mensaje = `🚫 *Acceso Denegado* 🚫\nꕙ Has sido *baneado/a* y no puedes usar comandos en este bot.\n\n> ⚡ *Razón:* ${userData.bannedReason || 'No especificada'}\n> 🛡️ *Si crees que esto es un error*, y el bot es oficial, presenta tu caso ante un *moderador* para revisión.`.trim()
+            await m.reply(mensaje).catch(() => {})
             return true
         }
     }
@@ -391,11 +454,11 @@ async function isChatRestricted(m, conn, chatData, userData, permissions, usedPr
 /**
  * Verifica permisos del comando
  */
-async function verifyCommandPermissions(plugin, permissions, m, conn) {
+async function verifyCommandPermissions(plugin, permissions, m, conn, chatData) {
     const { isROwner, isOwner, isRAdmin, isAdmin, isBotAdmin, isPrems } = permissions
     
     // Modo solo admin en grupo
-    const adminMode = permissions.chat?.modoadmin || false
+    const adminMode = chatData?.modoadmin || false
     const requiresAdmin = plugin.botAdmin || plugin.admin || plugin.group
     
     if (adminMode && !isOwner && m.isGroup && !isAdmin && requiresAdmin) {
@@ -438,7 +501,14 @@ async function updateStatistics(m, userData) {
     try {
         if (m && m.sender && userData) {
             userData.exp += m.exp || 0
-            await statsTracker.trackCommand(m.sender, m.command || m.plugin)
+            
+            // Actualizar en la base de datos global
+            if (global.db.data && global.db.data.users) {
+                global.db.data.users[m.sender] = userData
+            }
+            
+            // Registrar en el tracker
+            statsTracker.trackCommand(m.sender, m.command || m.plugin || 'unknown')
         }
     } catch (error) {
         console.error('Error actualizando estadísticas:', error)
@@ -450,7 +520,7 @@ async function updateStatistics(m, userData) {
  */
 function cleanupMessageQueue(conn, m) {
     try {
-        if (opts["queque"] && m && m.text) {
+        if (m && m.text && conn.msgqueque) {
             const quequeIndex = conn.msgqueque.indexOf(m.id || m.key.id)
             if (quequeIndex !== -1) {
                 conn.msgqueque.splice(quequeIndex, 1)
@@ -461,7 +531,7 @@ function cleanupMessageQueue(conn, m) {
     }
 }
 
-// ============ FUNCIÓN dfail ACTUALIZADA ============
+// ============ FUNCIÓN dFAIL ACTUALIZADA ============
 global.dfail = (type, m, conn) => {
     const messages = {
         rowner: `🎅 *¡ACCESO DENEGADO!*\n\nEste comando es exclusivo para los creadores del bot.\n\n🎄 ¡Feliz Navidad! 🎁`,
@@ -476,7 +546,9 @@ global.dfail = (type, m, conn) => {
     }
     
     if (messages[type]) {
-        return conn.reply(m.chat, messages[type], m).then(_ => m.react?.('✖️'))
+        return conn.reply(m.chat, messages[type], m).then(_ => {
+            if (m.react) m.react('✖️')
+        }).catch(() => {})
     }
 }
 
