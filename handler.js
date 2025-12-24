@@ -91,8 +91,6 @@ export async function handler(chatUpdate) {
                 if (!("nsfw" in chat)) chat.nsfw = false
                 if (!("economy" in chat)) chat.economy = true;
                 if (!("gacha" in chat)) chat.gacha = true
-                // Inicializar lista de usuarios silenciados si no existe
-                if (!("muted" in chat) || !Array.isArray(chat.muted)) chat.muted = []
             } else global.db.data.chats[m.chat] = {
                 isBanned: false,
                 isMute: false,
@@ -105,8 +103,7 @@ export async function handler(chatUpdate) {
                 antiLink: true,
                 nsfw: false,
                 economy: true,
-                gacha: true,
-                muted: []  // Lista de usuarios silenciados
+                gacha: true
             }
             const settings = global.db.data.settings[this.user.jid]
             if (typeof settings !== "object") {
@@ -136,7 +133,7 @@ export async function handler(chatUpdate) {
             if (typeof nuevo === "string" && nuevo.trim() && nuevo !== actual) {
                 user.name = nuevo
             }
-        } catch { }
+        } catch {}
         const chat = global.db.data.chats[m.chat]
         const settings = global.db.data.settings[this.user.jid]
         const isROwner = [...global.owner.map((number) => number)].map(v => v.replace(/[^0-9]/g, "") + "@s.whatsapp.net").includes(m.sender)
@@ -160,13 +157,13 @@ export async function handler(chatUpdate) {
         m.exp += Math.ceil(Math.random() * 10)
         let usedPrefix
 
-        // INICIO DE NUEVA LÓGICA ROBUSTA DE ADMINS
-        const groupMetadata = m.isGroup
-            ? (global.cachedGroupMetadata
-                ? await global.cachedGroupMetadata(m.chat).catch((_) => null)
-                : await this.groupMetadata(m.chat).catch((_) => null)) || {}
+                // INICIO DE NUEVA LÓGICA ROBUSTA DE ADMINS
+                const groupMetadata = m.isGroup 
+            ? (global.cachedGroupMetadata 
+                ? await global.cachedGroupMetadata(m.chat).catch((_) => null) 
+                : await this.groupMetadata(m.chat).catch((_) => null)) || {} 
             : {}
-
+            
         const participants = Array.isArray(groupMetadata?.participants) ? groupMetadata.participants : []
 
         // Funciones auxiliares para normalizar IDs
@@ -175,8 +172,8 @@ export async function handler(chatUpdate) {
         const numOnly = (j) => String(decode(j)).split('@')[0].replace(/[^0-9]/g, '')
 
         // Identificación robusta del propio Bot
-        const meIdRaw = this.user?.id || this.user?.jid
-        const meLidRaw = (this.user?.lid || conn?.user?.lid || '').toString().replace(/:.*/, '') || null
+        const meIdRaw = this.user?.id || this.user?.jid 
+        const meLidRaw = (this.user?.lid || conn?.user?.lid || '').toString().replace(/:.*/, '') || null 
         const botNum = numOnly(meIdRaw)
 
         const botCandidates = [
@@ -214,102 +211,7 @@ export async function handler(chatUpdate) {
         const isRAdmin = userGroup?.admin === 'superadmin'
         const isAdmin = isRAdmin || userGroup?.admin === 'admin' || userGroup?.admin === true
         const isBotAdmin = botGroup?.admin === 'admin' || botGroup?.admin === 'superadmin' || botGroup?.admin === true
-
-        // EN TU HANDLER.JS - Modifica solo la sección del mute (~líneas 180-220):
-
-        // ============================================
-// ✅ SISTEMA DE MUTE - BLOQUEO DE USUARIOS (VERSIÓN CORREGIDA)
-// ============================================
-if (m.isGroup) {
-    // 🔥 Obtener datos FRESCOS de la DB cada vez
-    const currentChat = global.db.data.chats[m.chat];
-    
-    // Verificar si la propiedad muted existe y es un array
-    if (!currentChat.muted || !Array.isArray(currentChat.muted)) {
-        currentChat.muted = [];
-    }
-    
-    const mutedUsers = currentChat.muted;
-    
-    // Solo procesar si hay usuarios silenciados
-    if (mutedUsers && mutedUsers.length > 0) {
-        // Verificar si el usuario está en la lista de silenciados
-        const userJid = m.sender;
-        const isUserMuted = mutedUsers.some(mutedJid => 
-            mutedJid === userJid || 
-            mutedJid.replace(/[^0-9]/g, '') === userJid.replace(/[^0-9]/g, '')
-        );
-        
-        if (isUserMuted) {
-            // Verificar si el usuario es admin/owner (excepción)
-            const isAdminOrOwner = isAdmin || isOwner || isROwner || m.fromMe;
-            
-            // Comandos permitidos incluso estando silenciado
-            const allowedCommands = ['unmute', 'help', 'owner', 'report', 'menu', 'admins', 'mutelist'];
-            const isCommandAllowed = m.text && allowedCommands.some(cmd =>
-                m.text.toLowerCase().startsWith(usedPrefix + cmd) ||
-                m.text.toLowerCase().includes(usedPrefix + cmd)
-            );
-            
-            if (!isAdminOrOwner && !isCommandAllowed) {
-                console.log(`[MUTE] Bloqueando mensaje de ${userJid} en ${m.chat}`);
-                console.log(`[MUTE] Usuario en lista: ${isUserMuted}`);
-                
-                // Verificar si el mensaje es del propio usuario silenciado
-                if (m.key && m.key.participant && m.key.participant === userJid) {
-                    // Opción 1: Intentar eliminar el mensaje si el bot es admin
-                    if (isBotAdmin) {
-                        try {
-                            console.log(`[MUTE] Intentando eliminar mensaje ID: ${m.id}`);
-                            
-                            await this.sendMessage(m.chat, {
-                                delete: {
-                                    remoteJid: m.chat,
-                                    id: m.id,
-                                    participant: userJid,
-                                    fromMe: false
-                                }
-                            });
-                            
-                            console.log(`[MUTE] Mensaje eliminado exitosamente`);
-                            
-                            // También enviar un mensaje temporal informativo
-                            setTimeout(async () => {
-                                try {
-                                    const deleteMsg = await this.sendMessage(m.chat, {
-                                        text: `🔇 @${userJid.split('@')[0]} está silenciado y no puede enviar mensajes.`,
-                                        mentions: [userJid]
-                                    }, { quoted: m });
-                                    
-                                    // Eliminar el mensaje informativo después de 3 segundos
-                                    setTimeout(async () => {
-                                        try {
-                                            await this.sendMessage(m.chat, {
-                                                delete: {
-                                                    remoteJid: m.chat,
-                                                    id: deleteMsg.key.id,
-                                                    fromMe: true
-                                                }
-                                            });
-                                        } catch (e) {}
-                                    }, 3000);
-                                } catch (e) {}
-                            }, 500);
-                            
-                        } catch (deleteErr) {
-                            console.error('[MUTE] Error al eliminar mensaje:', deleteErr);
-                        }
-                    }
-                }
-                
-                // IMPORTANTE: Retornar aquí para no procesar el mensaje
-                return;
-            }
-        }
-    }
-}
-
-        const ___dirname = path.join(path.dirname(fileURLToPath(import.meta.url)), "./plugins")
+                 const ___dirname = path.join(path.dirname(fileURLToPath(import.meta.url)), "./plugins")
         for (const name in global.plugins) {
             const plugin = global.plugins[name]
             if (!plugin) continue
@@ -340,40 +242,40 @@ if (m.isGroup) {
                     [pluginPrefix.exec(m.text), pluginPrefix]
                 ] :
                 Array.isArray(pluginPrefix) ?
-                    pluginPrefix.map(prefix => {
-                        const regex = prefix instanceof RegExp ?
-                            prefix : new RegExp(strRegex(prefix))
-                        return [regex.exec(m.text), regex]
-                    }) : typeof pluginPrefix === "string" ?
-                        [
-                            [new RegExp(strRegex(pluginPrefix)).exec(m.text), new RegExp(strRegex(pluginPrefix))]
-                        ] :
-                        [
-                            [
-                                [], new RegExp
-                            ]
-                        ]).find(prefix => prefix[1])
+                pluginPrefix.map(prefix => {
+                    const regex = prefix instanceof RegExp ?
+                        prefix : new RegExp(strRegex(prefix))
+                    return [regex.exec(m.text), regex]
+                }) : typeof pluginPrefix === "string" ?
+                [
+                    [new RegExp(strRegex(pluginPrefix)).exec(m.text), new RegExp(strRegex(pluginPrefix))]
+                ] :
+                [
+                    [
+                        [], new RegExp
+                    ]
+                ]).find(prefix => prefix[1])
             if (typeof plugin.before === "function") {
                 if (await plugin.before.call(this, m, {
-                    match,
-                    conn: this,
-                    participants,
-                    groupMetadata,
-                    userGroup,
-                    botGroup,
-                    isROwner,
-                    isOwner,
-                    isRAdmin,
-                    isAdmin,
-                    isBotAdmin,
-                    isPrems,
-                    chatUpdate,
-                    __dirname: ___dirname,
-                    __filename,
-                    user,
-                    chat,
-                    settings
-                })) {
+                        match,
+                        conn: this,
+                        participants,
+                        groupMetadata,
+                        userGroup,
+                        botGroup,
+                        isROwner,
+                        isOwner,
+                        isRAdmin,
+                        isAdmin,
+                        isBotAdmin,
+                        isPrems,
+                        chatUpdate,
+                        __dirname: ___dirname,
+                        __filename,
+                        user,
+                        chat,
+                        settings
+                    })) {
                     continue
                 }
             }
@@ -391,10 +293,10 @@ if (m.isGroup) {
                 const isAccept = plugin.command instanceof RegExp ?
                     plugin.command.test(command) :
                     Array.isArray(plugin.command) ?
-                        plugin.command.some(cmd => cmd instanceof RegExp ?
-                            cmd.test(command) : cmd === command) :
-                        typeof plugin.command === "string" ?
-                            plugin.command === command : false
+                    plugin.command.some(cmd => cmd instanceof RegExp ?
+                        cmd.test(command) : cmd === command) :
+                    typeof plugin.command === "string" ?
+                    plugin.command === command : false
                 global.comando = command
 
                 if ((m.id.startsWith("NJX-") || (m.id.startsWith("BAE5") && m.id.length === 16) || (m.id.startsWith("B24E") && m.id.length === 20))) return
@@ -411,7 +313,7 @@ if (m.isGroup) {
                     } else {
                         global.db.data.chats[m.chat].primaryBot = null
                     }
-                } else { }
+                } else {}
 
                 if (!isAccept) continue
                 m.plugin = name
@@ -546,7 +448,7 @@ if (m.isGroup) {
             admin: `🎄 *¡ELFO MAYOR REQUERIDO!*\n\nNecesitas ser administrador del grupo.\n\n🧝 ¡Pídele a Santa el ascenso! ⭐`,
             botAdmin: `🎅 *¡SANTA NECESITA PODERES!*\n\nEl bot debe ser administrador del grupo.\n\n🧝‍♂️ ¡Hazme supervisor! 🔑`,
             restrict: ` *¡REGALO CONGELADO!*\n\nEsta función está temporalmente deshabilitada.\n\n🛷 ¡Vuelve en Año Nuevo! ⏳`
-        }[type]
+        } [type]
         if (msg) return conn.reply(m.chat, msg, m, rcanal).then(_ => m.react('✖️'))
     }
     let file = global.__filename(import.meta.url, true)
