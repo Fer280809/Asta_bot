@@ -1,7 +1,7 @@
 let handler = async (m, { conn, usedPrefix, command, text }) => {
-  const user = global.db.data.users[m.sender]
+  let user = global.db.data.users[m.sender]
   
-  // Inicializar usuario
+  // Inicializar usuario si no existe
   if (!user) {
     global.db.data.users[m.sender] = {
       coin: 100,
@@ -9,37 +9,56 @@ let handler = async (m, { conn, usedPrefix, command, text }) => {
       hunger: 100,
       energy: 100,
       level: 1,
-      exp: 0
+      exp: 0,
+      apple: 0,
+      meat: 0,
+      raw_fish: 0,
+      bread: 0,
+      cooked_meat: 0,
+      cooked_fish: 0,
+      steak: 0,
+      cake: 0,
+      cookie: 0,
+      golden_apple: 0,
+      wheat: 0,
+      milk: 0,
+      egg: 0,
+      sugar: 0,
+      cocoa: 0
     }
     user = global.db.data.users[m.sender]
   }
 
-  // Inicializar estadísticas
-  user.coin = user.coin || 100
-  user.health = user.health || 100
-  user.hunger = user.hunger || 100
-  user.energy = user.energy || 100
-  user.level = user.level || 1
-  user.exp = user.exp || 0
-  
-  // Recursos de comida
-  user.apple = user.apple || 0
-  user.meat = user.meat || 0
-  user.raw_fish = user.raw_fish || 0
-  user.bread = user.bread || 0
-  user.cooked_meat = user.cooked_meat || 0
-  user.cooked_fish = user.cooked_fish || 0
-  user.steak = user.steak || 0
-  user.cake = user.cake || 0
-  user.cookie = user.cookie || 0
-  user.golden_apple = user.golden_apple || 0
-  
-  // Recursos básicos
-  user.wheat = user.wheat || 0
-  user.milk = user.milk || 0
-  user.egg = user.egg || 0
-  user.sugar = user.sugar || 0
-  user.cocoa = user.cocoa || 0
+  // Inicializar estadísticas con valores por defecto
+  const defaults = {
+    coin: 100,
+    health: 100,
+    hunger: 100,
+    energy: 100,
+    level: 1,
+    exp: 0,
+    apple: 0,
+    meat: 0,
+    raw_fish: 0,
+    bread: 0,
+    cooked_meat: 0,
+    cooked_fish: 0,
+    steak: 0,
+    cake: 0,
+    cookie: 0,
+    golden_apple: 0,
+    wheat: 0,
+    milk: 0,
+    egg: 0,
+    sugar: 0,
+    cocoa: 0
+  }
+
+  for (const [key, value] of Object.entries(defaults)) {
+    if (user[key] === undefined || user[key] === null) {
+      user[key] = value
+    }
+  }
 
   // Mostrar menú de comida
   if (!text || text === 'menu') {
@@ -143,10 +162,10 @@ let handler = async (m, { conn, usedPrefix, command, text }) => {
 
   // Cocinar recetas
   if (text.startsWith('cocinar') || command === 'cocinar') {
-    const receta = text.split(' ')[1]?.toLowerCase()
-    if (!receta) {
+    const recetaInput = text.split(' ')[1]?.toLowerCase()
+    if (!recetaInput) {
       // Mostrar recetas disponibles
-      const recetas = [
+      const listaRecetas = [
         { nombre: 'Pan', ingredientes: { wheat: 3 }, resultado: 'bread', cantidad: 1 },
         { nombre: 'Carne cocida', ingredientes: { meat: 1 }, resultado: 'cooked_meat', cantidad: 1, requiere_fogata: true },
         { nombre: 'Pescado cocido', ingredientes: { raw_fish: 1 }, resultado: 'cooked_fish', cantidad: 1, requiere_fogata: true },
@@ -157,7 +176,7 @@ let handler = async (m, { conn, usedPrefix, command, text }) => {
       ]
 
       let message = `👨‍🍳 *RECETAS DE COCINA* 🎄\n\n`
-      recetas.forEach((r, i) => {
+      listaRecetas.forEach((r, i) => {
         message += `${i + 1}. ${r.nombre}\n`
         message += `   ↳ Ingredientes:\n`
         for (const [ing, cant] of Object.entries(r.ingredientes)) {
@@ -178,8 +197,9 @@ let handler = async (m, { conn, usedPrefix, command, text }) => {
       return
     }
 
-    // Procesar receta específica
-    const recetas = {
+    // Procesar receta específica - ¡CORREGIDO AQUÍ!
+    // Cambié el nombre de la variable para evitar conflicto
+    const recetasDisponibles = {
       'pan': {
         ingredientes: { wheat: 3 },
         resultado: 'bread',
@@ -226,18 +246,19 @@ let handler = async (m, { conn, usedPrefix, command, text }) => {
       }
     }
 
-    const receta = recetas[receta]
-    if (!receta) {
+    // Usar un nombre diferente para la variable
+    const recetaSeleccionada = recetasDisponibles[recetaInput]
+    if (!recetaSeleccionada) {
       return m.reply(`❌ Receta no encontrada. Usa ${usedPrefix}cocinar para ver recetas.`)
     }
 
     // Verificar fogata si es necesario
-    if (receta.requiere_fogata && !user.fogata) {
+    if (recetaSeleccionada.requiere_fogata && !user.fogata) {
       return m.reply('❌ Necesitas una fogata para cocinar esto. Usa *craft fogata* para crear una.')
     }
 
     // Verificar ingredientes
-    for (const [ingrediente, cantidad] of Object.entries(receta.ingredientes)) {
+    for (const [ingrediente, cantidad] of Object.entries(recetaSeleccionada.ingredientes)) {
       if (!user[ingrediente] || user[ingrediente] < cantidad) {
         const nombres = {
           wheat: 'trigo', meat: 'carne', raw_fish: 'pescado crudo',
@@ -250,22 +271,22 @@ let handler = async (m, { conn, usedPrefix, command, text }) => {
     }
 
     // Consumir ingredientes
-    for (const [ingrediente, cantidad] of Object.entries(receta.ingredientes)) {
+    for (const [ingrediente, cantidad] of Object.entries(recetaSeleccionada.ingredientes)) {
       user[ingrediente] -= cantidad
     }
 
     // Añadir resultado
-    user[receta.resultado] = (user[receta.resultado] || 0) + receta.cantidad
+    user[recetaSeleccionada.resultado] = (user[recetaSeleccionada.resultado] || 0) + recetaSeleccionada.cantidad
 
     // Consumir energía por cocinar
     user.energy = Math.max(0, user.energy - 10)
 
-    let message = `${receta.mensaje}\n\n`
+    let message = `${recetaSeleccionada.mensaje}\n\n`
     message += `✅ *¡Cocinas exitosamente!*\n\n`
-    message += `📦 *Obtuviste:* ${receta.cantidad}x ${formatearNombre(receta.resultado)}\n`
+    message += `📦 *Obtuviste:* ${recetaSeleccionada.cantidad}x ${formatearNombre(recetaSeleccionada.resultado)}\n`
     message += `⚡ *Energía usada:* -10 (${user.energy}/100)\n\n`
     message += `🍳 *Ahora puedes comerlo usando:*\n`
-    message += `*${usedPrefix}comer ${receta.resultado.replace('_', ' ')}*`
+    message += `*${usedPrefix}comer ${recetaSeleccionada.resultado.replace('_', ' ')}*`
 
     await conn.reply(m.chat, message, m)
   }
