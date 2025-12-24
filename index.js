@@ -61,21 +61,49 @@ const PORT = process.env.PORT || process.env.SERVER_PORT || 3000
 
 let { say } = cfonts
 console.log(chalk.magentaBright('\n⚡ Iniciando Sistema...'))
-say('Asta Bot', {
+
+// ============================================
+// LOGO ASCII CON COLORES NAVIDEÑOS
+// ============================================
+console.log(chalk.green(`
+█████╗ ███████╗████████╗ █████╗ ██████╗  ██████╗ ████████╗    ███╗   ███╗██████╗ 
+██╔══██╗██╔════╝╚══██╔══╝██╔══██╗██╔══██╗██╔═══██╗╚══██╔══╝    ████╗ ████║██╔══██╗
+███████║███████╗   ██║   ███████║██████╔╝██║   ██║   ██║       ██╔████╔██║██║  ██║
+██╔══██║╚════██║   ██║   ██╔══██║██╔══██╗██║   ██║   ██║       ██║╚██╔╝██║██║  ██║
+██║  ██║███████║   ██║   ██║  ██║██████╔╝╚██████╔╝   ██║       ██║ ╚═╝ ██║██████╔╝
+╚═╝  ╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═════╝  ╚═════╝    ╚═╝       ╚═╝     ╚═╝╚═════╝
+`))
+
+console.log(chalk.white.bold('╔══════════════════════════════════════════════════════════╗'))
+console.log(chalk.white.bold('║                   🎄 SISTEMA NAVIDEÑO 🎄                 ║'))
+console.log(chalk.white.bold('╚══════════════════════════════════════════════════════════╝'))
+
+// Mostrar símbolos navideños alrededor
+console.log(chalk.red('   🎅  🎄  🎁  ❄️  ⛄  🔔  🦌  🕯️'))
+console.log(chalk.yellow('\n✨ Sistema de automatización con espíritu navideño ✨\n'))
+
+// Logotipo principal con cfonts
+say('Asta Bot MP', {
   font: 'block',
   align: 'center',
-  gradient: ['red', 'magenta']
+  gradient: ['red', 'green', 'white']
 })
-say('Sistema Multi-Plugins Activado', {
+
+say('¡Felices Fiestas!', {
   font: 'console',
   align: 'center',
-  colors: ['cyan']
+  colors: ['red', 'green', 'yellow']
 })
+
 say('By Fernando', {
   font: 'tiny',
   align: 'center',
-  colors: ['yellow', 'green']
+  colors: ['cyan', 'white']
 })
+
+// ============================================
+// FIN DEL LOGO NAVIDEÑO
+// ============================================
 
 protoType()
 serialize()
@@ -542,7 +570,7 @@ async function _quickTest() {
   const test = await Promise.all([
     spawn('ffmpeg'),
     spawn('ffprobe'),
-    spawn('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-filter_complex', 'color', '-frames:v', '1', '-f', 'webp', '-']),
+    spawn('ffmpeg', ['-hide-banner', '-loglevel', 'error', '-filter_complex', 'color', '-frames:v', '1', '-f', 'webp', '-']),
     spawn('convert'),
     spawn('magick'),
     spawn('gm'),
