@@ -1,9 +1,9 @@
 
 // --- 1. DEFINICIÓN ESTÁTICA DEL MENÚ ---
 const MenuData = {
-    "MENU_INICIO": {
-        title: "¡FELIZ NAVIDAD! 🎄",
-        body: (totalreg, userId, conn) => `
+  "MENU_INICIO": {
+    title: "¡FELIZ NAVIDAD! 🎄",
+    body: (totalreg, userId, conn) => `
 ╭─━━━━━━━━━━━━━━━─╮
 │ 🎁 ¡Hola @${userId.split('@')[0]}! 🌟
 ╰─━━━━━━━━━━━━━━━─╯
@@ -22,11 +22,11 @@ Me llamo 『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』🎅
 
 *🤖 PON #code O #qr PARA HACERTE SUBBOT DEL ASTA-BOT-MD 📡*
 `.trim()
-    },
-    
-    "ECONOMY": { 
-        title: "💰 ECONOMY",
-        body: `
+  },
+
+  "ECONOMY": {
+    title: "💰 ECONOMY",
+    body: `
 ╰┈➤ ✿ Comandos de *Economía* para ganar dinero.  
 ╰┈➤ 💼 *#w / #work / #trabajar*
         ╰┈➤ Ganar coins trabajando  
@@ -75,12 +75,12 @@ Me llamo 『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』🎅
 ╰┈➤ 🏰 *#mazmorra / #dungeon*
         ╰┈➤ Explorar mazmorras para ganar coins y exp
 `.trim()
-    },
-    
-    
-    "DOWNLOAD": {
-        title: "📥 DOWNLOAD",
-        body: `
+  },
+
+
+  "DOWNLOAD": {
+    title: "📥 DOWNLOAD",
+    body: `
 ╰┈➤ ✿ Comandos de *Descargas* para obtener archivos de varias fuentes  
 
 ╰┈➤ 🎵 *#tiktok / #tt* + [Link] / [busqueda]
@@ -110,11 +110,11 @@ Me llamo 『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』🎅
 ╰┈➤ 🎥 *#ytsearch / #search* + [busqueda]
         ╰┈➤ Buscar videos de YouTube
 `.trim()
-    },
-    
-    "GACHA": {
-        title: "🎴 GACHA",
-        body: `
+  },
+
+  "GACHA": {
+    title: "🎴 GACHA",
+    body: `
 ╰┈➤ ✿ Comandos de *Gacha* para reclamar y coleccionar personajes  
 
 ╰┈➤ 🛒 *#buycharacter / #buychar / #buyc* + [nombre]
@@ -162,11 +162,11 @@ Me llamo 『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』🎅
 ╰┈➤ 🏆 *#waifusboard / #waifustop / #topwaifus / #wtop* + [número]
         ╰┈➤ Ver el top de personajes con mayor valor
 `.trim()
-    },
+  },
 
-    "SOCKETS": {
-        title: "🔌 SOCKETS",
-        body: `
+  "SOCKETS": {
+    title: "🔌 SOCKETS",
+    body: `
 ╰┈➤ ✿ Comandos para registrar tu propio Bot  
 
 ╰┈➤ 🔗 *#qr / #code*
@@ -190,11 +190,11 @@ Me llamo 『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』🎅
 ╰┈➤ 🆔 *#setusername* + [nombre]
         ╰┈➤ Cambiar el nombre de usuario
 `.trim()
-    },
+  },
 
-    "UTILITIES": {
-        title: "🛠️ UTILITIES",
-        body: `
+  "UTILITIES": {
+    title: "🛠️ UTILITIES",
+    body: `
 ╰┈➤ ✿ Comandos de *Utilidades* ╰┈➤ 📋 *#help / #menu*
         ╰┈➤ Ver el menú de comandos  
 ╰┈➤ 📄 *#sc / #script*
@@ -244,11 +244,11 @@ Me llamo 『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』🎅
 ╰┈➤ 🔎 *#google*
         ╰┈➤ Realizar búsquedas por Google
 `.trim()
-    },
+  },
 
-    "PROFILES": {
-        title: "👤 PROFILES",
-        body: `
+  "PROFILES": {
+    title: "👤 PROFILES",
+    body: `
 ╰┈➤ ✿ Comandos de *Perfil* para ver y configurar tu perfil  
 
 ╰┈➤ 🏆 *#leaderboard / #lboard / #top* + <pagina>
@@ -278,9 +278,9 @@ Me llamo 『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』🎅
 ╰┈➤ 💎 *#prem / #vip*
         ╰┈➤ Comprar membresía premium
 `.trim()
-    },
+  },
 
-     "GROUPS": {
+  "GROUPS": {
     title: "👥 GROUPS",
     body: `
 ╰┈➤ ✿ Comandos para *Administradores* de grupos  
@@ -375,12 +375,12 @@ Me llamo 『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』🎅
 ╰┈➤ 💰 *#vender*
         ╰┈➤ Vender recursos obtenidos
 `.trim()
+  },
 },
-    },
 
-    "ANIME": {
-        title: "🎌 ANIME",
-        body: `
+"ANIME": {
+  title: "🎌 ANIME",
+    body: `
 ╰┈➤ ✿ Comandos de reacciones de anime  
 
 ╰┈➤ 😡 *#angry / #enojado* + <mencion>
@@ -484,11 +484,11 @@ Me llamo 『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』🎅
 ╰┈➤ 💑 *#ppcouple / #ppcp*
         ╰┈➤ Genera imágenes para amistades o parejas
 `.trim()
-    },
+},
 
-    "NSFW": {
-        title: " 🔞 NSFW",
-        body: `
+"NSFW": {
+  title: " 🔞 NSFW",
+    body: `
 ╰┈➤ ✿ Comandos NSFW  
 
 ╰┈➤ 🔞 *#danbooru / #dbooru* + [Tags]
@@ -503,59 +503,59 @@ Me llamo 『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』🎅
         ╰┈➤ Descargar un video de Xnxx  
 ╰┈➤ 💦 *#mamada* ╰┈➤ manda un video de mamando
 `.trim()
-    }
+}
 };
 
 const MenuOrder = [
-    "MENU_INICIO",
-    "ECONOMY",
-    "DOWNLOAD",
-    "GACHA",
-    "SOCKETS",
-    "UTILITIES",
-    "PROFILES",
-    "GROUPS",
-    "ANIME",
-    "NSFW"
+  "MENU_INICIO",
+  "ECONOMY",
+  "DOWNLOAD",
+  "GACHA",
+  "SOCKETS",
+  "UTILITIES",
+  "PROFILES",
+  "GROUPS",
+  "ANIME",
+  "NSFW"
 ];
 
 // Almacenar los últimos mensajes de menú por chat
 const menuMessages = new Map();
 
 let handler = async (m, { conn, usedPrefix, text }) => {
-    try {
-        if (MenuOrder.length === 0) return m.reply('❌ El menú está vacío o no configurado.');
-        
-        let totalreg = Object.keys(global.db.data.users).length;
-        let userId = m.sender;
-        const totalCategories = MenuOrder.length;
-        
-        // 1. Determinar la categoría actual
-        let currentCategoryKey = MenuOrder[0];
-        let currentIndex = 0;
+  try {
+    if (MenuOrder.length === 0) return m.reply('❌ El menú está vacío o no configurado.');
 
-        if (text && !isNaN(parseInt(text))) {
-            currentIndex = parseInt(text);
-            
-            if (currentIndex >= 0 && currentIndex < totalCategories) {
-                currentCategoryKey = MenuOrder[currentIndex];
-            } else {
-                currentIndex = 0;
-                currentCategoryKey = MenuOrder[0];
-            }
-        }
+    let totalreg = Object.keys(global.db.data.users).length;
+    let userId = m.sender;
+    const totalCategories = MenuOrder.length;
 
-        const currentMenu = MenuData[currentCategoryKey];
-        if (!currentMenu) return m.reply('❌ Categoría de menú no encontrada.');
+    // 1. Determinar la categoría actual
+    let currentCategoryKey = MenuOrder[0];
+    let currentIndex = 0;
 
-        // 2. Generar el cuerpo del mensaje
-        let bodyContent = '';
-        
-        if (typeof currentMenu.body === 'function') {
-            bodyContent = currentMenu.body(totalreg, userId, conn);
-        } else {
-            const currentPageNumber = currentIndex + 1;
-            bodyContent = `
+    if (text && !isNaN(parseInt(text))) {
+      currentIndex = parseInt(text);
+
+      if (currentIndex >= 0 && currentIndex < totalCategories) {
+        currentCategoryKey = MenuOrder[currentIndex];
+      } else {
+        currentIndex = 0;
+        currentCategoryKey = MenuOrder[0];
+      }
+    }
+
+    const currentMenu = MenuData[currentCategoryKey];
+    if (!currentMenu) return m.reply('❌ Categoría de menú no encontrada.');
+
+    // 2. Generar el cuerpo del mensaje
+    let bodyContent = '';
+
+    if (typeof currentMenu.body === 'function') {
+      bodyContent = currentMenu.body(totalreg, userId, conn);
+    } else {
+      const currentPageNumber = currentIndex + 1;
+      bodyContent = `
 ╭ *Página ${currentPageNumber}/${totalCategories}*
 ╰──────────────────
 
@@ -564,84 +564,84 @@ let handler = async (m, { conn, usedPrefix, text }) => {
 ┗━━━━━━━━━━━━━━┛
 ${currentMenu.body}
 `.trim();
-        }
-        
-        let infoText = bodyContent;
-        
-        // 3. Lógica de Botones Siguiente/Anterior
-        let buttons = [];
-
-        // Botón ANTERIOR
-        if (currentIndex > 0) {
-            const prevIndex = currentIndex - 1;
-            buttons.push({ 
-                buttonId: usedPrefix + 'menu2 ' + prevIndex, 
-                buttonText: { displayText: '◀️ Anterior' },
-                type: 1 
-            });
-        }
-
-        // Botón SIGUIENTE
-        if (currentIndex < totalCategories - 1) {
-            const nextIndex = currentIndex + 1;
-            buttons.push({ 
-                buttonId: usedPrefix + 'menu2 ' + nextIndex, 
-                buttonText: { displayText: 'Siguiente ▶️' }, 
-                type: 1 
-            });
-        }
-        
-        // Botón Fijo
-        buttons.push({ 
-            buttonId: usedPrefix + 'code', 
-            buttonText: { displayText: '🤖 Sup-Bot' }, 
-            type: 1 
-        });
-
-        // 4. Eliminar mensaje anterior si existe
-        const chatKey = m.chat;
-        if (menuMessages.has(chatKey)) {
-            try {
-                const oldMsg = menuMessages.get(chatKey);
-                await conn.sendMessage(m.chat, {
-                    delete: {
-                        id: oldMsg.key.id,
-                        remoteJid: m.chat,
-                        fromMe: true
-                    }
-                });
-            } catch (e) {
-                // Si falla al eliminar, continuamos igual
-                console.log('No se pudo eliminar el mensaje anterior:', e);
-            }
-        }
-
-        // 5. Enviar nuevo mensaje y guardar referencia
-        let mediaUrl = 'https://files.catbox.moe/nqvhaq.jpg';
-        
-        const sentMsg = await conn.sendMessage(m.chat, {
-            image: { url: mediaUrl },
-            caption: infoText,
-            footer: "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』⚡",
-            buttons: buttons,
-            headerType: 4,
-            mentions: [userId]
-        }, { quoted: m });
-        
-        // Guardar referencia al nuevo mensaje
-        menuMessages.set(chatKey, sentMsg);
-        
-        // Limpiar mensajes antiguos después de 5 minutos
-        setTimeout(() => {
-            if (menuMessages.has(chatKey)) {
-                menuMessages.delete(chatKey);
-            }
-        }, 5 * 60 * 1000);
-        
-    } catch (error) {
-        console.error('Error en el menú:', error);
-        m.reply('❌ Ocurrió un error al mostrar el menú. Intenta nuevamente.');
     }
+
+    let infoText = bodyContent;
+
+    // 3. Lógica de Botones Siguiente/Anterior
+    let buttons = [];
+
+    // Botón ANTERIOR
+    if (currentIndex > 0) {
+      const prevIndex = currentIndex - 1;
+      buttons.push({
+        buttonId: usedPrefix + 'menu2 ' + prevIndex,
+        buttonText: { displayText: '◀️ Anterior' },
+        type: 1
+      });
+    }
+
+    // Botón SIGUIENTE
+    if (currentIndex < totalCategories - 1) {
+      const nextIndex = currentIndex + 1;
+      buttons.push({
+        buttonId: usedPrefix + 'menu2 ' + nextIndex,
+        buttonText: { displayText: 'Siguiente ▶️' },
+        type: 1
+      });
+    }
+
+    // Botón Fijo
+    buttons.push({
+      buttonId: usedPrefix + 'code',
+      buttonText: { displayText: '🤖 Sup-Bot' },
+      type: 1
+    });
+
+    // 4. Eliminar mensaje anterior si existe
+    const chatKey = m.chat;
+    if (menuMessages.has(chatKey)) {
+      try {
+        const oldMsg = menuMessages.get(chatKey);
+        await conn.sendMessage(m.chat, {
+          delete: {
+            id: oldMsg.key.id,
+            remoteJid: m.chat,
+            fromMe: true
+          }
+        });
+      } catch (e) {
+        // Si falla al eliminar, continuamos igual
+        console.log('No se pudo eliminar el mensaje anterior:', e);
+      }
+    }
+
+    // 5. Enviar nuevo mensaje y guardar referencia
+    let mediaUrl = 'https://files.catbox.moe/nqvhaq.jpg';
+
+    const sentMsg = await conn.sendMessage(m.chat, {
+      image: { url: mediaUrl },
+      caption: infoText,
+      footer: "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』⚡",
+      buttons: buttons,
+      headerType: 4,
+      mentions: [userId]
+    }, { quoted: m });
+
+    // Guardar referencia al nuevo mensaje
+    menuMessages.set(chatKey, sentMsg);
+
+    // Limpiar mensajes antiguos después de 5 minutos
+    setTimeout(() => {
+      if (menuMessages.has(chatKey)) {
+        menuMessages.delete(chatKey);
+      }
+    }, 5 * 60 * 1000);
+
+  } catch (error) {
+    console.error('Error en el menú:', error);
+    m.reply('❌ Ocurrió un error al mostrar el menú. Intenta nuevamente.');
+  }
 };
 
 // Configuración del comando
@@ -651,12 +651,12 @@ handler.command = ['menú2', 'menu2', 'help2'];
 
 // Limpiar almacenamiento periódicamente
 setInterval(() => {
-    const now = Date.now();
-    for (const [key, msg] of menuMessages.entries()) {
-        if (now - msg.messageTimestamp * 1000 > 10 * 60 * 1000) {
-            menuMessages.delete(key);
-        }
+  const now = Date.now();
+  for (const [key, msg] of menuMessages.entries()) {
+    if (now - msg.messageTimestamp * 1000 > 10 * 60 * 1000) {
+      menuMessages.delete(key);
     }
+  }
 }, 30 * 60 * 1000);
 
 export default handler;
