@@ -4,7 +4,7 @@ let handler = async (m, { conn, usedPrefix }) => {
     (v) => v.help && v.tags
   ).length;
   let libreria = 'Baileys';
-  let vs = '1.4';
+  let vs = '1.5';
   let userId = m.sender;
   
   let infoText = `╭─━━━━━━━━━━━━━━━─╮
