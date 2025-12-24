@@ -119,7 +119,7 @@ let handler = async (m, { conn, usedPrefix }) => {
 │  ╰─ Listar series disponibles
 ├─🔹 *${usedPrefix}sell* [precio] [nombre]
 │  ╰─ Vender personaje
-├─🔹 *${usedPrefix}haremshop* [página]
+├─🔹 *${usedPrefix}tiendashop* [página]
 │  ╰─ Tienda de personajes
 ├─🔹 *${usedPrefix}buycharacter* [nombre]
 │  ╰─ Comprar personaje
