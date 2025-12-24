@@ -1,3 +1,31 @@
+// ╔══════════════════════════════════════════════════════════╗
+// ║                    ASTA BOT - FERNANDO                   ║
+// ║  Desarrollador: Fernando    │    Estado: Funcional       ║
+// ║  Archivo: index.js          │    Versión: 1.8.2          ║
+// ╟──────────────────────────────────────────────────────────╢
+// ║  Sistema principal de automatización y gestión de        ║ 
+// ║  mensajería para WhatsApp.                               ║
+// ╚══════════════════════════════════════════════════════════╝
+
+// ╔══════════════════════════════════════════════════════════╗
+// ║  DESCRIPCIÓN:                                            ║
+// ║  Punto de entrada principal - Inicializa todos los       ║
+// ║  módulos del sistema y establece conexión con WhatsApp.  ║
+// ║                                                          ║
+// ║  MÓDULOS INICIALIZADOS:                                  ║
+// ║  • Conexión WhatsApp (Baileys MD)                        ║
+// ║  • Gestión de base de datos                              ║
+// ║  • Sistema de permisos y roles                           ║
+// ║  • Control de frecuencia (anti-flood)                    ║
+// ║  • Cargador de extensiones (5 directorios)               ║
+// ║  • Sistema de sub-bots (AstaJadibts)                     ║
+// ║  • Módulo Pokémon                                        ║
+// ║                                                          ║
+// ║  MÉTODOS DE AUTENTICACIÓN:                               ║
+// ║  • Código QR                                             ║
+// ║  • Código numérico (8 dígitos)                           ║
+// ║  • Conexión móvil (Beta)                                 ║
+// ╚══════════════════════════════════════════════════════════╝
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '1'
 import './settings.js'
 import './plugins/_allfake.js'
