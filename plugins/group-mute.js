@@ -1,230 +1,233 @@
-let handler = async (m, { conn, command, usedPrefix, text, args, isAdmin, isBotAdmin }) => {
-    let chat = global.db.data.chats[m.chat]
+let handler = async (m, { conn, usedPrefix, text, args, isAdmin, isOwner, isROwner, participants, groupMetadata }) => {
+    // Obtener chat de forma segura
+    let chat = global.db.data.chats[m.chat];
+    if (!chat) {
+        global.db.data.chats[m.chat] = {};
+        chat = global.db.data.chats[m.chat];
+    }
     
     // 🔥 FORZAR sincronización con la base de datos
     if (!chat.muted || !Array.isArray(chat.muted)) {
-        // Si no existe, crearla en la DB
-        chat.muted = []
-        // Guardar inmediatamente en la base de datos
-        await global.saveDatabase()
+        chat.muted = [];
+        await global.saveDatabase();
     }
-
+    
+    // Verificar que el comando se use en grupo
+    if (!m.isGroup) return m.reply('❌ Este comando solo funciona en grupos.');
+    
+    // Verificar permisos básicos
+    if (!isAdmin && !isOwner && !isROwner) {
+        return m.reply('⚠️ Solo los administradores pueden usar este comando.');
+    }
+    
     // --- FUNCIÓN: VER LISTA ---
-    if (command === 'mutelist' || args[0] === 'list') {
-        // Verificar sincronización
-        const dbChat = global.db.data.chats[m.chat]
-        const mutedList = dbChat.muted || []
+    if (args[0] === 'list' || text.toLowerCase() === 'list') {
+        const mutedList = chat.muted || [];
         
         if (mutedList.length === 0) {
-            return m.reply('❄️ No hay usuarios silenciados en este grupo.')
+            return m.reply('📭 No hay usuarios silenciados en este grupo.');
         }
         
-        let list = mutedList.map((v, i) => `${i + 1}. @${v.split`@`[0]}`).join('\n')
-        return conn.reply(m.chat, `📜 *LISTA DE USUARIOS SILENCIADOS*\n━━━━━━━━━━━━━━━━━━━━━━━\n${list}\n━━━━━━━━━━━━━━━━━━━━━━━\n> Usa ${usedPrefix}unmute @usuario para desilenciar.`, m, { mentions: mutedList })
+        // Obtener nombres de los usuarios
+        let listText = '📋 *LISTA DE USUARIOS SILENCIADOS*\n━━━━━━━━━━━━━━━━━━━━━━━\n';
+        
+        for (let i = 0; i < mutedList.length; i++) {
+            const userJid = mutedList[i];
+            try {
+                const userName = await conn.getName(userJid) || userJid.split('@')[0];
+                listText += `\n${i + 1}. @${userJid.split('@')[0]} - ${userName}`;
+            } catch {
+                listText += `\n${i + 1}. @${userJid.split('@')[0]}`;
+            }
+        }
+        
+        listText += '\n━━━━━━━━━━━━━━━━━━━━━━━\n';
+        listText += `🔓 Para desilenciar: ${usedPrefix}unmute @usuario\n`;
+        listText += `📌 Total: ${mutedList.length} usuario(s)`;
+        
+        return conn.sendMessage(m.chat, {
+            text: listText,
+            mentions: mutedList
+        }, { quoted: m });
     }
-
+    
     // --- IDENTIFICAR USUARIO (VERSIÓN MEJORADA) ---
-    let who = null
+    let who = null;
+    let mentionedUser = null;
     
     // Método 1: Usuario mencionado en el mensaje
     if (m.mentionedJid && m.mentionedJid.length > 0) {
-        who = m.mentionedJid[0]
+        who = m.mentionedJid[0];
+        mentionedUser = who;
     }
     
     // Método 2: Usuario citado (respondido)
     if (!who && m.quoted) {
-        who = m.quoted.sender
+        who = m.quoted.sender;
+        mentionedUser = who;
     }
     
-    // Método 3: Extraer mención del texto (para casos donde m.mentionedJid no funciona)
+    // Método 3: Extraer número del texto
     if (!who && text) {
-        // Buscar menciones en el formato @número
-        const mentionRegex = /@?(\d{5,}|\d{10,})/g
-        const matches = text.match(mentionRegex)
-        if (matches && matches[0]) {
-            const number = matches[0].replace('@', '').trim()
+        const numberMatch = text.match(/\d+/g);
+        if (numberMatch && numberMatch[0]) {
+            const number = numberMatch[0];
             if (number.length >= 5) {
-                who = number + '@s.whatsapp.net'
+                who = number + '@s.whatsapp.net';
             }
         }
     }
     
-    // Método 4: Si el texto contiene solo números
-    if (!who && /^\d+$/.test(text.trim())) {
-        who = text.trim() + '@s.whatsapp.net'
+    // Validar que se identificó un usuario para mute/unmute
+    if (!who && (args[0] && args[0] !== 'list')) {
+        return m.reply(`🔧 *Uso correcto:*\n\n` +
+            `• ${usedPrefix}mute @usuario - Silenciar usuario\n` +
+            `• ${usedPrefix}unmute @usuario - Desilenciar usuario\n` +
+            `• ${usedPrefix}mute list - Ver lista de silenciados\n\n` +
+            `📌 *Ejemplo:* ${usedPrefix}mute @${m.sender.split('@')[0]}`);
     }
-
-    // Si no se identificó usuario y el comando requiere uno
-    if (!who && (command === 'mute' || command === 'unmute' || command === 'silenciar' || command === 'desmutear')) {
-        return conn.sendMessage(m.chat, {
-            text: `❄️ *MENÚ DE MUTE*\n━━━━━━━━━━━━━━━━━━━━━━━\nDebes etiquetar a alguien o responder a un mensaje.\n\n✨ *Ejemplos:*\n• ${usedPrefix}mute @usuario\n• ${usedPrefix}mute (respondiendo a un mensaje)\n\n✨ *Acciones rápidas:*`,
-            buttons: [
-                { buttonId: `${usedPrefix}mutelist`, buttonText: { displayText: '📜 Ver Silenciados' }, type: 1 }
-            ],
-            headerType: 1
-        }, { quoted: m })
-    }
-
-    // Validar que 'who' sea un JID válido antes de continuar
-    if (who && !who.includes('@s.whatsapp.net') && !who.includes('@lid')) {
-        // Intentar convertir a JID válido
-        const cleanNumber = who.replace(/[^0-9]/g, '')
+    
+    // Normalizar el JID
+    if (who && !who.includes('@s.whatsapp.net')) {
+        const cleanNumber = who.replace(/[^0-9]/g, '');
         if (cleanNumber.length >= 5) {
-            who = cleanNumber + '@s.whatsapp.net'
+            who = cleanNumber + '@s.whatsapp.net';
         }
     }
-
-    // --- COMANDO: MUTE ---
-    if (command === 'mute' || command === 'silenciar') {
-        // Validación final de who
-        if (!who || !who.includes('@')) {
-            return m.reply('⚠️ No se pudo identificar al usuario. Por favor, etiqueta o responde a un mensaje.')
+    
+    // Verificar que el usuario esté en el grupo
+    try {
+        const groupData = await conn.groupMetadata(m.chat);
+        const userInGroup = groupData.participants.find(p => p.id === who);
+        
+        if (!userInGroup) {
+            return m.reply('❌ El usuario no está en este grupo.');
         }
         
-        if (who === conn.user.jid) return m.reply('⚠️ No puedo silenciarme a mí mismo.')
-        if (who === m.sender) return m.reply('⚠️ No puedes silenciarte a ti mismo.')
+        // Verificar si es administrador
+        const isUserAdmin = userInGroup.admin === 'admin' || userInGroup.admin === 'superadmin';
         
-        // Verificar si ya está silenciado (usando DB actualizada)
-        const dbChat = global.db.data.chats[m.chat]
-        const isAlreadyMuted = dbChat.muted && dbChat.muted.includes(who)
+        // Verificar que el ejecutante sea admin (si no es owner)
+        const senderInGroup = groupData.participants.find(p => p.id === m.sender);
+        const isSenderAdmin = senderInGroup && (senderInGroup.admin === 'admin' || senderInGroup.admin === 'superadmin');
         
-        if (isAlreadyMuted) return m.reply('🌟 Este usuario ya está silenciado.')
+        if (!isOwner && !isROwner && !isSenderAdmin) {
+            return m.reply('⚠️ Solo los administradores pueden usar este comando.');
+        }
         
-        // Verificar si es admin del grupo
-        try {
-            const groupMetadata = await conn.groupMetadata(m.chat)
-            const participant = groupMetadata.participants.find(p => p.id === who)
+        // Evitar que se silencie a admins (a menos que sea owner)
+        if (isUserAdmin && !isOwner && !isROwner) {
+            return m.reply('⚠️ No puedes silenciar a otro administrador.');
+        }
+        
+        // --- COMANDO: MUTE ---
+        if (args[0] && args[0] !== 'list' && !text.toLowerCase().includes('unmute')) {
+            // Verificar si ya está silenciado
+            const isAlreadyMuted = chat.muted.some(mutedJid => 
+                mutedJid === who || 
+                mutedJid.replace(/[^0-9]/g, '') === who.replace(/[^0-9]/g, '')
+            );
             
-            if (!participant) {
-                return m.reply('⚠️ Este usuario no está en el grupo.')
+            if (isAlreadyMuted) {
+                return m.reply('⚠️ Este usuario ya está silenciado.');
             }
             
-            if (participant.admin === 'admin' || participant.admin === 'superadmin') {
-                return m.reply('⚠️ No puedes silenciar a un *administrador* del grupo.')
+            // Agregar a la lista
+            chat.muted.push(who);
+            await global.saveDatabase();
+            
+            // Obtener nombre del usuario
+            const userName = await conn.getName(who) || who.split('@')[0];
+            
+            await m.react('🔇');
+            
+            // Notificar al grupo
+            await conn.sendMessage(m.chat, {
+                text: `🔇 *USUARIO SILENCIADO*\n━━━━━━━━━━━━━━━━━━━━━━━\n` +
+                      `👤 *Usuario:* @${who.split('@')[0]}\n` +
+                      `📛 *Nombre:* ${userName}\n` +
+                      `👮 *Moderador:* @${m.sender.split('@')[0]}\n\n` +
+                      `❌ Sus mensajes serán eliminados automáticamente.\n` +
+                      `🔓 Para desilenciar: ${usedPrefix}unmute @${who.split('@')[0]}\n` +
+                      `━━━━━━━━━━━━━━━━━━━━━━━`,
+                mentions: [who, m.sender]
+            }, { quoted: m });
+            
+            // Notificar al usuario silenciado (opcional)
+            try {
+                await conn.sendMessage(who, {
+                    text: `🔇 *HAS SIDO SILENCIADO*\n\n` +
+                          `Has sido silenciado en el grupo *${groupData.subject || 'este grupo'}*.\n` +
+                          `No podrás enviar mensajes hasta que un administrador te desilencie.\n\n` +
+                          `👮 Moderador: @${m.sender.split('@')[0]}\n` +
+                          `📅 Fecha: ${new Date().toLocaleString()}`,
+                    mentions: [m.sender]
+                });
+            } catch (dmErr) {
+                console.log('[MUTE] No se pudo enviar DM al usuario');
+            }
+        }
+        
+        // --- COMANDO: UNMUTE ---
+        if (text.toLowerCase().includes('unmute') || args[0] === 'unmute') {
+            // Verificar si está silenciado
+            const userIndex = chat.muted.findIndex(mutedJid => 
+                mutedJid === who || 
+                mutedJid.replace(/[^0-9]/g, '') === who.replace(/[^0-9]/g, '')
+            );
+            
+            if (userIndex === -1) {
+                return m.reply('⚠️ Este usuario no está en la lista de silenciados.');
             }
             
-            // Verificar si quien ejecuta el comando es admin
-            const senderParticipant = groupMetadata.participants.find(p => p.id === m.sender)
-            if (!senderParticipant || (!senderParticipant.admin && !isOwner && !isROwner)) {
-                return m.reply('⚠️ Solo los administradores pueden usar este comando.')
-            }
+            // Remover de la lista
+            chat.muted.splice(userIndex, 1);
+            await global.saveDatabase();
             
-        } catch (e) {
-            console.error(`Error obteniendo metadatos: ${e.message}`)
-            return m.reply('⚠️ Error al verificar permisos.')
-        }
-
-        // 🔥 AGREGAR y GUARDAR en DB
-        if (!dbChat.muted) dbChat.muted = []
-        dbChat.muted.push(who)
-        
-        // GUARDAR CAMBIOS PERSISTENTEMENTE
-        await global.saveDatabase()
-        
-        await m.react('🔇')
-        
-        // Notificar al grupo
-        await conn.sendMessage(m.chat, {
-            text: `🔇 *USUARIO SILENCIADO*\n━━━━━━━━━━━━━━━━━━━━━━━\n@${who.split`@`[0]} ha sido silenciado.\n\n❌ Sus mensajes serán eliminados automáticamente.\n🔓 Para desilenciar: ${usedPrefix}unmute @${who.split`@`[0]}\n━━━━━━━━━━━━━━━━━━━━━━━`,
-            mentions: [who]
-        }, { quoted: m })
-        
-        // Obtener nombre del grupo para la notificación
-        let groupName = 'grupo'
-        try {
-            const groupMetadata = await conn.groupMetadata(m.chat)
-            groupName = groupMetadata.subject || 'grupo'
-        } catch (e) {}
-        
-        // Notificar al usuario silenciado
-        try {
-            await conn.sendMessage(who, {
-                text: `🔇 *HAS SIDO SILENCIADO*\n\nHas sido silenciado en el grupo *${groupName}*.\n\n📍 Grupo: ${groupName}\n👤 Por: @${m.sender.split`@`[0]}\n\nNo podrás enviar mensajes hasta que un admin te desilencie.`,
-                mentions: [m.sender]
-            })
-        } catch (dmErr) {
-            console.log('[MUTE] No se pudo enviar DM al usuario')
-        }
-    }
-
-    // --- COMANDO: UNMUTE ---
-    if (command === 'unmute' || command === 'desmutear') {
-        // Validación final de who
-        if (!who || !who.includes('@')) {
-            return m.reply('⚠️ No se pudo identificar al usuario. Por favor, etiqueta o responde a un mensaje.')
-        }
-        
-        // 🔥 Obtener datos FRESCOS de la DB
-        const dbChat = global.db.data.chats[m.chat]
-        const mutedList = dbChat.muted || []
-        
-        if (!mutedList.includes(who)) {
-            return m.reply('❄️ Este usuario no está en la lista de silenciados.')
-        }
-        
-        // Verificar permisos
-        try {
-            const groupMetadata = await conn.groupMetadata(m.chat)
-            const senderParticipant = groupMetadata.participants.find(p => p.id === m.sender)
-            if (!senderParticipant || (!senderParticipant.admin && !isOwner && !isROwner)) {
-                return m.reply('⚠️ Solo los administradores pueden usar este comando.')
+            // Obtener nombre del usuario
+            const userName = await conn.getName(who) || who.split('@')[0];
+            
+            await m.react('🔊');
+            
+            // Notificar al grupo
+            await conn.sendMessage(m.chat, {
+                text: `🔊 *USUARIO DESILENCIADO*\n━━━━━━━━━━━━━━━━━━━━━━━\n` +
+                      `👤 *Usuario:* @${who.split('@')[0]}\n` +
+                      `📛 *Nombre:* ${userName}\n` +
+                      `👮 *Moderador:* @${m.sender.split('@')[0]}\n\n` +
+                      `✅ Ahora puede enviar mensajes normalmente.\n` +
+                      `📌 Usuarios silenciados restantes: ${chat.muted.length}\n` +
+                      `━━━━━━━━━━━━━━━━━━━━━━━`,
+                mentions: [who, m.sender]
+            }, { quoted: m });
+            
+            // Notificar al usuario (opcional)
+            try {
+                await conn.sendMessage(who, {
+                    text: `🔊 *YA PUEDES HABLAR*\n\n` +
+                          `Has sido desilenciado en el grupo *${groupData.subject || 'este grupo'}*.\n` +
+                          `Ahora puedes enviar mensajes normalmente.\n\n` +
+                          `👮 Moderador: @${m.sender.split('@')[0]}\n` +
+                          `📅 Fecha: ${new Date().toLocaleString()}`,
+                    mentions: [m.sender]
+                });
+            } catch (dmErr) {
+                console.log('[UNMUTE] No se pudo notificar al usuario');
             }
-        } catch (e) {
-            console.error(`Error verificando permisos: ${e.message}`)
         }
         
-        // 🔥 REMOVER y GUARDAR en DB
-        // Filtrar el usuario de la lista
-        dbChat.muted = mutedList.filter(u => u !== who)
-        
-        // GUARDAR CAMBIOS PERSISTENTEMENTE
-        await global.saveDatabase()
-        
-        // 🔥 FORZAR recarga del handler para aplicar cambios inmediatos
-        try {
-            // Forzar actualización de la caché del handler
-            if (global.reloadHandler) {
-                await global.reloadHandler()
-            }
-        } catch (reloadErr) {
-            console.error('[UNMUTE] Error recargando handler:', reloadErr)
-        }
-        
-        await m.react('🔊')
-        
-        // Notificar al grupo
-        await conn.reply(m.chat, 
-            `🔊 *USUARIO DESILENCIADO*\n━━━━━━━━━━━━━━━━━━━━━━━\n@${who.split`@`[0]} ya puede hablar normalmente.\n\n✅ Lista actualizada en la base de datos.`, 
-            m, 
-            { mentions: [who] }
-        )
-        
-        // Verificación de que se removió correctamente
-        console.log(`[UNMUTE] Usuario ${who} removido. Lista actual:`, dbChat.muted)
-        
-        // Obtener nombre del grupo para la notificación
-        let groupName = 'grupo'
-        try {
-            const groupMetadata = await conn.groupMetadata(m.chat)
-            groupName = groupMetadata.subject || 'grupo'
-        } catch (e) {}
-        
-        // Notificar al usuario
-        try {
-            await conn.sendMessage(who, {
-                text: `🔊 *YA PUEDES HABLAR*\n\nHas sido desilenciado en el grupo *${groupName}*.\n\nAhora puedes enviar mensajes normalmente.`
-            })
-        } catch (dmErr) {
-            console.log('[UNMUTE] No se pudo notificar al usuario')
-        }
+    } catch (error) {
+        console.error('Error en comando mute:', error);
+        return m.reply('❌ Ocurrió un error al procesar el comando.');
     }
 }
 
-handler.help = ['mute @usuario', 'unmute @usuario', 'mutelist']
-handler.tags = ['group']
-handler.command = ['mute', 'silenciar', 'unmute', 'desmutear', 'mutelist']
-handler.admin = true
-handler.group = true
-handler.botAdmin = true
+// Configuración del handler
+handler.help = ['mute @usuario', 'unmute @usuario', 'mute list'];
+handler.tags = ['group', 'admin'];
+handler.command = ['mute', 'silenciar', 'unmute', 'desmutear', 'mutelist'];
+handler.admin = true;
+handler.group = true;
+handler.botAdmin = true;
 
-export default handler
+export default handler;
