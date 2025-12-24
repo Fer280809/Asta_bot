@@ -659,3 +659,110 @@ setInterval(() => {
 }, 30 * 60 * 1000);
 
 export default handler;
+/*
+"GROUPS": {
+    title: "👥 GROUPS",
+    body: `
+╰┈➤ ✿ Comandos para *Administradores* de grupos  
+
+╰┈➤ 📢 *#tag / #hidetag / #invocar / #tagall* + [mensaje]
+        ╰┈➤ Envía un mensaje mencionando a todos los usuarios del grupo  
+╰┈➤ ⚠️ *#detect / #alertas* + [enable/disable]
+        ╰┈➤ Activar/desactivar las alertas de promote/demote  
+╰┈➤ 🔎 *#setting / #config* ╰┈➤ activa y o desactiva y ve las opciones que estan activas o desactivadas y ve el menu de opciones
+╰┈➤ 🔗 *#antilink / #antienlace* + [enable/disable]
+        ╰┈➤ Activar/desactivar el antienlace  
+╰┈➤ 🤖 *#bot* + [enable/disable]
+        ╰┈➤ Activar/desactivar al bot  
+╰┈➤ 🔒 *#close / #cerrar*
+        ╰┈➤ Cerrar el grupo para que solo los administradores puedan enviar mensajes  
+╰┈➤ ⬇️ *#demote* + <@usuario> | {mencion}
+        ╰┈➤ Descender a un usuario de administrador  
+╰┈➤ 💰 *#economy* + [enable/disable]
+        ╰┈➤ Activar/desactivar los comandos de economía  
+╰┈➤ 🎮 *#gacha* + [enable/disable]
+        ╰┈➤ Activar/desactivar los comandos de Gacha y Games  
+╰┈➤ 🎉 *#welcome / #bienvenida* + [enable/disable]
+        ╰┈➤ Activar/desactivar la bienvenida y despedida  
+╰┈➤ ✉️ *#setbye* + [texto]
+        ╰┈➤ Establecer un mensaje de despedida personalizado  
+╰┈➤ ⭐ *#setprimary* + [@bot]
+        ╰┈➤ Establece un bot como primario del grupo  
+╰┈➤ ✉️ *#setwelcome* + [texto]
+        ╰┈➤ Establecer un mensaje de bienvenida personalizado  
+╰┈➤ ❌ *#kick* + <@usuario> | {mencion}
+        ╰┈➤ Expulsar a un usuario del grupo  
+╰┈➤ 🔓 *#open / #abrir*
+        ╰┈➤ Abrir el grupo para que todos los usuarios puedan enviar mensajes  
+╰┈➤ ⬆️ *#promote* + <@usuario> | {mencion}
+        ╰┈➤ Ascender a un usuario a administrador  
+╰┈➤ ➕ *#add / #añadir / #agregar* + {número}
+        ╰┈➤ Invitar a un usuario a tu grupo  
+╰┈➤ 👑 *admins / admin* + [texto]
+        ╰┈➤ Mencionar a los admins para solicitar ayuda  
+╰┈➤ 🔄 *#restablecer / #revoke*
+        ╰┈➤ Restablecer enlace del grupo  
+╰┈➤ ⚠️ *#addwarn / #warn* + <@usuario> | {mencion}
+        ╰┈➤ Advertir a un usuario  
+╰┈➤ ❌ *#unwarn / #delwarn* + <@usuario> | {mencion}
+        ╰┈➤ Quitar advertencias de un usuario  
+╰┈➤ 📋 *#advlist / #listadv*
+        ╰┈➤ Ver lista de usuarios advertidos  
+╰┈➤ 💤 *#inactivos / #kickinactivos*
+        ╰┈➤ Ver y eliminar a usuarios inactivos  
+╰┈➤ 🚫 *#listnum / #kicknum* [texto]
+        ╰┈➤ Eliminar usuarios con prefijo de país  
+╰┈➤ 🚫 *#stopkicknum*
+        ╰┈➤ Parar el kicknum cuando necesites
+╰┈➤ 🖼️ *#gpbanner / #groupimg*
+        ╰┈➤ Cambiar la imagen del grupo  
+╰┈➤ ✏️ *#gpname / #groupname* [texto]
+        ╰┈➤ Cambiar el nombre del grupo  
+╰┈➤ 📝 *#gpdesc / #groupdesc* [texto]
+        ╰┈➤ Cambiar la descripción del grupo  
+╰┈➤ ❌ *#del / #delete* + {citar un mensaje}
+        ╰┈➤ Eliminar un mensaje  
+╰┈➤ 👥 *#linea / #listonline*
+        ╰┈➤ Ver lista de usuarios en línea  
+╰┈➤ ℹ️ *#gp / #infogrupo*
+        ╰┈➤ Ver la información del grupo  
+╰┈➤ 🔗 *#link*
+        ╰┈➤ Ver enlace de invitación del grupo
+
+╭┈❒✿ MINE BOT 🆕 ✿
+╰┈➤ ✿ Comandos de *Supervivencia y Recursos*  
+
+╰┈➤ 🍖 *#comida*
+        ╰┈➤ Ver sistema de alimentación  
+╰┈➤ 🍽️ *#comer* + [alimento]
+        ╰┈➤ Consumir alimento para recuperar energía  
+╰┈➤ 👨‍🍳 *#cocinar* + [receta]
+        ╰┈➤ Cocinar alimentos con tus recursos  
+╰┈➤ 📜 *#recetas*
+        ╰┈➤ Ver recetas de cocina disponibles  
+╰┈➤ 🎥 *#receta*
+        ╰┈➤ Obtén una receta con video paso a paso  
+╰┈➤ 😴 *#descansar*
+        ╰┈➤ Recuperar salud y energía  
+╰┈➤ 🌳 *#talar*
+        ╰┈➤ Talar árboles para obtener madera  
+╰┈➤ 🎣 *#pescar*
+        ╰┈➤ Pescar peces en cuerpos de agua  
+╰┈➤ ⛏️ *#minar*
+        ╰┈➤ Minar minerales y piedras  
+╰┈➤ 🎒 *#inventario*
+        ╰┈➤ Ver tus recursos y objetos recolectados  
+╰┈➤ 🛒 *#tienda*
+        ╰┈➤ Comprar herramientas y equipamiento  
+╰┈➤ 💰 *#vender*
+        ╰┈➤ Vender recursos obtenidos
+╰┈➤ 🎄 *#ttnavi / #villancico*
+        ╰┈➤ Recibe audio y fotos de villancicos navideños  
+╰┈➤ 🍩 *#rasca / #rascadona*
+        ╰┈➤ Elige una dona y gana premios sorpresa  
+╰┈➤ 📅 *#calendario*
+        ╰┈➤ Reclima tu recompensa diaria de dinero o minerales  
+╰┈➤ 😂 *#chiste*
+        ╰┈➤ Disfruta de un chiste aleatorio para reír
+`.trim()
+},*/
