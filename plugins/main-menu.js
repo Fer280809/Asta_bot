@@ -280,9 +280,9 @@ Me llamo 『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』🎅
 `.trim()
     },
 
-    "GROUPS": {
-        title: "👥 GROUPS",
-        body: `
+     "GROUPS": {
+    title: "👥 GROUPS",
+    body: `
 ╰┈➤ ✿ Comandos para *Administradores* de grupos  
 
 ╰┈➤ 📢 *#tag / #hidetag / #invocar / #tagall* + [mensaje]
@@ -332,8 +332,8 @@ Me llamo 『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』🎅
         ╰┈➤ Ver y eliminar a usuarios inactivos  
 ╰┈➤ 🚫 *#listnum / #kicknum* [texto]
         ╰┈➤ Eliminar usuarios con prefijo de país  
-╰┈➤🚫  *#stopkicknum*
-        ╰┈➤ parar el kicknum cuando nesesites
+╰┈➤ 🚫 *#stopkicknum*
+        ╰┈➤ Parar el kicknum cuando necesites
 ╰┈➤ 🖼️ *#gpbanner / #groupimg*
         ╰┈➤ Cambiar la imagen del grupo  
 ╰┈➤ ✏️ *#gpname / #groupname* [texto]
@@ -348,7 +348,34 @@ Me llamo 『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』🎅
         ╰┈➤ Ver la información del grupo  
 ╰┈➤ 🔗 *#link*
         ╰┈➤ Ver enlace de invitación del grupo
+
+╭┈❒✿ MINE BOT ✿
+╰┈➤ ✿ Comandos de *Supervivencia y Recursos*  
+
+╰┈➤ 🍖 *#comida*
+        ╰┈➤ Ver sistema de alimentación  
+╰┈➤ 🍽️ *#comer* + [alimento]
+        ╰┈➤ Consumir alimento para recuperar energía  
+╰┈➤ 👨‍🍳 *#cocinar* + [receta]
+        ╰┈➤ Cocinar alimentos con tus recursos  
+╰┈➤ 📜 *#recetas*
+        ╰┈➤ Ver recetas de cocina disponibles  
+╰┈➤ 😴 *#descansar*
+        ╰┈➤ Recuperar salud y energía  
+╰┈➤ 🌳 *#talar*
+        ╰┈➤ Talar árboles para obtener madera  
+╰┈➤ 🎣 *#pescar*
+        ╰┈➤ Pescar peces en cuerpos de agua  
+╰┈➤ ⛏️ *#minar*
+        ╰┈➤ Minar minerales y piedras  
+╰┈➤ 🎒 *#inventario*
+        ╰┈➤ Ver tus recursos y objetos recolectados  
+╰┈➤ 🛒 *#tienda*
+        ╰┈➤ Comprar herramientas y equipamiento  
+╰┈➤ 💰 *#vender*
+        ╰┈➤ Vender recursos obtenidos
 `.trim()
+},
     },
 
     "ANIME": {
