@@ -1,0 +1,104 @@
+{
+  "pueblo_paleta": {
+    "name": "Pueblo Paleta",
+    "description": "Un pequeño y tranquilo pueblo. Es donde comienzas tu aventura.",
+    "type": "town",
+    "connections": ["ruta_1"],
+    "services": {
+      "center": false,
+      "shop": false,
+      "gym": false,
+      "special": ["professor_oak"]
+    },
+    "wild_pokemon": [],
+    "trainers": []
+  },
+  
+  "ruta_1": {
+    "name": "Ruta 1",
+    "description": "Un camino corto que conecta Pueblo Paleta con Pueblo Verde. Ideal para entrenar Pokémon novatos.",
+    "type": "route",
+    "connections": ["pueblo_paleta", "pueblo_verde"],
+    "requirements": [],
+    "wild_pokemon": [
+      { "id": 16, "level": [2, 5], "rate": 50 },  // Pidgey
+      { "id": 19, "level": [2, 4], "rate": 40 },  // Rattata
+      { "id": 10, "level": [2, 3], "rate": 10 }   // Caterpie
+    ],
+    "trainers": [
+      {
+        "id": "youngster_joey",
+        "name": "Joven Joey",
+        "team": [
+          { "id": 19, "level": 5, "moves": ["Placaje", "Persecución"] }
+        ],
+        "reward": { "money": 150, "exp": 50 },
+        "dialogue": {
+          "start": "¡Mi Rattata es el mejor de todos! ¡Te mostraré!",
+          "win": "¡No puede ser! Mi Rattata...",
+          "lose": "¡Sí! ¡Mi Rattata es el número uno!"
+        },
+        "defeated": false
+      }
+    ]
+  },
+  
+  "pueblo_verde": {
+    "name": "Pueblo Verde",
+    "description": "Un pueblo un poco más grande con tienda y centro Pokémon.",
+    "type": "town",
+    "connections": ["ruta_1", "ruta_2"],
+    "services": {
+      "center": true,
+      "shop": true,
+      "gym": false,
+      "special": []
+    },
+    "wild_pokemon": [],
+    "trainers": []
+  },
+  
+  "gym_pewter": {
+    "name": "Gimnasio de Ciudad Plateada",
+    "description": "Gimnasio de tipo Roca. Brock es el líder.",
+    "type": "gym",
+    "requirements": ["badge_boulder"],
+    "trainers": [
+      {
+        "id": "camper_liam",
+        "name": "Campista Liam",
+        "team": [
+          { "id": 74, "level": 10, "moves": ["Lanzarrocas", "Defensa Férrea"] },
+          { "id": 95, "level": 11, "moves": ["Lanzarrocas", "Atadura"] }
+        ],
+        "reward": { "money": 300, "exp": 120 }
+      },
+      {
+        "id": "hiker_marcus",
+        "name": "Montañero Marcus",
+        "team": [
+          { "id": 74, "level": 11, "moves": ["Lanzarrocas", "Golpe Roca"] }
+        ],
+        "reward": { "money": 350, "exp": 130 }
+      }
+    ],
+    "leader": {
+      "id": "brock",
+      "name": "Brock",
+      "team": [
+        { "id": 74, "level": 12, "moves": ["Lanzarrocas", "Defensa Férrea", "Terremoto"] },
+        { "id": 95, "level": 14, "moves": ["Lanzarrocas", "Atadura", "Excavar"] }
+      ],
+      "reward": {
+        "money": 1000,
+        "badge": "badge_boulder",
+        "tm": "tm34"
+      },
+      "dialogue": {
+        "start": "Soy Brock, el líder de gimnasio de Ciudad Plateada. Mis Pokémon de tipo Roca son duros como una roca. ¡Tu determinación también parece sólida! ¡Enfréntate a mí!",
+        "win": "¡Increíble! Eres más fuerte de lo que parecías. Toma la Medalla Roca como prueba de tu victoria.",
+        "lose": "¡La determinación es importante, pero también la estrategia! Vuelve cuando estés listo."
+      }
+    }
+  }
+}
