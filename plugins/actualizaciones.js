@@ -1,7 +1,7 @@
 const handler = async (m, { conn, usedPrefix }) => {
   const logo = 'https://files.catbox.moe/nqvhaq.jpg'
 
-  const body = `╭─◉ 🎄 *¡ACTUALIZACIÓN NAVIDEÑA 1.4!* ◉─╮
+  const body = `╭─◉ 🎄 *¡ACTUALIZACIÓN NAVIDEÑA 1.5!* ◉─╮
 │
 │ ❄️ *¡Santa trajo nuevos sistemas para ti!*
 │
@@ -47,11 +47,38 @@ const handler = async (m, { conn, usedPrefix }) => {
 │ • Organizado por categorías
 │ • Sistema de almacenamiento
 │
-│ 🎁 *MECÁNICAS NUEVAS:*
-│ • Energía y salud
-│ • Durabilidad de herramientas
-│ • Niveles de habilidad
-│ • Eventos diarios navideños
+│ 🎄 *NUEVOS COMANDOS NAVIDEÑOS:*
+│
+│ 🍪 *${usedPrefix}receta*
+│ • Recetas navideñas paso a paso
+│ • Incluye enlace a video tutorial
+│ • Diferentes recetas cada día
+│
+│ 🎵 *${usedPrefix}ttnavi* o *${usedPrefix}villancico*
+│ • Escucha villancicos navideños
+│ • Recibe audio + foto de la canción
+│ • Colección completa de villancicos
+│
+│ 🍩 *${usedPrefix}rascadona*
+│ • Rasca una dona y gana premios
+│ • Premios diarios disponibles
+│ • Recompensas aleatorias
+│
+│ 📅 *${usedPrefix}calendario*
+│ • Reclama recompensa diaria
+│ • Bonos por racha consecutiva
+│ • Premios especiales navideños
+│
+│ 😂 *${usedPrefix}chiste*
+│ • Chistes navideños y bromas
+│ • Diferente chiste cada vez
+│ • Perfecto para reír en familia
+│
+│ 📜 *${usedPrefix}reglas* o *${usedPrefix}regla*
+│ • Muestra las reglas del grupo
+│ • Agrega nuevas reglas
+│ • Edita o elimina reglas existentes
+│ • Solo administradores pueden modificar
 │
 │ ⚡ *¿CÓMO EMPEZAR?*
 │ 1. Compra una herramienta básica
@@ -60,13 +87,20 @@ const handler = async (m, { conn, usedPrefix }) => {
 │ 4. Mejora tus herramientas
 │ 5. Participa en eventos
 │
+│ 🎁 *Recompensa diaria:*
+│ • Usa *${usedPrefix}calendario* cada día
+│ • Acumula días para premios mayores
+│ • No pierdas tu racha
+│
 ╰─────────────────────────────────╯
 `.trim()
 
   const buttons = [
     { buttonId: `${usedPrefix}tienda`, buttonText: { displayText: '🛍️ Tienda' }, type: 1 },
-    { buttonId: `${usedPrefix}craft`, buttonText: { displayText: '⚒️ Crafteo' }, type: 1 },
-    { buttonId: `${usedPrefix}inventario2`, buttonText: { displayText: '🎒 Inventario' }, type: 1 },
+    { buttonId: `${usedPrefix}calendario`, buttonText: { displayText: '📅 Calendario' }, type: 1 },
+    { buttonId: `${usedPrefix}rascadona`, buttonText: { displayText: '🍩 Rascar Dona' }, type: 1 },
+    { buttonId: `${usedPrefix}villancico`, buttonText: { displayText: '🎵 Villancicos' }, type: 1 },
+    { buttonId: `${usedPrefix}reglas`, buttonText: { displayText: '📜 Reglas' }, type: 1 },
     { buttonId: `${usedPrefix}tutorial`, buttonText: { displayText: '📚 Ayuda' }, type: 1 }
   ]
 
@@ -74,7 +108,7 @@ const handler = async (m, { conn, usedPrefix }) => {
     await conn.sendMessage(m.chat, {
       image: { url: logo },
       caption: body,
-      footer: '🎅 ASTA-BOT - VERSIÓN NAVIDEÑA 1.4',
+      footer: '🎅 ASTA-BOT - VERSIÓN NAVIDEÑA 1.5',
       buttons: buttons,
       headerType: 4
     }, { quoted: m })
@@ -82,7 +116,7 @@ const handler = async (m, { conn, usedPrefix }) => {
     // Fallback sin imagen
     await conn.sendMessage(m.chat, {
       text: body,
-      footer: '🎅 ASTA-BOT - VERSIÓN NAVIDEÑA 1.4',
+      footer: '🎅 ASTA-BOT - VERSIÓN NAVIDEÑA 1.5',
       buttons: buttons
     }, { quoted: m })
   }
