@@ -1,0 +1,21 @@
+{
+  "route_trainers": {
+    "ruta_1": ["youngster_joey"],
+    "ruta_2": ["lass_meg", "bug_catcher_rick"],
+    "ruta_3": ["youngster_ben", "lass_janie", "bug_catcher_colton"]
+  },
+  
+  "gym_trainers": {
+    "gym_pewter": ["camper_liam", "hiker_marcus"],
+    "gym_cerulean": ["swimmer_finn", "swimmer_sharon"],
+    "gym_vermillion": ["sailor_edmond", "gentleman_tucker"]
+  },
+  
+  "elite_four": {
+    "lorelei": { "type": "Hielo", "order": 1 },
+    "bruno": { "type": "Lucha", "order": 2 },
+    "agatha": { "type": "Fantasma", "order": 3 },
+    "lance": { "type": "Dragón", "order": 4 },
+    "champion": { "name": "Blue", "order": 5 }
+  }
+}
