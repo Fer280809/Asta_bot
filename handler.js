@@ -24,49 +24,6 @@ export async function handler(chatUpdate) {
     if (!m) return
     if (global.db.data == null)
         await global.loadDatabase()
-    
-    // ==================== VERIFICACIÓN TEMPRANA DE MUTE ====================
-    // Esta verificación debe ir ANTES de cualquier procesamiento
-    if (m.isGroup && !m.isBaileys && !m.fromMe) {
-        const chat = global.db.data.chats[m.chat]
-        if (chat && Array.isArray(chat.muted) && chat.muted.includes(m.sender)) {
-            try {
-                // Marcar como leído para que no aparezca la notificación
-                await this.readMessages([m.key])
-                
-                // Intentar eliminar el mensaje si el bot es admin
-                const groupMetadata = await this.groupMetadata(m.chat).catch(() => null)
-                const botParticipant = groupMetadata?.participants?.find(p => 
-                    p.id === this.user.jid || areJidsSameUser(p.id, this.user.jid)
-                )
-                
-                if (botParticipant && (botParticipant.admin === 'admin' || botParticipant.admin === 'superadmin')) {
-                    // Eliminar el mensaje del usuario muteado
-                    await this.sendMessage(m.chat, {
-                        delete: {
-                            remoteJid: m.chat,
-                            fromMe: false,
-                            id: m.key.id,
-                            participant: m.sender
-                        }
-                    }).catch(() => {})
-                    
-                    // Opcional: Enviar advertencia
-                    await this.sendMessage(m.chat, {
-                        text: `⚠️ *MENSAJE ELIMINADO*\n@${m.sender.split`@`[0]} está silenciado y no puede enviar mensajes.\n━━━━━━━━━━━━━━━━━━━━━━━\nUsa *${this.prefix}unmute @usuario* para permitirle hablar.`,
-                        mentions: [m.sender]
-                    }, {
-                        quoted: null
-                    }).catch(() => {})
-                }
-            } catch (error) {
-                // Silenciar errores para no llenar la consola
-            }
-            return // IMPORTANTE: Detener el procesamiento aquí
-        }
-    }
-    // ==================== FIN DE VERIFICACIÓN DE MUTE ====================
-    
     try {
         m = smsg(this, m) || m
         if (!m) return
@@ -96,9 +53,6 @@ export async function handler(chatUpdate) {
                 if (!("afk" in user) || !isNumber(user.afk)) user.afk = -1
                 if (!("afkReason" in user)) user.afkReason = ""
                 if (!("warn" in user) || !isNumber(user.warn)) user.warn = 0
-                // Nueva propiedad para mute
-                if (!("muted" in user)) user.muted = false
-                if (!("mutedUntil" in user)) user.mutedUntil = 0
             } else global.db.data.users[m.sender] = {
                 name: m.name,
                 exp: 0,
@@ -118,9 +72,7 @@ export async function handler(chatUpdate) {
                 commands: 0,
                 afk: -1,
                 afkReason: "",
-                warn: 0,
-                muted: false,
-                mutedUntil: 0
+                warn: 0
             }
             const chat = global.db.data.chats[m.chat]
             if (typeof chat !== "object") {
@@ -139,10 +91,6 @@ export async function handler(chatUpdate) {
                 if (!("nsfw" in chat)) chat.nsfw = false
                 if (!("economy" in chat)) chat.economy = true;
                 if (!("gacha" in chat)) chat.gacha = true
-                // Asegurar que existe la propiedad muted
-                if (!("muted" in chat) || !Array.isArray(chat.muted)) {
-                    chat.muted = []
-                }
             } else global.db.data.chats[m.chat] = {
                 isBanned: false,
                 isMute: false,
@@ -155,8 +103,7 @@ export async function handler(chatUpdate) {
                 antiLink: true,
                 nsfw: false,
                 economy: true,
-                gacha: true,
-                muted: [] // Inicializar array de muteados
+                gacha: true
             }
             const settings = global.db.data.settings[this.user.jid]
             if (typeof settings !== "object") {
@@ -210,8 +157,8 @@ export async function handler(chatUpdate) {
         m.exp += Math.ceil(Math.random() * 10)
         let usedPrefix
 
-        // INICIO DE NUEVA LÓGICA ROBUSTA DE ADMINS
-        const groupMetadata = m.isGroup 
+                // INICIO DE NUEVA LÓGICA ROBUSTA DE ADMINS
+                const groupMetadata = m.isGroup 
             ? (global.cachedGroupMetadata 
                 ? await global.cachedGroupMetadata(m.chat).catch((_) => null) 
                 : await this.groupMetadata(m.chat).catch((_) => null)) || {} 
@@ -264,8 +211,7 @@ export async function handler(chatUpdate) {
         const isRAdmin = userGroup?.admin === 'superadmin'
         const isAdmin = isRAdmin || userGroup?.admin === 'admin' || userGroup?.admin === true
         const isBotAdmin = botGroup?.admin === 'admin' || botGroup?.admin === 'superadmin' || botGroup?.admin === true
-
-        const ___dirname = path.join(path.dirname(fileURLToPath(import.meta.url)), "./plugins")
+                 const ___dirname = path.join(path.dirname(fileURLToPath(import.meta.url)), "./plugins")
         for (const name in global.plugins) {
             const plugin = global.plugins[name]
             if (!plugin) continue
@@ -391,16 +337,6 @@ export async function handler(chatUpdate) {
                             return
                         }
                     }
-                    
-                    // ===== VERIFICACIÓN DE MUTE PARA COMANDOS =====
-                    // Evitar que usuarios muteados usen comandos
-                    if (chat.muted && Array.isArray(chat.muted) && chat.muted.includes(m.sender)) {
-                        try {
-                            await m.reply(`🔇 *Estás silenciado en este grupo*.\nNo puedes usar comandos hasta que un admin te desmutee.\n\nUsa: *${usedPrefix}mutelist* para ver la lista de silenciados.`)
-                        } catch {}
-                        return // Detener ejecución del comando
-                    }
-                    // ===== FIN VERIFICACIÓN MUTE =====
                 }
                 const adminMode = chat.modoadmin || false
                 const wa = plugin.botAdmin || plugin.admin || plugin.group || plugin || noPrefix || pluginPrefix || m.text.slice(0, 1) === pluginPrefix || plugin.command
