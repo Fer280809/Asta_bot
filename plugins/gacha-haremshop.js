@@ -115,7 +115,7 @@ const handler = async (m, { conn, args }) => {
 
 handler.help = ['haremshop', 'tienda', 'market', 'mercadonavideño'];
 handler.tags = ['gacha', 'navidad', 'economy'];
-handler.command = ['haremshop', 'tienda', 'market', 'tiendagacha'];
+handler.command = ['gachashop', 'tiendagacha'];
 handler.group = true;
 handler.private = true;
 
