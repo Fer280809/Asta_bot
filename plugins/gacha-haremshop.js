@@ -117,6 +117,4 @@ handler.help = ['haremshop', 'tienda', 'market', 'mercadonavideño'];
 handler.tags = ['gacha', 'navidad', 'economy'];
 handler.command = ['gachashop', 'tiendagacha'];
 handler.group = true;
-handler.private = true;
-
 export default handler;
