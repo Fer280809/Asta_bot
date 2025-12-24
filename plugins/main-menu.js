@@ -1,33 +1,40 @@
-
-// --- 1. DEFINICIÓN ESTÁTICA DEL MENÚ ---
-const MenuData = {
-  "MENU_INICIO": {
-    title: "¡FELIZ NAVIDAD! 🎄",
-    body: (totalreg, userId, conn) => `
-╭─━━━━━━━━━━━━━━━─╮
-│ 🎁 ¡Hola @${userId.split('@')[0]}! 🌟
+let handler = async (m, { conn, usedPrefix }) => {
+  let totalreg = Object.keys(global.db.data.users).length;
+  let totalCommands = Object.values(global.plugins).filter(
+    (v) => v.help && v.tags
+  ).length;
+  let libreria = 'Baileys';
+  let vs = '1.3';
+  let userId = m.sender;
+  
+  let infoText = `╭─━━━━━━━━━━━━━━━─╮
+│ 🎭 ¡Hola @${userId.split('@')[0]}! 💖
 ╰─━━━━━━━━━━━━━━━─╯
+
 Me llamo 『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』🎅
 
 ╭─═⊰ 🎀 𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐂𝐈Ó𝐍 𝐍𝐀𝐕𝐈𝐃𝐄Ñ𝐀
-│ 🤖 Estado: ${(conn.user.jid == global.conn.user.jid ? '🟢 RENO MÁGICO' : '🔗 DUENDE AYUDANTE')}
-│ 👥 Usuarios: 『${totalreg.toLocaleString()}』🌟
-│ 🛠️ Comandos: 『${Object.values(global.plugins).filter(v => v.help && v.tags).length}』✨
-│ 📅 Librería » Baileys
-│ 🌍 Región: Polo Norte 🎅
-│ 📡 Ping: Alegre ✅
-│ 💾 Versión: 1.5
-│ 🔒 Modo: ${(conn.user.jid == global.conn.user.jid ? '🔐 ELFO PRIVADO' : '🔓 TALLER PÚBLICO')}
+│ 🤖 Estado: ${(conn.user.jid == global.conn.user.jid ? '🟢 PREMIUM' : '🔗 prem-ʙᴏᴛ')}
+│ 👥 Users: 『${totalreg.toLocaleString()}』🔥
+│ 🛠️ Comandos: 『${totalCommands}』⚙️
+│ 📅 Librería » ${libreria}
+│ 🌍 Servidor: México 🇲🇽
+│ 📡 Ping: Online ✅
+│ 💾 Version: ${vs}
+│ 🔒 Modo: ${(conn.user.jid == global.conn.user.jid ? '🔐 PRIVADO' : '🔓 PUBLICO')}
 ╰───────────────╯
 
-*🤖 PON #code O #qr PARA HACERTE SUBBOT DEL ASTA-BOT-MD 📡*
-`.trim()
-  },
 
-  "ECONOMY": {
-    title: "💰 ECONOMY",
-    body: `
+
+*🤖 PON #code O #qr PARA HACERTE SUBBOT DEL ASTA-BOT-MD 📡*
+
+
+
+┏━━━━━━━━━━━━━━┓
+*💰 ECONOMY*  
+┗━━━━━━━━━━━━━━┛
 ╰┈➤ ✿ Comandos de *Economía* para ganar dinero.  
+
 ╰┈➤ 💼 *#w / #work / #trabajar*
         ╰┈➤ Ganar coins trabajando  
 ╰┈➤ 💃 *#slut / #prostituirse*
@@ -73,14 +80,13 @@ Me llamo 『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』🎅
 ╰┈➤ 🎣 *#fish / #pescar*
         ╰┈➤ Ganar coins y exp pescando  
 ╰┈➤ 🏰 *#mazmorra / #dungeon*
-        ╰┈➤ Explorar mazmorras para ganar coins y exp
-`.trim()
-  },
+        ╰┈➤ Explorar mazmorras para ganar coins y exp  
+  
 
 
-  "DOWNLOAD": {
-    title: "📥 DOWNLOAD",
-    body: `
+┏━━━━━━━━━━━━━━┓
+*📥 DOWNLOAD*  
+┗━━━━━━━━━━━━━━┛
 ╰┈➤ ✿ Comandos de *Descargas* para obtener archivos de varias fuentes  
 
 ╰┈➤ 🎵 *#tiktok / #tt* + [Link] / [busqueda]
@@ -108,13 +114,13 @@ Me llamo 『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』🎅
 ╰┈➤ 📱 *#apk / #modapk* + [busqueda]
         ╰┈➤ Descargar un APK de Aptoide  
 ╰┈➤ 🎥 *#ytsearch / #search* + [busqueda]
-        ╰┈➤ Buscar videos de YouTube
-`.trim()
-  },
+        ╰┈➤ Buscar videos de YouTube  
 
-  "GACHA": {
-    title: "🎴 GACHA",
-    body: `
+
+
+┏━━━━━━━━━━━━━━┓
+*🎴 GACHA*  
+┗━━━━━━━━━━━━━━┛
 ╰┈➤ ✿ Comandos de *Gacha* para reclamar y coleccionar personajes  
 
 ╰┈➤ 🛒 *#buycharacter / #buychar / #buyc* + [nombre]
@@ -160,13 +166,13 @@ Me llamo 『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』🎅
 ╰┈➤ 🗳️ *#vote / #votar* + [nombre]
         ╰┈➤ Votar por un personaje para subir su valor  
 ╰┈➤ 🏆 *#waifusboard / #waifustop / #topwaifus / #wtop* + [número]
-        ╰┈➤ Ver el top de personajes con mayor valor
-`.trim()
-  },
+        ╰┈➤ Ver el top de personajes con mayor valor  
 
-  "SOCKETS": {
-    title: "🔌 SOCKETS",
-    body: `
+
+
+┏━━━━━━━━━━━━━━┓
+*🔌 SOCKETS*  
+┗━━━━━━━━━━━━━━┛
 ╰┈➤ ✿ Comandos para registrar tu propio Bot  
 
 ╰┈➤ 🔗 *#qr / #code*
@@ -188,14 +194,14 @@ Me llamo 『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』🎅
 ╰┈➤ 📝 *#setstatus* + [estado]
         ╰┈➤ Cambiar el estado del bot  
 ╰┈➤ 🆔 *#setusername* + [nombre]
-        ╰┈➤ Cambiar el nombre de usuario
-`.trim()
-  },
+        ╰┈➤ Cambiar el nombre de usuario  
 
-  "UTILITIES": {
-    title: "🛠️ UTILITIES",
-    body: `
-╰┈➤ ✿ Comandos de *Utilidades* ╰┈➤ 📋 *#help / #menu*
+┏━━━━━━━━━━━━━━┓
+*🛠️ UTILITIES*  
+┗━━━━━━━━━━━━━━┛
+╰┈➤ ✿ Comandos de *Utilidades*  
+
+╰┈➤ 📋 *#help / #menu*
         ╰┈➤ Ver el menú de comandos  
 ╰┈➤ 📄 *#sc / #script*
         ╰┈➤ Link del repositorio oficial del Bot  
@@ -242,13 +248,49 @@ Me llamo 『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』🎅
 ╰┈➤ 📦 *#npmdl / #nmpjs*
         ╰┈➤ Descargar paquetes de NPMJS  
 ╰┈➤ 🔎 *#google*
-        ╰┈➤ Realizar búsquedas por Google
-`.trim()
-  },
+        ╰┈➤ Realizar búsquedas por Google  
 
-  "PROFILES": {
-    title: "👤 PROFILES",
-    body: `
+┏━━━━━━━━━━━━━━┓
+*🆕 MINE BOT*  
+┗━━━━━━━━━━━━━━┛
+╰┈➤ ✿ Comandos de *Supervivencia y Recursos*
+╰┈➤ 🍖 *#comida*
+        ╰┈➤ Ver sistema de alimentación
+╰┈➤ 🍽️ *#comer* + [alimento]
+        ╰┈➤ Consumir alimento para recuperar energía
+╰┈➤ 👨‍🍳 *#cocinar* + [receta]
+        ╰┈➤ Cocinar alimentos con tus recursos
+╰┈➤ 📜 *#recetas*
+        ╰┈➤ Ver recetas de cocina disponibles
+╰┈➤ 🎥 *#receta*
+        ╰┈➤ Obtén una receta con video paso a paso
+╰┈➤ 😴 *#descansar*
+        ╰┈➤ Recuperar salud y energía
+╰┈➤ 🌳 *#talar*
+        ╰┈➤ Talar árboles para obtener madera
+╰┈➤ 🎣 *#pescar*
+        ╰┈➤ Pescar peces en cuerpos de agua
+╰┈➤ ⛏️ *#minar*
+        ╰┈➤ Minar minerales y piedras
+╰┈➤ 🎒 *#inventario*
+        ╰┈➤ Ver tus recursos y objetos recolectados
+╰┈➤ 🛒 *#tienda*
+        ╰┈➤ Comprar herramientas y equipamiento
+╰┈➤ 💰 *#vender*
+        ╰┈➤ Vender recursos obtenidos
+╰┈➤ 🎄 *#ttnavi / #villancico*
+        ╰┈➤ Recibe audio y fotos de villancicos navideños
+╰┈➤ 🍩 *#rasca / #rascadona*
+        ╰┈➤ Elige una dona y gana premios sorpresa
+╰┈➤ 📅 *#calendario*
+        ╰┈➤ Reclima tu recompensa diaria de dinero o minerales
+╰┈➤ 😂 *#chiste*
+        ╰┈➤ Disfruta de un chiste aleatorio para reír
+
+
+┏━━━━━━━━━━━━━━┓
+*👤 PROFILES*  
+┗━━━━━━━━━━━━━━┛
 ╰┈➤ ✿ Comandos de *Perfil* para ver y configurar tu perfil  
 
 ╰┈➤ 🏆 *#leaderboard / #lboard / #top* + <pagina>
@@ -276,20 +318,20 @@ Me llamo 『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』🎅
 ╰┈➤ ❌ *#deldescription / #deldesc*
         ╰┈➤ Eliminar tu descripción  
 ╰┈➤ 💎 *#prem / #vip*
-        ╰┈➤ Comprar membresía premium
-`.trim()
-  },
+        ╰┈➤ Comprar membresía premium  
 
-  "GROUPS": {
-    title: "👥 GROUPS",
-    body: `
+
+┏━━━━━━━━━━━━━━┓
+*👥 GROUPS*  
+┗━━━━━━━━━━━━━━┛
 ╰┈➤ ✿ Comandos para *Administradores* de grupos  
 
 ╰┈➤ 📢 *#tag / #hidetag / #invocar / #tagall* + [mensaje]
         ╰┈➤ Envía un mensaje mencionando a todos los usuarios del grupo  
 ╰┈➤ ⚠️ *#detect / #alertas* + [enable/disable]
         ╰┈➤ Activar/desactivar las alertas de promote/demote  
-╰┈➤ 🔎 *#setting / #config* ╰┈➤ activa y o desactiva y ve las opciones que estan activas o desactivadas y ve el menu de opciones
+╰┈➤ 🔎 *#setting / #config* 
+        ╰┈➤ activa y o desactiva y ve las opciones que estan activas o desactivadas y ve el menu de opciones
 ╰┈➤ 🔗 *#antilink / #antienlace* + [enable/disable]
         ╰┈➤ Activar/desactivar el antienlace  
 ╰┈➤ 🤖 *#bot* + [enable/disable]
@@ -332,8 +374,8 @@ Me llamo 『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』🎅
         ╰┈➤ Ver y eliminar a usuarios inactivos  
 ╰┈➤ 🚫 *#listnum / #kicknum* [texto]
         ╰┈➤ Eliminar usuarios con prefijo de país  
-╰┈➤ 🚫 *#stopkicknum*
-        ╰┈➤ Parar el kicknum cuando necesites
+╰┈➤🚫  *#stopkicknum*
+        ╰┈➤ parar el kicknum cuando nesesites
 ╰┈➤ 🖼️ *#gpbanner / #groupimg*
         ╰┈➤ Cambiar la imagen del grupo  
 ╰┈➤ ✏️ *#gpname / #groupname* [texto]
@@ -347,49 +389,13 @@ Me llamo 『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』🎅
 ╰┈➤ ℹ️ *#gp / #infogrupo*
         ╰┈➤ Ver la información del grupo  
 ╰┈➤ 🔗 *#link*
-        ╰┈➤ Ver enlace de invitación del grupo
+        ╰┈➤ Ver enlace de invitación del grupo  
 
-╭┈❒✿ MINE BOT 🆕 ✿
-╰┈➤ ✿ Comandos de *Supervivencia y Recursos*  
 
-╰┈➤ 🍖 *#comida*
-        ╰┈➤ Ver sistema de alimentación  
-╰┈➤ 🍽️ *#comer* + [alimento]
-        ╰┈➤ Consumir alimento para recuperar energía  
-╰┈➤ 👨‍🍳 *#cocinar* + [receta]
-        ╰┈➤ Cocinar alimentos con tus recursos  
-╰┈➤ 📜 *#recetas*
-        ╰┈➤ Ver recetas de cocina disponibles  
-╰┈➤ 🎥 *#receta*
-        ╰┈➤ Obtén una receta con video paso a paso  
-╰┈➤ 😴 *#descansar*
-        ╰┈➤ Recuperar salud y energía  
-╰┈➤ 🌳 *#talar*
-        ╰┈➤ Talar árboles para obtener madera  
-╰┈➤ 🎣 *#pescar*
-        ╰┈➤ Pescar peces en cuerpos de agua  
-╰┈➤ ⛏️ *#minar*
-        ╰┈➤ Minar minerales y piedras  
-╰┈➤ 🎒 *#inventario*
-        ╰┈➤ Ver tus recursos y objetos recolectados  
-╰┈➤ 🛒 *#tienda*
-        ╰┈➤ Comprar herramientas y equipamiento  
-╰┈➤ 💰 *#vender*
-        ╰┈➤ Vender recursos obtenidos
-╰┈➤ 🎄 *#ttnavi / #villancico*
-        ╰┈➤ Recibe audio y fotos de villancicos navideños  
-╰┈➤ 🍩 *#rasca / #rascadona*
-        ╰┈➤ Elige una dona y gana premios sorpresa  
-╰┈➤ 📅 *#calendario*
-        ╰┈➤ Reclima tu recompensa diaria de dinero o minerales  
-╰┈➤ 😂 *#chiste*
-        ╰┈➤ Disfruta de un chiste aleatorio para reír
-`.trim()
-},
 
-"ANIME": {
-  title: "🎌 ANIME",
-    body: `
+┏━━━━━━━━━━━━━━┓
+*🎌 ANIME*  
+┗━━━━━━━━━━━━━━┛
 ╰┈➤ ✿ Comandos de reacciones de anime  
 
 ╰┈➤ 😡 *#angry / #enojado* + <mencion>
@@ -491,13 +497,13 @@ Me llamo 『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』🎅
 ╰┈➤ 💞 *#waifu*
         ╰┈➤ Buscar una waifu aleatoria  
 ╰┈➤ 💑 *#ppcouple / #ppcp*
-        ╰┈➤ Genera imágenes para amistades o parejas
-`.trim()
-},
+        ╰┈➤ Genera imágenes para amistades o parejas  
 
-"NSFW": {
-  title: " 🔞 NSFW",
-    body: `
+
+
+┏━━━━━━━━━━━━━━┓
+*🔞 NSFW*  
+┗━━━━━━━━━━━━━━┛
 ╰┈➤ ✿ Comandos NSFW  
 
 ╰┈➤ 🔞 *#danbooru / #dbooru* + [Tags]
@@ -510,125 +516,20 @@ Me llamo 『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』🎅
         ╰┈➤ Descargar un video de Xvideos  
 ╰┈➤ 🎥 *#xnxx / #xnxxdl* + [Link]
         ╰┈➤ Descargar un video de Xnxx  
-╰┈➤ 💦 *#mamada* ╰┈➤ manda un video de mamando
-`.trim()
-}
-};
+╰┈➤ 💦 *#mamada*  
+        ╰┈➤ manda un video de mamando `;
 
-const MenuOrder = [
-  "MENU_INICIO",
-  "ECONOMY",
-  "DOWNLOAD",
-  "GACHA",
-  "SOCKETS",
-  "UTILITIES",
-  "PROFILES",
-  "GROUPS",
-  "ANIME",
-  "NSFW"
-];
-
-// Almacenar los últimos mensajes de menú por chat
-const menuMessages = new Map();
-
-let handler = async (m, { conn, usedPrefix, text }) => {
+  let buttons = [
+      { buttonId: usedPrefix + 'code', buttonText: { displayText: '🤖 Sup-Bot' }, type: 1 }
+  ];
+  
+  // URL de la imagen o video (cambia por tu propia URL)
+  let mediaUrl = 'https://files.catbox.moe/lajq7h.jpg'; // Cambia esto por tu imagen
+  // let mediaUrl = 'https://example.com/video.mp4'; // O usa un video
+  
   try {
-    if (MenuOrder.length === 0) return m.reply('❌ El menú está vacío o no configurado.');
-
-    let totalreg = Object.keys(global.db.data.users).length;
-    let userId = m.sender;
-    const totalCategories = MenuOrder.length;
-
-    // 1. Determinar la categoría actual
-    let currentCategoryKey = MenuOrder[0];
-    let currentIndex = 0;
-
-    if (text && !isNaN(parseInt(text))) {
-      currentIndex = parseInt(text);
-
-      if (currentIndex >= 0 && currentIndex < totalCategories) {
-        currentCategoryKey = MenuOrder[currentIndex];
-      } else {
-        currentIndex = 0;
-        currentCategoryKey = MenuOrder[0];
-      }
-    }
-
-    const currentMenu = MenuData[currentCategoryKey];
-    if (!currentMenu) return m.reply('❌ Categoría de menú no encontrada.');
-
-    // 2. Generar el cuerpo del mensaje
-    let bodyContent = '';
-
-    if (typeof currentMenu.body === 'function') {
-      bodyContent = currentMenu.body(totalreg, userId, conn);
-    } else {
-      const currentPageNumber = currentIndex + 1;
-      bodyContent = `
-╭ *Página ${currentPageNumber}/${totalCategories}*
-╰──────────────────
-
-┏━━━━━━━━━━━━━━┓
-*${currentMenu.title}*
-┗━━━━━━━━━━━━━━┛
-${currentMenu.body}
-`.trim();
-    }
-
-    let infoText = bodyContent;
-
-    // 3. Lógica de Botones Siguiente/Anterior
-    let buttons = [];
-
-    // Botón ANTERIOR
-    if (currentIndex > 0) {
-      const prevIndex = currentIndex - 1;
-      buttons.push({
-        buttonId: usedPrefix + 'menu2 ' + prevIndex,
-        buttonText: { displayText: '◀️ Anterior' },
-        type: 1
-      });
-    }
-
-    // Botón SIGUIENTE
-    if (currentIndex < totalCategories - 1) {
-      const nextIndex = currentIndex + 1;
-      buttons.push({
-        buttonId: usedPrefix + 'menu2 ' + nextIndex,
-        buttonText: { displayText: 'Siguiente ▶️' },
-        type: 1
-      });
-    }
-
-    // Botón Fijo
-    buttons.push({
-      buttonId: usedPrefix + 'code',
-      buttonText: { displayText: '🤖 Sup-Bot' },
-      type: 1
-    });
-
-    // 4. Eliminar mensaje anterior si existe
-    const chatKey = m.chat;
-    if (menuMessages.has(chatKey)) {
-      try {
-        const oldMsg = menuMessages.get(chatKey);
-        await conn.sendMessage(m.chat, {
-          delete: {
-            id: oldMsg.key.id,
-            remoteJid: m.chat,
-            fromMe: true
-          }
-        });
-      } catch (e) {
-        // Si falla al eliminar, continuamos igual
-        console.log('No se pudo eliminar el mensaje anterior:', e);
-      }
-    }
-
-    // 5. Enviar nuevo mensaje y guardar referencia
-    let mediaUrl = 'https://files.catbox.moe/nqvhaq.jpg';
-
-    const sentMsg = await conn.sendMessage(m.chat, {
+    // Intenta enviar con imagen
+    await conn.sendMessage(m.chat, {
       image: { url: mediaUrl },
       caption: infoText,
       footer: "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』⚡",
@@ -636,36 +537,22 @@ ${currentMenu.body}
       headerType: 4,
       mentions: [userId]
     }, { quoted: m });
-
-    // Guardar referencia al nuevo mensaje
-    menuMessages.set(chatKey, sentMsg);
-
-    // Limpiar mensajes antiguos después de 5 minutos
-    setTimeout(() => {
-      if (menuMessages.has(chatKey)) {
-        menuMessages.delete(chatKey);
-      }
-    }, 5 * 60 * 1000);
-
-  } catch (error) {
-    console.error('Error en el menú:', error);
-    m.reply('❌ Ocurrió un error al mostrar el menú. Intenta nuevamente.');
+  } catch {
+    // Si falla, envía sin imagen (método alternativo)
+    let buttonMessage = {
+      text: infoText,
+      footer: "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』⚡",
+      buttons: buttons,
+      headerType: 1,
+      mentions: [userId]
+    };
+    await conn.sendMessage(m.chat, buttonMessage, { quoted: m });
   }
 };
 
-// Configuración del comando
 handler.help = ['menu2'];
 handler.tags = ['main'];
 handler.command = ['menú2', 'menu2', 'help2'];
 
-// Limpiar almacenamiento periódicamente
-setInterval(() => {
-  const now = Date.now();
-  for (const [key, msg] of menuMessages.entries()) {
-    if (now - msg.messageTimestamp * 1000 > 10 * 60 * 1000) {
-      menuMessages.delete(key);
-    }
-  }
-}, 30 * 60 * 1000);
 
 export default handler;
