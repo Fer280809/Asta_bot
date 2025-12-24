@@ -1,4 +1,23 @@
-// handler.js - VERSIÓN COMPLETA OPTIMIZADA
+// ╔═══════════════════════════════════════════════════════════╗
+// ║               ORION'S WOLF - ASTA BOT                     ║
+// ║  Creador: Orion's Wolf    │    Estilo: Cósmico/Lobuno     ║
+// ║  Archivo: handler.js      │    Versión: 3.0.0             ║
+// ╟───────────────────────────────────────────────────────────╢
+// ║  "De las estrellas vengo, en código me transformo.        ║
+// ║   Como lobo entre bytes, cazo bugs en el firmamento."     ║
+// ╚═══════════════════════════════════════════════════════════╝
+// ╔═══════════════════════════════════════════════════════════╗
+// ║  DESCRIPCIÓN:                                             ║
+// ║  Núcleo principal del bot - Maneja todos los mensajes     ║
+// ║  recibidos y procesa comandos de forma optimizada.        ║
+// ║                                                           ║
+// ║  FUNCIONAMIENTO:                                          ║
+// ║  1. Recibe mensajes de WhatsApp                           ║
+// ║  2. Valida permisos y restricciones                       ║
+// ║  3. Procesa comandos mediante módulos                     ║
+// ║  4. Ejecuta acciones correspondientes                     ║
+// ║  5. Envía respuestas al usuario                           ║
+// ╚═══════════════════════════════════════════════════════════╝
 import { smsg } from "./lib/simple.js"
 import { format } from "util"
 import { fileURLToPath } from "url"
