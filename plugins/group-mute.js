@@ -1,4 +1,4 @@
-handler = async (m, { conn, command, usedPrefix, text, args }) => {
+let handler = async (m, { conn, command, usedPrefix, text, args }) => {
     let chat = global.db.data.chats[m.chat]
     if (!chat.muted) chat.muted = []
 
@@ -42,7 +42,7 @@ handler = async (m, { conn, command, usedPrefix, text, args }) => {
         await m.react('🔇')
         
         await conn.sendMessage(m.chat, {
-            text: `🤐 *USUARIO SILENCIADO* ✨\n━━━━━━━━━━━━━━━━━━━━━━━\n@${who.split`@`[0]} ha sido silenciado.\n━━━━━━━━━━━━━━━━━━━━━━━`,
+            text: `🤐 *USUARIO MUTEADO* ✨\n━━━━━━━━━━━━━━━━━━━━━━━\n@${who.split`@`[0]} ha sido silenciado.\n━━━━━━━━━━━━━━━━━━━━━━━`,
             buttons: [
                 { buttonId: `${usedPrefix}unmute @${who.split`@`[0]}`, buttonText: { displayText: '🔊 Desilenciar' }, type: 1 },
                 { buttonId: `${usedPrefix}mutelist`, buttonText: { displayText: '📜 Ver Lista' }, type: 1 }
@@ -60,7 +60,7 @@ handler = async (m, { conn, command, usedPrefix, text, args }) => {
         
         chat.muted = chat.muted.filter(u => u !== who)
         await m.react('🔊')
-        await conn.reply(m.chat, `🔔 *USUARIO DESILENCIADO*\n━━━━━━━━━━━━━━━━━━━━━━━\n@${who.split`@`[0]} ya puede hablar.`, m, { mentions: [who] })
+        await conn.reply(m.chat, `🔔 *USUARIO DESMUTEADO*\n━━━━━━━━━━━━━━━━━━━━━━━\n@${who.split`@`[0]} ya puede hablar.`, m, { mentions: [who] })
     }
 }
 
