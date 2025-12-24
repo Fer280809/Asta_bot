@@ -123,6 +123,5 @@ handler.help = ['gachainfo', 'ginfo', 'migacha', 'miinfo'];
 handler.tags = ['gacha', 'navidad', 'info'];
 handler.command = ['gachainfo', 'ginfo', 'migacha', 'miinfo'];
 handler.group = true;
-handler.private = true;
 
 export default handler;
