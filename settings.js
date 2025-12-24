@@ -24,7 +24,7 @@ global.fernando = ["5214181450063"]
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
 global.libreria = "Baileys Multi Device"
-global.vs = "^1.3"
+global.vs = "^1.5"
 global.nameqr = "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』"
 global.sessions = "Sessions/Principal"
 global.jadi = "Sessions/SubBot"
