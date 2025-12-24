@@ -6,6 +6,7 @@ import fs, { unwatchFile, watchFile } from "fs"
 import chalk from "chalk"
 import fetch from "node-fetch"
 import ws from "ws"
+// Importación necesaria para la nueva detección de admins
 import { jidNormalizedUser, areJidsSameUser } from '@whiskeysockets/baileys'
 
 const isNumber = x => typeof x === "number" && !isNaN(x)
@@ -27,202 +28,7 @@ export async function handler(chatUpdate) {
         m = smsg(this, m) || m
         if (!m) return
         m.exp = 0
-        
-        // ============ MANEJO DE BOTONES ============
-        // Solo procesar respuestas de botones
-        if (m.mtype === 'buttonsResponseMessage') {
-            let selection = m.message?.buttonsResponseMessage?.selectedButtonId;
-            if (selection) {
-                console.log('=== BOTÓN INTERCEPTADO ===');
-                console.log('Botón seleccionado:', selection);
-                
-                // Extraer el comando (quitar el punto si existe)
-                let cmd = selection.replace(/^\./, '');
-                console.log('Comando a buscar:', cmd);
-                
-                // ============ DETECCIÓN DE ADMINS ============
-                const groupMetadata = m.isGroup 
-                    ? (global.cachedGroupMetadata 
-                        ? await global.cachedGroupMetadata(m.chat).catch((_) => null) 
-                        : await this.groupMetadata(m.chat).catch((_) => null)) || {} 
-                    : {}
-                
-                const participants = Array.isArray(groupMetadata?.participants) ? groupMetadata.participants : []
-                
-                // Funciones auxiliares para normalizar IDs
-                const decode = (j) => this.decodeJid(j)
-                const norm = (j) => jidNormalizedUser(decode(j))
-                const numOnly = (j) => String(decode(j)).split('@')[0].replace(/[^0-9]/g, '')
-                
-                // Identificación del Bot
-                const meIdRaw = this.user?.id || this.user?.jid 
-                const meLidRaw = (this.user?.lid || conn?.user?.lid || '').toString().replace(/:.*/, '') || null 
-                const botNum = numOnly(meIdRaw)
-                
-                const botCandidates = [
-                    decode(meIdRaw),
-                    jidNormalizedUser(decode(meIdRaw)),
-                    botNum,
-                    meLidRaw && `${meLidRaw}@lid`,
-                    meLidRaw && jidNormalizedUser(`${meLidRaw}@lid`),
-                    meLidRaw && `${meLidRaw}@s.whatsapp.net`
-                ].filter(Boolean)
-                
-                const senderCandidates = [decode(m.sender), jidNormalizedUser(decode(m.sender)), numOnly(m.sender)]
-                
-                // Mapeo de participantes
-                const participantsMap = {}
-                for (const p of participants) {
-                    const raw = p.jid || p.id
-                    const dj = decode(raw)
-                    const nj = jidNormalizedUser(dj)
-                    const no = numOnly(dj)
-                    participantsMap[dj] = p
-                    participantsMap[nj] = p
-                    participantsMap[no] = p
-                }
-                
-                const pick = (cands) => {
-                    for (const k of cands) if (participantsMap[k]) return participantsMap[k]
-                    return participants.find((p) => cands.some((c) => areJidsSameUser(norm(p.jid || p.id), jidNormalizedUser(decode(c))))) || null
-                }
-                
-                // Asignación de roles
-                const userGroup = m.isGroup ? pick(senderCandidates) || {} : {}
-                const botGroup = m.isGroup ? pick(botCandidates) || {} : {}
-                
-                const isRAdmin = userGroup?.admin === 'superadmin'
-                const isAdmin = isRAdmin || userGroup?.admin === 'admin' || userGroup?.admin === true
-                const isBotAdmin = botGroup?.admin === 'admin' || botGroup?.admin === 'superadmin' || botGroup?.admin === true
-                const isROwner = [...global.owner.map((number) => number)].map(v => v.replace(/[^0-9]/g, "") + "@s.whatsapp.net").includes(m.sender)
-                const isOwner = isROwner || m.fromMe
-                const user = global.db.data.users[m.sender] || {}
-                const isPrems = isROwner || global.prems.map(v => v.replace(/[^0-9]/g, "") + "@s.whatsapp.net").includes(m.sender) || user.premium == true
-                
-                // ============ BUSCAR PLUGIN ============
-                let pluginFound = null
-                let pluginName = null
-                
-                for (let name in global.plugins) {
-                    let plugin = global.plugins[name];
-                    if (!plugin || !plugin.command) continue;
-                    
-                    let commands = Array.isArray(plugin.command) ? plugin.command : [plugin.command];
-                    
-                    // Buscar coincidencia exacta O por regex
-                    const isMatch = commands.some(c => {
-                        if (c instanceof RegExp) return c.test(cmd)
-                        return c === cmd
-                    })
-                    
-                    if (isMatch) {
-                        pluginFound = plugin
-                        pluginName = name
-                        break
-                    }
-                }
-                
-                if (pluginFound) {
-                    console.log('✅ Plugin encontrado desde botón:', pluginName);
-                    
-                    // ============ VALIDACIÓN DE PERMISOS ============
-                    const chat = global.db.data.chats[m.chat] || {}
-                    const adminMode = chat.modoadmin || false
-                    
-                    // Verificar modo admin
-                    if (adminMode && !isOwner && m.isGroup && !isAdmin && (pluginFound.botAdmin || pluginFound.admin || pluginFound.group)) {
-                        return m.reply(`⚠️ *¡PERMISO DENEGADO!*\n\nEste comando solo puede ser usado por administradores del grupo.`);
-                    }
-                    
-                    // Verificar si requiere ser owner
-                    if (pluginFound.rowner && !isROwner) {
-                        await m.reply(`🎅 *¡ACCESO DENEGADO!*\n\nEste comando es exclusivo para los creadores del bot.`);
-                        return true;
-                    }
-                    
-                    if (pluginFound.owner && !isOwner) {
-                        await m.reply(`🎁 *¡RESERVADO PARA OWNERS!*\n\nSolo los desarrolladores del bot pueden usar este comando.`);
-                        return true;
-                    }
-                    
-                    // Verificar si requiere premium
-                    if (pluginFound.premium && !isPrems) {
-                        await m.reply(`✨ *¡EXCLUSIVO PREMIUM!*\n\nEste comando está reservado para usuarios premium.`);
-                        return true;
-                    }
-                    
-                    // Verificar si requiere admin
-                    if (pluginFound.admin && !isAdmin) {
-                        await m.reply(`⚠️ *¡PERMISO DENEGADO!*\n\nEste comando solo puede ser usado por administradores del grupo.`);
-                        return true;
-                    }
-                    
-                    // Verificar si requiere que el bot sea admin
-                    if (pluginFound.botAdmin && !isBotAdmin) {
-                        await m.reply(`🤖 *¡BOT SIN PERMISOS!*\n\nNecesito ser administrador del grupo para ejecutar este comando.`);
-                        return true;
-                    }
-                    
-                    // Verificar si solo funciona en grupos
-                    if (pluginFound.group && !m.isGroup) {
-                        await m.reply(`👥 *¡SOLO GRUPOS!*\n\nEste comando solo puede usarse en grupos.`);
-                        return true;
-                    }
-                    
-                    // Verificar si solo funciona en privado
-                    if (pluginFound.private && m.isGroup) {
-                        await m.reply(`🔒 *¡SOLO PRIVADO!*\n\nEste comando solo puede usarse en chat privado.`);
-                        return true;
-                    }
-                    
-                    // ============ EJECUTAR PLUGIN ============
-                    try {
-                        console.log('🚀 Ejecutando plugin desde botón...');
-                        m.plugin = pluginName
-                        m.isCommand = true
-                        
-                        await pluginFound.call(this, m, {
-                            conn: this,
-                            usedPrefix: '.',
-                            command: cmd,
-                            args: [],
-                            text: '',
-                            participants,
-                            groupMetadata,
-                            userGroup,
-                            botGroup,
-                            isROwner,
-                            isOwner,
-                            isRAdmin,
-                            isAdmin,
-                            isBotAdmin,
-                            isPrems,
-                            chatUpdate,
-                            __dirname: path.dirname(fileURLToPath(import.meta.url)),
-                            __filename: '',
-                            user,
-                            chat,
-                            settings: global.db.data.settings[this.user.jid] || {}
-                        });
-                        
-                        console.log('✅ Plugin ejecutado correctamente desde botón');
-                        return true;
-                        
-                    } catch (e) {
-                        console.error('❌ Error ejecutando plugin desde botón:', e);
-                        await m.reply(`❌ *Error al ejecutar el comando*\n\n${e.message || e}`);
-                        return true;
-                    }
-                } else {
-                    console.log('⚠️ No se encontró plugin para botón:', cmd);
-                }
-            }
-            return true; // Retornar true para evitar procesamiento adicional de botones
-        }
-        // ============ FIN MANEJO DE BOTONES ============
-
         try {
-            // CÓDIGO ORIGINAL DEL HANDLER (BASE DE DATOS)
             const user = global.db.data.users[m.sender]
             if (typeof user !== "object") {
                 global.db.data.users[m.sender] = {}
@@ -633,15 +439,15 @@ export async function handler(chatUpdate) {
 
     global.dfail = (type, m, conn) => {
         const msg = {
-            rowner: `🎅 *¡ACCESO DENEGADO!*\n\nEste comando es exclusivo para los creadores del bot.\n\n🎄 ¡Feliz Navidad! 🎁`,
-            owner: `🎁 *¡RESERVADO PARA SANTA!.*\n\nSolo los desarrolladores del bot pueden usar este comando.\n\n🦌 ¡Solo para la lista buena! ❄️.`,
-            mods: `⛄ *¡PERMISO INSUFICIENTE!.*\n\nNecesitas ser moderador del bot para usar este comando.\n\n❄️ ¡Vuelve cuando seas un reno! 🦌`,
-            premium: `✨ *¡EXCLUSIVO PREMIUM!*\n\nEste comando está reservado para usuarios premium.\n\n🎁 ¡Santa te espera! 🎅`,
-            group: `🏭 *¡SOLO EN TALLERES!*\n\nEste comando solo funciona en grupos.\n\n🛠️ ¡Únete a un taller! 🔨`,
-            private: `✉️ *¡SOLO EN CARTAS!*\n\nEste comando solo se puede usar en chat privado.\n\n📮 ¡Escribe a Santa! 🎅`,
-            admin: `🎄 *¡ELFO MAYOR REQUERIDO!*\n\nNecesitas ser administrador del grupo.\n\n🧝 ¡Pídele a Santa el ascenso! ⭐`,
-            botAdmin: `🎅 *¡SANTA NECESITA PODERES!*\n\nEl bot debe ser administrador del grupo.\n\n🧝‍♂️ ¡Hazme supervisor! 🔑`,
-            restrict: ` *¡REGALO CONGELADO!*\n\nEsta función está temporalmente deshabilitada.\n\n🛷 ¡Vuelve en Año Nuevo! ⏳`
+            rowner: `💠 *Acceso denegado* 💠\nEl comando *${comando}* solo puede ser usado por los *creadores del bot*.`,
+            owner: `💠 *Acceso denegado* 💠\nEl comando *${comando}* solo puede ser usado por los *desarrolladores del bot*.`,
+            mods: `🛡️ *Permiso insuficiente* 🛡️\nEl comando *${comando}* solo puede ser usado por los *moderadores del bot*.`,
+            premium: `⭐ *Exclusivo Premium* ⭐\nEl comando *${comando}* solo puede ser usado por *usuarios premium*.`,
+            group: `👥 *Solo en grupos* 👥\nEl comando *${comando}* solo puede ejecutarse dentro de un *grupo*.`,
+            private: `📩 *Solo privado* 📩\nEl comando *${comando}* solo puede usarse en *chat privado* con el bot.`,
+            admin: `⚠️ *Requiere permisos de admin* ⚠️\nEl comando *${comando}* solo puede ser usado por los *administradores del grupo*.`,
+            botAdmin: `🤖 *Necesito permisos* 🤖\nPara ejecutar *${comando}*, el bot debe ser *administrador del grupo*.`,
+            restrict: `⛔ *Funcionalidad desactivada* ⛔\nEsta característica está *temporalmente deshabilitada*.`
         } [type]
         if (msg) return conn.reply(m.chat, msg, m, rcanal).then(_ => m.react('✖️'))
     }
