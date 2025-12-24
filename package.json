@@ -1,6 +1,6 @@
 {
 "name": "asta_bot",
-"version": "1.8.2",
+"version": "1.5.0",
 "description": "WhatsApp Bot Multi Device",
 "main": "index.js",
 "type": "module",
