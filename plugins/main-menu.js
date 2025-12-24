@@ -375,7 +375,6 @@ Me llamo 『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』🎅
 ╰┈➤ 💰 *#vender*
         ╰┈➤ Vender recursos obtenidos
 `.trim()
-  },
 },
 
 "ANIME": {
