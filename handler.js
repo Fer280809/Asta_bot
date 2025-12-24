@@ -91,6 +91,8 @@ export async function handler(chatUpdate) {
                 if (!("nsfw" in chat)) chat.nsfw = false
                 if (!("economy" in chat)) chat.economy = true;
                 if (!("gacha" in chat)) chat.gacha = true
+                // Inicializar lista de usuarios silenciados si no existe
+                if (!("muted" in chat) || !Array.isArray(chat.muted)) chat.muted = []
             } else global.db.data.chats[m.chat] = {
                 isBanned: false,
                 isMute: false,
@@ -103,7 +105,8 @@ export async function handler(chatUpdate) {
                 antiLink: true,
                 nsfw: false,
                 economy: true,
-                gacha: true
+                gacha: true,
+                muted: []  // Lista de usuarios silenciados
             }
             const settings = global.db.data.settings[this.user.jid]
             if (typeof settings !== "object") {
@@ -211,7 +214,59 @@ export async function handler(chatUpdate) {
         const isRAdmin = userGroup?.admin === 'superadmin'
         const isAdmin = isRAdmin || userGroup?.admin === 'admin' || userGroup?.admin === true
         const isBotAdmin = botGroup?.admin === 'admin' || botGroup?.admin === 'superadmin' || botGroup?.admin === true
-                 const ___dirname = path.join(path.dirname(fileURLToPath(import.meta.url)), "./plugins")
+        
+        // ============================================
+        // ✅ SISTEMA DE MUTE - BLOQUEO DE USUARIOS
+        // ============================================
+        if (m.isGroup && chat.muted && Array.isArray(chat.muted)) {
+            // Verificar si el usuario está en la lista de silenciados
+            const isUserMuted = chat.muted.includes(m.sender)
+            
+            if (isUserMuted) {
+                // Verificar si el usuario es admin/owner (excepción)
+                const isAdminOrOwner = isAdmin || isOwner || isROwner || m.fromMe
+                
+                // Comandos permitidos incluso estando silenciado
+                const allowedCommands = ['unmute', 'help', 'owner', 'report', 'menu']
+                const isCommandAllowed = usedPrefix && allowedCommands.some(cmd => 
+                    m.text.toLowerCase().startsWith(usedPrefix + cmd)
+                )
+                
+                if (!isAdminOrOwner && !isCommandAllowed) {
+                    console.log(`[MUTE] Bloqueando mensaje de ${m.sender} en ${m.chat}`)
+                    
+                    // Opción 1: Eliminar el mensaje automáticamente si el bot es admin
+                    if (isBotAdmin) {
+                        try {
+                            await this.sendMessage(m.chat, { 
+                                delete: {
+                                    remoteJid: m.chat,
+                                    fromMe: false,
+                                    id: m.id,
+                                    participant: m.sender
+                                }
+                            })
+                        } catch (deleteErr) {
+                            console.error('[MUTE] Error al eliminar mensaje:', deleteErr)
+                        }
+                    }
+                    
+                    // Opción 2: Notificar al usuario por privado (opcional)
+                    try {
+                        await this.sendMessage(m.sender, {
+                            text: `🔇 *ESTÁS SILENCIADO*\n\nNo puedes enviar mensajes en el grupo *${groupMetadata.subject || 'este grupo'}*.\n\n📍 Si crees que es un error, contacta a un administrador.\n\n🔊 Para ser desilenciado, pide a un admin usar:\n${usedPrefix}unmute @${m.sender.split('@')[0]}`
+                        })
+                    } catch (noticeErr) {
+                        // Ignorar si no se puede enviar DM
+                    }
+                    
+                    return // Detener el procesamiento del mensaje
+                }
+            }
+        }
+        // ============================================
+        
+        const ___dirname = path.join(path.dirname(fileURLToPath(import.meta.url)), "./plugins")
         for (const name in global.plugins) {
             const plugin = global.plugins[name]
             if (!plugin) continue
