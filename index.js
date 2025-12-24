@@ -1,32 +1,10 @@
-// ╔══════════════════════════════════════════════════════════╗
-// ║                    ASTA BOT - FERNANDO                   ║
-// ║  Desarrollador: Fernando    │    Estado: Funcional       ║
-// ║  Archivo: index.js          │    Versión: 1.8.2          ║
-// ╟──────────────────────────────────────────────────────────╢
-// ║  Sistema principal de automatización y gestión de        ║ 
-// ║  mensajería para WhatsApp.                               ║
-// ╚══════════════════════════════════════════════════════════╝
-
-// ╔══════════════════════════════════════════════════════════╗
-// ║  DESCRIPCIÓN:                                            ║
-// ║  Punto de entrada principal - Inicializa todos los       ║
-// ║  módulos del sistema y establece conexión con WhatsApp.  ║
-// ║                                                          ║
-// ║  MÓDULOS INICIALIZADOS:                                  ║
-// ║  • Conexión WhatsApp (Baileys MD)                        ║
-// ║  • Gestión de base de datos                              ║
-// ║  • Sistema de permisos y roles                           ║
-// ║  • Control de frecuencia (anti-flood)                    ║
-// ║  • Cargador de extensiones (5 directorios)               ║
-// ║  • Sistema de sub-bots (AstaJadibts)                     ║
-// ║  • Módulo Pokémon                                        ║
-// ║                                                          ║
-// ║  MÉTODOS DE AUTENTICACIÓN:                               ║
-// ║  • Código QR                                             ║
-// ║  • Código numérico (8 dígitos)                           ║
-// ║  • Conexión móvil (Beta)                                 ║
-// ╚══════════════════════════════════════════════════════════╝
+// Al inicio del archivo, DESPUÉS de los imports existentes
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '1'
+
+// Importar las nuevas dependencias Pokémon
+import { pokemonDB } from './lib/databasepokemon.js'
+import { PokemonLogic } from './lib/logic.js'
+
 import './settings.js'
 import './plugins/_allfake.js'
 import cfonts from 'cfonts'
@@ -59,51 +37,44 @@ const { CONNECTING } = ws
 const { chain } = lodash
 const PORT = process.env.PORT || process.env.SERVER_PORT || 3000
 
+// ============ INICIALIZACIÓN SISTEMA POKÉMON ============
+// AGREGAR al handler principal:
+global.pokemonDB = pokemonDB
+global.PokemonLogic = PokemonLogic
+// ========================================================
+
 let { say } = cfonts
-console.log(chalk.magentaBright('\n⚡ Iniciando Sistema...'))
 
-// ============================================
-// LOGO ASCII CON COLORES NAVIDEÑOS
-// ============================================
-console.log(chalk.green(`
-█████╗ ███████╗████████╗ █████╗ ██████╗  ██████╗ ████████╗    ███╗   ███╗██████╗ 
-██╔══██╗██╔════╝╚══██╔══╝██╔══██╗██╔══██╗██╔═══██╗╚══██╔══╝    ████╗ ████║██╔══██╗
-███████║███████╗   ██║   ███████║██████╔╝██║   ██║   ██║       ██╔████╔██║██║  ██║
-██╔══██║╚════██║   ██║   ██╔══██║██╔══██╗██║   ██║   ██║       ██║╚██╔╝██║██║  ██║
-██║  ██║███████║   ██║   ██║  ██║██████╔╝╚██████╔╝   ██║       ██║ ╚═╝ ██║██████╔╝
-╚═╝  ╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═════╝  ╚═════╝    ╚═╝       ╚═╝     ╚═╝╚═════╝
-`))
+// 🎄 TEXTO NAVIDEÑO CON COLORES ROJO Y BLANCO 🎄
+console.log(chalk.magentaBright('\n🎄 Iniciando Sistema Navideño...'))
+console.log(chalk.white('╔══════════════════════════════════════════════════════════════╗'))
+console.log(chalk.white('║                    🎅 FELIZ NAVIDAD 🎄                     ║'))
+console.log(chalk.white('╚══════════════════════════════════════════════════════════════╝'))
 
-console.log(chalk.white.bold('╔══════════════════════════════════════════════════════════╗'))
-console.log(chalk.white.bold('║                   🎄 SISTEMA NAVIDEÑO 🎄                 ║'))
-console.log(chalk.white.bold('╚══════════════════════════════════════════════════════════╝'))
+// Logo ASCII con degradado rojo-blanco
+console.log(chalk.red('█████╗ ███████╗████████╗ █████╗ ██████╗  ██████╗ ████████╗    ███╗   ███╗██████╗ '))
+console.log(chalk.white('██╔══██╗██╔════╝╚══██╔══╝██╔══██╗██╔══██╗██╔═══██╗╚══██╔══╝    ████╗ ████║██╔══██╗'))
+console.log(chalk.red('███████║███████╗   ██║   ███████║██████╔╝██║   ██║   ██║       ██╔████╔██║██║  ██║'))
+console.log(chalk.white('██╔══██║╚════██║   ██║   ██╔══██║██╔══██╗██║   ██║   ██║       ██║╚██╔╝██║██║  ██║'))
+console.log(chalk.red('██║  ██║███████║   ██║   ██║  ██║██████╔╝╚██████╔╝   ██║       ██║ ╚═╝ ██║██████╔╝'))
+console.log(chalk.white('╚═╝  ╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═════╝  ╚═════╝    ╚═╝       ╚═╝     ╚═╝╚═════╝'))
 
-// Mostrar símbolos navideños alrededor
-console.log(chalk.red('   🎅  🎄  🎁  ❄️  ⛄  🔔  🦌  🕯️'))
-console.log(chalk.yellow('\n✨ Sistema de automatización con espíritu navideño ✨\n'))
-
-// Logotipo principal con cfonts
-say('Asta Bot MP', {
-  font: 'block',
-  align: 'center',
-  gradient: ['red', 'green', 'white']
-})
-
-say('¡Felices Fiestas!', {
+// Mensajes navideños con cfonts
+say('Sistema Navideño', {
   font: 'console',
   align: 'center',
-  colors: ['red', 'green', 'yellow']
+  gradient: ['red', 'white']
 })
-
+say('🎄 Feliz Navidad 🎅', {
+  font: 'tiny',
+  align: 'center',
+  colors: ['red', 'green', 'white']
+})
 say('By Fernando', {
   font: 'tiny',
   align: 'center',
-  colors: ['cyan', 'white']
+  colors: ['yellow', 'green']
 })
-
-// ============================================
-// FIN DEL LOGO NAVIDEÑO
-// ============================================
 
 protoType()
 serialize()
@@ -166,7 +137,7 @@ if (methodCodeQR) {
 }
 if (!methodCodeQR && !methodCode && !fs.existsSync(`./${sessions}/creds.json`)) {
   do {
-    opcion = await question(chalk.bold.white("Seleccione una opción:\n") + chalk.blueBright("1. Con código QR\n") + chalk.cyan("2. Con código de 8 dígitos\n━━━> "))
+    opcion = await question(chalk.bold.white("🎄 Seleccione una opción:\n") + chalk.redBright("1. Con código QR\n") + chalk.white("2. Con código de 8 dígitos\n━━━> "))
     if (!/^[1-2]$/.test(opcion)) {
       console.log(chalk.bold.redBright(`❌ No se permiten números que no sean 1 o 2`))
     }
@@ -213,7 +184,7 @@ conn.ev.on("creds.update", saveCreds)
 // ============ SECCIÓN CORREGIDA DEL CÓDIGO ============
 if (!fs.existsSync(`./${sessions}/creds.json`)) {
   if (opcion === '2' || methodCode) {
-    console.log(chalk.yellow('[ ⚡ ] Modo código de emparejamiento activado'))
+    console.log(chalk.yellow('[ 🎄 ] Modo código de emparejamiento activado'))
     
     // Sistema de espera mejorado para xyz/bails
     const waitForConnection = () => {
@@ -228,11 +199,11 @@ if (!fs.existsSync(`./${sessions}/creds.json`)) {
           
           if (conn && conn.authState && conn.authState.creds) {
             clearInterval(checkInterval)
-            console.log(chalk.green('[ ✓ ] Conexión lista para código'))
+            console.log(chalk.green('[ ✅ ] Conexión lista para código'))
             resolve(true)
           } else if (attempts >= maxAttempts) {
             clearInterval(checkInterval)
-            console.log(chalk.red('[ ✗ ] Tiempo de espera agotado'))
+            console.log(chalk.red('[ ❌ ] Tiempo de espera agotado'))
             resolve(false)
           } else if (attempts % 3 === 0) {
             console.log(chalk.yellow(`[ ⏱️ ] Esperando conexión... (${attempts}/${maxAttempts})`))
@@ -247,7 +218,7 @@ if (!fs.existsSync(`./${sessions}/creds.json`)) {
         addNumber = phoneNumber.replace(/[^0-9]/g, '')
       } else {
         do {
-          phoneNumber = await question(chalk.bgBlack(chalk.bold.greenBright(`[ 🔐 ] Ingrese el número de WhatsApp (ej: 5213312345678).\n${chalk.bold.magentaBright('━━━> ')}`)))
+          phoneNumber = await question(chalk.bgBlack(chalk.bold.redBright(`[ 🔐 ] Ingrese el número de WhatsApp (ej: 5213312345678).\n${chalk.bold.white('━━━> ')}`)))
           phoneNumber = phoneNumber.replace(/\D/g, '')
           if (!phoneNumber.startsWith('+')) {
             phoneNumber = `+${phoneNumber}`
@@ -291,15 +262,15 @@ if (!fs.existsSync(`./${sessions}/creds.json`)) {
           // Formatear código: XXXX-XXXX
           codeBot = codeBot?.match(/.{1,4}/g)?.join("-") || codeBot
           
-          console.log(chalk.bold.white(chalk.bgMagenta(`\n╔═══════════════════════════════════╗`)))
-          console.log(chalk.bold.white(chalk.bgMagenta(`║       🔑 CÓDIGO DE VINCULACIÓN    ║`)))
-          console.log(chalk.bold.white(chalk.bgMagenta(`╚═══════════════════════════════════╝`)))
+          console.log(chalk.bold.white(chalk.bgRed(`\n╔═══════════════════════════════════════╗`)))
+          console.log(chalk.bold.white(chalk.bgRed(`║       🎅 CÓDIGO NAVIDEÑO 🎄          ║`)))
+          console.log(chalk.bold.white(chalk.bgRed(`╚═══════════════════════════════════════╝`)))
           console.log(chalk.bold.white(chalk.bgGreen(`        ${codeBot}        `)))
-          console.log(chalk.yellow(`\n📱 Pasos para vincular:`))
-          console.log(chalk.cyan(`1. Abre WhatsApp en tu teléfono`))
-          console.log(chalk.cyan(`2. Ve a Ajustes → Dispositivos vinculados`))
-          console.log(chalk.cyan(`3. Toca "Vincular un dispositivo"`))
-          console.log(chalk.cyan(`4. Ingresa este código: ${codeBot}`))
+          console.log(chalk.red(`\n📱 Pasos para vincular:`))
+          console.log(chalk.white(`1. Abre WhatsApp en tu teléfono`))
+          console.log(chalk.white(`2. Ve a Ajustes → Dispositivos vinculados`))
+          console.log(chalk.white(`3. Toca "Vincular un dispositivo"`))
+          console.log(chalk.white(`4. Ingresa este código: ${codeBot}`))
           console.log(chalk.green(`\n⏰ El código expira en 5 minutos\n`))
           
           codeGenerated = true
@@ -352,12 +323,23 @@ async function connectionUpdate(update) {
   if (connection === "open") {
     const userName = conn.user.name || conn.user.verifiedName || "Usuario"
     await joinChannels(conn).catch(() => {})
-    console.log(chalk.bold.greenBright(`\n╔═══════════════════════════════════╗`))
-    console.log(chalk.bold.greenBright(`║   ✅ BOT CONECTADO EXITOSAMENTE   ║`))
-    console.log(chalk.bold.greenBright(`╚═══════════════════════════════════╝`))
-    console.log(chalk.cyan(`👤 Usuario: ${userName}`))
-    console.log(chalk.cyan(`📱 Número: ${conn.user.id.split(':')[0]}`))
-    console.log(chalk.cyan(`🔥 Estado: Activo y funcionando`))
+    
+    // ============ NOTIFICACIÓN SISTEMA POKÉMON ============
+    console.log(chalk.green('✅ Base de datos Pokémon inicializada'))
+    console.log(chalk.green('✅ Sistemas de juego cargados:'))
+    console.log(chalk.cyan('   - UI System (Interfaz visual)'))
+    console.log(chalk.cyan('   - Abilities System (Habilidades)'))
+    console.log(chalk.cyan('   - Status System (Estados alterados)'))
+    console.log(chalk.cyan('   - Weather System (Clima en batallas)'))
+    console.log(chalk.cyan('   - PC System (Almacenamiento Pokémon)'))
+    // ======================================================
+    
+    console.log(chalk.bold.redBright(`\n╔═══════════════════════════════════════╗`))
+    console.log(chalk.bold.white(`║   🎅 BOT CONECTADO NAVIDEÑAMENTE 🎄   ║`))
+    console.log(chalk.bold.redBright(`╚═══════════════════════════════════════╝`))
+    console.log(chalk.white(`👤 Usuario: ${userName}`))
+    console.log(chalk.white(`📱 Número: ${conn.user.id.split(':')[0]}`))
+    console.log(chalk.red(`🔥 Estado: Activo y funcionando`))
     console.log(chalk.gray(`⏰ Hora: ${new Date().toLocaleString('es-MX')}\n`))
   }
   let reason = new Boom(lastDisconnect?.error)?.output?.statusCode
@@ -435,9 +417,9 @@ const pluginFilter = filename => /\.js$/.test(filename)
 global.plugins = {}
 
 async function filesInit() {
-  console.log(chalk.bold.cyan('\n╔═══════════════════════════════════╗'))
-  console.log(chalk.bold.cyan('║      CARGANDO PLUGINS...          ║'))
-  console.log(chalk.bold.cyan('╚═══════════════════════════════════╝\n'))
+  console.log(chalk.bold.red('\n╔═══════════════════════════════════════╗'))
+  console.log(chalk.bold.white('║      🎄 CARGANDO PLUGINS... 🎅      ║'))
+  console.log(chalk.bold.red('╚═══════════════════════════════════════╝\n'))
 
   const allLoadPromises = []
   const folderStats = {}
@@ -475,14 +457,14 @@ async function filesInit() {
   let total = 0
   for (const [folder, count] of Object.entries(folderStats)) {
     if (count > 0) {
-      console.log(chalk.green(`✓ ${folder}: ${count} plugins`))
+      console.log(chalk.green(`🎁 ${folder}: ${count} plugins`))
       total += count
     }
   }
 
-  console.log(chalk.bold.green(`\n╔═══════════════════════════════════╗`))
-  console.log(chalk.bold.green(`║  🔥 TOTAL: ${total} PLUGINS 🔥  ║`))
-  console.log(chalk.bold.green(`╚═══════════════════════════════════╝\n`))
+  console.log(chalk.bold.red(`\n╔═══════════════════════════════════════╗`))
+  console.log(chalk.bold.white(`║  🎅 TOTAL: ${total} PLUGINS 🎄  ║`))
+  console.log(chalk.bold.red(`╚═══════════════════════════════════════╝\n`))
 }
 
 filesInit().catch(console.error)
@@ -570,7 +552,7 @@ async function _quickTest() {
   const test = await Promise.all([
     spawn('ffmpeg'),
     spawn('ffprobe'),
-    spawn('ffmpeg', ['-hide-banner', '-loglevel', 'error', '-filter_complex', 'color', '-frames:v', '1', '-f', 'webp', '-']),
+    spawn('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-filter_complex', 'color', '-frames:v', '1', '-f', 'webp', '-']),
     spawn('convert'),
     spawn('magick'),
     spawn('gm'),
