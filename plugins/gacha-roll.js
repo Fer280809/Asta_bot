@@ -119,7 +119,7 @@ ${duplicateWarning}
 
 handler.help = ['roll', 'rollwaifu', 'gacharoll', 'tirada'];
 handler.tags = ['gacha', 'navidad'];
-handler.command = ['roll', 'rollwaifu', 'gacharoll', 'tirada'];
+handler.command = ['roll', 'rollwaifu', 'gacharoll', 'rw'];
 handler.group = true;
 handler.private = true;
 
