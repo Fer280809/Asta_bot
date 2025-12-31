@@ -1,453 +1,617 @@
-let handler = async (m, { conn, usedPrefix }) => {
-    // Imagen del bot desde settings.js
-    let menuImage = global.icono || "https://files.catbox.moe/nqvhaq.jpg";
+// plugins/menu2.js
+
+// --- 1. DEFINICIÓN ESTÁTICA DEL MENÚ ---
+
+/**
+ * Objeto que contiene el contenido estático de cada sección del menú.
+ * Nota: La función .trim() elimina saltos de línea y espacios innecesarios al inicio y final.
+ */
+const MenuData = {
+    "MENU_INICIO": {
+        title: "¡FELIZ NAVIDAD! 🎄",
+        body: (totalreg, userId, conn) => `
+╭─━━━━━━━━━━━━━━━─╮
+│ 🎁 ¡Hola @${userId.split('@')[0]}! 🌟
+╰─━━━━━━━━━━━━━━━─╯
+Me llamo 『 𝕬𝖘𝖙𝖆-𝕭𝖔𝖙 』🎅
+
+╭─═⊰ 🎀 𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐂𝐈Ó𝐍 𝐍𝐀𝐕𝐈𝐃𝐄Ñ𝐀
+│ 🤖 Estado: ${(conn.user.jid == global.conn.user.jid ? '🟢 RENO MÁGICO' : '🔗 DUENDE AYUDANTE')}
+│ 👥 Usuarios: 『${totalreg.toLocaleString()}』🌟
+│ 🛠️ Comandos: 『${Object.values(global.plugins).filter(v => v.help && v.tags).length}』✨
+│ 📅 Librería » Baileys
+│ 🌍 Región: Polo Norte 🎅
+│ 📡 Ping: Alegre ✅
+│ 💾 Versión: 1.5
+│ 🔒 Modo: ${(conn.user.jid == global.conn.user.jid ? '🔐 ELFO PRIVADO' : '🔓 TALLER PÚBLICO')}
+╰───────────────╯
+
+*🤖 PON #code O #qr PARA HACERTE SUBBOT DEL ASTA-BOT-MD 📡*
+`.trim()
+    },
     
-    let txt = `🎮 *${global.botname || 'Asta-Bot'}-MENÚ* 🎮
-╔════════════════════════╗
-      💼 *ECONOMY*
-╚════════════════════════╝
-
-┌─🔸 *${usedPrefix}work*
-│  ╰─ Ganar coins trabajando
-├─🔸 *${usedPrefix}slut*
-│  ╰─ Ganar coins prostituyéndote
-├─🔸 *${usedPrefix}crime*
-│  ╰─ Ganar coins rápido (crimen)
-├─🔸 *${usedPrefix}miming*
-│  ╰─ Ganar coins minando
-├─🔸 *${usedPrefix}aventura*
-│  ╰─ Aventuras para ganar coins y EXP
-├─🔸 *${usedPrefix}cazar*
-│  ╰─ Cazar animales por recompensas
-├─🔸 *${usedPrefix}fish*
-│  ╰─ Pescar para ganar coins
-├─🔸 *${usedPrefix}mazmorra*
-│  ╰─ Explorar mazmorras
-├─🔸 *${usedPrefix}daily*
-│  ╰─ Recompensa diaria
-├─🔸 *${usedPrefix}weekly*
-│  ╰─ Recompensa semanal
-├─🔸 *${usedPrefix}monthly*
-│  ╰─ Recompensa mensual
-├─🔸 *${usedPrefix}cofre*
-│  ╰─ Reclamar cofre diario
-├─🔹 *${usedPrefix}balance* [@usuario]
-│  ╰─ Ver saldo de coins
-├─🔹 *${usedPrefix}deposit* [cantidad|all]
-│  ╰─ Depositar en el banco
-├─🔹 *${usedPrefix}withdraw* [cantidad|all]
-│  ╰─ Retirar del banco
-├─🔹 *${usedPrefix}economyinfo*
-│  ╰─ Tu información económica
-├─🔹 *${usedPrefix}givecoins* [@usuario] [cantidad]
-│  ╰─ Dar coins a otro usuario
-├─🔸 *${usedPrefix}coinflip* [cantidad] [cara/cruz]
-│  ╰─ Apostar en cara o cruz
-├─🔸 *${usedPrefix}roulette* [red/black] [cantidad]
-│  ╰─ Apostar en la ruleta
-├─🔸 *${usedPrefix}casino* [cantidad]
-│  ╰─ Jugar en el casino
-├─🔸 *${usedPrefix}steal* [@usuario]
-│  ╰─ Intentar robar coins
-├─🔹 *${usedPrefix}curar*
-│  ╰─ Curar salud para aventuras
-├─🔹 *${usedPrefix}heal*
-│  ╰─ Curar salud (alternativo)
-├─🔸 *${usedPrefix}economyboard* [página]
-│  ╰─ Ranking económico del grupo
-└─🔸 *${usedPrefix}baltop* [página]
-   ╰─ Ranking económico (alternativo)
-   
-╔════════════════════════╗
-     ⬇️ *DOWNLOAD*
-╚════════════════════════╝
-
-┌─🔸 *${usedPrefix}play* [canción]
-│  ╰─ Buscar y reproducir música
-├─🔸 *${usedPrefix}ytmp3* [link]
-│  ╰─ Descargar audio de YouTube
-├─🔸 *${usedPrefix}ytmp3doc* [link]
-│  ╰─ Audio como documento
-├─🔸 *${usedPrefix}spotify* [link]
-│  ╰─ Descargar de Spotify
-├─🔹 *${usedPrefix}ytmp4* [link]
-│  ╰─ Descargar video de YouTube
-├─🔹 *${usedPrefix}ytmp4doc* [link]
-│  ╰─ Video como documento
-├─🔹 *${usedPrefix}tiktok* [link]
-│  ╰─ Descargar de TikTok
-├─🔹 *${usedPrefix}facebook* [link]
-│  ╰─ Descargar de Facebook
-├─🔹 *${usedPrefix}twitter* [link]
-│  ╰─ Descargar de Twitter/X
-├─🔹 *${usedPrefix}instagram* [link]
-│  ╰─ Descargar de Instagram
-├─🔸 *${usedPrefix}pinterest* [búsqueda]
-│  ╰─ Buscar imágenes Pinterest
-├─🔸 *${usedPrefix}image* [búsqueda]
-│  ╰─ Buscar imágenes Google
-├─🔸 *${usedPrefix}pinterestdoc* [búsqueda]
-│  ╰─ Imágenes como documento
-├─🔹 *${usedPrefix}mediafire* [link]
-│  ╰─ Descargar de MediaFire
-├─🔹 *${usedPrefix}mega* [link]
-│  ╰─ Descargar de MEGA
-├─🔹 *${usedPrefix}apk* [nombre app]
-│  ╰─ Buscar APK en Aptoide
-├─🔹 *${usedPrefix}mods* [nombre]
-│  ╰─ Buscar mods Minecraft
-├─🔸 *${usedPrefix}ytsearch* [búsqueda]
-│  ╰─ Buscar en YouTube
-├─🔸 *${usedPrefix}play2* [canción]
-│  ╰─ Alternativa de búsqueda
-└─🔸 *${usedPrefix}estados*
-   ╰─ Descargar estados WhatsApp
-            
-╔════════════════════════╗
-   🎲 *GACHA COMMANDS*
-╚════════════════════════╝
-
-┌─🔸 *${usedPrefix}rollwaifu*
-│  ╰─ Personaje aleatorio
-├─🔸 *${usedPrefix}claim* [@personaje]
-│  ╰─ Reclamar personaje
-├─🔸 *${usedPrefix}harem* [@usuario]
-│  ╰─ Ver colección personal
-├─🔸 *${usedPrefix}charinfo* [nombre]
-│  ╰─ Info de personaje
-├─🔸 *${usedPrefix}serielist*
-│  ╰─ Listar series disponibles
-├─🔹 *${usedPrefix}sell* [precio] [nombre]
-│  ╰─ Vender personaje
-├─🔹 *${usedPrefix}tiendashop* [página]
-│  ╰─ Tienda de personajes
-├─🔹 *${usedPrefix}buycharacter* [nombre]
-│  ╰─ Comprar personaje
-├─🔹 *${usedPrefix}removesale* [precio] [nombre]
-│  ╰─ Retirar de venta
-├─🔹 *${usedPrefix}givechar* [@usuario] [nombre]
-│  ╰─ Regalar personaje
-├─🔸 *${usedPrefix}trade* [tu personaje] [otro personaje]
-│  ╰─ Intercambiar personajes
-├─🔸 *${usedPrefix}robwaifu* [@usuario]
-│  ╰─ Robar personaje
-├─🔸 *${usedPrefix}giveallharem* [@usuario]
-│  ╰─ Regalar toda la colección
-├─🔸 *${usedPrefix}vote* [nombre]
-│  ╰─ Votar por personaje
-├─🔹 *${usedPrefix}setclaimmsg* [mensaje]
-│  ╰─ Personalizar mensaje de claim
-├─🔹 *${usedPrefix}delclaimmsg*
-│  ╰─ Restablecer mensaje de claim
-├─🔹 *${usedPrefix}deletewaifu* [nombre]
-│  ╰─ Eliminar personaje
-├─🔹 *${usedPrefix}charimage* [nombre]
-│  ╰─ Ver imagen del personaje
-├─🔹 *${usedPrefix}serieinfo* [nombre]
-│  ╰─ Información del anime
-├─🔸 *${usedPrefix}gachainfo*
-│  ╰─ Tu info de gacha
-├─🔸 *${usedPrefix}waifusboard* [número]
-│  ╰─ Top personajes por valor
-├─🔸 *${usedPrefix}favoritetop*
-│  ╰─ Top personajes favoritos
-└─🔸 *${usedPrefix}delwaifu* [nombre]
-   ╰─ Eliminar personaje (alternativo)
-            
-╔════════════════════════╗
-      🤖 *SOCKETS*
-╚════════════════════════╝
-
-┌─🔸 *${usedPrefix}qr* / *${usedPrefix}code*
-│  ╰─ Crear sub-bot con QR/código
-├─🔸 *${usedPrefix}bots*
-│  ╰─ Ver bots activos
-├─🔸 *${usedPrefix}logout*
-│  ╰─ Cerrar sesión del bot
-├─🔸 *${usedPrefix}join* [invitación]
-│  ╰─ Unir bot a un grupo
-├─🔹 *${usedPrefix}setusername* [nombre]
-│  ╰─ Cambiar nombre de usuario
-├─🔹 *${usedPrefix}setpfp*
-│  ╰─ Cambiar imagen de perfil
-├─🔹 *${usedPrefix}setstatus* [estado]
-│  ╰─ Cambiar estado (bio)
-├─🔹 *${usedPrefix}leave*
-│  ╰─ Salir de un grupo
-├─🔸 *${usedPrefix}status*
-│  ╰─ Ver estado del bot
-├─🔸 *${usedPrefix}ping*
-│  ╰─ Medir tiempo de respuesta
-└─🔸 *${usedPrefix}botlist*
-   ╰─ Ver número de bots (alternativo)
-            
-
-╔════════════════════════╗
-       🎨 *TOOLS*
-╚════════════════════════╝
-
-┌─🔸 *${usedPrefix}sticker*
-│  ╰─ Crear sticker de imagen/video
-├─🔸 *${usedPrefix}toimg*
-│  ╰─ Convertir sticker a imagen
-├─🔸 *${usedPrefix}setmeta* [autor]|[pack]
-│  ╰─ Configurar pack/autor stickers
-├─🔸 *${usedPrefix}delmeta*
-│  ╰─ Restablecer pack stickers
-├─🔸 *${usedPrefix}brat* / *${usedPrefix}emojimix*
-│  ╰─ Stickers con texto/emojis
-├─🔸 *${usedPrefix}enhance* [imagen]
-│  ╰─ Mejorar calidad de imagen
-├─🔹 *${usedPrefix}ia* / *${usedPrefix}gemini*
-│  ╰─ Preguntar a ChatGPT/Gemini
-├─🔹 *${usedPrefix}dalle* [texto]
-│  ╰─ Crear imágenes con IA
-├─🔹 *${usedPrefix}translate* [texto]
-│  ╰─ Traducir texto
-├─🔸 *${usedPrefix}google* [consulta]
-│  ╰─ Buscar en Google
-├─🔸 *${usedPrefix}wiki* [tema]
-│  ╰─ Consultar Wikipedia
-├─🔸 *${usedPrefix}ssweb* [url]
-│  ╰─ Captura de pantalla web
-├─🔸 *${usedPrefix}gitclone* [url]
-│  ╰─ Clonar repositorio GitHub
-├─🔹 *${usedPrefix}calcular* [ecuación]
-│  ╰─ Calculadora
-├─🔹 *${usedPrefix}letra* [texto]
-│  ╰─ Cambiar fuente de texto
-├─🔹 *${usedPrefix}getpic* [@usuario]
-│  ╰─ Ver foto de perfil
-├─🔹 *${usedPrefix}tourl*
-│  ╰─ Subir media a URL
-├─🔹 *${usedPrefix}readviewonce*
-│  ╰─ Ver imágenes viewonce
-├─🔹 *${usedPrefix}say* [texto]
-│  ╰─ Repetir mensaje
-├─🔹 *${usedPrefix}npmdl* [paquete]
-│  ╰─ Descargar paquete npm
-├─🔹 *${usedPrefix}sc*
-│  ╰─ Link del repositorio
-├─🔸 *${usedPrefix}help*
-│  ╰─ Menú de comandos
-├─🔸 *${usedPrefix}reporte* [problema]
-│  ╰─ Reportar fallos
-└─🔸 *${usedPrefix}suggest* [idea]
-   ╰─ Sugerir nuevas funciones
-            
-╔════════════════════════╗
-     📱 *PROFILES*
-╚════════════════════════╝
-
-┌─🔸 *${usedPrefix}profile* [@usuario]
-│  ╰─ Ver perfil de usuario
-├─🔸 *${usedPrefix}level* [@usuario]
-│  ╰─ Ver nivel y experiencia
-├─🔸 *${usedPrefix}leaderboard* [página]
-│  ╰─ Top de usuarios por EXP
-├─🔹 *${usedPrefix}setdescription* [texto]
-│  ╰─ Establecer tu descripción
-├─🔹 *${usedPrefix}deldescription*
-│  ╰─ Eliminar descripción
-├─🔹 *${usedPrefix}setgenre* [hombre|mujer]
-│  ╰─ Establecer género
-├─🔹 *${usedPrefix}delgenre*
-│  ╰─ Eliminar género
-├─🔹 *${usedPrefix}setbirth* [fecha]
-│  ╰─ Establecer cumpleaños
-├─🔹 *${usedPrefix}delbirth*
-│  ╰─ Eliminar cumpleaños
-├─🔹 *${usedPrefix}setfavourite* [personaje]
-│  ╰─ Establecer claim favorito
-├─🔸 *${usedPrefix}marry* [@usuario]
-│  ╰─ Casarse con otro usuario
-├─🔸 *${usedPrefix}divorce*
-│  ╰─ Divorciarse
-└─🔸 *${usedPrefix}prem*
-   ╰─ Comprar membresía premium
-
-╔════════════════════════╗
-      🏰 *GROUPS*
-╚════════════════════════╝
-
-┌─🔸 *${usedPrefix}kick* @usuario
-│  ╰─ Expulsar del grupo
-├─🔸 *${usedPrefix}add* 521123456789
-│  ╰─ Invitar por número
-├─🔸 *${usedPrefix}admins*
-│  ╰─ Listar administradores
-├─🔸 *${usedPrefix}link*
-│  ╰─ Obtener enlace
-├─🔹 *${usedPrefix}promote* @usuario
-│  ╰─ Hacer administrador
-├─🔹 *${usedPrefix}demote* @usuario
-│  ╰─ Quitar administrador
-├─🔹 *${usedPrefix}warn* @usuario
-│  ╰─ Advertir usuario
-├─🔹 *${usedPrefix}revoke*
-│  ╰─ Renovar enlace
-├─🔸 *${usedPrefix}fantasmas*
-│  ╰─ Detectar inactivos
-├─🔸 *${usedPrefix}hidetag* [texto]
-│  ╰─ Mencionar silenciosamente
-├─🔸 *${usedPrefix}group* open/close
-│  ╰─ Abrir/cerrar chat
-├─🔸 *${usedPrefix}delete*
-   ╰─ Borrar mensajes
-├─🔹 *${usedPrefix}infogrupo*
-│  ╰─ Info detallada
-├─🔹 *${usedPrefix}setwelcome*
-│  ╰─ Configurar bienvenida
-├─🔹 *${usedPrefix}setbye*
-│  ╰─ Configurar despedida
-├─🔹 *${usedPrefix}bot* on/off
-│  ╰─ Control del bot
-├─🔸 *${usedPrefix}groupname*
-│  ╰─ Cambiar nombre
-├─🔸 *${usedPrefix}groupdesc*
-│  ╰─ Cambiar descripción
-└─🔸 *${usedPrefix}groupimg*
-   ╰─ Cambiar foto
-   
-╔════════════════════════╗
-      🏰 *GROUPS*
-╚════════════════════════╝
+    "ECONOMY": { 
+        title: "💰 ECONOMY",
+        body: `
+╰┈➤ ✿ Comandos de *Economía* para ganar dinero.  
+╰┈➤ 💼 *#w / #work / #trabajar*
+        ╰┈➤ Ganar coins trabajando  
+╰┈➤ 💃 *#slut / #prostituirse*
+        ╰┈➤ Ganar coins prostituyéndote  
+╰┈➤ 🎲 *#coinflip / #flip / #cf* + [cantidad] <cara/cruz>
+        ╰┈➤ Apostar coins en cara o cruz  
+╰┈➤ 🚨 *#crime / #crimen*
+        ╰┈➤ Ganar coins rápido  
+╰┈➤ 🎯 *#roulette / #rt* + [red/black] [cantidad]
+        ╰┈➤ Apostar coins en la ruleta  
+╰┈➤ 🎰 *#casino / #apostar / #slot* + [cantidad]
+        ╰┈➤ Apostar coins en el casino  
+╰┈➤ 🏦 *#balance / #bal / #bank* + <usuario>
+        ╰┈➤ Ver cuantos coins tienes en el banco  
+╰┈➤ 💳 *#deposit / #dep / #depositar / #d* + [cantidad] | all
+        ╰┈➤ Depositar tus coins en el banco  
+╰┈➤ 💸 *#withdraw / #with / #retirar* + [cantidad] | all
+        ╰┈➤ Retirar tus coins del banco  
+╰┈➤ 📊 *#economyinfo / #einfo*
+        ╰┈➤ Ver tu información de economía  
+╰┈➤ 🤝 *#givecoins / #pay / #coinsgive* + [usuario] [cantidad]
+        ╰┈➤ Dar coins a un usuario  
+╰┈➤ ⛏️ *#miming / #minar / #mine*
+        ╰┈➤ Realizar trabajos de minería y ganar coins  
+╰┈➤ 🎁 *#daily / #diario*
+        ╰┈➤ Reclamar tu recompensa diaria  
+╰┈➤ 🧰 *#cofre / #coffer*
+        ╰┈➤ Reclamar tu cofre diario  
+╰┈➤ 📅 *#weekly / #semanal*
+        ╰┈➤ Reclamar tu recompensa semanal  
+╰┈➤ 🗓️ *#monthly / #mensual*
+        ╰┈➤ Reclamar tu recompensa mensual  
+╰┈➤ 🕶️ *#steal / #robar / #rob* + [@mencion]
+        ╰┈➤ Intentar robar coins a un usuario  
+╰┈➤ 🏆 *#economyboard / #eboard / #baltop* + <pagina>
+        ╰┈➤ Ver el ranking económico del grupo  
+╰┈➤ ⚔️ *#aventura / #adventure*
+        ╰┈➤ Aventuras para ganar coins y exp  
+╰┈➤ ❤️ *#curar / #heal*
+        ╰┈➤ Curar salud para salir de aventuras  
+╰┈➤ 🦌 *#cazar / #hunt*
+        ╰┈➤ Cazar animales para ganar coins y exp  
+╰┈➤ 🎣 *#fish / #pescar*
+        ╰┈➤ Ganar coins y exp pescando  
+╰┈➤ 🏰 *#mazmorra / #dungeon*
+        ╰┈➤ Explorar mazmorras para ganar coins y exp
+`.trim()
+    },
     
-┌─🌸 *${usedPrefix}angry* @usuario
-│  ╰─ Enojarse con alguien
-├─🌸 *${usedPrefix}bath* @usuario
-│  ╰─ Bañarse o ducharse
-├─🌸 *${usedPrefix}bite* @usuario
-│  ╰─ Morder a alguien
-├─🌸 *${usedPrefix}bleh* @usuario
-│  ╰─ Sacar la lengua
-├─🌸 *${usedPrefix}blush* @usuario
-│  ╰─ Sonrojarse o avergonzarse
-├─🌸 *${usedPrefix}bored* @usuario
-│  ╰─ Mostrar aburrimiento
-├─🌸 *${usedPrefix}clap* @usuario
-│  ╰─ Aplaudir o felicitar
-├─🌸 *${usedPrefix}coffee* @usuario
-│  ╰─ Tomar un café
-├─🌸 *${usedPrefix}cry* @usuario
-│  ╰─ Llorar por algo
-├─🌸 *${usedPrefix}cuddle* @usuario
-│  ╰─ Acurrucarse o arrullar
-├─🌸 *${usedPrefix}dance* @usuario
-│  ╰─ Bailar o danzar
-├─🌸 *${usedPrefix}dramatic* @usuario
-│  ╰─ Dramatizar una situación
-├─🌸 *${usedPrefix}drunk* @usuario
-│  ╰─ Actuar como borracho
-├─🌸 *${usedPrefix}eat* @usuario
-│  ╰─ Comer algo delicioso
-├─🌸 *${usedPrefix}facepalm* @usuario
-│  ╰─ Palmada en la cara
-├─🌸 *${usedPrefix}happy* @usuario
-│  ╰─ Mostrar felicidad
-├─🌸 *${usedPrefix}hug* @usuario
-│  ╰─ Dar un abrazo
-├─🌸 *${usedPrefix}impregnate* @usuario
-│  ╰─ Embarazar a alguien
-├─🌸 *${usedPrefix}kill* @usuario
-│  ╰─ Matar o atacar
-├─🌸 *${usedPrefix}kiss* @usuario
-│  ╰─ Dar un beso
-├─🌸 *${usedPrefix}kisscheek* @usuario
-│  ╰─ Beso en la mejilla
-├─🌸 *${usedPrefix}laugh* @usuario
-│  ╰─ Reírse a carcajadas
-├─🌸 *${usedPrefix}lick* @usuario
-│  ╰─ Lamer a alguien
-├─🌸 *${usedPrefix}love* @usuario
-│  ╰─ Enamorarse o amar
-├─🌸 *${usedPrefix}pat* @usuario
-│  ╰─ Acariciar suavemente
-├─🌸 *${usedPrefix}poke* @usuario
-│  ╰─ Picar o tocar
-├─🌸 *${usedPrefix}pout* @usuario
-│  ╰─ Hacer pucheros
-├─🌸 *${usedPrefix}punch* @usuario
-│  ╰─ Dar un puñetazo
-├─🌸 *${usedPrefix}run* @usuario
-│  ╰─ Correr o huir
-├─🌸 *${usedPrefix}sad* @usuario
-│  ╰─ Mostrar tristeza
-├─🌸 *${usedPrefix}scared* @usuario
-│  ╰─ Asustarse o temer
-├─🌸 *${usedPrefix}seduce* @usuario
-│  ╰─ Seducir a alguien
-├─🌸 *${usedPrefix}shy* @usuario
-│  ╰─ Mostrar timidez
-├─🌸 *${usedPrefix}slap* @usuario
-│  ╰─ Dar una bofetada
-├─🌸 *${usedPrefix}sleep* @usuario
-│  ╰─ Dormir o descansar
-├─🌸 *${usedPrefix}smoke* @usuario
-│  ╰─ Fumar un cigarro
-├─🌸 *${usedPrefix}spit* @usuario
-│  ╰─ Escupir o despreciar
-├─🌸 *${usedPrefix}step* @usuario
-│  ╰─ Pisar a alguien
-├─🌸 *${usedPrefix}think* @usuario
-│  ╰─ Pensar o reflexionar
-├─🌸 *${usedPrefix}walk* @usuario
-│  ╰─ Caminar o pasear
-├─🌸 *${usedPrefix}wink* @usuario
-│  ╰─ Guiñar el ojo
-├─🌸 *${usedPrefix}cringe* @usuario
-│  ╰─ Avergonzarse
-├─🌸 *${usedPrefix}smug* @usuario
-│  ╰─ Presumir con estilo
-├─🌸 *${usedPrefix}smile* @usuario
-│  ╰─ Sonreír tiernamente
-├─🌸 *${usedPrefix}highfive* @usuario
-│  ╰─ Chocar los cinco
-├─🌸 *${usedPrefix}bully* @usuario
-│  ╰─ Molestar o acosar
-├─🌸 *${usedPrefix}handhold* @usuario
-│  ╰─ Tomarse de la mano
-├─🌸 *${usedPrefix}wave* @usuario
-│  ╰─ Saludar con la mano
-├─💞 *${usedPrefix}waifu*
-│  ╰─ Waifu aleatoria
-├─💑 *${usedPrefix}ppcouple*
-│  ╰─ Imágenes de parejas anime
-├─🔍 *${usedPrefix}pokedex* <nombre>
-│  ╰─ Información Pokémon
-├─🐾 *${usedPrefix}pokemon* <nombre>
-│  ╰─ Buscar Pokémon
-├─📺 *${usedPrefix}anime* <nombre>
-│  ╰─ Buscar anime
-├─📚 *${usedPrefix}manga* <nombre>
-│  ╰─ Buscar manga
-├─👤 *${usedPrefix}character* <nombre>
-│  ╰─ Buscar personaje
-├─🎨 *${usedPrefix}animepic*
-│  ╰─ Imagen anime aleatoria
-└─🖼️ *${usedPrefix}wallpaper*
-   ╰─ Wallpaper anime HD`;
+    "DOWNLOAD": {
+        title: "📥 DOWNLOAD",
+        body: `
+╰┈➤ ✿ Comandos de *Descargas* para obtener archivos de varias fuentes  
 
-    const buttonMessage = {
-        image: { url: menuImage },
-        caption: txt,
-        footer: `${global.botname || 'Asta-Bot'} | Menú`,
-        buttons: [
-            {
-                buttonId: `${usedPrefix}menu`,
-                buttonText: { displayText: '📜 HOME' },
-                type: 1
-            }
-        ],
-        headerType: 1,
-        mentions: [m.sender]
-    };
+╰┈➤ 🎵 *#tiktok / #tt* + [Link] / [busqueda]
+        ╰┈➤ Descargar un video de TikTok  
+╰┈➤ 📱 #estados – Descarga estados de WhatsApp
+        ╰┈➤ Descarga estados de whatsapp
+╰┈➤ 📂 *#mediafire / #mf* + [Link]
+        ╰┈➤ Descargar un archivo de MediaFire  
+╰┈➤ 📂 *#mega / #mg* + [Link]
+        ╰┈➤ Descargar un archivo de MEGA  
+╰┈➤ 🎶 *#play / play2 / ytmp3 / ytmp4 / ytmp3doc / ytmp4doc + [Cancion] / [Link]
+        ╰┈➤ Descargar una canción o vídeo de YouTube  
+╰┈➤ 📘 *#facebook / #fb* + [Link]
+        ╰┈➤ Descargar un video de Facebook  
+╰┈➤ 🐦 *#twitter / #x* + [Link]
+        ╰┈➤ Descargar un video de Twitter/X  
+╰┈➤ 🔩 *#mods / #mod* + [nombre]
+        ╰┈➤ Descargar un mods para minecraft 
+╰┈➤ 📸 *#ig / #instagram* + [Link]
+        ╰┈➤ Descargar un reel de Instagram  
+╰┈➤ 📌 *#pinterest / #pin* + [busqueda] / [Link]
+        ╰┈➤ Buscar y descargar imágenes de Pinterest  
+╰┈➤ 🔍 *#image / #imagen* + [busqueda]
+        ╰┈➤ Buscar y descargar imágenes de Google  
+╰┈➤ 📱 *#apk / #modapk* + [busqueda]
+        ╰┈➤ Descargar un APK de Aptoide  
+╰┈➤ 🎥 *#ytsearch / #search* + [busqueda]
+        ╰┈➤ Buscar videos de YouTube
+`.trim()
+    },
     
-    await conn.sendMessage(m.chat, buttonMessage, { quoted: m });
+    "GACHA": {
+        title: "🎴 GACHA",
+        body: `
+╰┈➤ ✿ Comandos de *Gacha* para reclamar y coleccionar personajes  
+
+╰┈➤ 🛒 *#buycharacter / #buychar / #buyc* + [nombre]
+        ╰┈➤ Comprar un personaje en venta  
+╰┈➤ 🖼️ *#charimage / #waifuimage / #cimage / #wimage* + [nombre]
+        ╰┈➤ Ver una imagen aleatoria de un personaje  
+╰┈➤ ℹ️ *#charinfo / #winfo / #waifuinfo* + [nombre]
+        ╰┈➤ Ver información de un personaje  
+╰┈➤ ✨ *#claim / #c / #reclamar* + {citar personaje}
+        ╰┈➤ Reclamar un personaje  
+╰┈➤ 📝 *#delclaimmsg*
+        ╰┈➤ Restablecer el mensaje al reclamar un personaje  
+╰┈➤ ❌ *#deletewaifu / #delwaifu / #delchar* + [nombre]
+        ╰┈➤ Eliminar un personaje reclamado  
+╰┈➤ ⭐ *#favoritetop / #favtop*
+        ╰┈➤ Ver el top de personajes favoritos  
+╰┈➤ 📊 *#gachainfo / #ginfo / #infogacha*
+        ╰┈➤ Ver tu información de gacha  
+╰┈➤ 🎁 *#giveallharem* + [@usuario]
+        ╰┈➤ Regalar todos tus personajes a otro usuario  
+╰┈➤ 🎁 *#givechar / #givewaifu / #regalar* + [@usuario] [nombre]
+        ╰┈➤ Regalar un personaje a otro usuario  
+╰┈➤ 🏴‍☠️ *#robwaifu / #robarwaifu* + [@usuario]
+        ╰┈➤ Robar un personaje a otro usuario  
+╰┈➤ 👥 *#harem / #waifus / #claims* + <@usuario>
+        ╰┈➤ Ver tus personajes reclamados  
+╰┈➤ 🏪 *#haremshop / #tiendawaifus / #wshop* + <pagina>
+        ╰┈➤ Ver los personajes en venta  
+╰┈➤ ❌ *#removesale / #removerventa* + [precio] [nombre]
+        ╰┈➤ Eliminar un personaje en venta  
+╰┈➤ 🎲 *#rollwaifu / #rw / #roll*
+        ╰┈➤ Waifu o husbando aleatorio  
+╰┈➤ 💰 *#sell / #vender* + [precio] [nombre]
+        ╰┈➤ Poner un personaje a la venta  
+╰┈➤ 📚 *#serieinfo / #ainfo / #animeinfo* + [nombre]
+        ╰┈➤ Información de un anime  
+╰┈➤ 📜 *#serielist / #slist / #animelist*
+        ╰┈➤ Listar series del bot  
+╰┈➤ ✏️ *#setclaimmsg / #setclaim* + [mensaje]
+        ╰┈➤ Modificar el mensaje al reclamar un personaje  
+╰┈➤ 🔄 *#trade / #intercambiar* + [Tu personaje] / [Personaje 2]
+        ╰┈➤ Intercambiar un personaje con otro usuario  
+╰┈➤ 🗳️ *#vote / #votar* + [nombre]
+        ╰┈➤ Votar por un personaje para subir su valor  
+╰┈➤ 🏆 *#waifusboard / #waifustop / #topwaifus / #wtop* + [número]
+        ╰┈➤ Ver el top de personajes con mayor valor
+`.trim()
+    },
+
+    "SOCKETS": {
+        title: "🔌 SOCKETS",
+        body: `
+╰┈➤ ✿ Comandos para registrar tu propio Bot  
+
+╰┈➤ 🔗 *#qr / #code*
+        ╰┈➤ Crear un Sub-Bot con un código QR/Code  
+╰┈➤ 🤖 *#bots / #botlist*
+        ╰┈➤ Ver el número de bots activos  
+╰┈➤ 📈 *#status / #estado*
+        ╰┈➤ Ver el estado del bot  
+╰┈➤ 🏓 *#p / #ping*
+        ╰┈➤ Medir tiempo de respuesta  
+╰┈➤ ➕ *#join* + [Invitación]
+        ╰┈➤ Unir al bot a un grupo  
+╰┈➤ ❌ *#leave / #salir*
+        ╰┈➤ Salir de un grupo  
+╰┈➤ 🔒 *#logout*
+        ╰┈➤ Cerrar sesión del bot  
+╰┈➤ 🖼️ *#setpfp / #setimage*
+        ╰┈➤ Cambiar la imagen de perfil  
+╰┈➤ 📝 *#setstatus* + [estado]
+        ╰┈➤ Cambiar el estado del bot  
+╰┈➤ 🆔 *#setusername* + [nombre]
+        ╰┈➤ Cambiar el nombre de usuario
+`.trim()
+    },
+
+    "UTILITIES": {
+        title: "🛠️ UTILITIES",
+        body: `
+╰┈➤ ✿ Comandos de *Utilidades* ╰┈➤ 📋 *#help / #menu*
+        ╰┈➤ Ver el menú de comandos  
+╰┈➤ 📄 *#sc / #script*
+        ╰┈➤ Link del repositorio oficial del Bot  
+╰┈➤ 💡 *#sug / #suggest*
+        ╰┈➤ Sugerir nuevas funciones al desarrollador  
+╰┈➤ 🛠️ *#reporte / #reportar*
+        ╰┈➤ Reportar fallas o problemas del bot  
+╰┈➤ 🔢 *#calcular / #cal*
+        ╰┈➤ Calcular tipos de ecuaciones  
+╰┈➤ 📝 *#delmeta*
+        ╰┈➤ Restablecer el pack y autor por defecto para tus stickers  
+╰┈➤ 🖼️ *#getpic / #pfp* + [@usuario]
+        ╰┈➤ Ver la foto de perfil de un usuario  
+╰┈➤ 🗣️ *#say* + [texto]
+        ╰┈➤ Repetir un mensaje  
+╰┈➤ ✏️ *#setmeta* + [autor] | [pack]
+        ╰┈➤ Establecer el pack y autor por defecto para tus stickers  
+╰┈➤ 🎨 *#sticker / #s / #wm* + {citar una imagen/video}
+        ╰┈➤ Convertir una imagen/video a sticker  
+╰┈➤ 🖼️ *#toimg / #img* + {citar sticker}
+        ╰┈➤ Convertir un sticker/imagen a imagen  
+╰┈➤ 🖌️ *#brat / #bratv / #qc / #emojimix*
+        ╰┈➤ Crear stickers con texto  
+╰┈➤ 💻 *#gitclone* + [Link]
+        ╰┈➤ Descargar un repositorio de Github  
+╰┈➤ 🔧 *#enhance / #remini / #hd*
+        ╰┈➤ Mejorar calidad de una imagen  
+╰┈➤ 🔤 *#letra / #style*
+        ╰┈➤ Cambiar la fuente de las letras  
+╰┈➤ 👁️ *#read / #readviewonce*
+        ╰┈➤ Ver imágenes viewonce  
+╰┈➤ 🌐 *#ss / #ssweb*
+        ╰┈➤ Ver el estado de una página web  
+╰┈➤ 🌍 *#translate / #traducir / #trad*
+        ╰┈➤ Traducir palabras a otros idiomas  
+╰┈➤ 🤖 *#ia / #gemini*
+        ╰┈➤ Preguntar a ChatGPT  
+╰┈➤ 🔗 *#tourl / #catbox*
+        ╰┈➤ Convertir imagen/video a URL  
+╰┈➤ 📚 *#wiki / #wikipedia*
+        ╰┈➤ Investigar temas a través de Wikipedia  
+╰┈➤ 🎨 *#dalle / #flux*
+        ╰┈➤ Crear imágenes con texto mediante IA  
+╰┈➤ 📦 *#npmdl / #nmpjs*
+        ╰┈➤ Descargar paquetes de NPMJS  
+╰┈➤ 🔎 *#google*
+        ╰┈➤ Realizar búsquedas por Google
+`.trim()
+    },
+
+    "PROFILES": {
+        title: "👤 PROFILES",
+        body: `
+╰┈➤ ✿ Comandos de *Perfil* para ver y configurar tu perfil  
+
+╰┈➤ 🏆 *#leaderboard / #lboard / #top* + <pagina>
+        ╰┈➤ Top de usuarios con más experiencia  
+╰┈➤ 📊 *#level / #lvl* + <@Mencion>
+        ╰┈➤ Ver tu nivel y experiencia actual  
+╰┈➤ 💍 *#marry / #casarse* + <@Mencion>
+        ╰┈➤ Casarte con alguien  
+╰┈➤ 📝 *#profile* + <@Mencion>
+        ╰┈➤ Ver tu perfil  
+╰┈➤ 🎂 *#setbirth* + [fecha]
+        ╰┈➤ Establecer tu fecha de cumpleaños  
+╰┈➤ ✏️ *#setdescription / #setdesc* + [Descripcion]
+        ╰┈➤ Establecer tu descripción  
+╰┈➤ ⚧ *#setgenre* + Hombre | Mujer
+        ╰┈➤ Establecer tu género  
+╰┈➤ ❌ *#delgenre / #delgenero*
+        ╰┈➤ Eliminar tu género  
+╰┈➤ ❌ *#delbirth* + [fecha]
+        ╰┈➤ Borrar tu fecha de cumpleaños  
+╰┈➤ 💔 *#divorce*
+        ╰┈➤ Divorciarte de tu pareja  
+╰┈➤ ⭐ *#setfavourite / #setfav* + [Personaje]
+        ╰┈➤ Establecer tu claim favorito  
+╰┈➤ ❌ *#deldescription / #deldesc*
+        ╰┈➤ Eliminar tu descripción  
+╰┈➤ 💎 *#prem / #vip*
+        ╰┈➤ Comprar membresía premium
+`.trim()
+    },
+
+    "GROUPS": {
+        title: "👥 GROUPS",
+        body: `
+╰┈➤ ✿ Comandos para *Administradores* de grupos  
+
+╰┈➤ 📢 *#tag / #hidetag / #invocar / #tagall* + [mensaje]
+        ╰┈➤ Envía un mensaje mencionando a todos los usuarios del grupo  
+╰┈➤ ⚠️ *#detect / #alertas* + [enable/disable]
+        ╰┈➤ Activar/desactivar las alertas de promote/demote  
+╰┈➤ 🔎 *#setting / #config* ╰┈➤ activa y o desactiva y ve las opciones que estan activas o desactivadas y ve el menu de opciones
+╰┈➤ 🔗 *#antilink / #antienlace* + [enable/disable]
+        ╰┈➤ Activar/desactivar el antienlace  
+╰┈➤ 🤖 *#bot* + [enable/disable]
+        ╰┈➤ Activar/desactivar al bot  
+╰┈➤ 🔒 *#close / #cerrar*
+        ╰┈➤ Cerrar el grupo para que solo los administradores puedan enviar mensajes  
+╰┈➤ ⬇️ *#demote* + <@usuario> | {mencion}
+        ╰┈➤ Descender a un usuario de administrador  
+╰┈➤ 💰 *#economy* + [enable/disable]
+        ╰┈➤ Activar/desactivar los comandos de economía  
+╰┈➤ 🎮 *#gacha* + [enable/disable]
+        ╰┈➤ Activar/desactivar los comandos de Gacha y Games  
+╰┈➤ 🎉 *#welcome / #bienvenida* + [enable/disable]
+        ╰┈➤ Activar/desactivar la bienvenida y despedida  
+╰┈➤ ✉️ *#setbye* + [texto]
+        ╰┈➤ Establecer un mensaje de despedida personalizado  
+╰┈➤ ⭐ *#setprimary* + [@bot]
+        ╰┈➤ Establece un bot como primario del grupo  
+╰┈➤ ✉️ *#setwelcome* + [texto]
+        ╰┈➤ Establecer un mensaje de bienvenida personalizado  
+╰┈➤ ❌ *#kick* + <@usuario> | {mencion}
+        ╰┈➤ Expulsar a un usuario del grupo  
+╰┈➤ 🔓 *#open / #abrir*
+        ╰┈➤ Abrir el grupo para que todos los usuarios puedan enviar mensajes  
+╰┈➤ ⬆️ *#promote* + <@usuario> | {mencion}
+        ╰┈➤ Ascender a un usuario a administrador  
+╰┈➤ ➕ *#add / #añadir / #agregar* + {número}
+        ╰┈➤ Invitar a un usuario a tu grupo  
+╰┈➤ 👑 *admins / admin* + [texto]
+        ╰┈➤ Mencionar a los admins para solicitar ayuda  
+╰┈➤ 🔄 *#restablecer / #revoke*
+        ╰┈➤ Restablecer enlace del grupo  
+╰┈➤ ⚠️ *#addwarn / #warn* + <@usuario> | {mencion}
+        ╰┈➤ Advertir a un usuario  
+╰┈➤ ❌ *#unwarn / #delwarn* + <@usuario> | {mencion}
+        ╰┈➤ Quitar advertencias de un usuario  
+╰┈➤ 📋 *#advlist / #listadv*
+        ╰┈➤ Ver lista de usuarios advertidos  
+╰┈➤ 💤 *#inactivos / #kickinactivos*
+        ╰┈➤ Ver y eliminar a usuarios inactivos  
+╰┈➤ 🚫 *#listnum / #kicknum* [texto]
+        ╰┈➤ Eliminar usuarios con prefijo de país  
+╰┈➤🚫  *#stopkicknum*
+        ╰┈➤ parar el kicknum cuando nesesites
+╰┈➤ 🖼️ *#gpbanner / #groupimg*
+        ╰┈➤ Cambiar la imagen del grupo  
+╰┈➤ ✏️ *#gpname / #groupname* [texto]
+        ╰┈➤ Cambiar el nombre del grupo  
+╰┈➤ 📝 *#gpdesc / #groupdesc* [texto]
+        ╰┈➤ Cambiar la descripción del grupo  
+╰┈➤ ❌ *#del / #delete* + {citar un mensaje}
+        ╰┈➤ Eliminar un mensaje  
+╰┈➤ 👥 *#linea / #listonline*
+        ╰┈➤ Ver lista de usuarios en línea  
+╰┈➤ ℹ️ *#gp / #infogrupo*
+        ╰┈➤ Ver la información del grupo  
+╰┈➤ 🔗 *#link*
+        ╰┈➤ Ver enlace de invitación del grupo
+`.trim()
+    },
+
+    "ANIME": {
+        title: "🎌 ANIME",
+        body: `
+╰┈➤ ✿ Comandos de reacciones de anime  
+
+╰┈➤ 😡 *#angry / #enojado* + <mencion>
+        ╰┈➤ Estar enojado  
+╰┈➤ 🛁 *#bath / #bañarse* + <mencion>
+        ╰┈➤ Bañarse  
+╰┈➤ 🐍 *#bite / #morder* + <mencion>
+        ╰┈➤ Muerde a alguien  
+╰┈➤ 😛 *#bleh / #lengua* + <mencion>
+        ╰┈➤ Sacar la lengua  
+╰┈➤ 😊 *#blush / #sonrojarse* + <mencion>
+        ╰┈➤ Sonrojarte  
+╰┈➤ 😒 *#bored / #aburrido* + <mencion>
+        ╰┈➤ Estar aburrido  
+╰┈➤ 👏 *#clap / #aplaudir* + <mencion>
+        ╰┈➤ Aplaudir  
+╰┈➤ ☕ *#coffee / #cafe / #café* + <mencion>
+        ╰┈➤ Tomar café  
+╰┈➤ 😢 *#cry / #llorar* + <mencion>
+        ╰┈➤ Llorar por algo o alguien  
+╰┈➤ 🤗 *#cuddle / #acurrucarse* + <mencion>
+        ╰┈➤ Acurrucarse  
+╰┈➤ 💃 *#dance / #bailar* + <mencion>
+        ╰┈➤ Sacate los pasitos prohibidos  
+╰┈➤ 🎭 *#dramatic / #drama* + <mencion>
+        ╰┈➤ Drama  
+╰┈➤ 🍺 *#drunk / #borracho* + <mencion>
+        ╰┈➤ Estar borracho  
+╰┈➤ 🍴 *#eat / #comer* + <mencion>
+        ╰┈➤ Comer algo delicioso  
+╰┈➤ 🤦 *#facepalm / #palmada* + <mencion>
+        ╰┈➤ Darte una palmada en la cara  
+╰┈➤ 😄 *#happy / #feliz* + <mencion>
+        ╰┈➤ Salta de felicidad  
+╰┈➤ 🤗 *#hug / #abrazar* + <mencion>
+        ╰┈➤ Dar un abrazo  
+╰┈➤ 🤰 *#impregnate / #preg / #preñar / #embarazar* + <mencion>
+        ╰┈➤ Embarazar a alguien  
+╰┈➤ 🔪 *#kill / #matar* + <mencion>
+        ╰┈➤ Toma tu arma y mata a alguien  
+╰┈➤ 😘 *#kiss / #muak* + <mencion>
+        ╰┈➤ Dar un beso  
+╰┈➤ 😚 *#kisscheek / #beso* + <mencion>
+        ╰┈➤ Beso en la mejilla  
+╰┈➤ 😂 *#laugh / #reirse* + <mencion>
+        ╰┈➤ Reírte de algo o alguien  
+╰┈➤ 👅 *#lick / #lamer* + <mencion>
+        ╰┈➤ Lamer a alguien  
+╰┈➤ ❤️ *#love / #amor / #enamorado / #enamorada* + <mencion>
+        ╰┈➤ Sentirse enamorado  
+╰┈➤ ✋ *#pat / #palmadita / #palmada* + <mencion>
+        ╰┈➤ Acaricia a alguien  
+╰┈➤ 👉 *#poke / #picar* + <mencion>
+        ╰┈➤ Picar a alguien  
+╰┈➤ 😗 *#pout / #pucheros* + <mencion>
+        ╰┈➤ Hacer pucheros  
+╰┈➤ 👊 *#punch / #pegar / #golpear* + <mencion>
+        ╰┈➤ Dar un puñetazo  
+╰┈➤ 🏃 *#run / #correr* + <mencion>
+        ╰┈➤ Correr  
+╰┈➤ 😔 *#sad / #triste* + <mencion>
+        ╰┈➤ Expresar tristeza  
+╰┈➤ 😱 *#scared / #asustado / #asustada* + <mencion>
+        ╰┈➤ Estar asustado  
+╰┈➤ 😏 *#seduce / #seducir* + <mencion>
+        ╰┈➤ Seducir a alguien  
+╰┈➤ 😳 *#shy / #timido / #timida* + <mencion>
+        ╰┈➤ Sentir timidez  
+╰┈➤ 👋 *#slap / #bofetada* + <mencion>
+        ╰┈➤ Dar una bofetada  
+╰┈➤ 💤 *#sleep / #dormir* + <mencion>
+        ╰┈➤ Tumbarte a dormir  
+╰┈➤ 🚬 *#smoke / #fumar* + <mencion>
+        ╰┈➤ Fumar  
+╰┈➤ 😤 *#spit / #escupir* + <mencion>
+        ╰┈➤ Escupir  
+╰┈➤ 👣 *#step / #pisar* + <mencion>
+        ╰┈➤ Pisar a alguien  
+╰┈➤ 🤔 *#think / #pensar* + <mencion>
+        ╰┈➤ Pensar en algo  
+╰┈➤ 🚶 *#walk / #caminar* + <mencion>
+        ╰┈➤ Caminar  
+╰┈➤ 😉 *#wink / #guiñar* + <mencion>
+        ╰┈➤ Guiñar el ojo  
+╰┈➤ 😳 *#cringe / #avergonzarse* + <mencion>
+        ╰┈➤ Sentir vergüenza ajena  
+╰┈➤ 😎 *#smug / #presumir* + <mencion>
+        ╰┈➤ Presumir con estilo  
+╰┈➤ 🙂 *#smile / #sonreir* + <mencion>
+        ╰┈➤ Sonreír con ternura  
+╰┈➤ ✋ *#highfive / #5* + <mencion>
+        ╰┈➤ Chocar los cinco  
+╰┈➤ 😈 *#bully / #bullying* + <mencion>
+        ╰┈➤ Molestar a alguien  
+╰┈➤ 🤝 *#handhold / #mano* + <mencion>
+        ╰┈➤ Tomarse de la mano  
+╰┈➤ 👋 *#wave / #ola / #hola* + <mencion>
+        ╰┈➤ Saludar con la mano  
+╰┈➤ 💞 *#waifu*
+        ╰┈➤ Buscar una waifu aleatoria  
+╰┈➤ 💑 *#ppcouple / #ppcp*
+        ╰┈➤ Genera imágenes para amistades o parejas
+`.trim()
+    },
+
+    "NSFW": {
+        title: "🔞 NSFW",
+        body: `
+╰┈➤ ✿ Comandos NSFW  
+
+╰┈➤ 🔞 *#danbooru / #dbooru* + [Tags]
+        ╰┈➤ Buscar imágenes en Danbooru  
+╰┈➤ 🔞 *#gelbooru / #gbooru* + [Tags]
+        ╰┈➤ Buscar imágenes en Gelbooru  
+╰┈➤ 🔞 *#rule34 / #r34* + [Tags]
+        ╰┈➤ Buscar imágenes en Rule34  
+╰┈➤ 🎥 *#xvideos / #xvideosdl* + [Link]
+        ╰┈➤ Descargar un video de Xvideos  
+╰┈➤ 🎥 *#xnxx / #xnxxdl* + [Link]
+        ╰┈➤ Descargar un video de Xnxx  
+╰┈➤ 💦 *#mamada* ╰┈➤ manda un video de mamando
+`.trim()
+    }
 };
 
-handler.help = ['menu2']
-handler.tags = ['main']
-handler.command = ['menu2', 'menú2', 'help2']
+// Array para definir el ORDEN EXACTO de la navegación entre categorías
+const MenuOrder = [
+    "MENU_INICIO",
+    "ECONOMY",
+    "DOWNLOAD",
+    "GACHA",
+    "SOCKETS",
+    "UTILITIES",
+    "PROFILES",
+    "GROUPS",
+    "ANIME",
+    "NSFW"
+];
+// ----------------------------------------------------
 
-export default handler
+
+let handler = async (m, { conn, usedPrefix, text }) => {
+    if (MenuOrder.length === 0) return m.reply('❌ El menú está vacío o no configurado.');
+    
+    let totalreg = Object.keys(global.db.data.users).length;
+    let userId = m.sender;
+    const totalCategories = MenuOrder.length;
+    
+    // 1. Determinar la categoría actual
+    let currentCategoryKey = MenuOrder[0];
+    let currentIndex = 0;
+
+    // Si se pasa un argumento numérico (desde un botón), úsalo como índice
+    if (text && !isNaN(parseInt(text))) {
+        currentIndex = parseInt(text);
+        
+        // Asegurar que el índice esté dentro del rango
+        if (currentIndex >= 0 && currentIndex < totalCategories) {
+            currentCategoryKey = MenuOrder[currentIndex];
+        } else {
+            currentIndex = 0;
+            currentCategoryKey = MenuOrder[0];
+        }
+    }
+
+    const currentMenu = MenuData[currentCategoryKey];
+
+    if (!currentMenu) return m.reply('❌ Categoría de menú no encontrada. Intente de nuevo.');
+
+    // 2. Generar el cuerpo del mensaje
+    let bodyContent = '';
+    
+    if (typeof currentMenu.body === 'function') {
+        // Para la página de inicio (con datos dinámicos)
+        bodyContent = currentMenu.body(totalreg, userId, conn);
+    } else {
+        // Para las páginas de comandos (estáticas)
+        const currentPageNumber = currentIndex + 1;
+        
+        bodyContent = `
+╭ *Página ${currentPageNumber}/${totalCategories}*
+╰──────────────────
+
+┏━━━━━━━━━━━━━━┓
+*${currentMenu.title}*
+┗━━━━━━━━━━━━━━┛
+${currentMenu.body}
+`.trim();
+    }
+    
+    let infoText = bodyContent;
+    
+    // 3. Lógica de Botones Siguiente/Anterior
+    let buttons = [];
+
+    // Botón ANTERIOR
+    if (currentIndex > 0) {
+        const prevIndex = currentIndex - 1;
+        buttons.push({ 
+            // Envía el índice de la categoría anterior
+            buttonId: usedPrefix + 'menu2 ' + prevIndex, 
+            buttonText: { displayText: '◀️ Anterior' },
+type: 1 
+        });
+    }
+
+    // Botón SIGUIENTE
+    if (currentIndex < totalCategories - 1) {
+        const nextIndex = currentIndex + 1;
+        buttons.push({ 
+            // Envía el índice de la categoría siguiente
+            buttonId: usedPrefix + 'menu2 ' + nextIndex, 
+            buttonText: { displayText: 'Siguiente ▶️' }, 
+            type: 1 
+        });
+    }
+    
+    // Botón Fijo (Sup-Bot/code)
+    buttons.push({ 
+        buttonId: usedPrefix + 'code', 
+        buttonText: { displayText: '🤖 Sup-Bot' }, 
+        type: 1 
+    });
+
+    // --- 4. ENVÍO DEL MENSAJE ---
+    let mediaUrl = 'https://files.catbox.moe/nqvhaq.jpg';
+
+    try {
+        await conn.sendMessage(m.chat, {
+            image: { url: mediaUrl },
+            caption: infoText,
+            footer: "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』⚡",
+            buttons: buttons,
+            headerType: 4,
+            mentions: [userId]
+        }, { quoted: m });
+    } catch (e) {
+        // Fallback sin imagen (HeaderType 1)
+        let buttonMessage = {
+            text: infoText,
+            footer: "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』⚡",
+            buttons: buttons,
+            headerType: 1,
+            mentions: [userId]
+        };
+        await conn.sendMessage(m.chat, buttonMessage, { quoted: m });
+    }
+};
+
+// 5. Configuración del comando: ¡Mantener los nombres originales!
+handler.help = ['menu2'];
+handler.tags = ['main'];
+handler.command = ['menú2', 'menu2', 'help2'];
+
+export default handler;
+ 
