@@ -9,11 +9,12 @@
 <div align="center">
   <h2>
     <a href="#">
-      <img src="https://readme-typing-svg.herokuapp.com?font=Russo+One&weight=700&size=30&duration=4000&pause=1000&color=00FF00&center=true&vCenter=true&width=700&lines=✨+NEON+GUARD+✨;🔥+BOT+ÉPICO+DE+WHATSAPP+🔥;💫+VELOCIDAD+Y+ESTABILIDAD+TOTAL+💫"
+      <img src="https://readme-typing-svg.herokuapp.com?font=Orbitron&weight=700&size=30&duration=4000&pause=1000&color=7C4DFF&center=true&vCenter=true&width=700&lines=✨+BOT+AVANZADO+✨;🔥+NEON+GUARD+🔥;💫+RÁPIDO+Y+ESTABLE+💫&v=2"
            alt="Typing SVG" />
     </a>
   </h2>
 </div>
+
 
 </p>
 
