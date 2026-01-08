@@ -17,16 +17,6 @@
 
 </p>
 
-<div align="center">
-  <h2>
-    <img
-      src="https://readme-typing-svg.herokuapp.com?font=Russo+One&weight=800&size=30&pause=1000&color=FF1744&center=true&vCenter=true&width=750&lines=⚡+BOT+DE+NUEVA+GENERACIÓN+⚡;🔥+NEON+GUARD+CORE+🔥;🛡️+PODER,+VELOCIDAD+Y+CONTROL+🛡️&v=6"
-      alt="Typing SVG"
-    />
-  </h2>
-</div>
-
-
 <h1 align="center">🌟 ¡SI ME DAS UNA ESTRELLA ME AYUDARÍA MUCHO! 🌟</h1>
 
 ### **`⚠️ Información importante`**
