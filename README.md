@@ -254,9 +254,9 @@ href="https://www.youtube.com/watch?v=SYbEOZZ__Wo"><img src="https://github.com/
 <details>
  <summary><b>🚀 Enlaces Oficiales </b></summary>
 
- * ⭐ Canal Oficial  [`¡ÚNETE AHORA!`](https://whatsapp.com/channel/0029VbAoYE99hXF1wm3zmQ21)
-* 💫 Grupo Oficial [`¡ÚNETE AHORA!`](https://chat.whatsapp.com/JONU3lLJhCf0JgCuL13gwk)
-* 🌟 Comunidad Oficial [`¡ÚNETE AHORA!`](https://chat.whatsapp.com/KKwDZn5vDAE6MhZFAcVQeO)
+ * ⭐ Canal Oficial  [`¡ÚNETE AHORA!`]
+* 💫 Grupo Oficial [`¡ÚNETE AHORA!`]
+* 🌟 Comunidad Oficial [`¡ÚNETE AHORA!`]
 </details>
 
 <details>
@@ -269,24 +269,15 @@ href="https://www.youtube.com/watch?v=SYbEOZZ__Wo"><img src="https://github.com/
 
 <div align="center">
   <h2>👑 CREADOR DEL BOT 👑</h2>
-  <a href="https://github.com/Fer280809">
-    <img src="https://github.com/Fer280809.png" width="250" height="250" alt="𝕱𝖊𝖗𝖓𝖆𝖓𝖉𝖔" style="border-radius: 50%; border: 5px solid gold; box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);">
+  <a href="https://github.com/antonylozanogl-stack">
+    <img src="https://github.com/antonylozanogl-stack.png" width="250" height="250" alt="𝕱𝖊𝖗𝖓𝖆𝖓𝖉𝖔" style="border-radius: 50%; border: 5px solid gold; box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);">
   </a>
-  <h3>𝕱𝖊𝖗𝖓𝖆𝖓𝖉𝖔</h3>
-  <a href="https://github.com/Fer280809">
+  <h3>𝓐𝓷𝓽𝓸𝓷𝔂</h3>
+  <a href="https://github.com/antonylozanogl-stack">
     <img src="https://img.shields.io/badge/GitHub-%23121011.svg?style=for-the-badge&logo=github&logoColor=white">
   </a>
 </div>
 
-### **`🌟 Colaboradores Destacados`**
-<a href="https://github.com/Fer280809/Asta_bot/graphs/contributors">
-<img src="https://contrib.rocks/image?repo=Fer280809/Asta_bot" /> 
-</a>
-
-### **`🙏 Créditos`**
-</a>
-<a href="https://github.com/ScriptNex" style="display:inline-block; margin-right: 10px; text-decoration: none;">
-    <img src="https://github.com/ScriptNex.png" width="130" height="130" alt="Neykoor💜" style="border-radius: 50%;"/>
 </a>
 
 <h1 align="center">⚡ EL BOT SE ACTUALIZA CADA DOS SEMANAS O CUANDO SE NESESITA ⚡</h1>
