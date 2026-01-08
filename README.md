@@ -1,12 +1,20 @@
 <h1 align="center">👑『𝕹𝕰𝕺𝕹 𝕲𝖀𝕬𝕽𝕯-𝕭𝕺𝕿』👑</h1>
 
 <p align="center">
-  <img
-    src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgwEyPc2ZcSJLv1nKjMoNcqTD_PZl1Zk9ujraVrJSEw_efKhnurC6XGA6VOj73W-ygzfgfou1-g_3EzCX41BCiLXPvTjcIUy4BL78F9l9MuQlWAIg4E3DjO-Kx-qO-yIIhkOyeYaqDeyx8MW4EusFhzDUqID_Pk2RRUWhDfHErCquK71DBo9v4BhRjtXBNt/s736/b63bb3b9-7464-494f-937f-9aa4394cb124.jpg"
-    width="350"
-    alt="NEON GUARD BOT"
-    style="max-width:100%;"
-  />
+  <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhT_k5kC5PDTcs24SO0k7CuY4f2ylvGC6jnKHbjVtItu66mzvHz2w1LeqvSiZa7wVAjJQWfKQN8_0M-o9jSbEUTGZzfgnPjE1UCbhUBLs73AZCvyUOaA1-P1aU1Jmh2hoWbpOwzLgXvrSmmmgTDvv6PhpPck2r98yu8UHXw7ZtX-Z5fP3URT6lMaoDplh19/s1536/ChatGPT%20Image%208%20ene%202026,%2003_28_30.png"
+       width="350"
+       style="box-shadow:0 0 25px cyan;">
+</p>
+
+<div align="center">
+  <h2>
+    <a href="#">
+      <img src="https://readme-typing-svg.herokuapp.com?font=Russo+One&weight=700&size=30&duration=4000&pause=1000&color=00FF00&center=true&vCenter=true&width=700&lines=✨+NEON+GUARD+✨;🔥+BOT+ÉPICO+DE+WHATSAPP+🔥;💫+VELOCIDAD+Y+ESTABILIDAD+TOTAL+💫"
+           alt="Typing SVG" />
+    </a>
+  </h2>
+</div>
+
 </p>
 
 <div align="center">
