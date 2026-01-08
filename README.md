@@ -1,16 +1,23 @@
-<h1 align="center">👑『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』👑</h1>
+<h1 align="center">👑『𝕹𝕰𝕺𝕹 𝕲𝖀𝕬𝕽𝕯-𝕭𝕺𝕿』👑</h1>
 
 <p align="center">
- <img src= "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgwEyPc2ZcSJLv1nKjMoNcqTD_PZl1Zk9ujraVrJSEw_efKhnurC6XGA6VOj73W-ygzfgfou1-g_3EzCX41BCiLXPvTjcIUy4BL78F9l9MuQlWAIg4E3DjO-Kx-qO-yIIhkOyeYaqDeyx8MW4EusFhzDUqID_Pk2RRUWhDfHErCquK71DBo9v4BhRjtXBNt/s736/b63bb3b9-7464-494f-937f-9aa4394cb124.jpg">
+  <img
+    src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgwEyPc2ZcSJLv1nKjMoNcqTD_PZl1Zk9ujraVrJSEw_efKhnurC6XGA6VOj73W-ygzfgfou1-g_3EzCX41BCiLXPvTjcIUy4BL78F9l9MuQlWAIg4E3DjO-Kx-qO-yIIhkOyeYaqDeyx8MW4EusFhzDUqID_Pk2RRUWhDfHErCquK71DBo9v4BhRjtXBNt/s736/b63bb3b9-7464-494f-937f-9aa4394cb124.jpg"
+    width="350"
+    alt="NEON GUARD BOT"
+    style="max-width:100%;"
+  />
 </p>
 
 <div align="center">
   <h2>
-    <a href="#">
-      <img src="https://readme-typing-svg.herokuapp.com?font=Russo+One&weight=700&size=30&duration=4000&pause=1000&color=00FF00&width=435&center=true&vCenter=true&random=false&width=435&lines=✨+ESTE+ES+EL+MEJOR+BOT+DE+WHATSAPP+✨;🔥+ASTA-BOT+PREMIUM+🔥;💫+VELOCIDAD+Y+ESTABILIDAD+💫" alt="Typing SVG" />
-    </a>
+    <img
+      src="https://readme-typing-svg.herokuapp.com?font=Russo+One&weight=800&size=30&pause=1000&color=FF1744&center=true&vCenter=true&width=750&lines=⚡+BOT+DE+NUEVA+GENERACIÓN+⚡;🔥+NEON+GUARD+CORE+🔥;🛡️+PODER,+VELOCIDAD+Y+CONTROL+🛡️&v=6"
+      alt="Typing SVG"
+    />
   </h2>
 </div>
+
 
 <h1 align="center">🌟 ¡SI ME DAS UNA ESTRELLA ME AYUDARÍA MUCHO! 🌟</h1>
 
