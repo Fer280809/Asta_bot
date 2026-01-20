@@ -1,376 +1,398 @@
-#!/usr/bin/env node
-import './setting.js'; // Importar configuración global
-import { createConnection } from './lib/baileys.js';
-import { loadPlugins } from './handler.js';
-import { printBanner, color, clearConsole, printMenu } from './lib/print.js';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
-import readline from 'readline';
-import fs from 'fs';
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '1'
+import './settings.js'
+import './plugins/_allfake.js'
+import cfonts from 'cfonts'
+import { createRequire } from 'module'
+import { fileURLToPath, pathToFileURL } from 'url'
+import { platform } from 'process'
+import * as ws from 'ws'
+import fs, { readdirSync, statSync, unlinkSync, existsSync, mkdirSync, readFileSync, rmSync, watch } from 'fs'
+import yargs from 'yargs'
+import { spawn } from 'child_process'
+import lodash from 'lodash'
+import { AstaJadiBot } from './plugins/sockets-serbot.js'
+import chalk from 'chalk'
+import syntaxerror from 'syntax-error'
+import pino from 'pino'
+import Pino from 'pino'
+import path, { join } from 'path'
+import { Boom } from '@hapi/boom'
+import { makeWASocket, protoType, serialize } from './lib/simple.js'
+import { Low, JSONFile } from 'lowdb'
+import store from './lib/store.js'
+const { proto } = (await import('@whiskeysockets/baileys')).default
+import pkg from 'google-libphonenumber'
+const { PhoneNumberUtil } = pkg
+const phoneUtil = PhoneNumberUtil.getInstance()
+const { DisconnectReason, useMultiFileAuthState, fetchLatestBaileysVersion, makeCacheableSignalKeyStore, jidNormalizedUser } = await import('@whiskeysockets/baileys')
+import readline from 'readline'
+import NodeCache from 'node-cache'
+const { CONNECTING } = ws
+const { chain } = lodash
+const PORT = process.env.PORT || process.env.SERVER_PORT || 3000
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
+let { say } = cfonts
+console.log(chalk.magentaBright('\n▶ Iniciando Asta Bot...'))
+say('Asta Bot', {
+  font: 'block',
+  align: 'center',
+  gradient: ['red', 'magenta']
+})
+say('By Fernando', {
+  font: 'tiny',
+  align: 'center',
+  colors: ['yellow', 'green']
+})
 
-// Interfaz para entrada de usuario
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
+protoType()
+serialize()
 
-// Variables globales
-let selectedMethod = null;
-let phoneNumber = global.botNumber || "";
-
-// Crear la pregunta como promesa
-const question = (text) => new Promise((resolve) => rl.question(text, resolve));
-
-async function main() {
-    clearConsole();
-    await printBanner();
-    
-    console.log(color('cyan', `⚡ ${global.botname} v${global.version}\n`));
-    console.log(color('yellow', `👤 Creado por: ${global.etiqueta}\n`));
-    
-    // Crear directorios automáticamente
-    await createDirectories();
-    
-    // Validar configuración
-    validateSettings();
-    
-    // Mostrar menú principal
-    await showMainMenu();
+global.__filename = function filename(pathURL = import.meta.url, rmPrefix = platform !== 'win32') {
+  return rmPrefix ? /file:\/\/\//.test(pathURL) ? fileURLToPath(pathURL) : pathURL : pathToFileURL(pathURL).toString()
+}
+global.__dirname = function dirname(pathURL) {
+  return path.dirname(global.__filename(pathURL, true))
+}
+global.__require = function require(dir = import.meta.url) {
+  return createRequire(dir)
 }
 
-async function createDirectories() {
-    console.log(color('cyan', '📁 Creando directorios necesarios...\n'));
-    
-    const directories = [
-        'temp',
-        'database', 
-        'plugins',
-        'Sesuke/Principal-sasuke',
-        'Sesuke/sup-bot-sasuke',
-    ];
-    
-    try {
-        for (const dir of directories) {
-            const fullPath = join(__dirname, dir);
-            
-            if (!fs.existsSync(fullPath)) {
-                fs.mkdirSync(fullPath, { recursive: true });
-                console.log(color('green', `   ✓ Creada: ${dir}`));
-            } else {
-                console.log(color('gray', `   ✓ Ya existe: ${dir}`));
-            }
-        }
-        
-        // Crear subcarpetas
-        const subdirs = [
-            'temp/media',
-            'temp/stickers', 
-            'temp/downloads',
-            'database/users',
-            'database/groups',
-            'database/economy'
-        ];
-        
-        for (const dir of subdirs) {
-            const fullPath = join(__dirname, dir);
-            if (!fs.existsSync(fullPath)) {
-                fs.mkdirSync(fullPath, { recursive: true });
-            }
-        }
-        
-        console.log(color('green', '\n✅ Directorios creados correctamente\n'));
-        
-    } catch (error) {
-        console.log(color('red', `❌ Error creando directorios: ${error.message}`));
-        // Continuar de todos modos
+global.timestamp = { start: new Date }
+const __dirname = global.__dirname(import.meta.url)
+global.opts = new Object(yargs(process.argv.slice(2)).exitProcess(false).parse())
+global.prefix = new RegExp('^[#!./-]')
+
+global.db = new Low(/https?:\/\//.test(opts['db'] || '') ? new cloudDBAdapter(opts['db']) : new JSONFile('database.json'))
+global.DATABASE = global.db
+global.loadDatabase = async function loadDatabase() {
+  if (global.db.READ) {
+    return new Promise((resolve) => setInterval(async function() {
+      if (!global.db.READ) {
+        clearInterval(this)
+        resolve(global.db.data == null ? global.loadDatabase() : global.db.data)
+      }
+    }, 1 * 1000))
+  }
+  if (global.db.data !== null) return
+  global.db.READ = true
+  await global.db.read().catch(console.error)
+  global.db.READ = null
+  global.db.data = {
+    users: {},
+    chats: {},
+    settings: {},
+    ...(global.db.data || {})
+  }
+  global.db.chain = chain(global.db.data)
+}
+loadDatabase()
+
+const { state, saveCreds } = await useMultiFileAuthState(global.sessions)
+const msgRetryCounterCache = new NodeCache({ stdTTL: 0, checkperiod: 0 })
+const userDevicesCache = new NodeCache({ stdTTL: 0, checkperiod: 0 })
+const { version } = await fetchLatestBaileysVersion()
+let phoneNumber = global.botNumber
+const methodCodeQR = process.argv.includes("qr")
+const methodCode = !!phoneNumber || process.argv.includes("code")
+const MethodMobile = process.argv.includes("mobile")
+const rl = readline.createInterface({ input: process.stdin, output: process.stdout })
+const question = (texto) => new Promise((resolver) => rl.question(texto, resolver))
+let opcion
+
+if (methodCodeQR) {
+  opcion = '1'
+}
+if (!methodCodeQR && !methodCode && !fs.existsSync(`./${global.sessions}/creds.json`)) {
+  do {
+    opcion = await question(chalk.bold.white("Seleccione opción:\n") + chalk.blueBright("1. QR\n") + chalk.cyan("2. Código\n▶▶▶ "))
+    if (!/^[1-2]$/.test(opcion)) {
+      console.log(chalk.bold.redBright(`✖ Solo 1 o 2`))
     }
+  } while (opcion !== '1' && opcion !== '2' || fs.existsSync(`./${global.sessions}/creds.json`))
 }
 
-async function showMainMenu() {
-    // Verificar si ya existe sesión
-    const credsPath = join(__dirname, global.sessions, 'creds.json');
-    if (fs.existsSync(credsPath)) {
-        console.log(color('yellow', '📱 Sesión encontrada. Iniciando bot directamente...\n'));
-        await startBot();
-        return;
+console.info = () => {}
+
+const connectionOptions = {
+  logger: pino({ level: 'silent' }),
+  printQRInTerminal: opcion == '1' ? true : methodCodeQR ? true : false,
+  mobile: MethodMobile,
+  browser: ["Ubuntu", "Chrome", "20.0.04"],
+  auth: {
+    creds: state.creds,
+    keys: makeCacheableSignalKeyStore(state.keys, Pino({ level: "fatal" }).child({ level: "fatal" })),
+  },
+  generateHighQualityLinkPreview: true,
+  msgRetryCounterCache,
+  userDevicesCache,
+  version,
+}
+
+global.conn = makeWASocket(connectionOptions)
+conn.ev.on("creds.update", saveCreds)
+
+if (!fs.existsSync(`./${global.sessions}/creds.json`)) {
+  if (opcion === '2' || methodCode) {
+    console.log(chalk.yellow('[⚡] Modo código activado'))
+    
+    if (!conn.authState.creds.registered) {
+      let addNumber
+      if (!!phoneNumber) {
+        addNumber = phoneNumber.replace(/[^0-9]/g, '')
+      } else {
+        do {
+          phoneNumber = await question(chalk.bgBlack(chalk.bold.greenBright(`[📱] Número WhatsApp:\n▶▶▶ `)))
+          phoneNumber = phoneNumber.replace(/\D/g, '')
+          if (!phoneNumber.startsWith('+')) phoneNumber = `+${phoneNumber}`
+        } while (!await isValidPhoneNumber(phoneNumber))
+        rl.close()
+        addNumber = phoneNumber.replace(/\D/g, '')
+      }
+
+      console.log(chalk.cyan('[⏳] Generando código...'))
+      
+      try {
+        const cleanNumber = addNumber.replace('+', '')
+        let codeBot = await conn.requestPairingCode(cleanNumber)
+        
+        if (codeBot) {
+          codeBot = codeBot?.match(/.{1,4}/g)?.join("-") || codeBot
+          console.log(chalk.bold.white(chalk.bgMagenta(`\n═══════════════════════`)))
+          console.log(chalk.bold.white(chalk.bgMagenta(`      📲 CÓDIGO WhatsApp   `)))
+          console.log(chalk.bold.white(chalk.bgMagenta(`═══════════════════════`)))
+          console.log(chalk.bold.white(chalk.bgGreen(`      ${codeBot}      `)))
+        }
+      } catch (error) {
+        console.error(chalk.red(`✖ Error: ${error.message}`))
+      }
     }
-    
-    printMenu();
-    
-    const answer = await question(color('green', '👉 Selecciona una opción (1-3): '));
-    
-    switch (answer.trim()) {
-        case '1':
-            selectedMethod = 'qr';
-            await startBot();
-            break;
-        case '2':
-            selectedMethod = 'code';
-            await showCodeMethod();
-            break;
-        case '3':
-            await showSettings();
-            break;
-        case '0':
-            console.log(color('yellow', '\n🌀 Saliendo...'));
-            rl.close();
-            process.exit(0);
-            break;
-        default:
-            console.log(color('red', '\n❌ Opción inválida'));
-            setTimeout(() => showMainMenu(), 1000);
-            break;
+  }
+}
+
+conn.isInit = false
+conn.well = false
+
+if (!opts['test']) {
+  setInterval(async () => {
+    if (global.db.data) await global.db.write().catch(() => {})
+  }, 60 * 1000)
+}
+
+async function connectionUpdate(update) {
+  const { connection, lastDisconnect } = update
+  
+  if (connection === "open") {
+    const userName = conn.user.name || conn.user.verifiedName || "Usuario"
+    console.log(chalk.bold.greenBright(`\n═══════════════════════`))
+    console.log(chalk.bold.greenBright(`   ✅ BOT CONECTADO   `))
+    console.log(chalk.bold.greenBright(`═══════════════════════`))
+    console.log(chalk.cyan(`👤 ${userName}`))
+    console.log(chalk.cyan(`📱 ${conn.user.id.split(':')[0]}`))
+    console.log(chalk.gray(`🕐 ${new Date().toLocaleString('es-MX')}\n`))
+  }
+  
+  if (connection === "close") {
+    const code = lastDisconnect?.error?.output?.statusCode || lastDisconnect?.error?.output?.payload?.statusCode
+    if (code && code !== DisconnectReason.loggedOut && conn?.ws.socket == null) {
+      await global.reloadHandler(true).catch(console.error)
     }
+    console.log(chalk.yellow("🔄 Reconectando..."))
+    await global.reloadHandler(true).catch(console.error)
+  }
 }
 
-async function showCodeMethod() {
-    clearConsole();
+process.on('uncaughtException', console.error)
+let isInit = true
+let handler = await import('./handler.js')
+
+global.reloadHandler = async function(restartConn) {
+  try {
+    const Handler = await import(`./handler.js?update=${Date.now()}`).catch(console.error)
+    if (Object.keys(Handler || {}).length) handler = Handler
+  } catch (e) {
+    console.error(e)
+  }
+  
+  if (restartConn) {
+    const oldChats = global.conn.chats
+    try { global.conn.ws.close() } catch {}
+    conn.ev.removeAllListeners()
+    global.conn = makeWASocket(connectionOptions, { chats: oldChats })
+    isInit = true
+  }
+  
+  if (!isInit) {
+    conn.ev.off('messages.upsert', conn.handler)
+    conn.ev.off('connection.update', conn.connectionUpdate)
+    conn.ev.off('creds.update', conn.credsUpdate)
+  }
+  
+  conn.handler = handler.handler.bind(global.conn)
+  conn.connectionUpdate = connectionUpdate.bind(global.conn)
+  conn.credsUpdate = saveCreds.bind(global.conn, true)
+  
+  conn.ev.on('messages.upsert', conn.handler)
+  conn.ev.on('connection.update', conn.connectionUpdate)
+  conn.ev.on('creds.update', conn.credsUpdate)
+  
+  isInit = false
+  return true
+}
+
+process.on('unhandledRejection', (reason) => {
+  console.error("⚠ Error:", reason)
+})
+
+function getPluginFiles(dir, baseDir = dir) {
+  let results = []
+  if (!existsSync(dir)) return results
+  
+  const items = readdirSync(dir, { withFileTypes: true })
+  
+  for (const item of items) {
+    const fullPath = join(dir, item.name)
+    const relativePath = path.relative(baseDir, fullPath).replace(/\\/g, '/')
     
-    console.log(color('cyan', `
-╔══════════════════════════════════════╗
-║        🔒 VINCULACIÓN POR CÓDIGO     ║
-╚══════════════════════════════════════╝`));
-    
-    // Si no hay número configurado, pedirlo
-    if (!phoneNumber) {
-        console.log(color('yellow', '\n📱 INGRESA TU NÚMERO DE WHATSAPP:'));
-        console.log(color('white', 'Ejemplo: 5213312345678 (sin +)\n'));
-        
-        let isValid = false;
-        while (!isValid) {
-            phoneNumber = await question(color('green', '👉 Número: '));
-            phoneNumber = phoneNumber.trim().replace(/\D/g, '');
-            
-            if (phoneNumber.length >= 10 && phoneNumber.length <= 15) {
-                isValid = true;
-            } else {
-                console.log(color('red', '❌ Número inválido. Debe tener entre 10-15 dígitos.'));
-            }
-        }
-        
-        console.log(color('green', `✅ Número guardado: ${phoneNumber}`));
-    } else {
-        console.log(color('green', `\n📱 Usando número: ${phoneNumber}`));
+    if (item.isDirectory()) {
+      results = results.concat(getPluginFiles(fullPath, baseDir))
+    } else if (item.isFile() && /\.js$/.test(item.name)) {
+      results.push({
+        fullPath,
+        relativePath,
+        folder: path.relative(__dirname, baseDir).replace(/\\/g, '/'),
+        filename: item.name
+      })
     }
-    
-    console.log(color('yellow', '\n⏳ Generando código de vinculación...\n'));
-    
-    await startBot();
+  }
+  
+  return results
 }
 
-async function showSettings() {
-    clearConsole();
-    
-    console.log(color('cyan', `
-╔══════════════════════════════════════╗
-║          ⚙️  CONFIGURACIÓN           ║
-╚══════════════════════════════════════╝`));
-    
-    console.log(color('yellow', '\n📊 CONFIGURACIÓN ACTUAL:'));
-    console.log(color('white', `   Nombre: ${global.botname}`));
-    console.log(color('white', `   Versión: ${global.version}`));
-    console.log(color('white', `   Prefijo: ${global.prefix || 'Ninguno'}`));
-    console.log(color('white', `   Sin prefijo: ${global.noPrefix ? '✅' : '❌'}`));
-    console.log(color('white', `   Owners: ${global.owner.length}`));
-    console.log(color('white', `   Premium: ${global.prem.length}`));
-    
-    console.log(color('yellow', '\n🔧 OPCIONES:'));
-    console.log(color('white', '   1. Cambiar prefijo'));
-    console.log(color('white', '   2. Ver lista de owners'));
-    console.log(color('white', '   3. Ver lista de premium'));
-    console.log(color('white', '   4. Volver al menú principal\n'));
-    
-    const answer = await question(color('green', '👉 Selecciona (1-4): '));
-    
-    switch (answer.trim()) {
-        case '1':
-            const newPrefix = await question(color('green', 'Nuevo prefijo (deja vacío para ninguno): '));
-            global.prefix = newPrefix || '';
-            console.log(color('green', `✅ Prefijo actualizado: ${global.prefix || 'Ninguno'}`));
-            setTimeout(() => showSettings(), 1500);
-            break;
-        case '2':
-            console.log(color('cyan', '\n👑 LISTA DE OWNERS:'));
-            global.owner.forEach((owner, i) => {
-                console.log(color('white', `   ${i+1}. ${owner}`));
-            });
-            await question(color('green', '\n👉 Presiona ENTER para continuar... '));
-            showSettings();
-            break;
-        case '3':
-            console.log(color('cyan', '\n⭐ LISTA DE PREMIUM:'));
-            global.prem.forEach((prem, i) => {
-                console.log(color('white', `   ${i+1}. ${prem}`));
-            });
-            await question(color('green', '\n👉 Presiona ENTER para continuar... '));
-            showSettings();
-            break;
-        case '4':
-            await showMainMenu();
-            break;
-        default:
-            console.log(color('red', '❌ Opción inválida'));
-            setTimeout(() => showSettings(), 1000);
-            break;
-    }
-}
+const pluginFolders = ['./plugins', './plugins2', './plugins3', './plugins4', './plugins5']
+global.plugins = {}
 
-async function startBot() {
-    clearConsole();
-    
-    console.log(color('cyan', `
-╔══════════════════════════════════════╗
-║          🚀 INICIANDO BOT            ║
-╚══════════════════════════════════════╝`));
-    
-    console.log(color('yellow', '\n🔄 Cargando plugins...'));
-    
-    try {
-        // Cargar plugins
-        const plugins = await loadPlugins();
-        console.log(color('green', `✅ ${plugins.size} plugins cargados`));
-        
-        // Configurar sesión
-        const sessionConfig = {
-            name: 'Principal-sasuke',
-            type: 'principal',
-            sessionPath: join(__dirname, global.sessions),
-            phoneNumber: selectedMethod === 'code' ? phoneNumber : null,
-            showQR: selectedMethod === 'qr',
-            method: selectedMethod
-        };
-        
-        console.log(color('cyan', `\n🔗 Método: ${selectedMethod === 'code' ? 'CÓDIGO' : 'QR'}`));
-        console.log(color('cyan', `📁 Sesión: ${sessionConfig.name}`));
-        
-        // Crear conexión
-        const sock = await createConnection(sessionConfig, plugins);
-        
-        // Configurar manejadores
-        setupHandlers(sock, plugins, sessionConfig);
-        
-        // Mostrar estado final
-        console.log(color('green', '\n✅ BOT INICIADO CORRECTAMENTE\n'));
-        
-        if (global.prefix) {
-            console.log(color('yellow', `📌 Prefijo: ${global.prefix}`));
-        }
-        
-        if (global.noPrefix) {
-            console.log(color('yellow', `📌 También responde sin prefijo`));
-        }
-        
-        console.log(color('yellow', '\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'));
-        
-        // Mostrar instrucción final
-        if (selectedMethod === 'code' && phoneNumber) {
-            console.log(color('cyan', '\n⏳ Generando código de vinculación...'));
-            console.log(color('cyan', `   Número: ${phoneNumber}`));
-            console.log(color('yellow', '\n📱 Sigue las instrucciones en pantalla'));
-        } else if (selectedMethod === 'qr') {
-            console.log(color('cyan', '\n📱 Escanea el código QR con WhatsApp'));
-        }
-        
-        console.log(color('yellow', '\n💡 Presiona Ctrl+C para salir'));
-        console.log(color('yellow', '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n'));
-        
-        // Manejar cierre limpio
-        setupExitHandlers(sock);
-        
-    } catch (error) {
-        console.log(color('red', `\n❌ Error al iniciar bot: ${error.message}`));
-        const retry = await question(color('green', '\n👉 ¿Reintentar? (s/n): '));
-        if (retry.toLowerCase() === 's') {
-            await showMainMenu();
-        } else {
-            rl.close();
-            process.exit(0);
-        }
-    }
-}
+async function filesInit() {
+  console.log(chalk.bold.cyan('\n📦 Cargando plugins...'))
 
-function setupHandlers(sock, plugins, config) {
-    // Evento de conexión
-    sock.ev.on('connection.update', async (update) => {
-        const { connection, qr } = update;
-        
-        if (qr && config.showQR) {
-            console.log(color('yellow', '\n📱 CÓDIGO QR GENERADO:'));
-            require('qrcode-terminal').generate(qr, { small: true });
-        }
-        
-        if (connection === 'open') {
-            console.log(color('green', '\n✅ CONECTADO A WHATSAPP'));
-            
-            // Mostrar información del usuario
-            const user = sock.user;
-            console.log(color('cyan', `👤 Conectado como: ${user?.name || 'Usuario'}`));
-            console.log(color('cyan', `📞 Número: ${user?.id?.split(':')[0] || 'Desconocido'}`));
-            
-            // Notificar al owner
-            if (global.owner && global.owner.length > 0) {
-                notifyOwner(sock);
-            }
-        }
-        
-        if (connection === 'close') {
-            console.log(color('red', '\n❌ DESCONECTADO DE WHATSAPP'));
-            console.log(color('yellow', '🔄 Intentando reconectar en 5 segundos...'));
-            setTimeout(async () => {
-                try {
-                    console.log(color('cyan', '🔄 Reconectando...'));
-                    await startBot();
-                } catch (error) {
-                    console.log(color('red', `❌ Error reconectando: ${error.message}`));
-                }
-            }, 5000);
-        }
-    });
-}
+  let total = 0
+  
+  for (const folder of pluginFolders) {
+    const folderPath = join(__dirname, folder)
+    if (!existsSync(folderPath)) continue
 
-async function notifyOwner(sock) {
-    const owner = global.owner[0];
-    if (!owner) return;
+    const pluginFiles = getPluginFiles(folderPath)
     
-    try {
-        await sock.sendMessage(
-            owner,
-            { text: `✅ *${global.botname}* está en línea!\n📅 ${new Date().toLocaleString()}` }
-        );
-    } catch (e) {
-        // Silenciar error
-    }
-}
-
-function setupExitHandlers(sock) {
-    process.on('SIGINT', async () => {
-        console.log(color('yellow', '\n\n🌀 Cerrando sesión...'));
-        try {
-            await sock.logout();
-        } catch (e) {
-            // Ignorar errores
-        }
-        console.log(color('green', '✅ Sesión cerrada correctamente'));
-        rl.close();
-        process.exit(0);
-    });
-}
-
-function validateSettings() {
-    console.log(color('cyan', "🔍 Validando configuración..."));
-    
-    if (!global.prefix && !global.noPrefix) {
-        console.log(color('yellow', "⚠️  Advertencia: El bot no responderá a ningún comando"));
+    for (const file of pluginFiles) {
+      try {
+        const module = await import(file.fullPath)
+        const pluginKey = `${folder}/${file.relativePath}`
+        global.plugins[pluginKey] = module.default || module
+        total++
+      } catch (e) {
+        console.error(chalk.red(`✖ ${folder}/${file.relativePath}`))
+      }
     }
     
-    if (global.owner.length === 0) {
-        console.log(color('yellow', "⚠️  Advertencia: No hay dueños configurados"));
+    if (pluginFiles.length > 0) {
+      console.log(chalk.green(`✅ ${folder}: ${pluginFiles.length}`))
     }
-    
-    console.log(color('green', "✅ Configuración validada"));
+  }
+
+  console.log(chalk.bold.green(`\n✨ Total: ${total} plugins\n`))
 }
 
-// Iniciar aplicación
-main().catch(console.error);
+filesInit().catch(console.error)
+
+global.reload = async (_ev, filename) => {
+  if (!/\.js$/.test(filename)) return
+
+  for (const folder of pluginFolders) {
+    const folderPath = join(__dirname, folder)
+    if (!existsSync(folderPath)) continue
+
+    const searchFile = (dir, baseDir = dir) => {
+      const items = readdirSync(dir, { withFileTypes: true })
+      for (const item of items) {
+        const fullPath = join(dir, item.name)
+        const relativePath = path.relative(baseDir, fullPath).replace(/\\/g, '/')
+        
+        if (item.isDirectory()) {
+          const found = searchFile(fullPath, baseDir)
+          if (found) return found
+        } else if (item.name === filename) {
+          return { fullPath, relativePath }
+        }
+      }
+      return null
+    }
+
+    const fileInfo = searchFile(folderPath)
+    if (fileInfo) {
+      const pluginKey = `${folder}/${fileInfo.relativePath}`
+      const isUpdate = pluginKey in global.plugins
+
+      const err = syntaxerror(readFileSync(fileInfo.fullPath), filename, {
+        sourceType: 'module',
+        allowAwaitOutsideFunction: true,
+      })
+
+      if (err) {
+        delete global.plugins[pluginKey]
+        return
+      }
+
+      try {
+        const module = await import(`${fileInfo.fullPath}?update=${Date.now()}`)
+        global.plugins[pluginKey] = module.default || module
+      } catch (e) {
+        delete global.plugins[pluginKey]
+      }
+      return
+    }
+  }
+
+  const existingKey = Object.keys(global.plugins).find(key => key.endsWith(`/${filename}`))
+  if (existingKey) {
+    delete global.plugins[existingKey]
+  }
+}
+
+Object.freeze(global.reload)
+
+for (const folder of pluginFolders) {
+  const folderPath = join(__dirname, folder)
+  if (existsSync(folderPath)) {
+    watch(folderPath, { recursive: true }, global.reload)
+  }
+}
+
+await global.reloadHandler()
+
+setInterval(() => {
+  const tmpDir = join(__dirname, 'tmp')
+  if (existsSync(tmpDir)) {
+    const files = readdirSync(tmpDir)
+    for (const file of files) {
+      try {
+        const filePath = join(tmpDir, file)
+        const stats = statSync(filePath)
+        if (Date.now() - stats.mtimeMs > 5 * 60 * 1000) {
+          unlinkSync(filePath)
+        }
+      } catch {}
+    }
+  }
+}, 10 * 60 * 1000)
+
+async function isValidPhoneNumber(number) {
+  try {
+    number = number.replace(/\s+/g, '')
+    if (number.startsWith('+521')) {
+      number = number.replace('+521', '+52')
+    }
+    const parsedNumber = phoneUtil.parseAndKeepRawInput(number)
+    return phoneUtil.isValidNumber(parsedNumber)
+  } catch {
+    return false
+  }
+}

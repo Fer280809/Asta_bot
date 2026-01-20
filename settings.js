@@ -13,12 +13,13 @@ global.botNumber = "" //Ejemplo: 573218138672
 
 global.owner = [
 "5214183357841",
-"573153057295",
-"5356795360"
+"5356795360",
+"573502523837",
+"573153057295"
 ]
 
 global.suittag = ["5214183357841"] 
-global.prems = ["573114758599", "5214183357841"]
+global.prems = ["5214183357841"]
 global.fernando = ["5214183357841"]
 
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
@@ -32,14 +33,20 @@ global.AstaJadibts = true
 
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
+global.prefix = new RegExp('^[#!./-]?')
+global.sinprefix = true // true = funciona sin prefijo | false = solo con prefijo
+
+//*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
+
+global.prefix = new RegExp('^[#!./-]?')
 global.botname = "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』"
 global.textbot = "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』 • Powered By 𝕱𝖊𝖗𝖓𝖆𝖓𝖉𝖔"
 global.dev = "Powered By 𝕱𝖊𝖗𝖓𝖆𝖓𝖉𝖔"
 global.author = "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』 • Powered By 𝕱𝖊𝖗𝖓𝖆𝖓𝖉𝖔"
 global.etiqueta = "𝕱𝖊𝖗𝖓𝖆𝖓𝖉𝖔"
 global.currency = "¥enes"
-global.banner = "https://files.catbox.moe/lajq7h.jpg"
-global.icono = "https://files.catbox.moe/lajq7h.jpg"
+global.banner = "https://github.com/Fer280809/Asta_bot/blob/main/lib%2Fcatalogo.jpg"
+global.icono = "https://github.com/Fer280809/Asta_bot/blob/main/lib%2Fcatalogo.jpg"
 global.catalogo = fs.readFileSync('./lib/catalogo.jpg')
 
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
