@@ -49,7 +49,7 @@
 
 ### **`⬇️ Click en la imagen para descargar termux ⬇️`**
 <a
-href="https://www.mediafire.com/file/pa3r4x9cat0rrq0/F-Droid.apk/file"><img src="https://qu.ax/finc.jpg" height="125px"></a> 
+href="https://www.mediafire.com/file/pa3r4x9cat0rrq0/F-Droid.apk/file"><img src="https://files.catbox.moe/9tx49r.jpg" height="125px"></a> 
 
 <div align="center">
   <a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=800&size=25&pause=1000&color=F70000&width=435&center=true&random=false&width=435&lines=%E2%9A%A1%EF%B8%8F+INSTALACI%C3%93N+R%C3%81PIDA+%E2%9A%A1%EF%B8%8F;%F0%9F%94%A5+SIGUE+LOS+PASOS+%F0%9F%94%A5" alt="Typing SVG" /></a>
@@ -229,7 +229,7 @@ grep -q 'bash\|wget' <(dpkg -l) || apt install -y bash wget && wget -O - https:/
 ⬇️ Click en la imagen para ir al video⬇️
 
 <a
-href="https://www.youtube.com/watch?v=SYbEOZZ__Wo"><img src="https://github.com/Fer280809/Asta_bot/blob/main/src/catalogo.jpg" height="205px"></a> 
+href="https://youtu.be/ohthxxUKxqc?si=Rb01X4St-ZoNifhy"><img src="https://github.com/Fer280809/Asta_bot/blob/main/lib/catalogo.jpg" height="205px"></a> 
 
 </div>
 
