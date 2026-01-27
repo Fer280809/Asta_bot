@@ -2,10 +2,7 @@ import fetch from "node-fetch"
 import yts from "yt-search"
 import Jimp from "jimp"
 import axios from "axios"
-import crypto from "crypto"
 import fs from "fs"
-import { spawn } from "child_process"
-import { promisify } from "util"
 import { fileURLToPath } from "url"
 import path, { dirname } from "path"
 
@@ -14,40 +11,6 @@ const __dirname = dirname(__filename)
 
 const MAX_FILE_SIZE = 500 * 1024 * 1024 // 500 MB
 const AUDIO_DOC_THRESHOLD = 30 * 1024 * 1024 // 30 MB
-
-// Función para convertir MP3 a WhatsApp Audio válido
-function convertToWhatsAppAudio(inputPath, outputPath) {
-    return new Promise((resolve, reject) => {
-        const ffmpeg = spawn('ffmpeg', [
-            '-i', inputPath,
-            '-c:a', 'libopus',
-            '-b:a', '64k',
-            '-ac', '1',
-            '-ar', '16000',
-            '-vbr', 'on',
-            '-compression_level', '10',
-            '-frame_duration', '60',
-            '-application', 'voip',
-            outputPath
-        ])
-
-        ffmpeg.stderr.on('data', (data) => {
-            console.log('FFmpeg:', data.toString())
-        })
-
-        ffmpeg.on('close', (code) => {
-            if (code === 0) {
-                resolve(true)
-            } else {
-                reject(new Error(`FFmpeg failed with code ${code}`))
-            }
-        })
-
-        ffmpeg.on('error', (err) => {
-            reject(err)
-        })
-    })
-}
 
 async function resizeImage(buffer, size = 300) {
     try {
@@ -87,7 +50,7 @@ const savenowApi = {
             const id = data.id;
             const progressUrl = `https://p.savenow.to/api/progress?id=${id}`;
             let attempts = 0;
-            const maxAttempts = 30; // Máximo 60 segundos (30 intentos × 2 segundos)
+            const maxAttempts = 30;
             
             while (attempts < maxAttempts) {
                 await new Promise(resolve => setTimeout(resolve, 2000));
@@ -132,7 +95,6 @@ const savenowApi = {
                 return { status: false, error: "ID de video no válido" };
             }
             
-            // Primero obtenemos información del video
             const videoInfo = await yts({ videoId: videoId });
             
             let format, result;
@@ -142,12 +104,10 @@ const savenowApi = {
                 result = await this.ytdl(link, format);
                 
                 if (result.error) {
-                    // Intentar con m4a como respaldo
                     console.log(`❌ MP3 falló, intentando M4A...`);
                     result = await this.ytdl(link, "m4a");
                 }
             } else {
-                // Para video, intentamos calidades en orden de preferencia
                 const videoFormats = ["720", "360", "480", "240", "144", "1080"];
                 
                 for (const format of videoFormats) {
@@ -199,10 +159,8 @@ const amScraperApi = {
                 return { status: false, error: "ID de video no válido" };
             }
             
-            // Primero obtenemos información del video
             const videoInfo = await yts({ videoId: videoId });
             
-            // Llamamos al AM Scraper
             const response = await axios.get(`${amScraperApi.baseUrl}?url=${encodeURIComponent(link)}`, {
                 headers: {
                     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
@@ -221,7 +179,6 @@ const amScraperApi = {
             let formatType = null;
             
             if (type === "audio") {
-                // Buscamos enlaces de audio
                 if (data.audio && data.audio.url) {
                     downloadUrl = data.audio.url;
                     formatType = "mp3";
@@ -233,12 +190,10 @@ const amScraperApi = {
                     formatType = "mp3";
                 }
             } else {
-                // Buscamos enlaces de video (preferiblemente 720p)
                 if (data.video && data.video.url) {
                     downloadUrl = data.video.url;
                     formatType = "mp4";
                 } else if (data.formats) {
-                    // Orden de preferencia para calidad de video
                     const qualityOrder = ["720", "480", "360", "240"];
                     
                     for (const quality of qualityOrder) {
@@ -254,7 +209,6 @@ const amScraperApi = {
                         }
                     }
                     
-                    // Si no encontramos por calidad, tomamos cualquier video
                     if (!downloadUrl) {
                         const anyVideo = data.formats.find(f => 
                             f.mimeType && f.mimeType.includes('video/mp4')
@@ -353,7 +307,6 @@ const backupApi = {
 async function downloadWithFallback(url, type = 'audio') {
     console.log(`🔍 Intentando descargar: ${url}`);
     
-    // INTENTO 1: Savenow API (PRINCIPAL)
     console.log(`🔄 Intentando con Savenow API...`);
     let result = await savenowApi.download(url, type);
     if (result.status) {
@@ -363,7 +316,6 @@ async function downloadWithFallback(url, type = 'audio') {
     
     console.log(`❌ Savenow API falló: ${result.error}, intentando AM Scraper...`);
     
-    // INTENTO 2: AM Scraper API
     result = await amScraperApi.download(url, type);
     if (result.status) {
         console.log(`✅ Descarga exitosa con AM Scraper API`);
@@ -372,7 +324,6 @@ async function downloadWithFallback(url, type = 'audio') {
     
     console.log(`❌ AM Scraper falló: ${result.error}, intentando API de respaldo...`);
     
-    // INTENTO 3: API de respaldo
     result = await backupApi.download(url, type);
     if (result.status) {
         console.log(`✅ Descarga exitosa con Backup API`);
@@ -530,7 +481,7 @@ async function handleDownload(m, conn, text, command, usedPrefix) {
 
         const thumbResized = await resizeImage(await (await fetch(thumbnail)).buffer(), 300);
 
-        // YTMP3 - Audio (como nota de voz)
+        // ========== YTMP3 - ENVIAR SIEMPRE COMO AUDIO REPRODUCIBLE ==========
         if (command === 'ytmp3') {
             await conn.reply(m.chat, `╭━━━━━━━━━━━━━╮
 │ ⏳ *DESCARGANDO...*
@@ -560,60 +511,23 @@ async function handleDownload(m, conn, text, command, usedPrefix) {
                 }
             };
 
-            if (size > AUDIO_DOC_THRESHOLD) {
-                await conn.sendMessage(m.chat, {
-                    document: { url: dl.result.download },
-                    mimetype: 'audio/mpeg',
-                    fileName: `${title}.mp3`,
-                    caption: `🎵 *${title}*\n📦 ${formatSize(size)}\n👤 ${author}`,
-                    jpegThumbnail: thumbResized
-                }, { quoted: fkontak });
-            } else {
-                const tempDir = path.join(__dirname, 'temp');
-                if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir, { recursive: true });
+            // NUEVA ESTRATEGIA: Enviar siempre como AUDIO NORMAL (no PTT, no documento)
+            // Esto garantiza que sea reproducible directamente en WhatsApp
+            await conn.sendMessage(m.chat, {
+                audio: { url: dl.result.download },
+                mimetype: 'audio/mpeg',
+                fileName: `${title}.mp3`,
+                // NO usar ptt: true
+                // Esto hace que se envíe como mensaje de audio reproducible
+            }, { quoted: fkontak });
 
-                const timestamp = Date.now();
-                const tempInput = path.join(tempDir, `input_${timestamp}.mp3`);
-                const tempOutput = path.join(tempDir, `output_${timestamp}.opus`);
-
-                try {
-                    const audioResponse = await fetch(dl.result.download, {
-                        headers: {
-                            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-                        }
-                    });
-                    const buffer = await audioResponse.arrayBuffer();
-                    fs.writeFileSync(tempInput, Buffer.from(buffer));
-
-                    await convertToWhatsAppAudio(tempInput, tempOutput);
-
-                    const audioBuffer = fs.readFileSync(tempOutput);
-
-                    await conn.sendMessage(m.chat, {
-                        audio: audioBuffer,
-                        mimetype: 'audio/ogg; codecs=opus',
-                        ptt: true,
-                        fileName: `${title}.ogg`
-                    }, { quoted: fkontak });
-
-                    if (fs.existsSync(tempInput)) fs.unlinkSync(tempInput);
-                    if (fs.existsSync(tempOutput)) fs.unlinkSync(tempOutput);
-
-                } catch (conversionError) {
-                    console.error('Error en conversión:', conversionError);
-                    await conn.sendMessage(m.chat, {
-                        audio: { url: dl.result.download },
-                        mimetype: 'audio/mpeg',
-                        fileName: `${title}.mp3`
-                    }, { quoted: fkontak });
-                }
-            }
+            console.log('✅ Audio enviado como mensaje reproducible');
 
             await m.react('✅');
             return;
         }
 
-        // YTMP4 - Video
+        // ========== YTMP4 - Video ==========
         if (command === 'ytmp4') {
             await conn.reply(m.chat, `╭━━━━━━━━━━━━━╮
 │ ⏳ *DESCARGANDO...*
@@ -658,7 +572,7 @@ async function handleDownload(m, conn, text, command, usedPrefix) {
             return;
         }
 
-        // YTMP3DOC - Audio como documento
+        // ========== YTMP3DOC - Audio como documento ==========
         if (command === 'ytmp3doc') {
             await conn.reply(m.chat, `╭━━━━━━━━━━━━━╮
 │ 💿 *DESCARGANDO...*
@@ -700,7 +614,7 @@ async function handleDownload(m, conn, text, command, usedPrefix) {
             return;
         }
 
-        // YTMP4DOC - Video como documento
+        // ========== YTMP4DOC - Video como documento ==========
         if (command === 'ytmp4doc') {
             await conn.reply(m.chat, `╭━━━━━━━━━━━━━╮
 │ 🎥 *DESCARGANDO...*
