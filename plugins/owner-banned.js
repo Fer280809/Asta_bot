@@ -451,5 +451,5 @@ const handler = async (m, { conn, text, usedPrefix, command, args, isROwner, isO
 handler.help = ['banned', 'unban', 'checkban', 'horaban', 'block', 'unblock', 'banlist', 'blocklist']
 handler.tags = ['mods']
 handler.command = ['banned', 'unban', 'checkban', 'horaban', 'block', 'unblock', 'banlist', 'blocklist']
-
+handler.rowner = true
 export default handler
