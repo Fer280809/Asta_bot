@@ -86,7 +86,8 @@ function isSubBotConnected(jid) {
 
 // ============= HANDLER PRINCIPAL =============
 let handler = async (m, { conn, args, usedPrefix, command, isOwner }) => {
-    if (!globalThis.db.data.settings[conn.user.jid].jadibotmd) {
+    const settings = globalThis.db?.data?.settings?.[conn.user?.jid]
+    if (!settings?.jadibotmd) {
         return m.reply(`ꕥ El Comando *${command}* está desactivado temporalmente.`)
     }
 
@@ -100,7 +101,7 @@ let handler = async (m, { conn, args, usedPrefix, command, isOwner }) => {
                 return sock && 
                        sock.user && 
                        sock.user.jid && 
-                       sock.user.jid !== global.conn.user.jid && // No es bot principal
+                       sock.user.jid !== global.conn?.user?.jid && // No es bot principal
                        sock.ws && 
                        (sock.ws.readyState === 1 || sock.ws.readyState === 0) // OPEN o CONNECTING
             } catch (e) {
@@ -125,7 +126,7 @@ let handler = async (m, { conn, args, usedPrefix, command, isOwner }) => {
     }
 
     // ============ COOLDOWN ============
-    const userCooldown = global.db.data.users[m.sender]?.Subs || 0
+    const userCooldown = global.db?.data?.users?.[m.sender]?.Subs || 0
     const timeLeft = 120000 - (Date.now() - userCooldown)
 
     if (timeLeft > 0) {
@@ -177,6 +178,9 @@ let handler = async (m, { conn, args, usedPrefix, command, isOwner }) => {
     console.log(chalk.blue(`🚀 Creando SubBot para: ${id}`))
 
     AstaJadiBot(AstaJBOptions)
+    if (!global.db?.data?.users?.[m.sender]) {
+        global.db.data.users[m.sender] = {}
+    }
     global.db.data.users[m.sender].Subs = Date.now()
 }
 
@@ -250,6 +254,8 @@ export async function AstaJadiBot(options) {
         let sock = makeWASocket(connectionOptions)
         sock.isInit = false
         let isInit = true
+        let pairingRequested = false
+        let qrMessageSent = false
 
         // ============= CONFIGURACIÓN INICIAL DEL SUBBOT =============
         const defaultConfig = {
@@ -343,6 +349,8 @@ export async function AstaJadiBot(options) {
             // Mostrar QR si está disponible
             if (qr && !mcode) {
                 if (m?.chat) {
+                    if (qrMessageSent) return
+                    qrMessageSent = true
                     txtQR = await conn.sendMessage(m.chat, { 
                         image: await qrcode.toBuffer(qr, { scale: 8 }), 
                         caption: rtx.trim()
@@ -364,6 +372,8 @@ export async function AstaJadiBot(options) {
 
             // Mostrar código de pairing
             if (qr && mcode) {
+                if (pairingRequested) return
+                pairingRequested = true
                 try {
                     let secret = await sock.requestPairingCode((m.sender.split`@`[0]))
                     secret = secret.match(/.{1,4}/g)?.join("-")
