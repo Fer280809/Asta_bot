@@ -2,7 +2,7 @@
 
 # ============================================
 # termux.sh - Script de actualización para ASTA
-# Repositorio: Fer280809/asta
+# Repositorio: Fer280809/Asta_bot
 # ============================================
 
 # Colores para mensajes
@@ -46,7 +46,7 @@ show_banner() {
     echo "║                ACTUALIZADOR RÁPIDO              ║"
     echo "╚══════════════════════════════════════════════════╝"
     echo -e "${NC}"
-    echo "Repositorio: ${MAGENTA}Fer280809/asta${NC}"
+    echo "Repositorio: ${MAGENTA}Fer280809/Asta_bot${NC}"
     echo "Versión del script: 2.0"
     echo "======================================================"
 }
@@ -135,7 +135,7 @@ update_from_github() {
         if [ -d "asta" ]; then
             mv asta asta_old_$(date +%Y%m%d_%H%M%S)
         fi
-        git clone https://github.com/Fer280809/asta.git
+        git clone https://github.com/Fer280809/Asta_bot.git
         cd asta
     fi
     
