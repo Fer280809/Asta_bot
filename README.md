@@ -150,235 +150,6 @@ cd && cd Asta_bot && rm -rf sessions/Principal && npm run code
 
 ---
 
-<details>
-<summary><b>🔄 ACTUALIZACIÓN AUTOMÁTICA CON TERMUX.SH (NUEVO MÉTODO)</b></summary>
-
-### **⚡ Script de Actualización Inteligente**
-
-El bot ahora incluye un script automático de actualización llamado `termux.sh` que facilita todas las tareas de mantenimiento y actualización del bot.
-
----
-
-### **🚀 Actualización Rápida (Recomendado)**
-
-> **Este método actualiza el bot a la última versión automáticamente, conserva tu base de datos y crea un backup de seguridad.**
-
-**Comando de actualización completa:**
-```bash
-grep -q 'bash\|wget' <(dpkg -l) || apt install -y bash wget && wget -O - https://raw.githubusercontent.com/Fer280809/Asta_bot/main/termux.sh | bash
-```
-
-**o**
-
-**Usar estos comandos**
-
-```bash
-cd Asta_bot && bash termux.sh
-```
-> seleciona opcion uno y pon (y) en todas las opciones si te pide un nombre o mensaje pon el que tuquieras
-
-**⚠️ Importante:** 
-- Este proceso crea un backup automático de tu `database.json` y archivos importantes
-- Será necesario volver a vincular el bot (escanear QR o código de teléfono)
-- El backup se guarda en: `/data/data/com.termux/files/home/asta_backup_FECHA_HORA`
-
----
-
-### **📋 Menú Interactivo de termux.sh**
-
-El script incluye un menú completo con 9 funcionalidades para gestionar tu bot:
-
-#### **Acceder al menú:**
-```bash
-cd Asta_bot && bash termux.sh
-```
-
-#### **O en modo automático (sin menú):**
-```bash
-cd Asta_bot && bash termux.sh --auto
-```
-
----
-
-### **🎯 Funcionalidades del Script**
-
-#### **1️⃣ Actualizar desde GitHub (completo)**
-- Crea backup automático de archivos importantes
-- Descarga las últimas actualizaciones del repositorio
-- Instala dependencias actualizadas
-- Arregla permisos automáticamente
-- Verifica la estructura de archivos
-
-#### **2️⃣ Solo instalar dependencias**
-- Instala o actualiza todas las dependencias npm
-- Útil cuando solo cambiaron las librerías
-- No modifica el código fuente
-
-#### **3️⃣ Verificar estructura de archivos**
-- Revisa que todos los archivos esenciales estén presentes
-- Detecta sistemas adicionales (RPG, economía, gacha)
-- Identifica archivos faltantes
-
-#### **4️⃣ Iniciar/Reiniciar bot**
-- Inicia el bot usando PM2 (si está instalado)
-- O inicia manualmente en segundo plano
-- Reinicia procesos existentes automáticamente
-
-#### **5️⃣ Ver logs en tiempo real**
-- Muestra los registros del bot en vivo
-- Útil para debugging y monitoreo
-- Presiona `CTRL + C` para salir
-
-#### **6️⃣ Limpiar caché y backups viejos**
-- Elimina `node_modules` (opcional) para reinstalación limpia
-- Borra logs antiguos (más de 7 días)
-- Elimina backups viejos (más de 7 días) para liberar espacio
-
-#### **7️⃣ Backup de archivos importantes**
-- Crea copia de seguridad manual de:
-  - `lib/database.js` - Base de datos del bot
-  - `lib/config.js` - Configuración general
-  - `lib/settings.js` - Ajustes del bot
-  - `lib/economy_codes.json` - Códigos de economía
-  - `lib/gacha_users.json` - Datos de usuarios gacha
-  - `lib/characters.json` - Personajes del juego
-- Los backups se guardan con fecha y hora
-
-#### **8️⃣ Arreglar permisos**
-- Ajusta permisos de archivos y scripts
-- Da permisos de ejecución a archivos `.sh`
-- Establece permisos correctos para archivos `.js`
-
-#### **9️⃣ Estado del sistema**
-- Muestra información del sistema (versión de Linux)
-- Versiones instaladas de Node.js, npm y Git
-- Rama actual de Git y último commit
-- Estado del bot (encendido/apagado)
-- Espacio en disco disponible
-- Memoria RAM libre
-
----
-
-### **💾 Sistema de Backup Automático**
-
-Cada vez que actualizas el bot, el script crea automáticamente un backup de:
-
-```
-📁 asta_backup_FECHA_HORA/
-├── database.js          # Tu base de datos completa
-├── config.js            # Configuración del bot
-├── settings.js          # Ajustes personalizados
-├── economy_codes.json   # Códigos de economía
-├── gacha_users.json     # Datos de gacha
-└── characters.json      # Personajes del juego
-```
-
-**Ubicación de backups:** `/data/data/com.termux/files/home/asta_backup_[FECHA_HORA]`
-
----
-
-### **🔧 Gestión de Conflictos**
-
-Si hay conflictos durante la actualización, el script:
-1. Detecta automáticamente archivos con conflictos
-2. Muestra qué archivos tienen problemas
-3. Te permite resolverlos manualmente con `nano`
-4. Completa la fusión una vez resueltos
-
----
-
-### **⚙️ Verificación de Dependencias**
-
-El script verifica e instala automáticamente:
-- ✅ Git (si no está instalado)
-- ✅ Node.js (si no está instalado)
-- ✅ npm (si no está instalado)
-- ⚠️ PM2 (opcional, pregunta si deseas instalarlo)
-
----
-
-### **📊 Ejemplo de Uso Completo**
-
-```bash
-# 1. Acceder a la carpeta del bot
-cd /data/data/com.termux/files/home/Asta_bot
-
-# 2. Ejecutar el script
-bash termux.sh
-
-# 3. El menú aparecerá:
-════════════════ MENÚ PRINCIPAL ════════════════
-1. Actualizar desde GitHub (completo)
-2. Solo instalar dependencias
-3. Verificar estructura de archivos
-4. Iniciar/Reiniciar bot
-5. Ver logs en tiempo real
-6. Limpiar caché y backups viejos
-7. Backup de archivos importantes
-8. Arreglar permisos
-9. Estado del sistema
-0. Salir
-══════════════════════════════════════════════════
-
-# 4. Selecciona la opción que necesites (ejemplo: 1 para actualización completa)
-```
-
----
-
-### **🎨 Características del Script**
-
-- 🌈 **Interfaz colorida** con mensajes claros
-- 🔒 **Backups automáticos** antes de cada actualización
-- ⚡ **Modo automático** para actualización sin interacción
-- 🛡️ **Detección de conflictos** con resolución guiada
-- 📊 **Información del sistema** en tiempo real
-- 🔄 **Gestión de PM2** integrada
-- 🧹 **Limpieza automática** de archivos antiguos
-- ✅ **Validación de dependencias** al inicio
-
----
-
-### **⚠️ Notas Importantes**
-
-1. **Después de actualizar**, siempre deberás volver a vincular el bot (QR o código)
-2. **Los backups** se crean automáticamente y se conservan por 7 días
-3. **Si usas PM2**, el script lo detecta y lo usa automáticamente
-4. **El modo automático** (`--auto`) ejecuta todo sin preguntar (útil para scripts)
-
----
-
-### **🆘 Solución de Problemas**
-
-**Si el script no se ejecuta:**
-```bash
-chmod +x termux.sh
-bash termux.sh
-```
-
-**Si hay errores de permisos:**
-```bash
-# Opción 8 del menú
-bash termux.sh
-# Selecciona: 8 (Arreglar permisos)
-```
-
-**Si el bot no arranca después de actualizar:**
-```bash
-# Opción 4 del menú
-bash termux.sh
-# Selecciona: 4 (Iniciar/Reiniciar bot)
-```
-
-**Para ver qué está pasando:**
-```bash
-# Opción 5 del menú
-bash termux.sh
-# Selecciona: 5 (Ver logs en tiempo real)
-```
-
-</details>
-
----
 
 <details>
 <summary><b>🜸 Comandos para mantener el Bot activo 24/7</b></summary>
@@ -392,15 +163,6 @@ bash termux.sh
 termux-wake-lock && npm i -g pm2 && pm2 start index.js && pm2 save && pm2 logs
 ```
 
-**Activarlo mas facil con estos comandos**
-
-**Activar el menu de Asta**
-
-```bash
-cd Asta_bot && bash termux.sh
-```
-> Seleciona opcion 4 y se activara automaticamenete
-> 
 ---
 
 #### 📋 Opciones Disponibles con PM2
@@ -439,7 +201,28 @@ pm2 list
 
 ---
 
+<details>
+<summary><b>❀ Actualizar Asta-Bot</b></summary>
+
+### **🔄 Actualización Automática**
+
+> **Nota:** Este método actualizará el bot a la última versión. Se conservará la base de datos, pero será necesario volver a vincular el bot.
+
+**Comando de actualización automática:**
+```bash
+grep -q 'bash\|wget' <(dpkg -l) || apt install -y bash wget && wget -O - https://raw.githubusercontent.com/Fer280809/Asta_bot/main/termux.sh | bash
+```
+
+> Este comando realiza un respaldo automático de tu `database.json` y lo integra a la nueva versión.
+
+**⚠️ Importante:** Después de actualizar, deberás volver a escanear el código QR o usar el código de teléfono para vincular nuevamente el bot.
+
+</details>
+
+
 📢 EL BOT SE ACTUALIZA CADA SEMANA O MES Y SE LE HACE MANTENIMIENTO EN ESTE REPOSITORIO
+
+
 
 ### **`📹 Video tutorial de instalacion`**
 
@@ -464,7 +247,7 @@ href="https://youtu.be/ohthxxUKxqc?si=Rb01X4St-ZoNifhy"><img src="https://github
 <details>
 <summary><b>☎️ Contactos Directos</b></summary>
 
-* 📲 WhatsApp: [`CONTÁCTANOS`](https://wa.me/524181450063)
+* 📲 WhatsApp: [`CONTÁCTANOS`](https:/Wa.me/524181450063)
 * 🔥 Solicita bot oficial: [`CONTÁCTANOS`](https://wa.me/524181450063)
 </details>
 
@@ -491,7 +274,7 @@ href="https://youtu.be/ohthxxUKxqc?si=Rb01X4St-ZoNifhy"><img src="https://github
     <img src="https://github.com/ScriptNex.png" width="130" height="130" alt="Neykoor💜" style="border-radius: 50%;"/>
 </a>
 
-<h1 align="center">⚡ EL BOT SE ACTUALIZA CADA DOS SEMANAS O CUANDO SE NECESITA ⚡</h1>
+<h1 align="center">⚡ EL BOT SE ACTUALIZA CADA DOS SEMANAS O CUANDO SE NESESITA ⚡</h1>
 
 <div align="center">
   <a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.herokuapp.com?font=Russo+One&weight=800&size=28&pause=1000&color=F7DE00&width=650&center=true&vCenter=true&random=false&width=650&lines=%F0%9F%94%A5+MANT%C3%89N+TU+BOT+SIEMPRE+ACTUALIZADO+%F0%9F%94%A5;%E2%AD%90+NUEVAS+FUNCIONES+CADA+SEMANA+%E2%AD%90;%F0%9F%9A%80+S%C3%8DGUENOS+EN+EL+CANAL+PARA+NOVEDADES+%F0%9F%9A%80" alt="Typing SVG" /></a>

@@ -1,8 +1,8 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
 # ============================================
-# termux.sh - Script de actualización para ASTA_BOT
-# Repositorio: Fer280809/Asta_bot
+# termux.sh - Script de actualización para ASTA
+# Repositorio: Fer280809/asta
 # ============================================
 
 # Colores para mensajes
@@ -17,7 +17,7 @@ NC='\033[0m' # No Color
 
 # Función para mostrar mensajes con colores
 msg() {
-    echo -e "${GREEN}[ASTA_BOT]${NC} $1"
+    echo -e "${GREEN}[ASTA]${NC} $1"
 }
 
 error() {
@@ -43,10 +43,10 @@ show_banner() {
     echo "║     ██╔══██║╚════██║   ██║   ██╔══██║           ║"
     echo "║     ██║  ██║███████║   ██║   ██║  ██║           ║"
     echo "║     ╚═╝  ╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝           ║"
-    echo "║           ASTA_BOT - ACTUALIZADOR RÁPIDO        ║"
+    echo "║                ACTUALIZADOR RÁPIDO              ║"
     echo "╚══════════════════════════════════════════════════╝"
     echo -e "${NC}"
-    echo "Repositorio: ${MAGENTA}Fer280809/Asta_bot${NC}"
+    echo "Repositorio: ${MAGENTA}Fer280809/asta${NC}"
     echo "Versión del script: 2.0"
     echo "======================================================"
 }
@@ -94,13 +94,13 @@ backup_files() {
     msg "Creando backup de archivos importantes..."
     
     # Crear directorio de backup si no existe
-    BACKUP_DIR="/data/data/com.termux/files/home/asta_bot_backup_$(date +%Y%m%d_%H%M%S)"
+    BACKUP_DIR="/data/data/com.termux/files/home/asta_backup_$(date +%Y%m%d_%H%M%S)"
     mkdir -p $BACKUP_DIR
     
     # Archivos importantes a respaldar
     important_files=(
         "lib/database.js"
-        "lib/setting.js"  # Cambiado de config.js a setting.js
+        "lib/config.js"
         "lib/settings.js"
         "lib/economy_codes.json"
         "lib/gacha_users.json"
@@ -108,15 +108,15 @@ backup_files() {
     )
     
     for file in "${important_files[@]}"; do
-        if [ -f "/data/data/com.termux/files/home/Asta_bot/$file" ]; then  # Cambiado de asta a Asta_bot
-            cp "/data/data/com.termux/files/home/Asta_bot/$file" "$BACKUP_DIR/"
+        if [ -f "/data/data/com.termux/files/home/asta/$file" ]; then
+            cp "/data/data/com.termux/files/home/asta/$file" "$BACKUP_DIR/"
             info "  Backup: $file"
         fi
     done
     
     # Backup de configuración del bot si existe
-    if [ -f "/data/data/com.termux/files/home/Asta_bot/setting.js" ]; then  # Cambiado de config.js a setting.js
-        cp "/data/data/com.termux/files/home/Asta_bot/setting.js" "$BACKUP_DIR/"
+    if [ -f "/data/data/com.termux/files/home/asta/config.js" ]; then
+        cp "/data/data/com.termux/files/home/asta/config.js" "$BACKUP_DIR/"
     fi
     
     msg "Backup creado en: $BACKUP_DIR"
@@ -126,17 +126,17 @@ backup_files() {
 update_from_github() {
     msg "Actualizando desde GitHub..."
     
-    cd /data/data/com.termux/files/home/Asta_bot
+    cd /data/data/com.termux/files/home/asta
     
     # Verificar si es un repositorio git
     if [ ! -d ".git" ]; then
         error "No es un repositorio git. Clonando desde cero..."
         cd /data/data/com.termux/files/home
-        if [ -d "Asta_bot" ]; then  # Cambiado de asta a Asta_bot
-            mv Asta_bot Asta_bot_old_$(date +%Y%m%d_%H%M%S)  # Cambiado de asta a Asta_bot
+        if [ -d "asta" ]; then
+            mv asta asta_old_$(date +%Y%m%d_%H%M%S)
         fi
-        git clone https://github.com/Fer280809/Asta_bot.git
-        cd Asta_bot  # Cambiado de asta a Asta_bot
+        git clone https://github.com/Fer280809/asta.git
+        cd asta
     fi
     
     # Guardar cambios locales si existen
@@ -218,7 +218,7 @@ update_from_github() {
 install_npm_dependencies() {
     msg "Instalando dependencias npm..."
     
-    cd /data/data/com.termux/files/home/Asta_bot
+    cd /data/data/com.termux/files/home/asta
     
     if [ -f "package.json" ]; then
         # Verificar si hay package-lock.json
@@ -245,7 +245,7 @@ install_npm_dependencies() {
 check_file_structure() {
     msg "Verificando estructura de archivos..."
     
-    cd /data/data/com.termux/files/home/Asta_bot  # Cambiado de asta a Asta_bot
+    cd /data/data/com.termux/files/home/asta
     
     # Archivos esenciales que deben existir
     essential_files=(
@@ -286,7 +286,7 @@ check_file_structure() {
 fix_permissions() {
     msg "Arreglando permisos..."
     
-    cd /data/data/com.termux/files/home/Asta_bot  # Cambiado de asta a Asta_bot
+    cd /data/data/com.termux/files/home/asta
     
     # Dar permisos de ejecución a scripts
     chmod +x *.sh 2>/dev/null
@@ -304,35 +304,35 @@ fix_permissions() {
 start_bot() {
     msg "Iniciando el bot..."
     
-    cd /data/data/com.termux/files/home/Asta_bot  # Cambiado de asta a Asta_bot
+    cd /data/data/com.termux/files/home/asta
     
     # Verificar si pm2 está instalado
     if command -v pm2 &> /dev/null; then
         info "Usando PM2 para gestión de procesos..."
         
         # Verificar si ya está corriendo con pm2
-        if pm2 list | grep -q "asta_bot"; then
+        if pm2 list | grep -q "asta"; then
             msg "Reiniciando bot con PM2..."
-            pm2 restart asta_bot
+            pm2 restart asta
         else
             msg "Iniciando bot con PM2..."
-            pm2 start index.js --name asta_bot
+            pm2 start index.js --name asta
         fi
         
         pm2 save
-        pm2 logs asta_bot --lines 50
+        pm2 logs asta --lines 50
     else
         warning "PM2 no instalado. Iniciando manualmente..."
         
         # Matar proceso anterior si existe
-        pkill -f "node.*Asta_bot" 2>/dev/null  # Cambiado de asta a Asta_bot
+        pkill -f "node.*asta" 2>/dev/null
         
         # Iniciar nuevo proceso
-        nohup node index.js > asta_bot.log 2>&1 &
+        nohup node index.js > asta.log 2>&1 &
         
         info "Bot iniciado en segundo plano."
-        info "Ver logs: tail -f asta_bot.log"
-        info "Detener bot: pkill -f \"node.*Asta_bot\""
+        info "Ver logs: tail -f asta.log"
+        info "Detener bot: pkill -f \"node.*asta\""
     fi
 }
 
@@ -340,10 +340,10 @@ start_bot() {
 show_logs() {
     msg "Mostrando logs..."
     
-    cd /data/data/com.termux/files/home/Asta_bot  # Cambiado de asta a Asta_bot
+    cd /data/data/com.termux/files/home/asta
     
-    if [ -f "asta_bot.log" ]; then  # Cambiado de asta.log a asta_bot.log
-        tail -f -n 50 asta_bot.log
+    if [ -f "asta.log" ]; then
+        tail -f -n 50 asta.log
     else
         warning "No se encontró archivo de logs."
         info "Los logs pueden estar en otro lugar o el bot no se ha ejecutado."
@@ -354,7 +354,7 @@ show_logs() {
 clean_cache() {
     msg "Limpiando caché..."
     
-    cd /data/data/com.termux/files/home/Asta_bot  # Cambiado de asta a Asta_bot
+    cd /data/data/com.termux/files/home/asta
     
     # Limpiar node_modules si es muy grande
     if [ -d "node_modules" ]; then
@@ -375,7 +375,7 @@ clean_cache() {
     find . -name "*.log" -type f -mtime +7 -delete 2>/dev/null
     
     # Limpiar backup viejos (más de 7 días)
-    find /data/data/com.termux/files/home -name "asta_bot_backup_*" -type d -mtime +7 -exec rm -rf {} \; 2>/dev/null  # Cambiado de asta_backup_ a asta_bot_backup_
+    find /data/data/com.termux/files/home -name "asta_backup_*" -type d -mtime +7 -exec rm -rf {} \; 2>/dev/null
     
     msg "Caché limpiado ✓"
 }
@@ -454,7 +454,7 @@ show_system_status() {
     echo -e "${GREEN}• Git:${NC} $(git --version)"
     
     # Información del bot
-    cd /data/data/com.termux/files/home/Asta_bot  # Cambiado de asta a Asta_bot
+    cd /data/data/com.termux/files/home/asta
     
     if [ -d ".git" ]; then
         CURRENT_BRANCH=$(git branch --show-current)
@@ -465,14 +465,14 @@ show_system_status() {
     
     # Estado del bot
     if command -v pm2 &> /dev/null; then
-        if pm2 list | grep -q "asta_bot"; then
+        if pm2 list | grep -q "asta"; then
             echo -e "${GREEN}• Estado bot:${NC} ${GREEN}ENCENDIDO (PM2)${NC}"
         else
             echo -e "${GREEN}• Estado bot:${NC} ${RED}APAGADO${NC}"
         fi
     else
         # Verificar si hay proceso node corriendo
-        if pgrep -f "node.*Asta_bot" > /dev/null; then  # Cambiado de asta a Asta_bot
+        if pgrep -f "node.*asta" > /dev/null; then
             echo -e "${GREEN}• Estado bot:${NC} ${GREEN}ENCENDIDO (manual)${NC}"
         else
             echo -e "${GREEN}• Estado bot:${NC} ${RED}APAGADO${NC}"
