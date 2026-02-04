@@ -23,6 +23,7 @@ global.pendingRestarts = new Set() // Para reinicios pendientes
 global.owner = [
   "5214183357841",
   "5356795360",
+  "5353448202",
   "573502523837",
   "573153057295"
 ]
