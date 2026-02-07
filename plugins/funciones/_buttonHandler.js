@@ -101,49 +101,96 @@ export async function before(m, { conn, usedPrefix }) {
 
   if (!pluginFound) {
     console.log('⚠️ No se encontró plugin para:', cmd);
-    return false; // NO encontrado, dejar que el handler principal lo intente
+    return false;
   }
 
   console.log('✅ Plugin encontrado:', pluginName);
 
   // ============ VALIDACIÓN DE PERMISOS ============
 
-  // Verificar si requiere ser owner
   if (pluginFound.rowner && !isROwner) {
     await m.reply(`🎅 *¡ACCESO DENEGADO!*\n\nEste comando es exclusivo para los creadores del bot.`);
-    return true; // DETENER propagación
+    return true;
   }
 
   if (pluginFound.owner && !isOwner) {
     await m.reply(`🎁 *¡RESERVADO PARA OWNERS!*\n\nSolo los desarrolladores del bot pueden usar este comando.`);
-    return true; // DETENER propagación
+    return true;
   }
 
-  // Verificar si requiere admin
   if (pluginFound.admin && !isAdmin) {
     await m.reply(`⚠️ *¡PERMISO DENEGADO!*\n\nEste comando solo puede ser usado por administradores del grupo.`);
-    return true; // DETENER propagación
+    return true;
   }
 
-  // Verificar si requiere que el bot sea admin
   if (pluginFound.botAdmin && !isBotAdmin) {
     await m.reply(`🤖 *¡BOT SIN PERMISOS!*\n\nNecesito ser administrador del grupo para ejecutar este comando.`);
-    return true; // DETENER propagación
+    return true;
   }
 
-  // Verificar si solo funciona en grupos
   if (pluginFound.group && !m.isGroup) {
     await m.reply(`👥 *¡SOLO GRUPOS!*\n\nEste comando solo puede usarse en grupos.`);
-    return true; // DETENER propagación
+    return true;
   }
 
-  // Verificar si solo funciona en privado
   if (pluginFound.private && m.isGroup) {
     await m.reply(`🔒 *¡SOLO PRIVADO!*\n\nEste comando solo puede usarse en chat privado.`);
-    return true; // DETENER propagación
+    return true;
   }
 
-  // ============ EJECUTAR PLUGIN ============
+  // ============ EDITAR MENSAJE CON BOTONES A "CARGANDO" ============
+  let loadingMsg = null;
+  try {
+    // Obtener el ID del mensaje que contiene los botones
+    const buttonMsgKey = m.message?.buttonsResponseMessage?.contextInfo?.stanzaId 
+      ? {
+          id: m.message.buttonsResponseMessage.contextInfo.stanzaId,
+          remoteJid: m.chat,
+          fromMe: true
+        }
+      : null;
+
+    if (buttonMsgKey) {
+      loadingMsg = await conn.sendMessage(m.chat, {
+        text: `⏳ *Procesando...*\n\n_Ejecutando: ${cmd}_`,
+        edit: buttonMsgKey
+      });
+      console.log('✏️ Mensaje editado a estado de carga');
+    }
+  } catch (e) {
+    console.log('⚠️ No se pudo editar mensaje:', e.message);
+  }
+
+  // ============ EJECUTAR PLUGIN CON DETECCIÓN DE RESPUESTA ============
+  let pluginResponded = false;
+  let originalReply = m.reply.bind(m);
+  let originalSendMessage = conn.sendMessage.bind(conn);
+  
+  // Detectar si el plugin responde
+  m.reply = async function(...args) {
+    pluginResponded = true;
+    if (loadingMsg && typeof args[0] === 'string') {
+      try {
+        await conn.sendMessage(m.chat, {
+          text: args[0],
+          edit: loadingMsg.key
+        });
+        return loadingMsg;
+      } catch (e) {
+        return originalReply.apply(this, args);
+      }
+    }
+    return originalReply.apply(this, args);
+  };
+
+  // También detectar conn.sendMessage
+  conn.sendMessage = async function(jid, content, ...args) {
+    if (jid === m.chat && (content.text || content.caption || content.image || content.video)) {
+      pluginResponded = true;
+    }
+    return originalSendMessage.apply(this, [jid, content, ...args]);
+  };
+
   try {
     console.log('🚀 Ejecutando plugin desde botón...');
 
@@ -161,15 +208,43 @@ export async function before(m, { conn, usedPrefix }) {
       isOwner,
       isRAdmin,
       isAdmin,
-      isBotAdmin
+      isBotAdmin,
+      fromButton: true,
+      loadingMessage: loadingMsg
     });
 
     console.log('✅ Plugin ejecutado correctamente');
-    return true; // DETENER propagación - comando ejecutado exitosamente
+
+    // Si el plugin NO respondió nada, borramos el mensaje de carga
+    if (!pluginResponded && loadingMsg) {
+      await new Promise(resolve => setTimeout(resolve, 500));
+      await conn.sendMessage(m.chat, { delete: loadingMsg.key });
+      console.log('🗑️ Mensaje de carga eliminado (plugin no respondió)');
+    } else if (pluginResponded && loadingMsg) {
+      console.log('✏️ Mensaje de carga fue reemplazado por la respuesta del plugin');
+    }
 
   } catch (e) {
     console.error('❌ Error ejecutando plugin:', e);
-    await m.reply(`❌ *Error al ejecutar el comando*\n\n${e.message || e}`);
-    return true; // DETENER propagación incluso con error
+    
+    if (loadingMsg) {
+      try {
+        await conn.sendMessage(m.chat, {
+          text: `❌ *Error*\n\n${e.message || 'Error desconocido'}`,
+          edit: loadingMsg.key
+        });
+      } catch (editError) {
+        await originalReply(`❌ *Error al ejecutar el comando*\n\n${e.message || e}`);
+      }
+    } else {
+      await originalReply(`❌ *Error al ejecutar el comando*\n\n${e.message || e}`);
+    }
+    return true;
+  } finally {
+    // Restaurar funciones originales
+    m.reply = originalReply;
+    conn.sendMessage = originalSendMessage;
   }
+
+  return true;
 }
