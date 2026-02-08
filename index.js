@@ -423,3 +423,24 @@ async function isValidPhoneNumber(number) {
 }
 
 initializeResourceSystem();
+
+// ============= INICIAR SISTEMA WEB ASTAFILE =============
+async function startAstaFile() {
+  try {
+    // Crear carpeta public si no existe
+    const publicDir = join(__dirname, 'public')
+    if (!existsSync(publicDir)) {
+      mkdirSync(publicDir, { recursive: true })
+    }
+    
+    // Importar y iniciar servidor web
+    await import('./web.js')
+    console.log(chalk.cyan('\n🌐 AstaFile iniciado'))
+    console.log(chalk.cyan('🔗 http://localhost:3000'))
+  } catch (e) {
+    console.log(chalk.yellow('\n⚠ AstaFile no iniciado:', e.message))
+  }
+}
+
+// Iniciar servidor web
+startAstaFile()
