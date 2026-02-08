@@ -938,7 +938,7 @@
             <div class="sidebar-header">
                 <h2><i class="fas fa-cube"></i> AstaFile</h2>
             </div>
-
+            
             <nav class="nav-menu">
                 <div class="nav-item active" data-view="dashboard">
                     <i class="fas fa-chart-line"></i>
@@ -961,7 +961,7 @@
                     <span>Control Bot</span>
                 </div>
             </nav>
-
+            
             <div class="sidebar-footer">
                 <div class="user-info">
                     <div class="user-avatar" id="userAvatar">U</div>
@@ -1049,7 +1049,7 @@
                                 <i class="fas fa-trash"></i> Temporal
                             </div>
                         </div>
-
+                        
                         <div class="file-main">
                             <div class="file-toolbar">
                                 <div class="breadcrumb" id="breadcrumb">
@@ -1068,7 +1068,7 @@
                                     <i class="fas fa-trash"></i> Eliminar
                                 </button>
                             </div>
-
+                            
                             <div class="file-list">
                                 <table class="file-table">
                                     <thead>
@@ -1188,14 +1188,14 @@
             if (authToken) {
                 checkSession();
             }
-
+            
             document.getElementById('loginForm').addEventListener('submit', handleLogin);
-
+            
             // Setup navigation
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.addEventListener('click', () => switchView(item.dataset.view));
             });
-
+            
             // Select all checkbox
             document.getElementById('selectAll').addEventListener('change', (e) => {
                 document.querySelectorAll('.file-checkbox').forEach(cb => {
@@ -1203,7 +1203,7 @@
                     toggleFileSelection(cb.dataset.path, e.target.checked);
                 });
             });
-
+            
             // Editor line numbers
             document.getElementById('codeEditor').addEventListener('input', updateLineNumbers);
             document.getElementById('codeEditor').addEventListener('scroll', syncScroll);
@@ -1214,16 +1214,16 @@
             e.preventDefault();
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-
+            
             try {
                 const response = await fetch('/api/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ username, password })
                 });
-
+                
                 const data = await response.json();
-
+                
                 if (data.success) {
                     authToken = data.token;
                     currentUser = data.username;
@@ -1243,9 +1243,9 @@
                 const response = await fetch('/api/check-session', {
                     headers: { 'Authorization': `Bearer ${authToken}` }
                 });
-
+                
                 const data = await response.json();
-
+                
                 if (data.success) {
                     currentUser = localStorage.getItem('astafile_user');
                     showApp();
@@ -1262,7 +1262,7 @@
             document.getElementById('appContainer').classList.add('active');
             document.getElementById('userName').textContent = currentUser;
             document.getElementById('userAvatar').textContent = currentUser.charAt(0).toUpperCase();
-
+            
             initSocket();
             loadDashboard();
             loadFiles();
@@ -1273,45 +1273,45 @@
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${authToken}` }
             }).catch(() => {});
-
+            
             localStorage.removeItem('astafile_token');
             localStorage.removeItem('astafile_user');
             authToken = null;
             currentUser = null;
-
+            
             if (socket) {
                 socket.disconnect();
                 socket = null;
             }
-
+            
             location.reload();
         }
 
         // Socket.io
         function initSocket() {
             socket = io();
-
+            
             socket.on('connect', () => {
                 socket.emit('auth', authToken);
             });
-
+            
             socket.on('ready', () => {
                 console.log('Consola lista');
             });
-
+            
             socket.on('output', (data) => {
                 appendToConsole(data.data, data.type);
             });
-
+            
             socket.on('done', () => {
                 appendToConsole('Comando completado', 'success');
             });
-
+            
             socket.on('closed', () => {
                 shellMode = false;
                 appendToConsole('Shell cerrado', 'warning');
             });
-
+            
             socket.on('error', (msg) => {
                 showToast(msg, 'error');
             });
@@ -1322,11 +1322,11 @@
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.classList.toggle('active', item.dataset.view === view);
             });
-
+            
             document.querySelectorAll('.view').forEach(v => {
                 v.classList.toggle('active', v.id === view + 'View');
             });
-
+            
             const titles = {
                 dashboard: 'Dashboard',
                 files: 'Gestor de Archivos',
@@ -1334,9 +1334,9 @@
                 console: 'Consola',
                 bot: 'Control del Bot'
             };
-
+            
             document.getElementById('pageTitle').textContent = titles[view];
-
+            
             if (view === 'dashboard') loadDashboard();
             if (view === 'files') loadFiles();
             if (view === 'bot') loadBotStatus();
@@ -1353,10 +1353,10 @@
                     fetch('/api/system/stats', { headers: { 'Authorization': `Bearer ${authToken}` } }),
                     fetch('/api/bot/status', { headers: { 'Authorization': `Bearer ${authToken}` } })
                 ]);
-
+                
                 const stats = await statsRes.json();
                 const bot = await botRes.json();
-
+                
                 if (stats.success) {
                     document.getElementById('memUsed').textContent = formatBytes(stats.memory.used);
                     document.getElementById('heapUsed').textContent = formatBytes(stats.memory.heapUsed);
@@ -1364,7 +1364,7 @@
                     document.getElementById('uptime').textContent = formatTime(stats.uptime);
                     document.getElementById('diskUsed').textContent = formatBytes(stats.disk.used);
                 }
-
+                
                 if (bot.success) {
                     document.getElementById('botStatus').textContent = bot.connected ? 'Online' : 'Offline';
                     document.getElementById('subBotsCount').textContent = bot.subBots || 0;
@@ -1385,9 +1385,9 @@
                     },
                     body: JSON.stringify({ path })
                 });
-
+                
                 const data = await response.json();
-
+                
                 if (data.success) {
                     currentPath = data.path;
                     renderBreadcrumb(data.path);
@@ -1402,28 +1402,28 @@
             const parts = fullPath.split('/').filter(p => p);
             let html = '<span class="breadcrumb-item" onclick="navigateTo(\'.\')">Inicio</span>';
             let current = '';
-
+            
             parts.forEach((part, i) => {
                 current += '/' + part;
                 html += `<span class="breadcrumb-separator">/</span>`;
                 html += `<span class="breadcrumb-item" onclick="navigateTo('${current}')">${part}</span>`;
             });
-
+            
             document.getElementById('breadcrumb').innerHTML = html;
         }
 
         function renderFileList(files) {
             const tbody = document.getElementById('fileListBody');
             tbody.innerHTML = '';
-
+            
             files.forEach(file => {
                 const tr = document.createElement('tr');
                 tr.className = 'file-row';
                 tr.dataset.path = file.path;
-
+                
                 const iconClass = file.type === 'directory' ? 'folder' : getFileIcon(file.name);
                 const icon = file.type === 'directory' ? 'fa-folder' : getFileIconClass(file.name);
-
+                
                 tr.innerHTML = `
                     <td><input type="checkbox" class="file-checkbox" data-path="${file.path}" onchange="toggleFileSelection('${file.path}', this.checked)"></td>
                     <td>
@@ -1447,7 +1447,7 @@
                         ` : ''}
                     </td>
                 `;
-
+                
                 tbody.appendChild(tr);
             });
         }
@@ -1456,7 +1456,7 @@
             const ext = filename.split('.').pop().toLowerCase();
             const imageExts = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'];
             const codeExts = ['js', 'html', 'css', 'json', 'md', 'txt', 'py', 'sh'];
-
+            
             if (imageExts.includes(ext)) return 'image';
             if (codeExts.includes(ext)) return 'code';
             return 'file';
@@ -1500,9 +1500,9 @@
                     },
                     body: JSON.stringify({ path: filePath })
                 });
-
+                
                 const data = await response.json();
-
+                
                 if (data.success) {
                     currentFile = filePath;
                     document.getElementById('editorPath').textContent = filePath;
@@ -1517,10 +1517,10 @@
 
         async function saveFile() {
             if (!currentFile) return;
-
+            
             try {
                 const content = document.getElementById('codeEditor').value;
-
+                
                 const response = await fetch('/api/files/save', {
                     method: 'POST',
                     headers: {
@@ -1529,9 +1529,9 @@
                     },
                     body: JSON.stringify({ path: currentFile, content })
                 });
-
+                
                 const data = await response.json();
-
+                
                 if (data.success) {
                     showToast('Archivo guardado', 'success');
                 }
@@ -1572,17 +1572,17 @@
         function executeCommand() {
             const input = document.getElementById('consoleInput');
             const command = input.value.trim();
-
+            
             if (!command) return;
-
+            
             appendToConsole(`$ ${command}`, 'info');
-
+            
             if (shellMode) {
                 socket.emit('input', command);
             } else {
                 socket.emit('execute', command);
             }
-
+            
             input.value = '';
         }
 
@@ -1608,13 +1608,13 @@
                 const response = await fetch('/api/bot/status', {
                     headers: { 'Authorization': `Bearer ${authToken}` }
                 });
-
+                
                 const data = await response.json();
-
+                
                 if (data.success) {
                     const dot = document.getElementById('statusDot');
                     const text = document.getElementById('statusText');
-
+                    
                     if (data.connected) {
                         dot.classList.remove('offline');
                         dot.classList.add('online');
@@ -1633,13 +1633,13 @@
 
         async function restartBot() {
             if (!confirm('¿Reiniciar el bot?')) return;
-
+            
             try {
                 await fetch('/api/bot/restart', {
                     method: 'POST',
                     headers: { 'Authorization': `Bearer ${authToken}` }
                 });
-
+                
                 showToast('Reiniciando bot...', 'warning');
             } catch (error) {
                 showToast('Error reiniciando', 'error');
@@ -1648,13 +1648,13 @@
 
         async function stopBot() {
             if (!confirm('¿Apagar el bot? No podrás acceder hasta reiniciar manualmente.')) return;
-
+            
             try {
                 await fetch('/api/bot/stop', {
                     method: 'POST',
                     headers: { 'Authorization': `Bearer ${authToken}` }
                 });
-
+                
                 showToast('Apagando bot...', 'error');
             } catch (error) {
                 showToast('Error apagando', 'error');
@@ -1724,9 +1724,9 @@
         async function createFile() {
             const name = document.getElementById('newFileName').value;
             const content = document.getElementById('newFileContent').value;
-
+            
             if (!name) return showToast('Nombre requerido', 'error');
-
+            
             try {
                 const response = await fetch('/api/files/create', {
                     method: 'POST',
@@ -1736,9 +1736,9 @@
                     },
                     body: JSON.stringify({ path: currentPath, name, content })
                 });
-
+                
                 const data = await response.json();
-
+                
                 if (data.success) {
                     showToast('Archivo creado', 'success');
                     closeModal();
@@ -1753,9 +1753,9 @@
 
         async function createFolder() {
             const name = document.getElementById('newFolderName').value;
-
+            
             if (!name) return showToast('Nombre requerido', 'error');
-
+            
             try {
                 const response = await fetch('/api/files/mkdir', {
                     method: 'POST',
@@ -1765,9 +1765,9 @@
                     },
                     body: JSON.stringify({ path: currentPath, name })
                 });
-
+                
                 const data = await response.json();
-
+                
                 if (data.success) {
                     showToast('Carpeta creada', 'success');
                     closeModal();
@@ -1782,9 +1782,9 @@
 
         async function deleteSelected() {
             if (selectedFiles.size === 0) return showToast('Selecciona archivos para eliminar', 'warning');
-
+            
             if (!confirm(`¿Eliminar ${selectedFiles.size} elemento(s)?`)) return;
-
+            
             try {
                 const response = await fetch('/api/files/delete', {
                     method: 'POST',
@@ -1794,9 +1794,9 @@
                     },
                     body: JSON.stringify({ paths: Array.from(selectedFiles) })
                 });
-
+                
                 const data = await response.json();
-
+                
                 if (data.success) {
                     showToast('Elementos eliminados', 'success');
                     selectedFiles.clear();
@@ -1811,7 +1811,7 @@
         async function renameItem(oldPath) {
             const newName = prompt('Nuevo nombre:', path.basename(oldPath));
             if (!newName || newName === path.basename(oldPath)) return;
-
+            
             try {
                 const response = await fetch('/api/files/rename', {
                     method: 'POST',
@@ -1821,9 +1821,9 @@
                     },
                     body: JSON.stringify({ oldPath, newName })
                 });
-
+                
                 const data = await response.json();
-
+                
                 if (data.success) {
                     showToast('Renombrado exitoso', 'success');
                     loadFiles();
@@ -1848,11 +1848,11 @@
 
         async function uploadFile() {
             if (!selectedUploadFile) return showToast('Selecciona un archivo', 'error');
-
+            
             const reader = new FileReader();
             reader.onload = async (e) => {
                 const base64 = btoa(e.target.result);
-
+                
                 try {
                     const response = await fetch('/api/files/upload', {
                         method: 'POST',
@@ -1867,9 +1867,9 @@
                             base64: true
                         })
                     });
-
+                    
                     const data = await response.json();
-
+                    
                     if (data.success) {
                         showToast('Archivo subido', 'success');
                         closeModal();
@@ -1895,7 +1895,7 @@
             const mins = Math.floor(seconds / 60);
             const hours = Math.floor(mins / 60);
             const days = Math.floor(hours / 24);
-
+            
             if (days > 0) return days + 'd ' + (hours % 24) + 'h';
             if (hours > 0) return hours + 'h ' + (mins % 60) + 'm';
             return mins + 'm';
@@ -1905,21 +1905,21 @@
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
-
+            
             const icons = {
                 success: 'fa-check-circle',
                 error: 'fa-exclamation-circle',
                 warning: 'fa-exclamation-triangle',
                 info: 'fa-info-circle'
             };
-
+            
             toast.innerHTML = `
                 <i class="fas ${icons[type]}"></i>
                 <span>${message}</span>
             `;
-
+            
             container.appendChild(toast);
-
+            
             setTimeout(() => {
                 toast.remove();
             }, 3000);
