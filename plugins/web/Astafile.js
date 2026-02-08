@@ -1,4 +1,3 @@
-// plugins/owner-astafile.js
 let handler = async (m, { conn, text, usedPrefix, command }) => {
     const isOwner = global.owner.includes(m.sender.split('@')[0])
     if (!isOwner) {
@@ -21,20 +20,6 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
 👥 Usuarios creados: ${global.listWebUsers ? global.listWebUsers().length : 0}
 ⚡ Estado: ${global.astafileConfig ? 'Activo ✓' : 'Inactivo'}
             `.trim())
-            break
-
-        case 'crearuser':
-            if (args.length < 3) {
-                return m.reply(`Uso: ${usedPrefix + command} crearuser <usuario> <contraseña>`)
-            }
-            
-            if (global.createWebUser) {
-                const result = global.createWebUser(args[1], args[2], m.sender.split('@')[0])
-                m.reply(result.success ? 
-                    `✅ Usuario *${args[1]}* creado exitosamente` :
-                    `❌ Error: ${result.error}`
-                )
-            }
             break
 
         case 'logs':
@@ -64,7 +49,6 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
 ⚙️ *Comandos de AstaFile*
 
 ${usedPrefix + command} panel - Ver URL del panel
-${usedPrefix + command} crearuser <user> <pass> - Crear usuario web
 ${usedPrefix + command} logs - Ver logs del sistema
 ${usedPrefix + command} stats - Ver estadísticas
 ${usedPrefix + command} restart - Reiniciar panel web
