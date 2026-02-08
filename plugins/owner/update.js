@@ -14,9 +14,9 @@ let handler = async (m, { conn, usedPrefix, text }) => {
     }
 
     // Configuración del repositorio
-    const REPO_URL = "https://github.com/Fer280809/asta.git";
-    const REPO_API = "https://api.github.com/repos/Fer280809/asta/branches";
-    const REPO_RAW = "https://raw.githubusercontent.com/Fer280809/asta";
+    const REPO_URL = "https://github.com/Fer280809/Asta_bot.git";
+    const REPO_API = "https://api.github.com/repos/Fer280809/Asta_bot/branches";
+    const REPO_RAW = "https://raw.githubusercontent.com/Fer280809/Asta_bot";
 
     // Detectar entorno restringido
     const isRestrictedEnv = () => {
