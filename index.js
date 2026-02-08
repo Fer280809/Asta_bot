@@ -1,4 +1,3 @@
-// index.js completo con sistema web AstaFile integrado
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '1'
 
 // ========== IMPORTS PRINCIPALES ==========
@@ -42,158 +41,6 @@ global.supConfig = {
   cooldown: 120,
   autoClean: true,
   folder: "Sessions/SubBot",
-}
-
-// Configuración mejorada para AstaFile
-global.astafileConfig = {
-  version: '2.0.0',
-  features: {
-    webPanel: true,
-    fileManager: true,
-    realTimeConsole: true,
-    botControl: true,
-    systemMonitoring: true
-  },
-  security: {
-    maxLoginAttempts: 5,
-    sessionTimeout: 3600,
-    requireStrongPasswords: true
-  }
-}
-
-// ============= SISTEMA WEB ASTAFILE =============
-global.webUsers = new Map();
-global.systemLogs = [];
-
-// Funciones para gestión de usuarios web
-global.createWebUser = function(username, password, createdBy) {
-    try {
-        if (global.webUsers.has(username)) {
-            return { success: false, error: 'El usuario ya existe' };
-        }
-
-        const user = {
-            username,
-            password, // En producción, deberías hashear esto
-            createdBy,
-            createdAt: new Date(),
-            level: 'user'
-        };
-
-        global.webUsers.set(username, user);
-        saveWebUsers();
-        
-        if (global.addSystemLog) {
-            global.addSystemLog(`Usuario web creado: ${username}`, 'success');
-        }
-        
-        return { success: true, user };
-    } catch (e) {
-        return { success: false, error: e.message };
-    }
-};
-
-global.listWebUsers = function() {
-    return Array.from(global.webUsers.values());
-};
-
-global.deleteWebUser = function(username) {
-    try {
-        if (!global.webUsers.has(username)) {
-            return { success: false, error: 'Usuario no encontrado' };
-        }
-
-        global.webUsers.delete(username);
-        saveWebUsers();
-        
-        if (global.addSystemLog) {
-            global.addSystemLog(`Usuario web eliminado: ${username}`, 'warning');
-        }
-        
-        return { success: true };
-    } catch (e) {
-        return { success: false, error: e.message };
-    }
-};
-
-// Guardar usuarios en archivo
-function saveWebUsers() {
-    try {
-        const users = Array.from(global.webUsers.values());
-        fs.writeFileSync('./webusers.json', JSON.stringify(users, null, 2));
-    } catch (e) {
-        console.error('Error guardando usuarios:', e);
-    }
-}
-
-// Cargar usuarios al inicio
-function loadWebUsers() {
-    try {
-        const usersFile = join(__dirname, 'webusers.json');
-        if (existsSync(usersFile)) {
-            const data = fs.readFileSync(usersFile, 'utf-8');
-            const users = JSON.parse(data);
-            
-            users.forEach(user => {
-                global.webUsers.set(user.username, {
-                    ...user,
-                    createdAt: new Date(user.createdAt)
-                });
-            });
-            
-            console.log(chalk.green(`📁 ${users.length} usuarios web cargados`));
-        } else {
-            // Crear usuario admin por defecto
-            const defaultUser = {
-                username: 'admin',
-                password: 'admin123',
-                createdBy: 'system',
-                createdAt: new Date(),
-                level: 'admin'
-            };
-            
-            global.webUsers.set('admin', defaultUser);
-            saveWebUsers();
-            console.log(chalk.yellow('📁 Usuario admin creado por defecto'));
-        }
-    } catch (e) {
-        console.error(chalk.red('Error cargando usuarios:'), e);
-    }
-}
-
-// Añadir función para logs del sistema
-global.addSystemLog = function(message, type = 'info') {
-    const logEntry = {
-        message,
-        type,
-        timestamp: new Date(),
-        source: 'system'
-    };
-
-    global.systemLogs.push(logEntry);
-    
-    // Limitar logs a 1000 entradas
-    if (global.systemLogs.length > 1000) {
-        global.systemLogs.splice(0, global.systemLogs.length - 1000);
-    }
-
-    console.log(chalk.blue(`[${type.toUpperCase()}] ${message}`));
-};
-
-// Inicializar estadísticas del bot
-global.botStats = {
-  messages: 0,
-  commands: 0,
-  users: new Set(),
-  groups: new Set(),
-  startTime: Date.now()
-}
-
-// Middleware para actualizar estadísticas
-global.updateStats = (data) => {
-  if (global.updateBotStats) {
-    global.updateBotStats(data)
-  }
 }
 
 const { CONNECTING } = ws
@@ -305,7 +152,7 @@ conn.ev.on("creds.update", saveCreds)
 if (!fs.existsSync(`./${global.sessions}/creds.json`)) {
   if (opcion === '2' || methodCode) {
     console.log(chalk.yellow('[⚡] Modo código activado'))
-
+    
     if (!conn.authState.creds.registered) {
       let addNumber
       if (!!phoneNumber) {
@@ -321,11 +168,11 @@ if (!fs.existsSync(`./${global.sessions}/creds.json`)) {
       }
 
       console.log(chalk.cyan('[⏳] Generando código...'))
-
+      
       try {
         const cleanNumber = addNumber.replace('+', '')
         let codeBot = await conn.requestPairingCode(cleanNumber)
-
+        
         if (codeBot) {
           codeBot = codeBot?.match(/.{1,4}/g)?.join("-") || codeBot
           console.log(chalk.bold.white(chalk.bgMagenta(`\n═══════════════════════`)))
@@ -352,7 +199,7 @@ if (!opts['test']) {
 // ============= MANEJO DE CONEXIÓN =============
 async function connectionUpdate(update) {
   const { connection, lastDisconnect } = update
-
+  
   if (connection === "open") {
     const userName = conn.user.name || conn.user.verifiedName || "Usuario"
     console.log(chalk.bold.greenBright(`\n═══════════════════════`))
@@ -362,7 +209,7 @@ async function connectionUpdate(update) {
     console.log(chalk.cyan(`📱 ${conn.user.id.split(':')[0]}`))
     console.log(chalk.gray(`🕐 ${new Date().toLocaleString('es-MX')}\n`))
   }
-
+  
   if (connection === "close") {
     const code = lastDisconnect?.error?.output?.statusCode || lastDisconnect?.error?.output?.payload?.statusCode
     if (code && code !== DisconnectReason.loggedOut && conn?.ws.socket == null) {
@@ -385,7 +232,7 @@ global.reloadHandler = async function(restartConn) {
   } catch (e) {
     console.error(e)
   }
-
+  
   if (restartConn) {
     const oldChats = global.conn.chats
     try { global.conn.ws.close() } catch {}
@@ -393,21 +240,21 @@ global.reloadHandler = async function(restartConn) {
     global.conn = makeWASocket(connectionOptions, { chats: oldChats })
     isInit = true
   }
-
+  
   if (!isInit) {
     conn.ev.off('messages.upsert', conn.handler)
     conn.ev.off('connection.update', conn.connectionUpdate)
     conn.ev.off('creds.update', conn.credsUpdate)
   }
-
+  
   conn.handler = handler.handler.bind(global.conn)
   conn.connectionUpdate = connectionUpdate.bind(global.conn)
   conn.credsUpdate = saveCreds.bind(global.conn, true)
-
+  
   conn.ev.on('messages.upsert', conn.handler)
   conn.ev.on('connection.update', conn.connectionUpdate)
   conn.ev.on('creds.update', conn.credsUpdate)
-
+  
   isInit = false
   return true
 }
@@ -420,13 +267,13 @@ process.on('unhandledRejection', (reason) => {
 function getPluginFiles(dir, baseDir = dir) {
   let results = []
   if (!existsSync(dir)) return results
-
+  
   const items = readdirSync(dir, { withFileTypes: true })
-
+  
   for (const item of items) {
     const fullPath = join(dir, item.name)
     const relativePath = path.relative(baseDir, fullPath).replace(/\\/g, '/')
-
+    
     if (item.isDirectory()) {
       results = results.concat(getPluginFiles(fullPath, baseDir))
     } else if (item.isFile() && /\.js$/.test(item.name)) {
@@ -438,7 +285,7 @@ function getPluginFiles(dir, baseDir = dir) {
       })
     }
   }
-
+  
   return results
 }
 
@@ -449,13 +296,13 @@ async function filesInit() {
   console.log(chalk.bold.cyan('\n📦 Cargando plugins...'))
 
   let total = 0
-
+  
   for (const folder of pluginFolders) {
     const folderPath = join(__dirname, folder)
     if (!existsSync(folderPath)) continue
 
     const pluginFiles = getPluginFiles(folderPath)
-
+    
     for (const file of pluginFiles) {
       try {
         const module = await import(file.fullPath)
@@ -466,7 +313,7 @@ async function filesInit() {
         console.error(chalk.red(`✖ ${folder}/${file.relativePath}`))
       }
     }
-
+    
     if (pluginFiles.length > 0) {
       console.log(chalk.green(`✅ ${folder}: ${pluginFiles.length}`))
     }
@@ -490,7 +337,7 @@ global.reload = async (_ev, filename) => {
       for (const item of items) {
         const fullPath = join(dir, item.name)
         const relativePath = path.relative(baseDir, fullPath).replace(/\\/g, '/')
-
+        
         if (item.isDirectory()) {
           const found = searchFile(fullPath, baseDir)
           if (found) return found
@@ -575,83 +422,23 @@ async function isValidPhoneNumber(number) {
   }
 }
 
-// Función para formatear tiempo
-function formatTime(seconds) {
-    if (!seconds) return '0s';
-    
-    const days = Math.floor(seconds / 86400);
-    const hours = Math.floor((seconds % 86400) / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const secs = Math.floor(seconds % 60);
-    
-    const parts = [];
-    if (days > 0) parts.push(`${days}d`);
-    if (hours > 0) parts.push(`${hours}h`);
-    if (minutes > 0) parts.push(`${minutes}m`);
-    if (secs > 0 || parts.length === 0) parts.push(`${secs}s`);
-    
-    return parts.join(' ');
-}
-
-// Función para obtener IP pública
-global.getPublicIP = async function() {
-    try {
-        const fetch = (await import('node-fetch')).default;
-        const response = await fetch('https://api.ipify.org?format=json');
-        const data = await response.json();
-        return data.ip;
-    } catch {
-        return 'localhost';
-    }
-};
-
 initializeResourceSystem();
 
-// ============= INICIALIZAR SISTEMA WEB ASTAFILE =============
-
-// Cargar usuarios web al iniciar
-loadWebUsers();
-
+// ============= INICIAR SISTEMA WEB ASTAFILE =============
 async function startAstaFile() {
   try {
-    // Crear estructura de carpetas
-    const folders = ['public', 'public/css', 'public/js', 'public/uploads', 'tmp']
-
-    folders.forEach(folder => {
-      const dir = join(__dirname, folder)
-      if (!existsSync(dir)) {
-        mkdirSync(dir, { recursive: true })
-      }
-    })
-
-    // Copiar archivos estáticos si no existen
-    const staticFiles = {
-      'css/style.css': `/* Estilos adicionales para AstaFile */`,
-      'js/utils.js': `// Utilidades JavaScript`
+    // Crear carpeta public si no existe
+    const publicDir = join(__dirname, 'public')
+    if (!existsSync(publicDir)) {
+      mkdirSync(publicDir, { recursive: true })
     }
-
-    Object.entries(staticFiles).forEach(([file, content]) => {
-      const filePath = join(__dirname, 'public', file)
-      if (!existsSync(filePath)) {
-        fs.writeFileSync(filePath, content)
-      }
-    })
-
-    // Iniciar servidor web
+    
+    // Importar y iniciar servidor web
     await import('./web.js')
-
-    console.log(chalk.cyan('\n🌐 AstaFile Pro v2.0.0'))
-    console.log(chalk.cyan('🔗 Panel: http://localhost:3000'))
-    console.log(chalk.cyan('📱 Responsive Design ✓'))
-    console.log(chalk.cyan('🎨 Tema Claro/Oscuro ✓'))
-    console.log(chalk.cyan('⚡ Consola en Tiempo Real ✓'))
-
-    // Agregar log inicial
-    if (global.addSystemLog) {
-      global.addSystemLog('Bot WhatsApp conectado', 'success')
-    }
+    console.log(chalk.cyan('\n🌐 AstaFile iniciado'))
+    console.log(chalk.cyan('🔗 http://localhost:3000'))
   } catch (e) {
-    console.log(chalk.yellow('\n⚠ AstaFile no pudo iniciar:', e.message))
+    console.log(chalk.yellow('\n⚠ AstaFile no iniciado:', e.message))
   }
 }
 
