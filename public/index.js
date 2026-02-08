@@ -1,0 +1,1941 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AstaFile - Panel de Control</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-tertiary: #1a1a25;
+            --accent-primary: #ff2e63;
+            --accent-secondary: #7d5fff;
+            --text-primary: #e4e7ec;
+            --text-secondary: #9ca3af;
+            --border: rgba(255, 255, 255, 0.1);
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Login Screen */
+        .login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, #1a0a1a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .login-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .login-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(255, 46, 99, 0.2);
+        }
+
+        .login-box h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2rem;
+            background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .login-box p {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 46, 99, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* Main Layout */
+        .app-container {
+            display: none;
+            height: 100vh;
+        }
+
+        .app-container.active {
+            display: flex;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.3rem;
+            background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-menu {
+            flex: 1;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            padding: 15px 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 46, 99, 0.1);
+        }
+
+        .nav-item.active {
+            background: rgba(255, 46, 99, 0.15);
+            border-left-color: var(--accent-primary);
+        }
+
+        .nav-item i {
+            width: 20px;
+            color: var(--accent-secondary);
+        }
+
+        .sidebar-footer {
+            padding: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .user-details {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 600;
+        }
+
+        .user-role {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .logout-btn {
+            width: 100%;
+            padding: 10px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            border-color: var(--error);
+            color: var(--error);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .top-bar {
+            height: 60px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 25px;
+        }
+
+        .page-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .top-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .icon-btn:hover {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+
+        .content-area {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .view {
+            display: none;
+            height: 100%;
+            overflow-y: auto;
+            padding: 25px;
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        /* Dashboard */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .stat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .stat-title {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .stat-icon.purple { background: rgba(125, 95, 255, 0.2); color: var(--accent-secondary); }
+        .stat-icon.pink { background: rgba(255, 46, 99, 0.2); color: var(--accent-primary); }
+        .stat-icon.green { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+        .stat-icon.orange { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* File Manager */
+        .file-manager {
+            display: flex;
+            height: 100%;
+            gap: 20px;
+        }
+
+        .file-sidebar {
+            width: 250px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 15px;
+            overflow-y: auto;
+        }
+
+        .file-tree-item {
+            padding: 10px 12px;
+            cursor: pointer;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .file-tree-item:hover {
+            background: rgba(255, 46, 99, 0.1);
+        }
+
+        .file-tree-item.active {
+            background: rgba(255, 46, 99, 0.2);
+        }
+
+        .file-tree-item i {
+            color: var(--accent-secondary);
+        }
+
+        .file-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .file-toolbar {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .breadcrumb {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb-item {
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .breadcrumb-item:hover {
+            color: var(--accent-primary);
+        }
+
+        .breadcrumb-separator {
+            color: var(--text-secondary);
+        }
+
+        .toolbar-btn {
+            padding: 8px 15px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .toolbar-btn:hover {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+
+        .toolbar-btn.danger:hover {
+            background: var(--error);
+            border-color: var(--error);
+        }
+
+        .file-list {
+            flex: 1;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            overflow: auto;
+        }
+
+        .file-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .file-table th {
+            text-align: left;
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.85rem;
+            position: sticky;
+            top: 0;
+            background: var(--bg-secondary);
+        }
+
+        .file-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+        }
+
+        .file-row {
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .file-row:hover {
+            background: rgba(255, 46, 99, 0.05);
+        }
+
+        .file-row.selected {
+            background: rgba(255, 46, 99, 0.15);
+        }
+
+        .file-name-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .file-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .file-icon.folder { background: rgba(125, 95, 255, 0.2); color: var(--accent-secondary); }
+        .file-icon.file { background: rgba(255, 46, 99, 0.2); color: var(--accent-primary); }
+        .file-icon.image { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+        .file-icon.code { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
+
+        .file-checkbox {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        /* Editor */
+        .editor-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            gap: 15px;
+        }
+
+        .editor-toolbar {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .editor-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .editor-path {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .editor-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .editor-wrapper {
+            flex: 1;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            overflow: hidden;
+            display: flex;
+        }
+
+        .line-numbers {
+            width: 50px;
+            background: var(--bg-tertiary);
+            padding: 15px 10px;
+            text-align: right;
+            color: var(--text-secondary);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            user-select: none;
+            overflow: hidden;
+        }
+
+        .code-editor {
+            flex: 1;
+            padding: 15px;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            resize: none;
+            outline: none;
+            white-space: pre;
+            overflow: auto;
+        }
+
+        /* Console */
+        .console-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            gap: 15px;
+        }
+
+        .console-output {
+            flex: 1;
+            background: #0d0d12;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 20px;
+            overflow-y: auto;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .console-line {
+            margin-bottom: 5px;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .console-line.error { color: var(--error); }
+        .console-line.success { color: var(--success); }
+        .console-line.warning { color: var(--warning); }
+        .console-line.info { color: var(--accent-secondary); }
+
+        .console-input-wrapper {
+            display: flex;
+            gap: 10px;
+        }
+
+        .console-input {
+            flex: 1;
+            padding: 15px 20px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+        }
+
+        .console-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+
+        /* Bot Control */
+        .bot-status-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .status-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .status-dot.online { background: var(--success); }
+        .status-dot.offline { background: var(--error); }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .status-text {
+            font-weight: 600;
+        }
+
+        .bot-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .action-btn {
+            padding: 12px 25px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+
+        .action-btn.restart {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+            border: 1px solid var(--warning);
+        }
+
+        .action-btn.stop {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--error);
+            border: 1px solid var(--error);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.2);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        .modal-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .btn-secondary {
+            padding: 12px 25px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            padding: 12px 25px;
+            background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
+            border: none;
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* Toast */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 300px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .toast.success { border-left: 4px solid var(--success); }
+        .toast.error { border-left: 4px solid var(--error); }
+        .toast.warning { border-left: 4px solid var(--warning); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: -260px;
+                height: 100%;
+                z-index: 99;
+                transition: left 0.3s;
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+
+            .file-manager {
+                flex-direction: column;
+            }
+
+            .file-sidebar {
+                width: 100%;
+                height: 200px;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-primary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-secondary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-box">
+            <h1><i class="fas fa-cube"></i> AstaFile</h1>
+            <p>Panel de Control</p>
+            <form id="loginForm">
+                <div class="input-group">
+                    <label><i class="fas fa-user"></i> Usuario</label>
+                    <input type="text" id="username" placeholder="Tu usuario" required>
+                </div>
+                <div class="input-group">
+                    <label><i class="fas fa-lock"></i> Contraseña</label>
+                    <input type="password" id="password" placeholder="Tu contraseña" required>
+                </div>
+                <button type="submit" class="btn">
+                    <i class="fas fa-sign-in-alt"></i> Ingresar
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div class="app-container" id="appContainer">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-cube"></i> AstaFile</h2>
+            </div>
+
+            <nav class="nav-menu">
+                <div class="nav-item active" data-view="dashboard">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-item" data-view="files">
+                    <i class="fas fa-folder-open"></i>
+                    <span>Archivos</span>
+                </div>
+                <div class="nav-item" data-view="editor">
+                    <i class="fas fa-code"></i>
+                    <span>Editor</span>
+                </div>
+                <div class="nav-item" data-view="console">
+                    <i class="fas fa-terminal"></i>
+                    <span>Consola</span>
+                </div>
+                <div class="nav-item" data-view="bot">
+                    <i class="fas fa-robot"></i>
+                    <span>Control Bot</span>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <div class="user-details">
+                        <div class="user-name" id="userName">Usuario</div>
+                        <div class="user-role">Administrador</div>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-bar">
+                <h1 class="page-title" id="pageTitle">Dashboard</h1>
+                <div class="top-actions">
+                    <button class="icon-btn" onclick="refreshCurrentView()" title="Actualizar">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <button class="icon-btn" onclick="toggleSidebar()" title="Menú">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </header>
+
+            <div class="content-area">
+                <!-- Dashboard View -->
+                <div class="view active" id="dashboardView">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <span class="stat-title">Memoria Usada</span>
+                                <div class="stat-icon purple"><i class="fas fa-memory"></i></div>
+                            </div>
+                            <div class="stat-value" id="memUsed">0 MB</div>
+                            <div class="stat-subtitle">Heap: <span id="heapUsed">0</span> MB</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <span class="stat-title">CPU Usado</span>
+                                <div class="stat-icon pink"><i class="fas fa-microchip"></i></div>
+                            </div>
+                            <div class="stat-value" id="cpuUsed">0%</div>
+                            <div class="stat-subtitle">Tiempo activo: <span id="uptime">0m</span></div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <span class="stat-title">Disco Usado</span>
+                                <div class="stat-icon green"><i class="fas fa-hdd"></i></div>
+                            </div>
+                            <div class="stat-value" id="diskUsed">0 MB</div>
+                            <div class="stat-subtitle">Directorio de trabajo</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <span class="stat-title">Estado Bot</span>
+                                <div class="stat-icon orange"><i class="fas fa-robot"></i></div>
+                            </div>
+                            <div class="stat-value" id="botStatus">Offline</div>
+                            <div class="stat-subtitle">SubBots: <span id="subBotsCount">0</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Files View -->
+                <div class="view" id="filesView">
+                    <div class="file-manager">
+                        <div class="file-sidebar">
+                            <div class="file-tree-item active" onclick="navigateTo('.')">
+                                <i class="fas fa-home"></i> Inicio
+                            </div>
+                            <div class="file-tree-item" onclick="navigateTo('./plugins')">
+                                <i class="fas fa-puzzle-piece"></i> Plugins
+                            </div>
+                            <div class="file-tree-item" onclick="navigateTo('./lib')">
+                                <i class="fas fa-book"></i> Librerías
+                            </div>
+                            <div class="file-tree-item" onclick="navigateTo('./Sessions')">
+                                <i class="fas fa-database"></i> Sesiones
+                            </div>
+                            <div class="file-tree-item" onclick="navigateTo('./tmp')">
+                                <i class="fas fa-trash"></i> Temporal
+                            </div>
+                        </div>
+
+                        <div class="file-main">
+                            <div class="file-toolbar">
+                                <div class="breadcrumb" id="breadcrumb">
+                                    <span class="breadcrumb-item" onclick="navigateTo('.')">Inicio</span>
+                                </div>
+                                <button class="toolbar-btn" onclick="showCreateModal()">
+                                    <i class="fas fa-file"></i> Nuevo Archivo
+                                </button>
+                                <button class="toolbar-btn" onclick="showCreateFolderModal()">
+                                    <i class="fas fa-folder"></i> Nueva Carpeta
+                                </button>
+                                <button class="toolbar-btn" onclick="showUploadModal()">
+                                    <i class="fas fa-upload"></i> Subir
+                                </button>
+                                <button class="toolbar-btn danger" onclick="deleteSelected()">
+                                    <i class="fas fa-trash"></i> Eliminar
+                                </button>
+                            </div>
+
+                            <div class="file-list">
+                                <table class="file-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 40px;"><input type="checkbox" id="selectAll"></th>
+                                            <th>Nombre</th>
+                                            <th>Tamaño</th>
+                                            <th>Modificado</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="fileListBody">
+                                        <!-- Files loaded dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Editor View -->
+                <div class="view" id="editorView">
+                    <div class="editor-container">
+                        <div class="editor-toolbar">
+                            <div class="editor-info">
+                                <span class="editor-path" id="editorPath">Sin archivo abierto</span>
+                            </div>
+                            <div class="editor-actions">
+                                <button class="toolbar-btn" onclick="saveFile()">
+                                    <i class="fas fa-save"></i> Guardar
+                                </button>
+                                <button class="toolbar-btn" onclick="closeEditor()">
+                                    <i class="fas fa-times"></i> Cerrar
+                                </button>
+                            </div>
+                        </div>
+                        <div class="editor-wrapper">
+                            <div class="line-numbers" id="lineNumbers">1</div>
+                            <textarea class="code-editor" id="codeEditor" spellcheck="false"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Console View -->
+                <div class="view" id="consoleView">
+                    <div class="console-container">
+                        <div class="console-toolbar" style="margin-bottom: 15px;">
+                            <button class="toolbar-btn" onclick="clearConsole()">
+                                <i class="fas fa-eraser"></i> Limpiar
+                            </button>
+                            <button class="toolbar-btn" onclick="startInteractiveShell()">
+                                <i class="fas fa-terminal"></i> Shell Interactivo
+                            </button>
+                        </div>
+                        <div class="console-output" id="consoleOutput"></div>
+                        <div class="console-input-wrapper">
+                            <input type="text" class="console-input" id="consoleInput" 
+                                   placeholder="Escribe un comando y presiona Enter..." 
+                                   onkeypress="handleConsoleKeypress(event)">
+                            <button class="btn" onclick="executeCommand()" style="width: auto; padding: 15px 30px;">
+                                <i class="fas fa-play"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bot Control View -->
+                <div class="view" id="botView">
+                    <div class="bot-status-card">
+                        <div class="status-header">
+                            <div class="status-indicator">
+                                <div class="status-dot offline" id="statusDot"></div>
+                                <span class="status-text" id="statusText">Desconectado</span>
+                            </div>
+                            <span id="botNumber"></span>
+                        </div>
+                        <div class="bot-actions">
+                            <button class="action-btn restart" onclick="restartBot()">
+                                <i class="fas fa-redo"></i> Reiniciar Bot
+                            </button>
+                            <button class="action-btn stop" onclick="stopBot()">
+                                <i class="fas fa-power-off"></i> Apagar Bot
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="modal">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Título</h3>
+                <p class="modal-subtitle" id="modalSubtitle">Subtítulo</p>
+            </div>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        // Global state
+        let authToken = localStorage.getItem('astafile_token');
+        let currentUser = null;
+        let currentPath = '.';
+        let currentFile = null;
+        let selectedFiles = new Set();
+        let socket = null;
+        let shellMode = false;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            if (authToken) {
+                checkSession();
+            }
+
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
+
+            // Setup navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', () => switchView(item.dataset.view));
+            });
+
+            // Select all checkbox
+            document.getElementById('selectAll').addEventListener('change', (e) => {
+                document.querySelectorAll('.file-checkbox').forEach(cb => {
+                    cb.checked = e.target.checked;
+                    toggleFileSelection(cb.dataset.path, e.target.checked);
+                });
+            });
+
+            // Editor line numbers
+            document.getElementById('codeEditor').addEventListener('input', updateLineNumbers);
+            document.getElementById('codeEditor').addEventListener('scroll', syncScroll);
+        });
+
+        // Auth functions
+        async function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    authToken = data.token;
+                    currentUser = data.username;
+                    localStorage.setItem('astafile_token', authToken);
+                    localStorage.setItem('astafile_user', currentUser);
+                    showApp();
+                } else {
+                    showToast(data.error || 'Error de autenticación', 'error');
+                }
+            } catch (error) {
+                showToast('Error de conexión', 'error');
+            }
+        }
+
+        async function checkSession() {
+            try {
+                const response = await fetch('/api/check-session', {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    currentUser = localStorage.getItem('astafile_user');
+                    showApp();
+                } else {
+                    logout();
+                }
+            } catch (error) {
+                logout();
+            }
+        }
+
+        function showApp() {
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('appContainer').classList.add('active');
+            document.getElementById('userName').textContent = currentUser;
+            document.getElementById('userAvatar').textContent = currentUser.charAt(0).toUpperCase();
+
+            initSocket();
+            loadDashboard();
+            loadFiles();
+        }
+
+        function logout() {
+            fetch('/api/logout', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${authToken}` }
+            }).catch(() => {});
+
+            localStorage.removeItem('astafile_token');
+            localStorage.removeItem('astafile_user');
+            authToken = null;
+            currentUser = null;
+
+            if (socket) {
+                socket.disconnect();
+                socket = null;
+            }
+
+            location.reload();
+        }
+
+        // Socket.io
+        function initSocket() {
+            socket = io();
+
+            socket.on('connect', () => {
+                socket.emit('auth', authToken);
+            });
+
+            socket.on('ready', () => {
+                console.log('Consola lista');
+            });
+
+            socket.on('output', (data) => {
+                appendToConsole(data.data, data.type);
+            });
+
+            socket.on('done', () => {
+                appendToConsole('Comando completado', 'success');
+            });
+
+            socket.on('closed', () => {
+                shellMode = false;
+                appendToConsole('Shell cerrado', 'warning');
+            });
+
+            socket.on('error', (msg) => {
+                showToast(msg, 'error');
+            });
+        }
+
+        // Navigation
+        function switchView(view) {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.toggle('active', item.dataset.view === view);
+            });
+
+            document.querySelectorAll('.view').forEach(v => {
+                v.classList.toggle('active', v.id === view + 'View');
+            });
+
+            const titles = {
+                dashboard: 'Dashboard',
+                files: 'Gestor de Archivos',
+                editor: 'Editor de Código',
+                console: 'Consola',
+                bot: 'Control del Bot'
+            };
+
+            document.getElementById('pageTitle').textContent = titles[view];
+
+            if (view === 'dashboard') loadDashboard();
+            if (view === 'files') loadFiles();
+            if (view === 'bot') loadBotStatus();
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        // Dashboard
+        async function loadDashboard() {
+            try {
+                const [statsRes, botRes] = await Promise.all([
+                    fetch('/api/system/stats', { headers: { 'Authorization': `Bearer ${authToken}` } }),
+                    fetch('/api/bot/status', { headers: { 'Authorization': `Bearer ${authToken}` } })
+                ]);
+
+                const stats = await statsRes.json();
+                const bot = await botRes.json();
+
+                if (stats.success) {
+                    document.getElementById('memUsed').textContent = formatBytes(stats.memory.used);
+                    document.getElementById('heapUsed').textContent = formatBytes(stats.memory.heapUsed);
+                    document.getElementById('cpuUsed').textContent = 'Activo';
+                    document.getElementById('uptime').textContent = formatTime(stats.uptime);
+                    document.getElementById('diskUsed').textContent = formatBytes(stats.disk.used);
+                }
+
+                if (bot.success) {
+                    document.getElementById('botStatus').textContent = bot.connected ? 'Online' : 'Offline';
+                    document.getElementById('subBotsCount').textContent = bot.subBots || 0;
+                }
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+            }
+        }
+
+        // File Manager
+        async function loadFiles(path = currentPath) {
+            try {
+                const response = await fetch('/api/files/list', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ path })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    currentPath = data.path;
+                    renderBreadcrumb(data.path);
+                    renderFileList(data.files);
+                }
+            } catch (error) {
+                showToast('Error cargando archivos', 'error');
+            }
+        }
+
+        function renderBreadcrumb(fullPath) {
+            const parts = fullPath.split('/').filter(p => p);
+            let html = '<span class="breadcrumb-item" onclick="navigateTo(\'.\')">Inicio</span>';
+            let current = '';
+
+            parts.forEach((part, i) => {
+                current += '/' + part;
+                html += `<span class="breadcrumb-separator">/</span>`;
+                html += `<span class="breadcrumb-item" onclick="navigateTo('${current}')">${part}</span>`;
+            });
+
+            document.getElementById('breadcrumb').innerHTML = html;
+        }
+
+        function renderFileList(files) {
+            const tbody = document.getElementById('fileListBody');
+            tbody.innerHTML = '';
+
+            files.forEach(file => {
+                const tr = document.createElement('tr');
+                tr.className = 'file-row';
+                tr.dataset.path = file.path;
+
+                const iconClass = file.type === 'directory' ? 'folder' : getFileIcon(file.name);
+                const icon = file.type === 'directory' ? 'fa-folder' : getFileIconClass(file.name);
+
+                tr.innerHTML = `
+                    <td><input type="checkbox" class="file-checkbox" data-path="${file.path}" onchange="toggleFileSelection('${file.path}', this.checked)"></td>
+                    <td>
+                        <div class="file-name-cell" ondblclick="openItem('${file.path}', '${file.type}')">
+                            <div class="file-icon ${iconClass}">
+                                <i class="fas ${icon}"></i>
+                            </div>
+                            <span>${file.name}</span>
+                        </div>
+                    </td>
+                    <td>${file.type === 'directory' ? '--' : formatBytes(file.size)}</td>
+                    <td>${new Date(file.modified).toLocaleString()}</td>
+                    <td>
+                        <button class="toolbar-btn" onclick="renameItem('${file.path}')" title="Renombrar">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        ${file.type === 'file' ? `
+                        <button class="toolbar-btn" onclick="editFile('${file.path}')" title="Editar">
+                            <i class="fas fa-code"></i>
+                        </button>
+                        ` : ''}
+                    </td>
+                `;
+
+                tbody.appendChild(tr);
+            });
+        }
+
+        function getFileIcon(filename) {
+            const ext = filename.split('.').pop().toLowerCase();
+            const imageExts = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'];
+            const codeExts = ['js', 'html', 'css', 'json', 'md', 'txt', 'py', 'sh'];
+
+            if (imageExts.includes(ext)) return 'image';
+            if (codeExts.includes(ext)) return 'code';
+            return 'file';
+        }
+
+        function getFileIconClass(filename) {
+            const icon = getFileIcon(filename);
+            if (icon === 'image') return 'fa-file-image';
+            if (icon === 'code') return 'fa-file-code';
+            return 'fa-file';
+        }
+
+        function navigateTo(path) {
+            loadFiles(path);
+        }
+
+        function openItem(path, type) {
+            if (type === 'directory') {
+                loadFiles(path);
+            } else {
+                editFile(path);
+            }
+        }
+
+        function toggleFileSelection(path, selected) {
+            if (selected) {
+                selectedFiles.add(path);
+            } else {
+                selectedFiles.delete(path);
+            }
+        }
+
+        // Editor
+        async function editFile(filePath) {
+            try {
+                const response = await fetch('/api/files/read', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ path: filePath })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    currentFile = filePath;
+                    document.getElementById('editorPath').textContent = filePath;
+                    document.getElementById('codeEditor').value = data.content;
+                    updateLineNumbers();
+                    switchView('editor');
+                }
+            } catch (error) {
+                showToast('Error abriendo archivo', 'error');
+            }
+        }
+
+        async function saveFile() {
+            if (!currentFile) return;
+
+            try {
+                const content = document.getElementById('codeEditor').value;
+
+                const response = await fetch('/api/files/save', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ path: currentFile, content })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showToast('Archivo guardado', 'success');
+                }
+            } catch (error) {
+                showToast('Error guardando archivo', 'error');
+            }
+        }
+
+        function closeEditor() {
+            currentFile = null;
+            document.getElementById('editorPath').textContent = 'Sin archivo abierto';
+            document.getElementById('codeEditor').value = '';
+            switchView('files');
+        }
+
+        function updateLineNumbers() {
+            const textarea = document.getElementById('codeEditor');
+            const lines = textarea.value.split('\n').length;
+            document.getElementById('lineNumbers').textContent = 
+                Array.from({length: lines}, (_, i) => i + 1).join('\n');
+        }
+
+        function syncScroll() {
+            const textarea = document.getElementById('codeEditor');
+            document.getElementById('lineNumbers').scrollTop = textarea.scrollTop;
+        }
+
+        // Console
+        function appendToConsole(text, type = 'normal') {
+            const output = document.getElementById('consoleOutput');
+            const line = document.createElement('div');
+            line.className = `console-line ${type}`;
+            line.textContent = text;
+            output.appendChild(line);
+            output.scrollTop = output.scrollHeight;
+        }
+
+        function executeCommand() {
+            const input = document.getElementById('consoleInput');
+            const command = input.value.trim();
+
+            if (!command) return;
+
+            appendToConsole(`$ ${command}`, 'info');
+
+            if (shellMode) {
+                socket.emit('input', command);
+            } else {
+                socket.emit('execute', command);
+            }
+
+            input.value = '';
+        }
+
+        function handleConsoleKeypress(e) {
+            if (e.key === 'Enter') {
+                executeCommand();
+            }
+        }
+
+        function startInteractiveShell() {
+            shellMode = true;
+            socket.emit('spawn', 'bash');
+            appendToConsole('Iniciando shell interactivo...', 'warning');
+        }
+
+        function clearConsole() {
+            document.getElementById('consoleOutput').innerHTML = '';
+        }
+
+        // Bot Control
+        async function loadBotStatus() {
+            try {
+                const response = await fetch('/api/bot/status', {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    const dot = document.getElementById('statusDot');
+                    const text = document.getElementById('statusText');
+
+                    if (data.connected) {
+                        dot.classList.remove('offline');
+                        dot.classList.add('online');
+                        text.textContent = `Conectado - ${data.user.name}`;
+                        document.getElementById('botNumber').textContent = data.user.id;
+                    } else {
+                        dot.classList.remove('online');
+                        dot.classList.add('offline');
+                        text.textContent = 'Desconectado';
+                    }
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function restartBot() {
+            if (!confirm('¿Reiniciar el bot?')) return;
+
+            try {
+                await fetch('/api/bot/restart', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+
+                showToast('Reiniciando bot...', 'warning');
+            } catch (error) {
+                showToast('Error reiniciando', 'error');
+            }
+        }
+
+        async function stopBot() {
+            if (!confirm('¿Apagar el bot? No podrás acceder hasta reiniciar manualmente.')) return;
+
+            try {
+                await fetch('/api/bot/stop', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+
+                showToast('Apagando bot...', 'error');
+            } catch (error) {
+                showToast('Error apagando', 'error');
+            }
+        }
+
+        // Modals
+        function showModal(title, subtitle, content) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalSubtitle').textContent = subtitle;
+            document.getElementById('modalContent').innerHTML = content;
+            document.getElementById('modalOverlay').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+        }
+
+        function showCreateModal() {
+            const content = `
+                <div class="form-group">
+                    <label>Nombre del archivo</label>
+                    <input type="text" id="newFileName" placeholder="archivo.js">
+                </div>
+                <div class="form-group">
+                    <label>Contenido inicial (opcional)</label>
+                    <textarea id="newFileContent"></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-secondary" onclick="closeModal()">Cancelar</button>
+                    <button class="btn-primary" onclick="createFile()">Crear</button>
+                </div>
+            `;
+            showModal('Nuevo Archivo', `Ubicación: ${currentPath}`, content);
+        }
+
+        function showCreateFolderModal() {
+            const content = `
+                <div class="form-group">
+                    <label>Nombre de la carpeta</label>
+                    <input type="text" id="newFolderName" placeholder="mi-carpeta">
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-secondary" onclick="closeModal()">Cancelar</button>
+                    <button class="btn-primary" onclick="createFolder()">Crear</button>
+                </div>
+            `;
+            showModal('Nueva Carpeta', `Ubicación: ${currentPath}`, content);
+        }
+
+        function showUploadModal() {
+            const content = `
+                <div class="form-group">
+                    <label>Seleccionar archivo</label>
+                    <input type="file" id="uploadFile" onchange="handleFileSelect(this)">
+                </div>
+                <div id="uploadPreview"></div>
+                <div class="modal-actions">
+                    <button class="btn-secondary" onclick="closeModal()">Cancelar</button>
+                    <button class="btn-primary" onclick="uploadFile()">Subir</button>
+                </div>
+            `;
+            showModal('Subir Archivo', `Destino: ${currentPath}`, content);
+        }
+
+        // File operations
+        async function createFile() {
+            const name = document.getElementById('newFileName').value;
+            const content = document.getElementById('newFileContent').value;
+
+            if (!name) return showToast('Nombre requerido', 'error');
+
+            try {
+                const response = await fetch('/api/files/create', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ path: currentPath, name, content })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showToast('Archivo creado', 'success');
+                    closeModal();
+                    loadFiles();
+                } else {
+                    showToast(data.error, 'error');
+                }
+            } catch (error) {
+                showToast('Error creando archivo', 'error');
+            }
+        }
+
+        async function createFolder() {
+            const name = document.getElementById('newFolderName').value;
+
+            if (!name) return showToast('Nombre requerido', 'error');
+
+            try {
+                const response = await fetch('/api/files/mkdir', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ path: currentPath, name })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showToast('Carpeta creada', 'success');
+                    closeModal();
+                    loadFiles();
+                } else {
+                    showToast(data.error, 'error');
+                }
+            } catch (error) {
+                showToast('Error creando carpeta', 'error');
+            }
+        }
+
+        async function deleteSelected() {
+            if (selectedFiles.size === 0) return showToast('Selecciona archivos para eliminar', 'warning');
+
+            if (!confirm(`¿Eliminar ${selectedFiles.size} elemento(s)?`)) return;
+
+            try {
+                const response = await fetch('/api/files/delete', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ paths: Array.from(selectedFiles) })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showToast('Elementos eliminados', 'success');
+                    selectedFiles.clear();
+                    document.getElementById('selectAll').checked = false;
+                    loadFiles();
+                }
+            } catch (error) {
+                showToast('Error eliminando', 'error');
+            }
+        }
+
+        async function renameItem(oldPath) {
+            const newName = prompt('Nuevo nombre:', path.basename(oldPath));
+            if (!newName || newName === path.basename(oldPath)) return;
+
+            try {
+                const response = await fetch('/api/files/rename', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ oldPath, newName })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showToast('Renombrado exitoso', 'success');
+                    loadFiles();
+                }
+            } catch (error) {
+                showToast('Error renombrando', 'error');
+            }
+        }
+
+        // Upload handling
+        let selectedUploadFile = null;
+
+        function handleFileSelect(input) {
+            selectedUploadFile = input.files[0];
+            if (selectedUploadFile) {
+                document.getElementById('uploadPreview').innerHTML = `
+                    <p>Archivo: ${selectedUploadFile.name}</p>
+                    <p>Tamaño: ${formatBytes(selectedUploadFile.size)}</p>
+                `;
+            }
+        }
+
+        async function uploadFile() {
+            if (!selectedUploadFile) return showToast('Selecciona un archivo', 'error');
+
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                const base64 = btoa(e.target.result);
+
+                try {
+                    const response = await fetch('/api/files/upload', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${authToken}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            path: currentPath,
+                            name: selectedUploadFile.name,
+                            content: base64,
+                            base64: true
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        showToast('Archivo subido', 'success');
+                        closeModal();
+                        loadFiles();
+                    }
+                } catch (error) {
+                    showToast('Error subiendo archivo', 'error');
+                }
+            };
+            reader.readAsBinaryString(selectedUploadFile);
+        }
+
+        // Utilities
+        function formatBytes(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const hours = Math.floor(mins / 60);
+            const days = Math.floor(hours / 24);
+
+            if (days > 0) return days + 'd ' + (hours % 24) + 'h';
+            if (hours > 0) return hours + 'h ' + (mins % 60) + 'm';
+            return mins + 'm';
+        }
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-circle',
+                warning: 'fa-exclamation-triangle',
+                info: 'fa-info-circle'
+            };
+
+            toast.innerHTML = `
+                <i class="fas ${icons[type]}"></i>
+                <span>${message}</span>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        function refreshCurrentView() {
+            const activeView = document.querySelector('.view.active').id;
+            if (activeView === 'dashboardView') loadDashboard();
+            if (activeView === 'filesView') loadFiles();
+            if (activeView === 'botView') loadBotStatus();
+        }
+
+        // Path utilities (simple implementation)
+        const path = {
+            basename: (p) => p.split('/').pop() || p.split('\\').pop()
+        };
+    </script>
+</body>
+</html>
