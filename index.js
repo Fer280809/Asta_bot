@@ -43,6 +43,39 @@ global.supConfig = {
   folder: "Sessions/SubBot",
 }
 
+// Configuración mejorada para AstaFile
+global.astafileConfig = {
+  version: '2.0.0',
+  features: {
+    webPanel: true,
+    fileManager: true,
+    realTimeConsole: true,
+    botControl: true,
+    systemMonitoring: true
+  },
+  security: {
+    maxLoginAttempts: 5,
+    sessionTimeout: 3600,
+    requireStrongPasswords: true
+  }
+}
+
+// Inicializar estadísticas del bot
+global.botStats = {
+  messages: 0,
+  commands: 0,
+  users: new Set(),
+  groups: new Set(),
+  startTime: Date.now()
+}
+
+// Middleware para actualizar estadísticas
+global.updateStats = (data) => {
+  if (global.updateBotStats) {
+    global.updateBotStats(data)
+  }
+}
+
 const { CONNECTING } = ws
 const { chain } = lodash
 const PORT = process.env.PORT || process.env.SERVER_PORT || 3000
@@ -427,18 +460,44 @@ initializeResourceSystem();
 // ============= INICIAR SISTEMA WEB ASTAFILE =============
 async function startAstaFile() {
   try {
-    // Crear carpeta public si no existe
-    const publicDir = join(__dirname, 'public')
-    if (!existsSync(publicDir)) {
-      mkdirSync(publicDir, { recursive: true })
+    // Crear estructura de carpetas
+    const folders = ['public', 'public/css', 'public/js', 'public/uploads', 'tmp']
+    
+    folders.forEach(folder => {
+      const dir = join(__dirname, folder)
+      if (!existsSync(dir)) {
+        mkdirSync(dir, { recursive: true })
+      }
+    })
+    
+    // Copiar archivos estáticos si no existen
+    const staticFiles = {
+      'css/style.css': `/* Estilos adicionales para AstaFile */`,
+      'js/utils.js': `// Utilidades JavaScript`
     }
     
-    // Importar y iniciar servidor web
+    Object.entries(staticFiles).forEach(([file, content]) => {
+      const filePath = join(__dirname, 'public', file)
+      if (!existsSync(filePath)) {
+        fs.writeFileSync(filePath, content)
+      }
+    })
+    
+    // Iniciar servidor web
     await import('./web.js')
-    console.log(chalk.cyan('\n🌐 AstaFile iniciado'))
-    console.log(chalk.cyan('🔗 http://localhost:3000'))
+    
+    console.log(chalk.cyan('\n🌐 AstaFile Pro v2.0.0'))
+    console.log(chalk.cyan('🔗 Panel: http://localhost:3000'))
+    console.log(chalk.cyan('📱 Responsive Design ✓'))
+    console.log(chalk.cyan('🎨 Tema Claro/Oscuro ✓'))
+    console.log(chalk.cyan('⚡ Consola en Tiempo Real ✓'))
+    
+    // Agregar log inicial
+    if (global.addSystemLog) {
+      global.addSystemLog('Bot WhatsApp conectado', 'success')
+    }
   } catch (e) {
-    console.log(chalk.yellow('\n⚠ AstaFile no iniciado:', e.message))
+    console.log(chalk.yellow('\n⚠ AstaFile no pudo iniciar:', e.message))
   }
 }
 
