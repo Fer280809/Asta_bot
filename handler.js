@@ -1,4 +1,3 @@
-
 import { smsg } from "./lib/simple.js"
 import { fileURLToPath } from "url"
 import path, { join } from "path"
@@ -11,6 +10,19 @@ const isNumber = x => typeof x === "number" && !isNaN(x)
 const delay = ms => isNumber(ms) && new Promise(resolve => setTimeout(resolve, ms))
 
 export async function handler(chatUpdate) {
+    // ⚡ CORRECCIÓN: Evitar procesar el mismo mensaje múltiples veces
+    const messageId = chatUpdate.messages?.[0]?.key?.id
+    if (!messageId) return
+    
+    if (!this.processedMessages) this.processedMessages = new Set()
+    if (this.processedMessages.has(messageId)) {
+        console.log(chalk.gray(`Mensaje ${messageId} ya procesado, omitiendo...`))
+        return
+    }
+    
+    this.processedMessages.add(messageId)
+    setTimeout(() => this.processedMessages.delete(messageId), 3000)
+    
     this.msgqueue = this.msgqueue || []
     this.uptime = this.uptime || Date.now()
 
