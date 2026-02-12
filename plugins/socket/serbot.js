@@ -95,13 +95,13 @@ let handler = async (m, { conn, args, usedPrefix, command }) => {
     const userData = global.db.data.users[m.sender]
     const lastSub = userData?.Subs || 0
     const timeLeft = 120000 - (Date.now() - lastSub)
-
+    
     if (timeLeft > 0) {
         return m.reply(`⏳ Espera ${msToTime(timeLeft)} para vincular otro Sub-Bot.`)
     }
 
     const userId = m.sender.split('@')[0]
-
+    
     if (isSubBotConnected(m.sender)) {
         return m.reply(
             `⚠️ Ya tienes un SubBot activo.\n\n` +
@@ -159,19 +159,19 @@ export async function AstaJadiBot(options) {
     } = options
 
     let reconnectAttempts = global.subBotReconnectAttempts.get(userId) || 0
-
+    
     if (isReconnect) {
         reconnectAttempts++
         global.subBotReconnectAttempts.set(userId, reconnectAttempts)
         console.log(chalk.yellow(`🔄 Reintento ${reconnectAttempts}/${maxReconnectAttempts} para ${userId}`))
-
+        
         if (reconnectAttempts > maxReconnectAttempts) {
             console.log(chalk.red(`❌ Máximos reintentos alcanzados para ${userId}`))
             await m.reply?.(`❌ No se pudo reconectar el SubBot después de ${maxReconnectAttempts} intentos. Elimina la sesión y vuelve a vincular.`)
             global.subBotReconnectAttempts.delete(userId)
             return cleanupSession(pathAstaJadiBot, userId)
         }
-
+        
         // Esperar antes de reconectar
         await delay(5000 * reconnectAttempts)
     }
@@ -183,13 +183,13 @@ export async function AstaJadiBot(options) {
     }
 
     const mcode = args.some(arg => /^(--code|code)$/.test(arg?.trim()))
-
+    
     // Limpiar args de flags
     args = args.map(arg => arg.replace(/^--code$|^code$/, '').trim()).filter(Boolean)
 
     // Cargar credenciales si se proporcionan en base64
     const pathCreds = path.join(pathAstaJadiBot, "creds.json")
-
+    
     if (args[0] && !isReconnect) {
         try {
             const credsData = JSON.parse(Buffer.from(args[0], "base64").toString("utf-8"))
@@ -225,10 +225,10 @@ export async function AstaJadiBot(options) {
     }
 
     let sock = makeWASocket(connectionOptions)
-
+    
     // Referencia estable para el socket
     const sockRef = { current: sock }
-
+    
     // Configuración del SubBot
     const defaultConfig = {
         name: `SubBot-${userId}`,
@@ -243,7 +243,7 @@ export async function AstaJadiBot(options) {
     }
 
     const configPath = path.join(pathAstaJadiBot, 'config.json')
-
+    
     // Cargar o crear config
     let subBotConfig
     try {
@@ -256,7 +256,7 @@ export async function AstaJadiBot(options) {
     } catch {
         subBotConfig = defaultConfig
     }
-
+    
     sock.subConfig = subBotConfig
     sock.userId = userId
 
@@ -270,7 +270,7 @@ export async function AstaJadiBot(options) {
         if (qrTimer) clearTimeout(qrTimer)
         if (connectionTimer) clearTimeout(connectionTimer)
         if (messageRetryTimer) clearInterval(messageRetryTimer)
-
+        
         try {
             sock.ev.removeAllListeners()
             if (sock.ws?.readyState === 1) {
@@ -312,19 +312,19 @@ export async function AstaJadiBot(options) {
                 try {
                     const secret = await sock.requestPairingCode(userId)
                     const formattedCode = secret.match(/.{1,4}/g)?.join("-") || secret
-
+                    
                     await conn.sendMessage(m.chat, {
                         image: { url: imagenSerBot },
                         caption: rtx2
                     }, { quoted: m })
-
+                    
                     const codeMsg = await m.reply(`\`${formattedCode}\``)
-
+                    
                     // Auto-eliminar código
                     setTimeout(() => {
                         conn.sendMessage(m.sender, { delete: codeMsg.key }).catch(() => {})
                     }, 45000)
-
+                    
                 } catch (e) {
                     console.error('Error pairing code:', e)
                     await m.reply?.('❌ Error generando código. Intenta con QR: ' + usedPrefix + 'qr')
@@ -337,7 +337,7 @@ export async function AstaJadiBot(options) {
                         margin: 2,
                         errorCorrectionLevel: 'H'
                     })
-
+                    
                     const qrMsg = await conn.sendMessage(m.chat, {
                         image: qrBuffer,
                         caption: rtx.trim()
@@ -347,7 +347,7 @@ export async function AstaJadiBot(options) {
                     qrTimer = setTimeout(() => {
                         conn.sendMessage(m.sender, { delete: qrMsg.key }).catch(() => {})
                     }, 45000)
-
+                    
                 } catch (e) {
                     console.error('Error generando QR:', e)
                 }
@@ -380,7 +380,7 @@ export async function AstaJadiBot(options) {
             if (!global.conns.includes(sock)) {
                 global.conns.push(sock)
             }
-
+            
             global.activeSubBots.set(sock.user.jid, {
                 socket: sock,
                 userId: userId,
@@ -421,13 +421,42 @@ export async function AstaJadiBot(options) {
                     }
                 }
             }
+
+            // ============= NUEVO: Enviar credenciales de dashboard al privado =============
+            setTimeout(async () => {
+                try {
+                    const { createSubBotUser, getUserByJid } = await import('../../lib/subbot-users.js')
+                    const existingUser = getUserByJid(sock.user.jid)
+                    
+                    let msg = ''
+                    
+                    if (!existingUser) {
+                        // Crear credenciales automáticas
+                        const username = `sb_${userId.slice(-6)}`
+                        const password = Math.random().toString(36).slice(-8)
+                        
+                        const result = createSubBotUser(sock.user.jid, username, password, userId)
+                        if (result.success) {
+                            msg = `🔐 *Dashboard de SubBot*\n\n✅ Cuenta creada automáticamente\n\n👤 Usuario: ${username}\n🔐 Contraseña: ${password}\n🌐 ${global.publicURL || 'http://localhost:3001'}\n\n⚙️ Configura:\n• name (nombre del bot)\n• prefix (prefijo de comandos)\n• sinprefix (comandos sin prefijo)\n• mode (public/private)\n• antiPrivate (bloquear privados)\n• gponly (solo grupos)\n\n⚠️ Guarda estas credenciales.`
+                        }
+                    } else {
+                        msg = `📊 *Dashboard Disponible*\n\n👤 Usuario: ${existingUser.username}\n🌐 ${global.publicURL || 'http://localhost:3001'}\n\nUsa ${usedPrefix}recuperar para cambiar contraseña.`
+                    }
+                    
+                    if (msg && m?.sender) {
+                        await conn.sendMessage(m.sender, { text: msg })
+                    }
+                } catch (e) {
+                    console.error('Error enviando credenciales:', e)
+                }
+            }, 3000)
         }
 
         // Manejar desconexión
         if (connection === 'close') {
             const statusCode = lastDisconnect?.error?.output?.statusCode || 
                               lastDisconnect?.error?.output?.payload?.statusCode
-
+            
             console.log(chalk.yellow(`🔌 Desconexión ${userId}: ${statusCode}`))
 
             const shouldReconnect = ![
@@ -457,10 +486,10 @@ export async function AstaJadiBot(options) {
             if (shouldReconnect && reconnectAttempts < maxReconnectAttempts) {
                 console.log(chalk.blue(`🔄 Reconectando ${userId}...`))
                 await cleanup(false)
-
+                
                 // Reconexión con delay exponencial
                 await delay(Math.min(1000 * Math.pow(2, reconnectAttempts), 30000))
-
+                
                 await AstaJadiBot({
                     ...options,
                     isReconnect: true
@@ -484,7 +513,7 @@ export async function AstaJadiBot(options) {
         try {
             const Handler = await import(`../../handler.js?update=${Date.now()}`)
                 .catch(() => null)
-
+            
             if (Handler && Object.keys(Handler).length) {
                 handlerModule = Handler
             }
@@ -494,7 +523,7 @@ export async function AstaJadiBot(options) {
 
         if (restartConn && sockRef.current) {
             const oldChats = { ...sockRef.current.chats }
-
+            
             try {
                 if (sockRef.current.ws?.readyState === 1) {
                     sockRef.current.ws.close()
@@ -502,50 +531,38 @@ export async function AstaJadiBot(options) {
             } catch {}
 
             sockRef.current.ev.removeAllListeners()
-
+            
             // Crear nueva conexión preservando chats
             const newSock = makeWASocket({
                 ...connectionOptions,
                 chats: oldChats
             })
-
+            
             sockRef.current = newSock
             sock = newSock
             sock.subConfig = subBotConfig
             sock.userId = userId
-
-            // Re-registrar listeners solo si no están ya registrados
-            setupListeners(newSock)
+            
+            // Re-registrar listeners
+            setupListeners()
         }
 
-        setupListeners(sock)
+        setupListeners()
         return true
     }
 
-    // ============= SETUP LISTENERS MEJORADO =============
-    const setupListeners = (targetSock = sock) => {
-        if (!targetSock || !handlerModule?.handler) return
-        
-        // ⚡ VERIFICACIÓN CLAVE: Evitar duplicados
-        const hasListeners = targetSock.ev.listenerCount("messages.upsert") > 0
-        
-        if (hasListeners) {
-            console.log(chalk.yellow(`⚠️ Listeners ya registrados para ${userId}, omitiendo...`))
-            return
-        }
-        
-        targetSock.handler = handlerModule.handler.bind(targetSock)
-        targetSock.connectionUpdate = connectionUpdate.bind(targetSock)
-        targetSock.credsUpdate = saveCreds.bind(targetSock)
+    const setupListeners = () => {
+        if (handlerModule?.handler) {
+            sock.handler = handlerModule.handler.bind(sock)
+            sock.connectionUpdate = connectionUpdate.bind(sock)
+            sock.credsUpdate = saveCreds.bind(sock)
 
-        targetSock.ev.on("messages.upsert", targetSock.handler)
-        targetSock.ev.on("connection.update", targetSock.connectionUpdate)
-        targetSock.ev.on("creds.update", targetSock.credsUpdate)
-        
-        console.log(chalk.green(`✅ Listeners registrados para ${userId}`))
+            sock.ev.on("messages.upsert", sock.handler)
+            sock.ev.on("connection.update", sock.connectionUpdate)
+            sock.ev.on("creds.update", sock.credsUpdate)
+        }
     }
 
-    // Llamar setupListeners inicialmente
     setupListeners()
 
     // Health check cada 30 segundos
@@ -571,7 +588,7 @@ async function cleanupSession(sessionPath, userId) {
     } catch (e) {
         console.error('Error eliminando sesión:', e)
     }
-
+    
     global.subBotsData.delete(userId)
 }
 
