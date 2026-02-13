@@ -14,17 +14,19 @@ const defaultConfig = {
   language: 'es',
   autoRead: false,
   typingEffect: false,
-  reactions: true
+  reactions: true,
+  logo: null,
+  logoUrl: null
 }
 
 const handler = async (m, { conn, command, usedPrefix, text, args }) => {
   // ========== VERIFICACIÓN DE PERMISOS ==========
   const isSubBot = conn.user?.jid !== global.conn?.user?.jid
-  
+
   // Verificar si es el owner del SubBot
   const subBotData = global.activeSubBots?.get(conn.user?.jid)
   const isSubBotOwner = subBotData?.socket?.subConfig?.owner === m.sender
-  
+
   // Verificar si es Fernando (global.fernando de settings.js)
   const isFernando = global.fernando
     ?.map(v => v.replace(/\D/g, "") + "@s.whatsapp.net")
@@ -44,7 +46,7 @@ const handler = async (m, { conn, command, usedPrefix, text, args }) => {
     const userId = conn.user.jid.split('@')[0]
     const sessionPath = path.join(`./${global.jadi || 'Sessions/SubBot'}/`, userId)
     const configPath = path.join(sessionPath, 'config.json')
-    
+
     // Cargar config
     let currentConfig = {}
     try {
@@ -67,24 +69,24 @@ const handler = async (m, { conn, command, usedPrefix, text, args }) => {
         createdAt: currentConfig.createdAt || new Date().toISOString(),
         jid: currentConfig.jid || conn.user.jid
       }
-      
+
       if (!fs.existsSync(sessionPath)) {
         fs.mkdirSync(sessionPath, { recursive: true })
       }
-      
+
       fs.writeFileSync(configPath, JSON.stringify(configToSave, null, 2))
-      
+
       if (conn.subConfig) {
         Object.assign(conn.subConfig, configToSave)
       }
-      
+
       if (global.activeSubBots.has(conn.user.jid)) {
         const subBotEntry = global.activeSubBots.get(conn.user.jid)
         if (subBotEntry.socket) {
           subBotEntry.socket.subConfig = configToSave
         }
       }
-      
+
       return configToSave
     }
 
@@ -100,7 +102,7 @@ const handler = async (m, { conn, command, usedPrefix, text, args }) => {
 
     // ========== MANEJO DE COMANDOS ==========
     switch (command) {
-      
+
       // ============= CONFIG GENERAL =============
       case 'config': {
         if (!args[0]) {
@@ -108,15 +110,19 @@ const handler = async (m, { conn, command, usedPrefix, text, args }) => {
 │
 │ 📛 *Nombre:* ${displayConfig.name || 'Por defecto'}
 │ 🔣 *Prefijo:* ${displayConfig.prefix || 'Global'}
+│ 🔇 *Sin Prefijo:* ${displayConfig.sinprefix ? '✅' : '❌'}
 │ 🎭 *Modo:* ${displayConfig.mode}
 │ 🚫 *Anti-Privado:* ${displayConfig.antiPrivate ? '✅' : '❌'}
 │ 🛡️ *Anti-Spam:* ${displayConfig.antiSpam ? '✅' : '❌'}
 │ ⏱️ *Cooldown:* ${displayConfig.cooldown}ms
+│ 🖼️ *Logo:* ${displayConfig.logo ? '📁 Local' : displayConfig.logoUrl ? '🔗 URL' : '❌ Por defecto'}
 │
 ├─ *COMANDOS:*
 │ • ${usedPrefix}config nombre <texto>
 │ • ${usedPrefix}config prefix <símbolo>
+│ • ${usedPrefix}config sinprefix <on/off>
 │ • ${usedPrefix}config modo <public/private>
+│ • ${usedPrefix}config logo <ruta/url/none>
 │ • ${usedPrefix}antiprivado <on/off>
 │ • ${usedPrefix}antispam <on/off>
 │ • ${usedPrefix}config cooldown <ms>
@@ -149,12 +155,48 @@ const handler = async (m, { conn, command, usedPrefix, text, args }) => {
             return m.reply(`✅ *Prefijo:* \`${newPrefix}\``)
           }
 
+          case 'sinprefix': case 'sinprefijo': {
+            const bool = parseBoolean(value)
+            if (bool === null) {
+              return m.reply(`❌ Uso: ${usedPrefix}config sinprefix <on/off>`)
+            }
+            saveConfig({ sinprefix: bool })
+            return m.reply(`${bool ? '✅' : '❌'} *Sin Prefijo* ${bool ? 'ACTIVADO' : 'DESACTIVADO'}\n\n${bool ? '💡 Ahora puedes usar comandos sin prefijo.\n⚠️ Ejemplo: escribe "menu" en lugar de ".menu"' : '💡 Se requiere prefijo nuevamente.'}`)
+          }
+
           case 'modo': {
             if (!['public', 'private'].includes(value?.toLowerCase())) {
               return m.reply(`❌ Uso: ${usedPrefix}config modo <public/private>`)
             }
             saveConfig({ mode: value.toLowerCase() })
             return m.reply(`✅ *Modo:* ${value.toLowerCase()}`)
+          }
+
+          case 'logo': case 'icono': case 'foto': {
+            if (!value || ['none', 'default', 'remove', 'quitar', 'eliminar'].includes(value.toLowerCase())) {
+              saveConfig({ logo: null, logoUrl: null })
+              return m.reply(`✅ *Logo reiniciado*\n🖼️ Se usará el logo global por defecto.`)
+            }
+
+            const isUrl = value.startsWith('http://') || value.startsWith('https://')
+
+            if (isUrl) {
+              saveConfig({ logo: null, logoUrl: value })
+              return m.reply(`✅ *Logo URL actualizado*\n🔗 ${value.slice(0, 60)}${value.length > 60 ? '...' : ''}`)
+            } else {
+              const logoPath = path.resolve(value)
+              if (!fs.existsSync(logoPath)) {
+                return m.reply(`❌ *Archivo no encontrado:* ${value}\n\n💡 Opciones:\n1. Ruta: ./media/logo.jpg\n2. URL: https://ejemplo.com/logo.jpg\n3. "none" para quitar`)
+              }
+
+              const ext = path.extname(logoPath).toLowerCase()
+              if (!['.jpg', '.jpeg', '.png', '.webp'].includes(ext)) {
+                return m.reply(`⚠️ *Formato no válido:* ${ext}\n✅ Usa: .jpg .jpeg .png .webp`)
+              }
+
+              saveConfig({ logo: value, logoUrl: null })
+              return m.reply(`✅ *Logo local actualizado*\n📁 ${value}\n📏 ${(fs.statSync(logoPath).size / 1024).toFixed(2)} KB`)
+            }
           }
 
           case 'cooldown': case 'cd': {
@@ -190,7 +232,7 @@ const handler = async (m, { conn, command, usedPrefix, text, args }) => {
       // ============= ANTI PRIVADO =============
       case 'antiprivado': case 'antiprivate': {
         const bool = parseBoolean(text || args[0])
-        
+
         if (bool === null) {
           return m.reply(`🚫 *Anti-Privado:* ${displayConfig.antiPrivate ? '✅ ACTIVADO' : '❌ DESACTIVADO'}
 
@@ -201,7 +243,7 @@ const handler = async (m, { conn, command, usedPrefix, text, args }) => {
         }
 
         saveConfig({ antiPrivate: bool })
-        
+
         return m.reply(`${bool ? '✅' : '❌'} *Anti-Privado* ${bool ? 'ACTIVADO' : 'DESACTIVADO'}
 
 ${bool ? '🔒 Ahora solo el owner puede escribir al privado.\n🚫 Otros usuarios serán ignorados.' : '🔓 Todos pueden escribir al privado.'}`)
@@ -210,7 +252,7 @@ ${bool ? '🔒 Ahora solo el owner puede escribir al privado.\n🚫 Otros usuari
       // ============= ANTI SPAM =============
       case 'antispam': case 'antiflood': {
         const bool = parseBoolean(text || args[0])
-        
+
         if (bool === null) {
           return m.reply(`🛡️ *Anti-Spam:* ${displayConfig.antiSpam ? '✅ ACTIVADO' : '❌ DESACTIVADO'}
 
@@ -224,7 +266,7 @@ ${bool ? '🔒 Ahora solo el owner puede escribir al privado.\n🚫 Otros usuari
         }
 
         saveConfig({ antiSpam: bool })
-        
+
         return m.reply(`${bool ? '✅' : '❌'} *Anti-Spam* ${bool ? 'ACTIVADO' : 'DESACTIVADO'}
 
 ${bool ? `🛡️ Protección contra spam activada.\n⏱️ Cooldown: ${displayConfig.cooldown}ms` : '⚠️ Sin protección contra spam.'}`)
