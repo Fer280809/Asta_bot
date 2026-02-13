@@ -27,7 +27,7 @@ const defaultConfig = {
 }
 
 const handler = async (m, { conn, command, usedPrefix, text, args }) => {
-  // ========== VERIFICACIÓN DE PERMISOS (Sistema de sockets.js) ==========
+  // ========== VERIFICACIÓN DE PERMISOS (Solo Fernando y Owner del SubBot) ==========
   const isSubBot = conn.user?.jid !== global.conn?.user?.jid
   
   // Verificar si es el owner del SubBot (quien lo vinculó)
@@ -38,14 +38,9 @@ const handler = async (m, { conn, command, usedPrefix, text, args }) => {
   const isFernando = global.fernando
     ?.map(v => v.replace(/\D/g, "") + "@s.whatsapp.net")
     .includes(m.sender)
-  
-  // Verificar si es owner global del bot principal
-  const isGlobalOwner = global.owner
-    ?.map(v => v.replace(/\D/g, "") + "@s.whatsapp.net")
-    .includes(m.sender)
 
-  // Solo permitir: Owner del SubBot, Fernando, o Global Owner
-  if (!isSubBotOwner && !isFernando && !isGlobalOwner) {
+  // Solo permitir: Owner del SubBot o Fernando
+  if (!isSubBotOwner && !isFernando) {
     return m.reply(`❌ *Solo el owner de este SubBot puede usar este comando.*\n\n👤 Tu JID: @${m.sender.split('@')[0]}\n🔑 Owner registrado: @${(subBotData?.socket?.subConfig?.owner || 'desconocido').split('@')[0]}`, null, {
       mentions: [m.sender, subBotData?.socket?.subConfig?.owner].filter(Boolean)
     })
@@ -53,7 +48,7 @@ const handler = async (m, { conn, command, usedPrefix, text, args }) => {
 
   // Solo funciona en SubBots
   if (!isSubBot) {
-    return m.reply(`❌ *Este comando solo está disponible para SubBots.*\n\n💡 Usa los comandos de configuración global:\n• ${usedPrefix}self on/off\n• ${usedPrefix}public on/off\n• ${usedPrefix}antiprivado on/off`)
+    return m.reply(`❌ *Este comando solo está disponible para SubBots.*\n\n💡 Usa los comandos de configuración global para el bot principal.`)
   }
 
   try {
