@@ -421,35 +421,6 @@ export async function AstaJadiBot(options) {
                     }
                 }
             }
-
-            // ============= NUEVO: Enviar credenciales de dashboard al privado =============
-            setTimeout(async () => {
-                try {
-                    const { createSubBotUser, getUserByJid } = await import('../../lib/subbot-users.js')
-                    const existingUser = getUserByJid(sock.user.jid)
-                    
-                    let msg = ''
-                    
-                    if (!existingUser) {
-                        // Crear credenciales automáticas
-                        const username = `sb_${userId.slice(-6)}`
-                        const password = Math.random().toString(36).slice(-8)
-                        
-                        const result = createSubBotUser(sock.user.jid, username, password, userId)
-                        if (result.success) {
-                            msg = `🔐 *Dashboard de SubBot*\n\n✅ Cuenta creada automáticamente\n\n👤 Usuario: ${username}\n🔐 Contraseña: ${password}\n🌐 ${global.publicURL || 'http://localhost:3001'}\n\n⚙️ Configura:\n• name (nombre del bot)\n• prefix (prefijo de comandos)\n• sinprefix (comandos sin prefijo)\n• mode (public/private)\n• antiPrivate (bloquear privados)\n• gponly (solo grupos)\n\n⚠️ Guarda estas credenciales.`
-                        }
-                    } else {
-                        msg = `📊 *Dashboard Disponible*\n\n👤 Usuario: ${existingUser.username}\n🌐 ${global.publicURL || 'http://localhost:3001'}\n\nUsa ${usedPrefix}recuperar para cambiar contraseña.`
-                    }
-                    
-                    if (msg && m?.sender) {
-                        await conn.sendMessage(m.sender, { text: msg })
-                    }
-                } catch (e) {
-                    console.error('Error enviando credenciales:', e)
-                }
-            }, 3000)
         }
 
         // Manejar desconexión
