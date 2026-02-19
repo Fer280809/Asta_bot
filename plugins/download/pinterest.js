@@ -2,46 +2,52 @@ import axios from 'axios'
 
 let handler = async (m, { conn, text, usedPrefix, command }) => {
   if (!text) {
-    return m.reply(`❀ Escribe qué buscar en Pinterest\nEjemplo:\n${usedPrefix}${command} paisajes`)
+    return m.reply(`❀ Escribe qué buscar en Pinterest\nEjemplo:\n${usedPrefix}${command} goku`)
   }
 
   try {
     await m.react('🕒')
 
-    const results = await pinterestSearch(text)
+    // Usar API alternativa
+    const results = await pinterestSearchV2(text)
 
     if (!results.length) {
-      return m.reply('❌ No se encontraron resultados.')
+      return m.reply('❌ No se encontraron resultados. Intenta con otra búsqueda.')
     }
 
-    // Guardar resultados temporalmente
+    // Guardar resultados
     conn.pinterestResults ??= {}
     conn.pinterestResults[m.sender] = results
 
-    // Crear lista
-    let sections = [{
-      title: '📌 Resultados de Pinterest',
-      rows: results.slice(0, 10).map((item, i) => ({
-        title: `Resultado ${i + 1}`,
-        description: item.isVideo ? '🎥 Video' : '🖼 Imagen',
-        rowId: `${usedPrefix}pinselect ${i}`
-      }))
-    }]
-
-    await conn.sendMessage(m.chat, {
-      text: `🔍 Resultados para: *${text}*\n\nElige uno:`,
-      footer: 'Pinterest Downloader',
-      title: '📌 Pinterest',
-      buttonText: 'Ver resultados',
-      sections
-    }, { quoted: m })
+    // Enviar preview de los primeros 5 resultados directamente
+    for (let i = 0; i < Math.min(5, results.length); i++) {
+      const item = results[i]
+      
+      try {
+        if (item.isVideo) {
+          await conn.sendMessage(m.chat, {
+            video: { url: item.url },
+            caption: `📌 ${i + 1}. ${item.title || 'Video de Pinterest'}\n\nUsa ${usedPrefix}pinselect ${i} para reenviar`
+          }, { quoted: m })
+        } else {
+          await conn.sendMessage(m.chat, {
+            image: { url: item.url },
+            caption: `📌 ${i + 1}. ${item.title || 'Imagen de Pinterest'}\n\nUsa ${usedPrefix}pinselect ${i} para reenviar`
+          }, { quoted: m })
+        }
+        // Delay para no saturar
+        await new Promise(r => setTimeout(r, 1000))
+      } catch (err) {
+        console.log(`Error enviando item ${i}:`, err.message)
+      }
+    }
 
     await m.react('✅')
 
   } catch (e) {
     console.error(e)
     await m.react('❌')
-    m.reply('⚠️ Error al buscar en Pinterest.')
+    m.reply('⚠️ Error al buscar. Intenta más tarde.')
   }
 }
 
@@ -53,29 +59,33 @@ handler.group = true
 export default handler
 
 // ==========================
-// COMANDO PARA SELECCIONAR
+// COMANDO PARA SELECCIONAR (REENVÍO)
 // ==========================
 let handlerSelect = async (m, { conn, args }) => {
   let data = conn.pinterestResults?.[m.sender]
-  if (!data) return m.reply('❌ No hay resultados activos.')
+  if (!data) return m.reply('❌ No hay resultados activos. Busca primero con .pinterest')
 
   let index = parseInt(args[0])
   if (isNaN(index) || !data[index]) {
-    return m.reply('❌ Opción inválida.')
+    return m.reply('❌ Opción inválida. Usa un número del 0 al ' + (data.length - 1))
   }
 
   let item = data[index]
 
-  if (item.isVideo) {
-    await conn.sendMessage(m.chat, {
-      video: { url: item.url },
-      caption: '📌 Pinterest Video'
-    }, { quoted: m })
-  } else {
-    await conn.sendMessage(m.chat, {
-      image: { url: item.url },
-      caption: '📌 Pinterest Imagen'
-    }, { quoted: m })
+  try {
+    if (item.isVideo) {
+      await conn.sendMessage(m.chat, {
+        video: { url: item.url },
+        caption: '📌 Pinterest Video'
+      }, { quoted: m })
+    } else {
+      await conn.sendMessage(m.chat, {
+        image: { url: item.url },
+        caption: '📌 Pinterest Imagen'
+      }, { quoted: m })
+    }
+  } catch (err) {
+    m.reply('❌ Error al reenviar el archivo')
   }
 }
 
@@ -83,79 +93,98 @@ handlerSelect.command = ['pinselect']
 export { handlerSelect }
 
 // ==========================
-// BUSCADOR CORREGIDO
+// BUSCADOR V2 - Usando servicios alternativos
 // ==========================
-async function pinterestSearch(query) {
+async function pinterestSearchV2(query) {
   try {
-    // ✅ URL sin espacios, estructura correcta
-    const params = {
-      source_url: `/search/pins/?q=${encodeURIComponent(query)}`,
-      data: JSON.stringify({
-        options: {
-          isPrefetch: false,
-          query: query,
-          scope: "pins",
-          no_fetch_context_on_resource: false
+    // Método 1: Intentar con pinterestdownloader.io API
+    try {
+      const response = await axios.get(`https://pinterestdownloader.io/api/v1/search`, {
+        params: { q: query, limit: 10 },
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+          'Accept': 'application/json'
         },
-        context: {}
-      }),
-      _: Date.now()
+        timeout: 10000
+      })
+      
+      if (response.data?.results?.length) {
+        return response.data.results.map(item => ({
+          url: item.url,
+          isVideo: item.type === 'video',
+          title: item.title || query
+        }))
+      }
+    } catch (e) {
+      console.log('Método 1 falló:', e.message)
     }
 
-    const url = `https://www.pinterest.com/resource/BaseSearchResource/get/?` + 
-      Object.entries(params)
-        .map(([k, v]) => `${k}=${encodeURIComponent(v)}`)
-        .join('&')
-
-    const { data } = await axios.get(url, {
+    // Método 2: Usar scraping vía RapidAPI (necesitarías API key)
+    // Descomenta y configura si tienes RapidAPI
+    /*
+    const rapidApiResponse = await axios.get('https://pinterest-scraper-api.p.rapidapi.com/search', {
+      params: { query: query, limit: '10' },
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept': 'application/json, text/javascript, */*; q=0.01',
-        'Accept-Language': 'en-US,en;q=0.9',
-        'Referer': 'https://www.pinterest.com/',
-        'X-Requested-With': 'XMLHttpRequest'
+        'X-RapidAPI-Key': 'TU_API_KEY_AQUI',
+        'X-RapidAPI-Host': 'pinterest-scraper-api.p.rapidapi.com'
+      }
+    })
+    */
+
+    // Método 3: Fallback a scraping básico de página de búsqueda (más propenso a bloqueos pero funciona temporalmente)
+    const searchUrl = `https://www.pinterest.com/search/pins/?q=${encodeURIComponent(query)}&rs=typed`
+    
+    const { data: html } = await axios.get(searchUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.5',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'DNT': '1',
+        'Connection': 'keep-alive',
+        'Upgrade-Insecure-Requests': '1',
+        'Sec-Fetch-Dest': 'document',
+        'Sec-Fetch-Mode': 'navigate',
+        'Sec-Fetch-Site': 'none',
+        'Cache-Control': 'max-age=0'
       },
       timeout: 15000
     })
 
-    let res = []
-
-    // ✅ Verificación más segura de la respuesta
-    const results = data?.resource_response?.data?.results || []
+    // Extraer URLs de imágenes del HTML usando regex (método alternativo ya que no tenemos cheerio)
+    const results = []
+    const pinRegex = /"url":"(https:\/\/i\.pinimg\.com\/[^"]+)"/g
+    const videoRegex = /"V_720P":\{"url":"([^"]+)"/g
     
-    results.forEach(v => {
-      // Videos
-      if (v?.videos?.video_list) {
-        const videoQualities = ['V_720P', 'V_480P', 'V_360P', 'V_HLSV4']
-        for (const quality of videoQualities) {
-          if (v.videos.video_list[quality]?.url) {
-            res.push({
-              url: v.videos.video_list[quality].url,
-              isVideo: true,
-              title: v.title || query
-            })
-            break
-          }
-        }
-      } 
-      // Imágenes
-      else if (v?.images?.orig?.url) {
-        res.push({
-          url: v.images.orig.url,
-          isVideo: false,
-          title: v.title || query
+    let match
+    
+    // Buscar videos primero (mejor calidad)
+    while ((match = videoRegex.exec(html)) !== null) {
+      if (!results.find(r => r.url === match[1])) {
+        results.push({
+          url: match[1].replace(/\\u002F/g, '/'),
+          isVideo: true,
+          title: query
         })
       }
-    })
+    }
+    
+    // Buscar imágenes
+    while ((match = pinRegex.exec(html)) !== null) {
+      const cleanUrl = match[1].replace(/\\u002F/g, '/')
+      if (!results.find(r => r.url === cleanUrl) && results.length < 15) {
+        results.push({
+          url: cleanUrl,
+          isVideo: false,
+          title: query
+        })
+      }
+    }
 
-    return res.slice(0, 15)
+    return results.slice(0, 10)
 
   } catch (error) {
-    console.error('Pinterest Search Error:', error.message)
-    if (error.response) {
-      console.error('Status:', error.response.status)
-      console.error('Data:', error.response.data)
-    }
+    console.error('Error en pinterestSearchV2:', error.message)
     return []
   }
 }
