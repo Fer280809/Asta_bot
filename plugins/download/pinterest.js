@@ -3,19 +3,21 @@ import { pinterestSearch } from '../lib/pinterest.js'
 let handler = async (m,{ conn,text,usedPrefix,command })=>{
 
 if(!text){
+
 return m.reply(`❀ Escribe qué buscar en Pinterest
 
 Ejemplo:
 ${usedPrefix+command} paisajes`)
+
 }
 
 try{
 
 await m.react('🕒')
 
-const results = await pinterestSearch(text,10)
+let results = await pinterestSearch(text,10)
 
-if(!results.length){
+if(!results || !results.length){
 
 await m.react('❌')
 
@@ -23,9 +25,25 @@ return m.reply('❌ No se encontraron resultados.')
 
 }
 
-const url = results[Math.floor(Math.random()*results.length)]
+let urls = results
+.map(v => typeof v === 'string' ? v : v?.url || v?.image)
+.filter(Boolean)
 
-await conn.sendMessage(m.chat,{
+if(!urls.length){
+
+await m.react('❌')
+
+return m.reply('❌ Pinterest no devolvió imágenes.')
+
+}
+
+let url = urls[Math.floor(Math.random()*urls.length)]
+
+await conn.sendMessage(
+
+m.chat,
+
+{
 
 image:{ url },
 
@@ -35,7 +53,11 @@ caption:
 '╭─ Enlace\n'+
 `╰› ${url}`
 
-},{ quoted:m })
+},
+
+{ quoted:m }
+
+)
 
 await m.react('✅')
 
