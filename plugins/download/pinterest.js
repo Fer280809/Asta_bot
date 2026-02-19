@@ -10,15 +10,15 @@ Ejemplo:
 ${usedPrefix + command} paisajes`)
 }
 
-await m.react('🕒')
+await m.react?.('🕒')
 
 try {
 
 let results = await pinterestSearch(text, 10)
 
-if (!results || results.length === 0) {
+if (!results.length) {
 
-await m.react('❌')
+await m.react?.('❌')
 return m.reply('❌ No se encontraron resultados.')
 }
 
@@ -27,20 +27,19 @@ let url = results[Math.floor(Math.random() * results.length)]
 await conn.sendMessage(m.chat, {
 
 image: { url },
-
 caption:
 '꒰ ❀ ꒱ ─ Pinterest ─ ꒰ ❀ ꒱\n' +
 `Búsqueda › ${text}`
 
 }, { quoted: m })
 
-await m.react('✅')
+await m.react?.('✅')
 
 } catch (e) {
 
 console.log(e)
 
-await m.react('❌')
+await m.react?.('❌')
 
 m.reply('❌ Error al buscar en Pinterest.')
 
