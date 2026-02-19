@@ -1,123 +1,135 @@
 import axios from 'axios'
 import cheerio from 'cheerio'
 
-let handler = async (m, { conn, text, usedPrefix, command }) => {
-  if (!text) {
-    return m.reply(`❀ Escribe qué buscar en Pinterest\nEjemplo:\n${usedPrefix}${command} paisajes`)
-  }
+async function pinterestSearch(query) {
+try {
 
-  try {
-    await m.react('🕒')
+const url = `https://www.pinterest.com/search/pins/?q=${encodeURIComponent(query)}`
 
-    const results = await pinterestSearch(text)
+const { data } = await axios.get(url, {
+headers: {
+'User-Agent':
+'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+}
+})
 
-    if (!results.length) {
-      return m.reply('❌ No se encontraron resultados.')
-    }
+const $ = cheerio.load(data)
 
-    // Guardar resultados temporalmente
-    conn.pinterestResults ??= {}
-    conn.pinterestResults[m.sender] = results
+let results = []
 
-    // Crear lista
-    let sections = [{
-      title: '📌 Resultados de Pinterest',
-      rows: results.slice(0, 10).map((item, i) => ({
-        title: `Resultado ${i + 1}`,
-        description: item.isVideo ? '🎥 Video' : '🖼 Imagen',
-        rowId: `${usedPrefix}pinselect ${i}`
-      }))
-    }]
+$('img').each((_, el) => {
 
-    await conn.sendMessage(m.chat, {
-      text: `🔍 Resultados para: *${text}*\n\nElige uno:`,
-      footer: 'Pinterest Downloader',
-      title: '📌 Pinterest',
-      buttonText: 'Ver resultados',
-      sections
-    }, { quoted: m })
+let img = $(el).attr('src')
 
-    await m.react('✅')
+if (!img) return
 
-  } catch (e) {
-    console.error(e)
-    await m.react('❌')
-    m.reply('⚠️ Error al buscar en Pinterest.')
-  }
+if (
+img.includes('236x') ||
+img.includes('474x') ||
+img.includes('originals')
+) {
+
+results.push({
+url: img.replace(/236x|474x/, 'originals'),
+isVideo: false
+})
+
 }
 
-handler.help = ['pinterest <búsqueda>']
-handler.tags = ['download']
-handler.command = ['pinterest', 'pin']
-handler.group = true
+})
+
+return [...new Map(results.map(v => [v.url, v])).values()].slice(0,10)
+
+}catch{
+return []
+}
+}
+
+let handler = async (m,{ conn,text,usedPrefix,command })=>{
+
+if(!text){
+return m.reply(`❀ Escribe qué buscar en Pinterest
+
+Ejemplo:
+${usedPrefix+command} paisajes`)
+}
+
+try{
+
+await m.react('🕒')
+
+const results = await pinterestSearch(text)
+
+if(!results.length){
+await m.react('❌')
+return m.reply('❌ No se encontraron resultados.')
+}
+
+conn.pinterestResults ??= {}
+
+conn.pinterestResults[m.sender] = results
+
+let sections=[{
+title:'📌 Resultados de Pinterest',
+rows:results.map((item,i)=>({
+title:`Resultado ${i+1}`,
+description:'🖼 Imagen',
+rowId:`${usedPrefix}pinselect ${i}`
+}))
+}]
+
+await conn.sendMessage(m.chat,{
+text:`🔎 Resultados para:
+
+✧ ${text}
+
+Selecciona uno:`,
+footer:'Pinterest Downloader',
+title:'📌 Pinterest',
+buttonText:'Ver resultados',
+sections
+},{ quoted:m })
+
+await m.react('✅')
+
+}catch{
+
+await m.react('❌')
+
+m.reply('⚠️ Error al buscar en Pinterest.')
+
+}
+
+}
+
+handler.help=['pinterest <texto>']
+handler.tags=['download']
+handler.command=['pinterest','pin']
+handler.group=true
 
 export default handler
 
-// ==========================
-// COMANDO PARA SELECCIONAR
-// ==========================
-let handlerSelect = async (m, { conn, args }) => {
-  let data = conn.pinterestResults?.[m.sender]
-  if (!data) return m.reply('❌ No hay resultados activos.')
+let handlerSelect = async (m,{ conn,args })=>{
 
-  let index = parseInt(args[0])
-  if (isNaN(index) || !data[index]) {
-    return m.reply('❌ Opción inválida.')
-  }
+let data=conn.pinterestResults?.[m.sender]
 
-  let item = data[index]
+if(!data) return m.reply('❌ No hay resultados activos.')
 
-  if (item.isVideo) {
-    await conn.sendMessage(m.chat, {
-      video: { url: item.url },
-      caption: '📌 Pinterest Video'
-    }, { quoted: m })
-  } else {
-    await conn.sendMessage(m.chat, {
-      image: { url: item.url },
-      caption: '📌 Pinterest Imagen'
-    }, { quoted: m })
-  }
+let index=Number(args[0])
+
+if(isNaN(index)||!data[index]){
+return m.reply('❌ Opción inválida.')
 }
 
-handlerSelect.command = ['pinselect']
+let item=data[index]
+
+await conn.sendMessage(m.chat,{
+image:{ url:item.url },
+caption:'📌 Pinterest Imagen'
+},{ quoted:m })
+
+}
+
+handlerSelect.command=['pinselect']
+
 export { handlerSelect }
-
-// ==========================
-// BUSCADOR
-// ==========================
-async function pinterestSearch(query) {
-  try {
-    const url = `https://www.pinterest.com/resource/BaseSearchResource/get/?data=${encodeURIComponent(JSON.stringify({
-      options: { query, scope: "pins" },
-      context: {}
-    }))}`
-
-    const { data } = await axios.get(url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0',
-        'X-Requested-With': 'XMLHttpRequest'
-      }
-    })
-
-    let res = []
-
-    data.resource_response?.data?.results?.forEach(v => {
-      if (v.videos?.video_list?.V_720P) {
-        res.push({
-          url: v.videos.video_list.V_720P.url,
-          isVideo: true
-        })
-      } else if (v.images?.orig?.url) {
-        res.push({
-          url: v.images.orig.url,
-          isVideo: false
-        })
-      }
-    })
-
-    return res.slice(0, 10)
-  } catch {
-    return []
-  }
-}
