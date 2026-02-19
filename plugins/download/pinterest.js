@@ -1,4 +1,4 @@
-import { pinterestSearch } from '../lib/pinterest.js'
+import { pinterestSearch } from '../../lib/pinterest.js'
 
 let handler = async (m,{ conn,text,usedPrefix,command })=>{
 
@@ -7,7 +7,7 @@ if(!text){
 return m.reply(`❀ Escribe qué buscar
 
 Ejemplo:
-${usedPrefix+command} paisajes`)
+${usedPrefix + command} paisajes`)
 
 }
 
@@ -15,7 +15,7 @@ await m.react('🕒')
 
 let results = await pinterestSearch(text,10)
 
-if(!results.length){
+if(!results || !results.length){
 
 await m.react('❌')
 
