@@ -1,5 +1,10 @@
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '1'
 
+// ========== SISTEMA DE VALIDACIÓN DE CRÉDITOS ==========
+// ⚠️  IMPORTANCIA CRÍTICA: NO REMOVER ESTA SECCIÓN
+import { validateCredits, startCreditsMonitoring } from './lib/credits.js'
+await validateCredits() // Validar credenciales al iniciar
+
 // ========== IMPORTS PRINCIPALES ==========
 import './settings.js'
 import './plugins/funciones/_allfake.js'
@@ -208,6 +213,10 @@ async function connectionUpdate(update) {
     console.log(chalk.cyan(`👤 ${userName}`))
     console.log(chalk.cyan(`📱 ${conn.user.id.split(':')[0]}`))
     console.log(chalk.gray(`🕐 ${new Date().toLocaleString('es-MX')}\n`))
+    
+    // ============= INICIAR MONITOREO DE CRÉDITOS =============
+    // Verificar créditos cada 30 minutos para detectar tampering
+    startCreditsMonitoring()
   }
   
   if (connection === "close") {
