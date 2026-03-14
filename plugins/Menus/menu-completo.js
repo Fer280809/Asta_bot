@@ -1,0 +1,257 @@
+import fs from 'fs'
+import path from 'path'
+import fetch from 'node-fetch'
+
+let handler = async (m, { conn, args }) => {
+  // ========== SISTEMA DE INFO Y CONFIG SUBBOT ==========
+  const totalUsers = Object.keys(global.db?.data?.users || {}).length || 0
+  const totalCommands = Object.values(global.plugins || {}).filter(v => v.help && v.tags).length || 0
+  const isSubBot = conn.user?.jid !== global.conn?.user?.jid
+  const botConfig = conn.subConfig || {}
+
+  const botName = botConfig.name || global.botname || 'ᴀsᴛᴀ-ʙᴏᴛ'
+  const botPrefix = isSubBot ? (botConfig.prefix || '#') : (global.prefix?.source?.replace(/[^#!./-]/g, '') || '#')
+  const botMode = isSubBot ? (botConfig.mode || 'public') : 'private'
+  const version = global.vs || '1.5'
+
+  let _uptime = process.uptime() * 1000
+  let uptime = clockString(_uptime)
+
+  let mentionedJid = await m.mentionedJid
+  let userId = mentionedJid && mentionedJid[0] ? mentionedJid[0] : m.sender
+  
+  // ========== TEXTO COMPLETO ==========
+  let txt = `> . ﹡ ﹟ 🎭 ׄ ⬭ *¡ʜᴏʟᴀ!* @${userId.split('@')[0]}
+
+*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜⚡* ㅤ֢ㅤ⸱ㅤᯭִ*
+ㅤ𓏸𓈒ㅤׄ *sᴏʏ* :: *${botName.toUpperCase()}*
+ׅㅤ𓏸𓈒ㅤׄ *ᴛʏᴘᴇ* :: ${isSubBot ? '𝗦𝘂𝗯-𝗕𝗼𝘁 🅑' : '𝗣𝗿𝗶𝗻𝗰𝗶𝗽𝗮𝗹 🅥'}
+ׅㅤ𓏸𓈒ㅤׄ *ᴅᴇᴠᴇʟᴏᴘᴇʀ* :: ${global.etiqueta || '𝕱𝖊𝖗𝖓𝖆𝖓𝖉𝖔 👑'}
+ׅㅤ𓏸𓈒ㅤׄ *ᴠᴇʀsɪᴏ́ɴ* :: ${version}
+ׅㅤ𓏸𓈒ㅤׄ *sᴇʀᴠɪᴅᴏʀ* :: México 🇲🇽 
+ׅㅤ𓏸𓈒ㅤׄ *ᴜᴘᴛɪᴍᴇ* :: ${uptime}
+
+> ## \`𝖨𝖭𝖥𝖮𝖱𝖬𝖠𝖢𝖨𝖮́𝖭 ⚔️\`
+
+ׅㅤ𓏸𓈒ㅤׄ *ᴘʀᴇғɪᴊᴏ* :: ${botPrefix} 
+ׅㅤ𓏸𓈒ㅤׄ *ᴄᴏᴍᴀɴᴅᴏs* :: ${totalCommands}   
+ׅㅤ𓏸𓈒ㅤׄ *ᴍᴏᴅᴏ* :: ${botMode === 'private' ? '𝗣𝗿𝗶𝘃𝗮𝗱𝗼 🔐' : '𝗣𝘂́𝗯𝗹𝗶ᴄᴏ 🔓'}
+ׅㅤ𓏸𓈒ㅤׄ *ᴜsᴜᴀʀɪᴏs* :: ${totalUsers.toLocaleString()}
+ㅤ𓏸𓈒ㅤׄ *ᴘɪɴɢ* :: ${Date.now() - m.timestamp}ms
+ׅㅤ𓏸𓈒ㅤׄ *ʟɪʙʀᴇʀɪᴀ* :: ${global.libreria || 'Baileys Multi Device'} 
+
+> ## \`𝖬𝖤𝖭𝖴 𝖢𝖮𝖬𝖯𝖫𝖤𝖳𝖮 📋\`
+
+*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜💰* ㅤ֢ㅤ⸱ㅤᯭִ* — *ᴇᴄᴏɴᴏᴍɪ́ᴀ*
+ׅㅤ𓏸𓈒ㅤׄ *#work* :: ᴛʀᴀʙᴀᴊᴀʀ ʏ ɢᴀɴᴀʀ ᴄᴏɪɴs
+ׅㅤ𓏸𓈒ㅤׄ *#slut* :: ɢᴀɴᴀʀ ᴄᴏɪɴs ʀᴀ́ᴘɪᴅᴏ
+ׅㅤ𓏸𓈒ㅤׄ *#crime* :: ᴄᴏᴍᴇᴛᴇʀ ᴄʀɪᴍᴇɴ
+ׅㅤ𓏸𓈒ㅤׄ *#coinflip* :: ᴀᴘᴏsᴛᴀʀ ᴄᴀʀᴀ/ᴄʀᴜᴢ
+ׅㅤ𓏸𓈒ㅤׄ *#roulette* :: ʀᴜʟᴇᴛᴀ ʀᴇᴅ/ʙʟᴀᴄᴋ
+ׅㅤ𓏸𓈒ㅤׄ *#casino* :: ᴛʀᴀɢᴀᴍᴏɴᴇᴅᴀs
+ׅㅤ𓏸𓈒ㅤׄ *#balance* :: ᴠᴇʀ ᴛᴜ ᴅɪɴᴇʀᴏ
+ׅㅤ𓏸𓈒ㅤׄ *#deposit* :: ᴅᴇᴘᴏsɪᴛᴀʀ ᴀʟ ʙᴀɴᴄᴏ
+ׅㅤ𓏸𓈒ㅤׄ *#withdraw* :: ʀᴇᴛɪʀᴀʀ ᴅᴇʟ ʙᴀɴᴄᴏ
+ׅㅤ𓏸𓈒ㅤׄ *#daily* :: ʀᴇᴄᴏᴍᴘᴇɴsᴀ ᴅɪᴀʀɪᴀ
+ׅㅤ𓏸𓈒ㅤׄ *#weekly* :: ʀᴇᴄᴏᴍᴘᴇɴsᴀ sᴇᴍᴀɴᴀʟ
+ׅㅤ𓏸𓈒ㅤׄ *#rob* :: ʀᴏʙᴀʀ ᴀ ᴜɴ ᴜsᴜᴀʀɪᴏ
+ׅㅤ𓏸𓈒ㅤׄ *#adventure* :: ᴀᴠᴇɴᴛᴜʀᴀs
+ׅㅤ𓏸𓈒ㅤׄ *#hunt* :: ᴄᴀᴢᴀʀ ᴀɴɪᴍᴀʟᴇs
+ׅㅤ𓏸𓈒ㅤׄ *#fish* :: ᴘᴇsᴄᴀʀ
+ׅㅤ𓏸𓈒ㅤׄ *#dungeon* :: ᴇxᴘʟᴏʀᴀʀ ᴍᴀᴢᴍᴏʀʀᴀs
+ׅㅤ𓏸𓈒ㅤׄ *#tienda* :: ᴛɪᴇɴᴅᴀ ᴅᴇ ɪᴛᴇᴍs
+
+*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜🎴* ㅤ֢ㅤ⸱ㅤᯭִ* — *ɢᴀᴄʜᴀ*
+ׅㅤ𓏸𓈒ㅤׄ *#rollwaifu* :: ɪɴᴠᴏᴄᴀʀ ᴡᴀɪғᴜ
+ׅㅤ𓏸𓈒ㅤׄ *#claim* :: ʀᴇᴄʟᴀᴍᴀʀ ᴘᴇʀsᴏɴᴀᴊᴇ
+ׅㅤ𓏸𓈒ㅤׄ *#harem* :: ᴠᴇʀ ᴄᴏʟᴇᴄᴄɪᴏ́ɴ
+ׅㅤ𓏸𓈒ㅤׄ *#charinfo* :: ɪɴғᴏ ᴘᴇʀsᴏɴᴀᴊᴇ
+ׅㅤ𓏸𓈒ㅤׄ *#givechar* :: ʀᴇɢᴀʟᴀʀ ᴘᴇʀsᴏɴᴀᴊᴇ
+ׅㅤ𓏸𓈒ㅤׄ *#sell* :: ᴠᴇɴᴅᴇʀ ᴡᴀɪғᴜ
+ׅㅤ𓏸𓈒ㅤׄ *#buychar* :: ᴄᴏᴍᴘʀᴀʀ ᴡᴀɪғᴜ
+ׅㅤ𓏸𓈒ㅤׄ *#trade* :: ɪɴᴛᴇʀᴄᴀᴍʙɪᴀʀ
+ׅㅤ𓏸𓈒ㅤׄ *#robwaifu* :: ʀᴏʙᴀʀ ᴡᴀɪғᴜ
+ׅㅤ𓏸𓈒ㅤׄ *#vote* :: ᴠᴏᴛᴀʀ ᴘᴇʀsᴏɴᴀᴊᴇ
+ׅㅤ𓏸𓈒ㅤׄ *#waifustop* :: ᴛᴏᴘ ᴡᴀɪғᴜs
+ׅㅤ𓏸𓈒ㅤׄ *#favtop* :: ᴛᴏᴘ ғᴀᴠᴏʀɪᴛᴏs
+ׅㅤ𓏸𓈒ㅤׄ *#serieinfo* :: ɪɴғᴏ ᴀɴɪᴍᴇ
+ׅㅤ𓏸𓈒ㅤׄ *#animelist* :: ʟɪsᴛᴀ ᴅᴇ sᴇʀɪᴇs
+
+*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜📥* ㅤ֢ㅤ⸱ㅤᯭִ* — *ᴅᴇsᴄᴀʀɢᴀs*
+ׅㅤ𓏸𓈒ㅤׄ *#play* :: ᴅᴇsᴄᴀʀɢᴀʀ ᴄᴀɴᴄɪᴏ́ɴ/ᴠɪᴅᴇᴏ
+ׅㅤ𓏸𓈒ㅤׄ *#tiktok* :: ᴅᴇsᴄᴀʀɢᴀʀ ᴛɪᴋᴛᴏᴋ
+ׅㅤ𓏸𓈒ㅤׄ *#mediafire* :: ᴅᴇsᴄᴀʀɢᴀʀ ᴍᴇᴅɪᴀғɪʀᴇ
+ׅㅤ𓏸𓈒ㅤׄ *#mega* :: ᴅᴇsᴄᴀʀɢᴀʀ ᴍᴇɢᴀ
+ׅㅤ𓏸𓈒ㅤׄ *#facebook* :: ᴅᴇsᴄᴀʀɢᴀʀ ғʙ
+ׅㅤ𓏸𓈒ㅤׄ *#twitter* :: ᴅᴇsᴄᴀʀɢᴀʀ x/ᴛᴡɪᴛᴛᴇʀ
+ׅㅤ𓏸𓈒ㅤׄ *#instagram* :: ᴅᴇsᴄᴀʀɢᴀʀ ɪɢ
+ׅㅤ𓏸𓈒ㅤׄ *#pinterest* :: ʙᴜsᴄᴀʀ ɪᴍᴀ́ɢᴇɴᴇs
+ׅㅤ𓏸𓈒ㅤׄ *#apk* :: ᴅᴇsᴄᴀʀɢᴀʀ ᴀᴘᴋs
+ׅㅤ𓏸𓈒ㅤׄ *#ytmp3* :: ᴏ́ɴʟʏ ᴀᴜᴅɪᴏ ʏᴛ
+ׅㅤ𓏸𓈒ㅤׄ *#ytmp4* :: ᴏ́ɴʟʏ ᴠɪᴅᴇᴏ ʏᴛ
+ׅㅤ𓏸𓈒ㅤׄ *#ytmp3doc* :: ᴀᴜᴅɪᴏ ᴅᴏᴄᴜᴍᴇɴᴛᴏ
+ׅㅤ𓏸𓈒ㅤׄ *#ytmp4doc* :: ᴠɪᴅᴇᴏ ᴅᴏᴄᴜᴍᴇɴᴛᴏ
+
+*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜🛠️* ㅤ֢ㅤ⸱ㅤᯭִ* — *ᴜᴛɪʟɪᴅᴀᴅᴇs*
+ׅㅤ𓏸𓈒ㅤׄ *#sticker* :: ᴄʀᴇᴀʀ sᴛɪᴄᴋᴇʀ
+ׅㅤ𓏸𓈒ㅤׄ *#toimg* :: sᴛɪᴄᴋᴇʀ ᴀ ɪᴍɢ
+ׅㅤ𓏸𓈒ㅤׄ *#brat* :: sᴛɪᴄᴋᴇʀ ᴄᴏɴ ᴛᴇxᴛᴏ
+ׅㅤ𓏸𓈒ㅤׄ *#enhance* :: ᴍᴇᴊᴏʀᴀʀ ɪᴍɢ
+ׅㅤ𓏸𓈒ㅤׄ *#translate* :: ᴛʀᴀᴅᴜᴄɪʀ ᴛᴇxᴛᴏ
+ׅㅤ𓏸𓈒ㅤׄ *#ia* :: ᴘʀᴇɢᴜɴᴛᴀʀ ᴀ ɪᴀ
+ׅㅤ𓏸𓈒ㅤׄ *#dalle* :: ɢᴇɴᴇʀᴀʀ ɪᴍᴀ́ɢᴇɴ
+ׅㅤ𓏸𓈒ㅤׄ *#tourl* :: sᴜʙɪʀ ᴀ ᴜʀʟ
+ׅㅤ𓏸𓈒ㅤׄ *#ssweb* :: ᴄᴀᴘᴛᴜʀᴀ ᴡᴇʙ
+ׅㅤ𓏸𓈒ㅤׄ *#calcular* :: ᴄᴀʟᴄᴜʟᴀᴅᴏʀᴀ
+
+*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜👥* ㅤ֢ㅤ⸱ㅤᯭִ* — *ɢʀᴜᴘᴏs*
+ׅㅤ𓏸𓈒ㅤׄ *#tag* :: ᴍᴇɴᴄɪᴏɴᴀʀ ᴀ ᴛᴏᴅᴏs
+ׅㅤ𓏸𓈒ㅤׄ *#antilink* :: ᴀɴᴛɪᴇɴʟᴀᴄᴇ ᴏɴ/ᴏғғ
+ׅㅤ𓏸𓈒ㅤׄ *#welcome* :: ʙɪᴇɴᴠᴇɴɪᴅᴀ ᴏɴ/ᴏғғ
+ׅㅤ𓏸𓈒ㅤׄ *#detect* :: ᴀʟᴇʀᴛᴀs ᴏɴ/ᴏғғ
+ׅㅤ𓏸𓈒ㅤׄ *#bot* :: ʙᴏᴛ ᴏɴ/ᴏғғ
+ׅㅤ𓏸𓈒ㅤׄ *#economy* :: ᴇᴄᴏɴᴏᴍɪ́ᴀ ᴏɴ/ᴏғғ
+ׅㅤ𓏸𓈒ㅤׄ *#gacha* :: ɢᴀᴄʜᴀ ᴏɴ/ᴏғғ
+ׅㅤ𓏸𓈒ㅤׄ *#promote* :: ᴀsᴄᴇɴᴅᴇʀ ᴀᴅᴍɪɴ
+ׅㅤ𓏸𓈒ㅤׄ *#demote* :: ᴅᴇsᴄᴇɴᴅᴇʀ ᴀᴅᴍɪɴ
+ׅㅤ𓏸𓈒ㅤׄ *#kick* :: ᴇxᴘᴜʟsᴀʀ ᴜsᴜᴀʀɪᴏ
+ׅㅤ𓏸𓈒ㅤׄ *#add* :: ᴀɢʀᴇɢᴀʀ ᴜsᴜᴀʀɪᴏ
+ׅㅤ𓏸𓈒ㅤׄ *#close* :: ᴄᴇʀʀᴀʀ ɢʀᴜᴘᴏ
+ׅㅤ𓏸𓈒ㅤׄ *#open* :: ᴀʙʀɪʀ ɢʀᴜᴘᴏ
+ׅㅤ𓏸𓈒ㅤׄ *#setwelcome* :: ᴍsᴊ ʙɪᴇɴᴠᴇɴɪᴅᴀ
+ׅㅤ𓏸𓈒ㅤׄ *#setbye* :: ᴍsᴊ ᴅᴇsᴘᴇᴅɪᴅᴀ
+ׅㅤ𓏸𓈒ㅤׄ *#link* :: ʟɪɴᴋ ᴅᴇʟ ɢʀᴜᴘᴏ
+ׅㅤ𓏸𓈒ㅤׄ *#warn* :: ᴀᴅᴠᴇʀᴛɪʀ ᴜsᴜᴀʀɪᴏ
+ׅㅤ𓏸𓈒ㅤׄ *#unwarn* :: ǫᴜɪᴛᴀʀ ᴀᴅᴠᴇʀᴛᴇɴᴄɪᴀ
+ׅㅤ𓏸𓈒ㅤׄ *#advlist* :: ʟɪsᴛᴀ ᴅᴇ ᴀᴅᴠᴇʀᴛɪᴅᴏs
+ׅㅤ𓏸𓈒ㅤׄ *#inactivos* :: ᴠᴇʀ ɪɴᴀᴄᴛɪᴠᴏs
+ׅㅤ𓏸𓈒ㅤׄ *#gpname* :: ᴄᴀᴍʙɪᴀʀ ɴᴏᴍʙʀᴇ
+ׅㅤ𓏸𓈒ㅤׄ *#gpdesc* :: ᴄᴀᴍʙɪᴀʀ ᴅᴇsᴄʀɪᴘᴄɪᴏ́ɴ
+ׅㅤ𓏸𓈒ㅤׄ *#gpbanner* :: ᴄᴀᴍʙɪᴀʀ ɪᴍᴀɢᴇɴ
+ׅㅤ𓏸𓈒ㅤׄ *#infogrupo* :: ɪɴғᴏ ᴅᴇʟ ɢʀᴜᴘᴏ
+
+*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜👤* ㅤ֢ㅤ⸱ㅤᯭִ* — *ᴘᴇʀғɪʟ*
+ׅㅤ𓏸𓈒ㅤׄ *#profile* :: ᴠᴇʀ ᴘᴇʀғɪʟ
+ׅㅤ𓏸𓈒ㅤׄ *#level* :: ᴛᴜ ɴɪᴠᴇʟ
+ׅㅤ𓏸𓈒ㅤׄ *#leaderboard* :: ʀᴀɴᴋɪɴɢ ɢʟᴏʙᴀʟ
+ׅㅤ𓏸𓈒ㅤׄ *#marry* :: ᴄᴀsᴀʀsᴇ ᴄᴏɴ ᴀʟɢᴜɪᴇɴ
+ׅㅤ𓏸𓈒ㅤׄ *#divorce* :: ᴅɪᴠᴏʀᴄɪᴀʀsᴇ
+ׅㅤ𓏸𓈒ㅤׄ *#setbirth* :: ᴘᴏɴᴇʀ ᴄᴜᴍᴘʟᴇᴀɴ̃ᴏs
+ׅㅤ𓏸𓈒ㅤׄ *#setgenre* :: ᴘᴏɴᴇʀ ɢᴇ́ɴᴇʀᴏ
+ׅㅤ𓏸𓈒ㅤׄ *#setdescription* :: ᴘᴏɴᴇʀ ᴅᴇsᴄʀɪᴘᴄɪᴏ́ɴ
+ׅㅤ𓏸𓈒ㅤׄ *#setfavourite* :: ᴘᴏɴᴇʀ ғᴀᴠᴏʀɪᴛᴏ
+ׅㅤ𓏸𓈒ㅤׄ *#prem* :: ᴄᴏᴍᴘʀᴀʀ ᴘʀᴇᴍɪᴜᴍ
+
+*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜🎌* ㅤ֢ㅤ⸱ㅤᯭִ* — *ᴀɴɪᴍᴇ*
+ׅㅤ𓏸𓈒ㅤׄ *#anime* :: ʙᴜsᴄᴀʀ ᴀɴɪᴍᴇ
+ׅㅤ𓏸𓈒ㅤׄ *#manga* :: ʙᴜsᴄᴀʀ ᴍᴀɴɢᴀ
+ׅㅤ𓏸𓈒ㅤׄ *#character* :: ʙᴜsᴄᴀʀ ᴘᴇʀsᴏɴᴀᴊᴇ
+ׅㅤ𓏸𓈒ㅤׄ *#waifu* :: ᴡᴀɪғᴜ ʀᴀɴᴅᴏᴍ
+ׅㅤ𓏸𓈒ㅤׄ *#neko* :: ɴᴇᴋᴏ ʀᴀɴᴅᴏᴍ
+ׅㅤ𓏸𓈒ㅤׄ *#shinobu* :: sʜɪɴᴏʙᴜ ʀᴀɴᴅᴏᴍ
+ׅㅤ𓏸𓈒ㅤׄ *#megumin* :: ᴍᴇɢᴜᴍɪɴ ʀᴀɴᴅᴏᴍ
+ׅㅤ𓏸𓈒ㅤׄ *#bully* :: ʙᴜʟʟʏ ɢɪғ
+ׅㅤ𓏸𓈒ㅤׄ *#cuddle* :: ᴄᴜᴅᴅʟᴇ ɢɪғ
+ׅㅤ𓏸𓈒ㅤׄ *#cry* :: ᴄʀʏ ɢɪғ
+ׅㅤ𓏸𓈒ㅤׄ *#hug* :: ʜᴜɢ ɢɪғ
+ׅㅤ𓏸𓈒ㅤׄ *#kiss* :: ᴋɪss ɢɪғ
+ׅㅤ𓏸𓈒ㅤׄ *#slap* :: sʟᴀᴘ ɢɪғ
+ׅㅤ𓏸𓈒ㅤׄ *#pat* :: ᴘᴀᴛ ɢɪғ
+ׅㅤ𓏸𓈒ㅤׄ *#ppcouple* :: ɪᴍɢ ᴘᴀʀᴇᴊᴀ
+
+*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜😂* ㅤ֢ㅤ⸱ㅤᯭִ* — *ғᴜɴ*
+ׅㅤ𓏸𓈒ㅤׄ *#meme* :: ᴍᴇᴍᴇ ʀᴀɴᴅᴏᴍ
+ׅㅤ𓏸𓈒ㅤׄ *#joke* :: ᴄʜɪsᴛᴇ
+ׅㅤ𓏸𓈒ㅤׄ *#quote* :: ғʀᴀsᴇ
+ׅㅤ𓏸𓈒ㅤׄ *#fact* :: ᴅᴀᴛᴏ ᴄᴜʀɪᴏsᴏ
+ׅㅤ𓏸𓈒ㅤׄ *#roll* :: ᴅᴀᴅᴏ 1-6
+ׅㅤ𓏸𓈒ㅤׄ *#flip* :: ᴍᴏɴᴇᴅᴀ
+ׅㅤ𓏸𓈒ㅤׄ *#8ball* :: sɪ/ɴᴏ
+
+*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜🔞* ㅤ֢ㅤ⸱ㅤᯭִ* — *ɴsғᴡ (+18)*
+ׅㅤ𓏸𓈒ㅤׄ *#menu+* :: ᴍᴇɴᴜ́ +18 ᴄᴏᴍᴘʟᴇᴛᴏ
+ׅㅤ𓏸𓈒ㅤׄ *#anal* + [@ᴍᴇɴᴄɪᴏ́ɴ]
+ׅㅤ𓏸𓈒ㅤׄ *#blowjob* + [@ᴍᴇɴᴄɪᴏ́ɴ]
+ׅㅤ𓏸𓈒ㅤׄ *#fuck* + [@ᴍᴇɴᴄɪᴏ́ɴ]
+ׅㅤ𓏸𓈒ㅤׄ *#rule34* + [ᴛᴀɢs]
+ׅㅤ𓏸𓈒ㅤׄ *#xvideos* + [ʟɪɴᴋ]
+ׅㅤ𓏸𓈒ㅤׄ *#xnxx* + [ʟɪɴᴋ]
+
+*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜🔌* ㅤ֢ㅤ⸱ㅤᯭִ* — *sᴏᴄᴋᴇᴛs*
+ׅㅤ𓏸𓈒ㅤׄ *#qr* :: ᴄʀᴇᴀʀ sᴜʙ-ʙᴏᴛ (ǫʀ)
+ׅㅤ𓏸𓈒ㅤׄ *#code* :: ᴄʀᴇᴀʀ sᴜʙ-ʙᴏᴛ (ᴄᴏᴅᴇ)
+ׅㅤ𓏸𓈒ㅤׄ *#bots* :: ʙᴏᴛs ᴀᴄᴛɪᴠᴏs
+ׅㅤ𓏸𓈒ㅤׄ *#status* :: ᴇsᴛᴀᴅᴏ ᴅᴇʟ ʙᴏᴛ
+ׅㅤ𓏸𓈒ㅤׄ *#ping* :: ᴠᴇʟᴏᴄɪᴅᴀᴅ
+ׅㅤ𓏸𓈒ㅤׄ *#join* + [ʟɪɴᴋ] :: ᴜɴɪʀ ᴀ ɢʀᴜᴘᴏ
+ׅㅤ𓏸𓈒ㅤׄ *#leave* :: sᴀʟɪʀ ᴅᴇʟ ɢʀᴜᴘᴏ
+ׅㅤ𓏸𓈒ㅤׄ *#config* :: ᴄᴏɴғɪɢᴜʀᴀʀ ʙᴏᴛ
+
+> . ﹡ ﹟ ⚡ ׄ ⬭ *ᴀsᴛᴀ-ʙᴏᴛ-ᴍᴅ*`.trim()
+
+  // ========== SISTEMA DE BANNER CON DETECCIÓN SUBBOT ==========
+  let thumbnail = null
+  
+  if (isSubBot && botConfig.logo) {
+    try {
+      const logoPath = path.resolve(botConfig.logo)
+      if (fs.existsSync(logoPath)) thumbnail = fs.readFileSync(logoPath)
+    } catch (e) {}
+  }
+
+  if (!thumbnail) {
+    let imageUrl = null
+    if (isSubBot && botConfig.logoUrl) imageUrl = botConfig.logoUrl
+    else if (global.icono) imageUrl = global.icono
+    else if (global.banner) imageUrl = global.banner
+    else imageUrl = 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgwEyPc2ZcSJLv1nKjMoNcqTD_PZl1Zk9ujraVrJSEw_efKhnurC6XGA6VOj73W-ygzfgfou1-g_3EzCX41BCiLXPvTjcIUy4BL78F9l9MuQlWAIg4E3DjO-Kx-qO-yIIhkOyeYaqDeyx8MW4EusFhzDUqID_Pk2RRUWhDfHErCquK71DBo9v4BhRjtXBNt/s736/b63bb3b9-7464-494f-937f-9aa4394cb124.jpg'
+
+    try {
+      const response = await fetch(imageUrl)
+      if (response.ok) thumbnail = await response.buffer()
+    } catch (e) {}
+  }
+
+  // ========== ENVÍO CON SISTEMA RCANAL (como _allfake.js) ==========
+  try {
+    await conn.sendMessage(m.chat, { 
+      text: txt,
+      contextInfo: {
+        mentionedJid: [userId],
+        isForwarded: true,
+        forwardedNewsletterMessageInfo: {
+          newsletterJid: global.channelRD?.id || "120363399175402285@newsletter",
+          serverMessageId: '',
+          newsletterName: global.channelRD?.name || "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』"
+        },
+        externalAdReply: {
+          title: botName,
+          body: global.dev || 'ᴘᴏᴡᴇʀᴇᴅ ʙʏ ғᴇʀɴᴀɴᴅᴏ',
+          mediaType: 1,
+          mediaUrl: global.redes || global.channel,
+          sourceUrl: global.redes || global.channel,
+          thumbnail: thumbnail || await (await fetch(global.icono)).buffer(),
+          showAdAttribution: false,
+          containsAutoReply: true,
+          renderLargerThumbnail: true
+        }
+      }
+    }, { quoted: m })
+  } catch (e) {
+    // Fallback simple si falla el sistema de canal
+    await conn.reply(m.chat, txt, m)
+  }
+}
+
+handler.help = ['menu', 'menuall', 'menú', 'allmenu', 'comandos', 'menucompleto']
+handler.tags = ['main']
+handler.command = ['menu', 'menú', 'allmenu', 'comandos', 'menucompleto', 'menuall']
+
+function clockString(ms) {
+  let seconds = Math.floor((ms / 1000) % 60)
+  let minutes = Math.floor((ms / (1000 * 60)) % 60)
+  let hours = Math.floor((ms / (1000 * 60 * 60)) % 24)
+  return `${hours}h ${minutes}m ${seconds}s`
+}
+
+export default handler
