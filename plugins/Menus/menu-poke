@@ -1,0 +1,139 @@
+// plugins/pokes/pokemenu.js
+import fs from 'fs'
+import path from 'path'
+import fetch from 'node-fetch'
+
+let handler = async (m, { conn, usedPrefix }) => {
+  // ========== SISTEMA DE INFO Y CONFIG SUBBOT ==========
+  const totalUsers = Object.keys(global.db?.data?.users || {}).length || 0
+  const totalCommands = Object.values(global.plugins || {}).filter(v => v.help && v.tags).length || 0
+  const isSubBot = conn.user?.jid !== global.conn?.user?.jid
+  const botConfig = conn.subConfig || {}
+
+  const botName = botConfig.name || global.botname || 'ᴀsᴛᴀ-ʙᴏᴛ'
+  const botPrefix = isSubBot ? (botConfig.prefix || '#') : (global.prefix?.source?.replace(/[^#!./-]/g, '') || '#')
+  const botMode = isSubBot ? (botConfig.mode || 'public') : 'private'
+  const version = global.vs || '1.5'
+
+  let _uptime = process.uptime() * 1000
+  let uptime = clockString(_uptime)
+
+  let mentionedJid = await m.mentionedJid
+  let userId = mentionedJid && mentionedJid[0] ? mentionedJid[0] : m.sender
+
+  // ========== TEXTO DEL MENÚ DE POKÉMON ==========
+  let txt = `> . ﹡ ﹟ 🎭 ׄ ⬭ *¡ʜᴏʟᴀ!* @${userId.split('@')[0]}
+
+*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜⚡* ㅤ֢ㅤ⸱ㅤᯭִ*
+ㅤ𓏸𓈒ㅤׄ *sᴏʏ* :: *${botName.toUpperCase()}*
+ׅㅤ𓏸𓈒ㅤׄ *ᴛʏᴘᴇ* :: ${isSubBot ? '𝗦𝘂𝗯-𝗕𝗼𝘁 🅑' : '𝗣𝗿𝗶𝗻𝗰𝗶𝗽𝗮𝗹 🅥'}
+ׅㅤ𓏸𓈒ㅤׄ *ᴅᴇᴠᴇʟᴏᴘᴇʀ* :: ${global.etiqueta || '𝕱𝖊𝖗𝖓𝖆𝖓𝖉𝖔 👑'}
+ׅㅤ𓏸𓈒ㅤׄ *ᴠᴇʀsɪᴏ́ɴ* :: ${version}
+ׅㅤ𓏸𓈒ㅤׄ *sᴇʀᴠɪᴅᴏʀ* :: México 🇲🇽 
+ׅㅤ𓏸𓈒ㅤׄ *ᴜᴘᴛɪᴍᴇ* :: ${uptime}
+
+> ## \`𝖨𝖭𝖥𝖮𝖱𝖬𝖠𝖢𝖨𝖮́𝖭 ⚔️\`
+
+ׅㅤ𓏸𓈒ㅤׄ *ᴘʀᴇғɪᴊᴏ* :: ${botPrefix} 
+ׅㅤ𓏸𓈒ㅤׄ *ᴄᴏᴍᴀɴᴅᴏs* :: ${totalCommands}   
+ׅㅤ𓏸𓈒ㅤׄ *ᴍᴏᴅᴏ* :: ${botMode === 'private' ? '𝗣𝗿𝗶𝘃𝗮𝗱𝗼 🔐' : '𝗣𝘂́𝗯𝗹𝗶ᴄᴏ 🔓'}
+ׅㅤ𓏸𓈒ㅤׄ *ᴜsᴜᴀʀɪᴏs* :: ${totalUsers.toLocaleString()}
+ㅤ𓏸𓈒ㅤׄ *ᴘɪɴɢ* :: ${Date.now() - m.timestamp}ms
+ׅㅤ𓏸𓈒ㅤׄ *ʟɪʙʀᴇʀɪᴀ* :: ${global.libreria || 'Baileys Multi Device'} 
+
+> ## \`𝖬𝖤𝖭𝖴 𝖯𝖮𝖪É𝖬𝖮𝖭 📋\`
+
+*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜🔥* ㅤ֢ㅤ⸱ㅤᯭִ* — *ᴄᴏᴍᴀɴᴅᴏs ᴘʀɪɴᴄɪᴘᴀʟᴇs*
+ׅㅤ𓏸𓈒ㅤׄ *${usedPrefix}pokemon* :: ᴍᴜᴇsᴛʀᴀ ᴜɴ ᴘᴏᴋéᴍᴏɴ ᴀʟᴇᴀᴛᴏʀɪᴏ ᴘᴀʀᴀ ᴀᴛʀᴀᴘᴀʀ
+ׅㅤ𓏸𓈒ㅤׄ *${usedPrefix}atrapar* :: ᴀᴛʀᴀᴘᴀ ᴇʟ ᴘᴏᴋéᴍᴏɴ ᴍᴏsᴛʀᴀᴅᴏ (ʀᴇsᴘᴏɴᴅɪᴇɴᴅᴏ ᴀʟ ᴍᴇɴsᴀᴊᴇ)
+ׅㅤ𓏸𓈒ㅤׄ *${usedPrefix}harempokes* :: ᴠᴇʀ ᴛᴜ ᴄᴏʟᴇᴄᴄɪóɴ ᴅᴇ ᴘᴏᴋéᴍᴏɴᴇs
+ׅㅤ𓏸𓈒ㅤׄ *${usedPrefix}historial* :: ᴠᴇʀ ʜɪsᴛᴏʀɪᴀʟ ᴅᴇ ʙᴀᴛᴀʟʟᴀs ᴅᴇ ᴛᴜs ᴘᴏᴋéᴍᴏɴᴇs
+ׅㅤ𓏸𓈒ㅤׄ *${usedPrefix}pokeinfo* :: ɪɴғᴏʀᴍᴀᴄɪóɴ ᴅᴇᴛᴀʟʟᴀᴅᴀ ᴅᴇ ᴜɴ ᴘᴏᴋéᴍᴏɴ
+ׅㅤ𓏸𓈒ㅤׄ *${usedPrefix}pinfo* :: ᴠᴇʀ ᴛᴜs ᴇsᴛᴀᴅíѕᴛɪᴄᴀs ʏ ᴄᴏᴏʟᴅᴏᴡɴs
+
+*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜💰* ㅤ֢ㅤ⸱ㅤᯭִ* — *ᴛɪᴇɴᴅᴀ ʏ ᴇᴄᴏɴᴏᴍíᴀ*
+ׅㅤ𓏸𓈒ㅤׄ *${usedPrefix}pokeshop* :: ᴠᴇʀ ʟᴏs ᴘᴏᴋéᴍᴏɴ ᴇɴ ᴠᴇɴᴛᴀ
+ׅㅤ𓏸𓈒ㅤׄ *${usedPrefix}buypoke* :: ᴄᴏᴍᴘʀᴀʀ ᴜɴ ᴘᴏᴋéᴍᴏɴ ᴅᴇ ʟᴀ ᴛɪᴇɴᴅᴀ
+ׅㅤ𓏸𓈒ㅤׄ *${usedPrefix}sellpoke* :: ᴠᴇɴᴅᴇʀ ᴜɴᴏ ᴅᴇ ᴛᴜs ᴘᴏᴋéᴍᴏɴ
+ׅㅤ𓏸𓈒ㅤׄ *${usedPrefix}removepoke* :: ʀᴇᴛɪʀᴀʀ ᴛᴜ ᴘᴏᴋéᴍᴏɴ ᴅᴇ ʟᴀ ᴛɪᴇɴᴅᴀ
+ׅㅤ𓏸𓈒ㅤׄ *${usedPrefix}curarpokemon* :: ᴄᴜʀᴀʀ ᴀ ᴛᴜ ᴘᴏᴋéᴍᴏɴ ᴘᴏʀ ᴜɴ ᴄᴏsᴛᴏ
+
+*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜⚔️* ㅤ֢ㅤ⸱ㅤᯭִ* — *ʙᴀᴛᴀʟʟᴀs*
+ׅㅤ𓏸𓈒ㅤׄ *${usedPrefix}pvppoke* :: ʀᴇᴛᴀʀ ᴀ ᴜɴ ᴜsᴜᴀʀɪᴏ ᴀ ᴘᴇʟᴇᴀʀ ᴄᴏɴ ᴛᴜ ᴘᴏᴋéᴍᴏɴ
+ׅㅤ𓏸𓈒ㅤׄ *${usedPrefix}aceptarpvp* :: ᴀᴄᴇᴘᴛᴀʀ ᴜɴ ʀᴇᴛᴏ ᴅᴇ ʙᴀᴛᴀʟʟᴀ (ʀᴇsᴘᴏɴᴅɪᴇɴᴅᴏ ᴀʟ ᴅᴇsᴀғíᴏ)
+
+*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜🔄* ㅤ֢ㅤ⸱ㅤᯭִ* — *ɪɴᴛᴇʀᴄᴀᴍʙɪᴏs ʏ ʀᴇɢᴀʟᴏs*
+ׅㅤ𓏸𓈒ㅤׄ *${usedPrefix}intercambiarpoke* :: ᴘʀᴏᴘᴏɴᴇʀ ɪɴᴛᴇʀᴄᴀᴍʙɪᴏ ᴅᴇ ᴘᴏᴋéᴍᴏɴ
+ׅㅤ𓏸𓈒ㅤׄ *${usedPrefix}aceptarpoke* :: ᴀᴄᴇᴘᴛᴀʀ ᴜɴ ɪɴᴛᴇʀᴄᴀᴍʙɪᴏ (ʀᴇsᴘᴏɴᴅɪᴇɴᴅᴏ ᴀʟ ᴍᴇɴsᴀᴊᴇ)
+ׅㅤ𓏸𓈒ㅤׄ *${usedPrefix}regalarpokemon* :: ʀᴇɢᴀʟᴀʀ ᴜɴ ᴘᴏᴋéᴍᴏɴ ᴀ ᴏᴛʀᴏ ᴜsᴜᴀʀɪᴏ
+
+*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜🏆* ㅤ֢ㅤ⸱ㅤᯭִ* — *ʀᴀɴᴋɪɴɢ*
+ׅㅤ𓏸𓈒ㅤׄ *${usedPrefix}toppoke* :: ᴛᴏᴘ ᴇɴᴛʀᴇɴᴀᴅᴏʀᴇs ᴅᴇʟ ɢʀᴜᴘᴏ (ᴘᴏʀ ᴄᴀɴᴛɪᴅᴀᴅ ʏ ᴘᴏᴅᴇʀ ᴛᴏᴛᴀʟ)
+
+> . ﹡ ﹟ ⚡ ׄ ⬭ *ᴀsᴛᴀ-ʙᴏᴛ-ᴍᴅ - ᴍᴏᴅᴏ ᴘᴏᴋéᴍᴏɴ*`.trim()
+
+  // ========== SISTEMA DE BANNER ==========
+  let thumbnail = null
+
+  if (isSubBot && botConfig.logo) {
+    try {
+      const logoPath = path.resolve(botConfig.logo)
+      if (fs.existsSync(logoPath)) thumbnail = fs.readFileSync(logoPath)
+    } catch (e) {}
+  }
+
+  if (!thumbnail) {
+    let imageUrl = null
+    if (isSubBot && botConfig.logoUrl) imageUrl = botConfig.logoUrl
+    else if (global.icono) imageUrl = global.icono
+    else if (global.banner) imageUrl = global.banner
+    else imageUrl = 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgwEyPc2ZcSJLv1nKjMoNcqTD_PZl1Zk9ujraVrJSEw_efKhnurC6XGA6VOj73W-ygzfgfou1-g_3EzCX41BCiLXPvTjcIUy4BL78F9l9MuQlWAIg4E3DjO-Kx-qO-yIIhkOyeYaqDeyx8MW4EusFhzDUqID_Pk2RRUWhDfHErCquK71DBo9v4BhRjtXBNt/s736/b63bb3b9-7464-494f-937f-9aa4394cb124.jpg'
+
+    try {
+      const response = await fetch(imageUrl)
+      if (response.ok) thumbnail = await response.buffer()
+    } catch (e) {}
+  }
+
+  // ========== ENVÍO CON SISTEMA DE CANAL ==========
+  try {
+    await conn.sendMessage(m.chat, { 
+      text: txt,
+      contextInfo: {
+        mentionedJid: [userId],
+        isForwarded: true,
+        forwardedNewsletterMessageInfo: {
+          newsletterJid: global.channelRD?.id || "120363399175402285@newsletter",
+          serverMessageId: '',
+          newsletterName: global.channelRD?.name || "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』"
+        },
+        externalAdReply: {
+          title: botName,
+          body: global.dev || 'ᴘᴏᴡᴇʀᴇᴅ ʙʏ ғᴇʀɴᴀɴᴅᴏ',
+          mediaType: 1,
+          mediaUrl: global.redes || global.channel,
+          sourceUrl: global.redes || global.channel,
+          thumbnail: thumbnail || await (await fetch(global.icono)).buffer(),
+          showAdAttribution: false,
+          containsAutoReply: true,
+          renderLargerThumbnail: true
+        }
+      }
+    }, { quoted: m })
+  } catch (e) {
+    await conn.reply(m.chat, txt, m)
+  }
+}
+
+handler.help = ['pokemenu', 'pokem']
+handler.tags = ['pokes']
+handler.command = ['pokemenu', 'pokem']
+
+function clockString(ms) {
+  let seconds = Math.floor((ms / 1000) % 60)
+  let minutes = Math.floor((ms / (1000 * 60)) % 60)
+  let hours = Math.floor((ms / (1000 * 60 * 60)) % 24)
+  return `${hours}h ${minutes}m ${seconds}s`
+}
+
+export default handler
