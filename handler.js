@@ -5,9 +5,48 @@ import fs, { unwatchFile, watchFile } from "fs"
 import chalk from "chalk"
 import ws from "ws"
 import { jidNormalizedUser, areJidsSameUser } from '@whiskeysockets/baileys'
+import fetch from "node-fetch" // Añadido para obtener la miniatura del canal
 
 const isNumber = x => typeof x === "number" && !isNaN(x)
 const delay = ms => isNumber(ms) && new Promise(resolve => setTimeout(resolve, ms))
+
+// =================== FUNCIÓN PARA OBTENER EL CONTEXTINFO DEL CANAL (igual que en play.js) ===================
+async function getRcanal() {
+    try {
+        const thumb = await (await fetch(global.icono)).buffer()
+        return {
+            isForwarded: true,
+            forwardedNewsletterMessageInfo: {
+                newsletterJid: global.channelRD?.id || "120363399175402285@newsletter",
+                serverMessageId: '',
+                newsletterName: global.channelRD?.name || "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』"
+            },
+            externalAdReply: {
+                title: global.botname || 'ᴀsᴛᴀ-ʙᴏᴛ',
+                body: global.dev || 'ᴘᴏᴡᴇʀᴇᴅ ʙʏ ғᴇʀɴᴀɴᴅᴏ',
+                mediaType: 1,
+                mediaUrl: global.redes,
+                sourceUrl: global.redes,
+                thumbnail: thumb,
+                showAdAttribution: false,
+                containsAutoReply: true,
+                renderLargerThumbnail: false
+            }
+        }
+    } catch {
+        return {}
+    }
+}
+
+// =================== FUNCIÓN PARA ENVIAR MENSAJES CON ESTILO (como en play) ===================
+async function replyStyled(conn, m, text, options = {}) {
+    const rcanal = await getRcanal()
+    await conn.sendMessage(m.chat, {
+        text: text,
+        contextInfo: rcanal,
+        ...options
+    }, { quoted: m })
+}
 
 export async function handler(chatUpdate) {
     this.msgqueue = this.msgqueue || []
@@ -67,9 +106,9 @@ export async function handler(chatUpdate) {
             afk: -1, 
             afkReason: "", 
             warn: 0,
-            registered: false,  // ← NUEVO: Estado de registro
-            regTime: 0,         // ← NUEVO: Fecha de registro
-            serial: ""          // ← NUEVO: Serial único
+            registered: false,
+            regTime: 0,
+            serial: ""
         }
 
         const chat = global.db.data.chats[m.chat] = global.db.data.chats[m.chat] || {
@@ -134,7 +173,7 @@ export async function handler(chatUpdate) {
                 'qr', 'code', 'menu', 'help', 'infobot', 'ping',
                 'estado', 'status', 'report', 'reportar', 'suggest',
                 'subcmd', 'config', 'cmdinfo', 'botlist', 'menú',
-                'reg', 'register', 'verificar', 'verify'  // ← Permitir registro en privado
+                'reg', 'register', 'verificar', 'verify'
             ]
 
             const userCommand = m.text.split(' ')[0].toLowerCase()
@@ -143,7 +182,13 @@ export async function handler(chatUpdate) {
             )
 
             if (!isAllowed) {
-                return m.reply(`❌ Este bot solo funciona en grupos.\n\n📌 Comandos permitidos en privado:\n${allowedCommands.map(cmd => `• ${cmd}`).join('\n')}`)
+                const msg = 
+                    `> . ﹡ ﹟ 🔒 ׄ ⬭ *Modo Solo Grupos*\n\n` +
+                    `*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜🚫* ㅤ֢ㅤ⸱ㅤᯭִ*\n` +
+                    `ׅㅤ𓏸𓈒ㅤׄ *Motivo* :: Este bot solo funciona en grupos.\n\n` +
+                    `*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜📌* ㅤ֢ㅤ⸱ㅤᯭִ* — *Comandos permitidos en privado*\n` +
+                    allowedCommands.map(cmd => `ׅㅤ𓏸𓈒ㅤׄ *${cmd}*`).join('\n')
+                return await replyStyled(this, m, msg)
             }
         }
 
@@ -273,14 +318,22 @@ export async function handler(chatUpdate) {
             user.commands = (user.commands || 0) + 1
 
             if (chat.isBanned && !isROwner) {
-                const aviso = `⚠️ El bot *${global.botname}* está desactivado en este grupo.\n\n> 🔹 Un *administrador* puede activarlo usando:\n> » *${usedPrefix}bot on*`
-                await m.reply(aviso)
+                const aviso = 
+                    `> . ﹡ ﹟ ⚠️ ׄ ⬭ *Bot Desactivado*\n\n` +
+                    `*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜🔒* ㅤ֢ㅤ⸱ㅤᯭִ*\n` +
+                    `ׅㅤ𓏸𓈒ㅤׄ *Motivo* :: El bot *${global.botname}* está desactivado en este grupo.\n\n` +
+                    `*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜👑* ㅤ֢ㅤ⸱ㅤᯭִ* — *Solución*\n` +
+                    `ׅㅤ𓏸𓈒ㅤׄ » *${usedPrefix}bot on* (solo administradores)`
+                await replyStyled(this, m, aviso)
                 return
             }
 
             if (user.banned && !isROwner) {
-                const mensaje = `🚫 *Acceso Denegado*\nꕙ Has sido *baneado/a* y no puedes usar comandos.\n\n> ⚡ *Razón:* ${user.bannedReason}`
-                await m.reply(mensaje)
+                const mensaje = 
+                    `> . ﹡ ﹟ 🚫 ׄ ⬭ *Acceso Denegado*\n\n` +
+                    `*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜🔨* ㅤ֢ㅤ⸱ㅤᯭִ*\n` +
+                    `ׅㅤ𓏸𓈒ㅤׄ *Razón* :: ${user.bannedReason}`
+                await replyStyled(this, m, mensaje)
                 return
             }
 
@@ -426,22 +479,25 @@ export async function handler(chatUpdate) {
     }
 }
 
-// ============= MENSAJES DE ERROR (DFAIL) =============
-global.dfail = (type, m, conn) => {
+// ============= MENSAJES DE ERROR (DFAIL) CON ESTILO =============
+global.dfail = async (type, m, conn) => {
     const messages = {
-        rowner: `💠 *Acceso denegado*\nEl comando *${global.comando}* solo puede ser usado por los *creadores del bot*.`,
-        owner: `💠 *Acceso denegado*\nEl comando *${global.comando}* solo puede ser usado por los *desarrolladores del bot*.`,
-        premium: `⭐ *Exclusivo Premium*\nEl comando *${global.comando}* solo puede ser usado por *usuarios premium*.`,
-        group: `👥 *Solo en grupos*\nEl comando *${global.comando}* solo puede ejecutarse dentro de un *grupo*.`,
-        private: `📩 *Solo privado*\nEl comando *${global.comando}* solo puede usarse en *chat privado* con el bot.`,
-        admin: `⚠️ *Requiere permisos de admin*\nEl comando *${global.comando}* solo puede ser usado por los *administradores del grupo*.`,
-        botAdmin: `🤖 *Necesito permisos*\nPara ejecutar *${global.comando}*, el bot debe ser *administrador del grupo*.`,
-        restrict: `⛔ *Funcionalidad desactivada*\nEsta característica está *temporalmente deshabilitada*.`,
-        reg: `📝 *REGISTRO REQUERIDO*\n\nPara usar el comando *${global.comando}*, primero debes registrarte.\n\nUsa: *${global.prefox || '#'}reg nombre/edad*\nEjemplo: *${global.prefox || '#'}reg Juan/25*\n\nO completo: *${global.prefox || '#'}reg nombre/edad/género/cumpleaños*`,
-        regincompleto: `⚠️ *DATOS INCOMPLETOS*\n\nTu registro está incompleto. Te falta completar tus datos.\n\nUsa: *${global.prefox || '#'}reg nombre/edad* para completar.\nEjemplo: *${global.prefox || '#'}reg Juan/25*\n\n✅ *Nota:* No perderás tu progreso actual (XP, coins, nivel, etc.)`
+        rowner: `> . ﹡ ﹟ 🔒 ׄ ⬭ *Acceso denegado*\n\n*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜👑* ㅤ֢ㅤ⸱ㅤᯭִ*\nׅㅤ𓏸𓈒ㅤׄ *Motivo* :: El comando *${global.comando}* solo puede ser usado por los *creadores del bot*.`,
+        owner: `> . ﹡ ﹟ 🔒 ׄ ⬭ *Acceso denegado*\n\n*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜🛠️* ㅤ֢ㅤ⸱ㅤᯭִ*\nׅㅤ𓏸𓈒ㅤׄ *Motivo* :: El comando *${global.comando}* solo puede ser usado por los *desarrolladores del bot*.`,
+        premium: `> . ﹡ ﹟ ⭐ ׄ ⬭ *Exclusivo Premium*\n\n*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜💎* ㅤ֢ㅤ⸱ㅤᯭִ*\nׅㅤ𓏸𓈒ㅤׄ *Motivo* :: El comando *${global.comando}* solo puede ser usado por *usuarios premium*.`,
+        group: `> . ﹡ ﹟ 👥 ׄ ⬭ *Solo en grupos*\n\n*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜🗂️* ㅤ֢ㅤ⸱ㅤᯭִ*\nׅㅤ𓏸𓈒ㅤׄ *Motivo* :: El comando *${global.comando}* solo puede ejecutarse dentro de un *grupo*.`,
+        private: `> . ﹡ ﹟ 📩 ׄ ⬭ *Solo privado*\n\n*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜🔐* ㅤ֢ㅤ⸱ㅤᯭִ*\nׅㅤ𓏸𓈒ㅤׄ *Motivo* :: El comando *${global.comando}* solo puede usarse en *chat privado* con el bot.`,
+        admin: `> . ﹡ ﹟ ⚠️ ׄ ⬭ *Requiere permisos de admin*\n\n*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜👮* ㅤ֢ㅤ⸱ㅤᯭִ*\nׅㅤ𓏸𓈒ㅤׄ *Motivo* :: El comando *${global.comando}* solo puede ser usado por los *administradores del grupo*.`,
+        botAdmin: `> . ﹡ ﹟ 🤖 ׄ ⬭ *Necesito permisos*\n\n*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜⚙️* ㅤ֢ㅤ⸱ㅤᯭִ*\nׅㅤ𓏸𓈒ㅤׄ *Motivo* :: Para ejecutar *${global.comando}*, el bot debe ser *administrador del grupo*.`,
+        restrict: `> . ﹡ ﹟ ⛔ ׄ ⬭ *Funcionalidad desactivada*\n\n*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜🚧* ㅤ֢ㅤ⸱ㅤᯭִ*\nׅㅤ𓏸𓈒ㅤׄ *Motivo* :: Esta característica está *temporalmente deshabilitada*.`,
+        reg: `> . ﹡ ﹟ 📝 ׄ ⬭ *REGISTRO REQUERIDO*\n\n*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜🔑* ㅤ֢ㅤ⸱ㅤᯭִ*\nׅㅤ𓏸𓈒ㅤׄ *Motivo* :: Para usar el comando *${global.comando}*, primero debes registrarte.\n\n*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜📌* ㅤ֢ㅤ⸱ㅤᯭִ* — *Instrucciones*\nׅㅤ𓏸𓈒ㅤׄ Usa: *${global.prefox || '#'}reg nombre/edad*\nׅㅤ𓏸𓈒ㅤׄ Ejemplo: *${global.prefox || '#'}reg Juan/25*\nׅㅤ𓏸𓈒ㅤׄ O completo: *${global.prefox || '#'}reg nombre/edad/género/cumpleaños*`,
+        regincompleto: `> . ﹡ ﹟ ⚠️ ׄ ⬭ *DATOS INCOMPLETOS*\n\n*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜📋* ㅤ֢ㅤ⸱ㅤᯭִ*\nׅㅤ𓏸𓈒ㅤׄ *Motivo* :: Tu registro está incompleto. Te falta completar tus datos.\n\n*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜🔧* ㅤ֢ㅤ⸱ㅤᯭִ* — *Solución*\nׅㅤ𓏸𓈒ㅤׄ Usa: *${global.prefox || '#'}reg nombre/edad* para completar.\nׅㅤ𓏸𓈒ㅤׄ Ejemplo: *${global.prefox || '#'}reg Juan/25*\n\nׅㅤ𓏸𓈒ㅤׄ ✅ *Nota:* No perderás tu progreso actual (XP, coins, nivel, etc.)`
     }
 
-    if (messages[type]) conn.reply(m.chat, messages[type], m).then(_ => m.react?.('✖️'))
+    if (messages[type]) {
+        await replyStyled(conn, m, messages[type])
+        await m.react?.('✖️')
+    }
 }
 
 let file = global.__filename(import.meta.url, true)
