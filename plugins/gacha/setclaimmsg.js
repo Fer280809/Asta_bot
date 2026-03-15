@@ -1,8 +1,9 @@
 // ============================================
-// plugins/gacha-setclaimmsg.js
+// plugins/gacha-setclaimmsg.js (ESTILO PREMIUM)
 // ============================================
 import fs from 'fs';
 import path from 'path';
+import fetch from 'node-fetch';
 
 const handler = async (m, { conn, text }) => {
     if (!text) {
@@ -36,13 +37,72 @@ const handler = async (m, { conn, text }) => {
         .replace('{user}', userName)
         .replace('{character}', 'Ejemplo');
     
-    m.reply(`✅ *Mensaje de claim actualizado!*\n\n*Vista previa:*\n${preview}`);
+    // ========== TEXTO CON ESTILO PREMIUM ==========
+    const txt = `
+> . ﹡ ﹟ 💬 ׄ ⬭ *ᴍᴇɴsᴀᴊᴇ ᴘᴇʀsᴏɴᴀʟɪᴢᴀᴅᴏ* @${userId.split('@')[0]}
+
+*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜💬* ㅤ֢ㅤ⸱ㅤᯭִ*
+
+╭━━━━━━━━━━━━━━━━╮
+│  💬 *ᴍᴇɴsᴀᴊᴇ ᴅᴇ ᴄʟᴀɪᴍ* 💬
+╰━━━━━━━━━━━━━━━━╯
+
+> ## \`ᴠɪsᴛᴀ ᴘʀᴇᴠɪᴀ 👁️\`
+
+${preview}
+
+┌─⊷ *ᴠᴀʀɪᴀʙʟᴇs ᴅɪsᴘᴏɴɪʙʟᴇs*
+│ {user} - ɴᴏᴍʙʀᴇ ᴅᴇʟ ᴜsᴜᴀʀɪᴏ
+│ {character} - ɴᴏᴍʙʀᴇ ᴅᴇʟ ᴘᴇʀsᴏɴᴀᴊᴇ
+└───────────────
+
+> ## \`ᴄᴏɴғɪɢᴜʀᴀᴄɪᴏ́ɴ ɢᴜᴀʀᴅᴀᴅᴀ ✅\``.trim();
+
+    // ========== SISTEMA DE ENVÍO PREMIUM ==========
+    const isSubBot = conn.user?.jid !== global.conn?.user?.jid;
+    const botConfig = conn.subConfig || {};
+    
+    let thumbnail = null;
+    let imageUrl = isSubBot && botConfig.logoUrl ? botConfig.logoUrl 
+        : global.icono || 'https://i.ibb.co/0Q3J9XZ/file.jpg';
+    try {
+        const response = await fetch(imageUrl);
+        if (response.ok) thumbnail = await response.buffer();
+    } catch (e) {}
+
+    try {
+        await conn.sendMessage(m.chat, { 
+            text: txt,
+            contextInfo: {
+                mentionedJid: [userId],
+                isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                    newsletterJid: global.channelRD?.id || "120363399175402285@newsletter",
+                    serverMessageId: '',
+                    newsletterName: global.channelRD?.name || "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』"
+                },
+                externalAdReply: {
+                    title: `💬 Mensaje Personalizado`,
+                    body: `Configurado por ${userName}`,
+                    mediaType: 1,
+                    mediaUrl: global.icono,
+                    sourceUrl: global.redes || global.channel,
+                    thumbnail: thumbnail || await (await fetch(global.icono)).buffer(),
+                    showAdAttribution: false,
+                    containsAutoReply: true,
+                    renderLargerThumbnail: true
+                }
+            }
+        }, { quoted: m });
+    } catch (e) {
+        await conn.reply(m.chat, txt, m);
+    }
 };
 
 handler.help = ['setclaimmsg', 'setclaim'];
 handler.tags = ['gacha'];
 handler.command = ['setclaimmsg', 'setclaim'];
 handler.group = true;
-handler.reg = true
+handler.reg = true;
 
 export default handler;

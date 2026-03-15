@@ -1,8 +1,9 @@
 // ============================================
-// plugins/gacha-vote.js
+// plugins/gacha-vote.js (ESTILO PREMIUM)
 // ============================================
 import fs from 'fs';
 import path from 'path';
+import fetch from 'node-fetch';
 
 const handler = async (m, { conn, text }) => {
     if (!text) {
@@ -45,9 +46,9 @@ const handler = async (m, { conn, text }) => {
     
     const found = characters[charIndex];
     
-    // Verificar cooldown de 24 horas por personaje
+    // Verificar cooldown de 24 horas
     const now = Date.now();
-    const cooldown = 86400000; // 24 horas
+    const cooldown = 86400000;
     
     if (users[userId].votes[found.id] && (now - users[userId].votes[found.id]) < cooldown) {
         const remaining = Math.ceil((cooldown - (now - users[userId].votes[found.id])) / 3600000);
@@ -57,7 +58,7 @@ const handler = async (m, { conn, text }) => {
     // Agregar voto
     if (!found.votes) found.votes = 0;
     found.votes += 1;
-    found.value = parseInt(found.value) + 10; // Aumentar valor por voto
+    found.value = parseInt(found.value) + 10;
     
     characters[charIndex] = found;
     fs.writeFileSync(dbPath, JSON.stringify(characters, null, 2), 'utf-8');
@@ -66,13 +67,83 @@ const handler = async (m, { conn, text }) => {
     users[userId].votes[found.id] = now;
     fs.writeFileSync(usersPath, JSON.stringify(users, null, 2), 'utf-8');
     
-    m.reply(`✅ *Has votado por ${found.name}!*\n\n🗳️ Votos totales: ${found.votes}\n💎 Nuevo valor: ${found.value}`);
+    // ========== TEXTO CON ESTILO PREMIUM ==========
+    const txt = `
+> . ﹡ ﹟ 🗳️ ׄ ⬭ *¡ᴠᴏᴛᴏ ʀᴇɢɪsᴛʀᴀᴅᴏ!* @${userId.split('@')[0]}
+
+*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜❤️* ㅤ֢ㅤ⸱ㅤᯭִ*
+
+╭━━━━━━━━━━━━━━━━╮
+│  🗳️ *ᴠᴏᴛᴏ ᴄᴏɴᴛᴀᴅᴏ* 🗳️
+╰━━━━━━━━━━━━━━━━╯
+
+┌─⊷ *ᴘᴇʀsᴏɴᴀᴊᴇ*
+│ 🎴 *ɴᴏᴍʙʀᴇ:* ${found.name}
+│ 📺 *sᴇʀɪᴇ:* ${found.source}
+└───────────────
+
+┌─⊷ *ɴᴜᴇᴠᴀs ᴇsᴛᴀᴅɪ́sᴛɪᴄᴀs*
+│ 🗳️ *ᴠᴏᴛᴏs:* ${found.votes}
+│ 💎 *ᴠᴀʟᴏʀ:* ${found.value}
+│ ⬆️ *ʙᴏɴᴜs:* +10
+└───────────────
+
+> ## \`ɢʀᴀᴄɪᴀs ᴘᴏʀ ᴠᴏᴛᴀʀ ⭐\``;
+
+    // ========== SISTEMA DE ENVÍO PREMIUM ==========
+    const isSubBot = conn.user?.jid !== global.conn?.user?.jid;
+    const botConfig = conn.subConfig || {};
+    
+    let thumbnail = null;
+    if (found.img && found.img.length > 0) {
+        try {
+            const response = await fetch(found.img[0]);
+            if (response.ok) thumbnail = await response.buffer();
+        } catch (e) {}
+    }
+    
+    if (!thumbnail) {
+        let imageUrl = isSubBot && botConfig.logoUrl ? botConfig.logoUrl 
+            : global.icono || 'https://i.ibb.co/0Q3J9XZ/file.jpg';
+        try {
+            const response = await fetch(imageUrl);
+            if (response.ok) thumbnail = await response.buffer();
+        } catch (e) {}
+    }
+
+    try {
+        await conn.sendMessage(m.chat, { 
+            text: txt,
+            contextInfo: {
+                mentionedJid: [userId],
+                isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                    newsletterJid: global.channelRD?.id || "120363399175402285@newsletter",
+                    serverMessageId: '',
+                    newsletterName: global.channelRD?.name || "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』"
+                },
+                externalAdReply: {
+                    title: `🗳️ Voto por ${found.name}`,
+                    body: `${found.votes} votos • 💎 ${found.value}`,
+                    mediaType: 1,
+                    mediaUrl: found.img?.[0] || global.icono,
+                    sourceUrl: global.redes || global.channel,
+                    thumbnail: thumbnail || await (await fetch(global.icono)).buffer(),
+                    showAdAttribution: false,
+                    containsAutoReply: true,
+                    renderLargerThumbnail: true
+                }
+            }
+        }, { quoted: m });
+    } catch (e) {
+        await conn.reply(m.chat, txt, m);
+    }
 };
 
 handler.help = ['vote', 'votar'];
 handler.tags = ['gacha'];
 handler.command = ['vote', 'votar'];
 handler.group = true;
-handler.reg = true
+handler.reg = true;
 
 export default handler;

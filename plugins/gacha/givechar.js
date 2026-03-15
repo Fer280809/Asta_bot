@@ -1,8 +1,9 @@
 // ============================================
-// plugins/gacha-givechar.js
+// plugins/gacha-givechar.js (ESTILO PREMIUM)
 // ============================================
 import fs from 'fs';
 import path from 'path';
+import fetch from 'node-fetch';
 
 const handler = async (m, { conn, text }) => {
     if (!m.mentionedJid || m.mentionedJid.length === 0 || !text) {
@@ -83,18 +84,96 @@ const handler = async (m, { conn, text }) => {
     const giverName = await conn.getName(giverId);
     const receiverName = await conn.getName(receiverId);
     
-    m.reply(`✅ *${giverName}* le ha regalado *${char.name}* a *${receiverName}*! 🎁`);
+    // ========== TEXTO CON ESTILO PREMIUM ==========
+    const txt = `
+> . ﹡ ﹟ 🎁 ׄ ⬭ *¡ʀᴇɢᴀʟᴏ ᴇɴᴠɪᴀᴅᴏ!* @${giverId.split('@')[0]}
+
+*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜🎁* ㅤ֢ㅤ⸱ㅤᯭִ*
+
+╭━━━━━━━━━━━━━━━━╮
+│  🎁 *ᴛʀᴀɴsғᴇʀᴇɴᴄɪᴀ ᴄᴏᴍᴘʟᴇᴛᴀᴅᴀ* 🎁
+╰━━━━━━━━━━━━━━━━╯
+
+┌─⊷ *ᴘᴇʀsᴏɴᴀᴊᴇ ʀᴇɢᴀʟᴀᴅᴏ*
+│ 🎴 *ɴᴏᴍʙʀᴇ:* ${char.name}
+│ 📺 *sᴇʀɪᴇ:* ${char.source}
+│ 💎 *ᴠᴀʟᴏʀ:* ${char.value}
+└───────────────
+
+┌─⊷ *ᴘᴀʀᴛɪᴄɪᴘᴀɴᴛᴇs*
+│ 🎁 *ᴅᴏɴᴀᴅᴏʀ:* ${giverName}
+│ 🎀 *ʀᴇᴄᴇᴘᴛᴏʀ:* ${receiverName}
+└───────────────
+
+> ## \`ᴀᴄᴛᴏ ᴅᴇ ɢᴇɴᴇʀᴏsɪᴅᴀᴅ ❤️\``;
+
+    // ========== SISTEMA DE ENVÍO PREMIUM ==========
+    const isSubBot = conn.user?.jid !== global.conn?.user?.jid;
+    const botConfig = conn.subConfig || {};
     
-    // Notificar al receptor
-    conn.sendMessage(receiverId, { 
-        text: `🎁 *¡Regalo recibido!*\n\n*${giverName}* te ha regalado a *${char.name}*!` 
-    });
+    let thumbnail = null;
+    if (char.img && char.img.length > 0) {
+        try {
+            const response = await fetch(char.img[0]);
+            if (response.ok) thumbnail = await response.buffer();
+        } catch (e) {}
+    }
+    
+    if (!thumbnail) {
+        let imageUrl = isSubBot && botConfig.logoUrl ? botConfig.logoUrl 
+            : global.icono || 'https://i.ibb.co/0Q3J9XZ/file.jpg';
+        try {
+            const response = await fetch(imageUrl);
+            if (response.ok) thumbnail = await response.buffer();
+        } catch (e) {}
+    }
+
+    try {
+        await conn.sendMessage(m.chat, { 
+            text: txt,
+            contextInfo: {
+                mentionedJid: [giverId, receiverId],
+                isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                    newsletterJid: global.channelRD?.id || "120363399175402285@newsletter",
+                    serverMessageId: '',
+                    newsletterName: global.channelRD?.name || "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』"
+                },
+                externalAdReply: {
+                    title: `🎁 ${char.name} Regalada`,
+                    body: `De ${giverName} para ${receiverName}`,
+                    mediaType: 1,
+                    mediaUrl: char.img?.[0] || global.icono,
+                    sourceUrl: global.redes || global.channel,
+                    thumbnail: thumbnail || await (await fetch(global.icono)).buffer(),
+                    showAdAttribution: false,
+                    containsAutoReply: true,
+                    renderLargerThumbnail: true
+                }
+            }
+        }, { quoted: m });
+        
+        // Notificar al receptor
+        conn.sendMessage(receiverId, { 
+            text: `🎁 *¡ʀᴇɢᴀʟᴏ ʀᴇᴄɪʙɪᴅᴏ!*\n\n*${giverName}* ᴛᴇ ʜᴀ ʀᴇɢᴀʟᴀᴅᴏ ᴀ *${char.name}*!`,
+            contextInfo: {
+                externalAdReply: {
+                    title: `🎁 Regalo Recibido`,
+                    body: `${char.name} • ${char.source}`,
+                    mediaType: 1,
+                    thumbnail: thumbnail
+                }
+            }
+        });
+    } catch (e) {
+        await conn.reply(m.chat, txt, m);
+    }
 };
 
 handler.help = ['givechar', 'givewaifu', 'regalar'];
 handler.tags = ['gacha'];
 handler.command = ['givechar', 'givewaifu', 'regalar'];
 handler.group = true;
-handler.reg = true
+handler.reg = true;
 
 export default handler;

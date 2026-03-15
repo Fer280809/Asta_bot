@@ -1,8 +1,9 @@
 // ============================================
-// plugins/gacha-accepttrade.js
+// plugins/gacha-accepttrade.js (ESTILO PREMIUM)
 // ============================================
 import fs from 'fs';
 import path from 'path';
+import fetch from 'node-fetch';
 
 const handler = async (m, { conn }) => {
     const userId = m.sender;
@@ -53,21 +54,119 @@ const handler = async (m, { conn }) => {
     const user1Name = await conn.getName(trade.user1);
     const user2Name = await conn.getName(trade.user2);
     
-    m.reply(`✅ *¡Intercambio exitoso!*\n\n*${user1Name}* recibió a *${char2.name}*\n*${user2Name}* recibió a *${char1.name}*`);
+    // ========== TEXTO CON ESTILO PREMIUM ==========
+    const txt = `
+> . ﹡ ﹟ ✅ ׄ ⬭ *¡ɪɴᴛᴇʀᴄᴀᴍʙɪᴏ ᴇxɪᴛᴏsᴏ!* @${userId.split('@')[0]}
+
+*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜🔄* ㅤ֢ㅤ⸱ㅤᯭִ*
+
+╭━━━━━━━━━━━━━━━━╮
+│  ✅ *ᴛʀᴀᴅᴇ ᴄᴏᴍᴘʟᴇᴛᴀᴅᴏ* ✅
+╰━━━━━━━━━━━━━━━━╯
+
+┌─⊷ *ᴘᴀʀᴛɪᴄɪᴘᴀɴᴛᴇs*
+│ 👤 *${user1Name}* ↔️ *${user2Name}*
+└───────────────
+
+┌─⊷ *ᴘᴇʀsᴏɴᴀᴊᴇs ɪɴᴛᴇʀᴄᴀᴍʙɪᴀᴅᴏs*
+│ 🎴 ${user1Name} ʀᴇᴄɪʙɪᴏ́: *${char2.name}*
+│ 🎴 ${user2Name} ʀᴇᴄɪʙɪᴏ́: *${char1.name}*
+└───────────────
+
+> ## \`ᴛʀᴀɴsᴀᴄᴄɪᴏ́ɴ ғɪɴᴀʟɪᴢᴀᴅᴀ 🤝\``.trim();
+
+    // ========== SISTEMA DE ENVÍO PREMIUM ==========
+    const isSubBot = conn.user?.jid !== global.conn?.user?.jid;
+    const botConfig = conn.subConfig || {};
     
-    // Notificar al otro usuario
-    conn.sendMessage(trade.user1, { 
-        text: `✅ *¡Intercambio aceptado!*\n\n*${user2Name}* aceptó el intercambio. Ahora tienes a *${char2.name}*` 
-    });
+    // Intentar obtener imagen de uno de los personajes intercambiados
+    const tradeImg = char1.img && char1.img.length > 0 
+        ? char1.img[0] 
+        : char2.img && char2.img.length > 0 
+        ? char2.img[0] 
+        : null;
     
-    // Eliminar solicitud
-    delete global.tradeRequests[tradeId];
+    let thumbnail = null;
+    if (tradeImg) {
+        try {
+            const response = await fetch(tradeImg);
+            if (response.ok) thumbnail = await response.buffer();
+        } catch (e) {}
+    }
+    
+    if (!thumbnail) {
+        let imageUrl = isSubBot && botConfig.logoUrl ? botConfig.logoUrl 
+            : global.icono || 'https://i.ibb.co/0Q3J9XZ/file.jpg';
+        try {
+            const response = await fetch(imageUrl);
+            if (response.ok) thumbnail = await response.buffer();
+        } catch (e) {}
+    }
+
+    try {
+        await conn.sendMessage(m.chat, { 
+            text: txt,
+            contextInfo: {
+                mentionedJid: [trade.user1, trade.user2],
+                isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                    newsletterJid: global.channelRD?.id || "120363399175402285@newsletter",
+                    serverMessageId: '',
+                    newsletterName: global.channelRD?.name || "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』"
+                },
+                externalAdReply: {
+                    title: `✅ Trade Completado`,
+                    body: `${char1.name} ↔️ ${char2.name}`,
+                    mediaType: 1,
+                    mediaUrl: tradeImg || global.icono,
+                    sourceUrl: global.redes || global.channel,
+                    thumbnail: thumbnail || await (await fetch(global.icono)).buffer(),
+                    showAdAttribution: false,
+                    containsAutoReply: true,
+                    renderLargerThumbnail: true
+                }
+            }
+        }, { quoted: m });
+        
+        // Notificar al otro usuario
+        const notifyTxt = `
+> . ﹡ ﹟ ✅ ׄ ⬭ *¡ᴛʀᴀᴅᴇ ᴀᴄᴇᴘᴛᴀᴅᴏ!*
+
+*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜🔄* ㅤ֢ㅤ⸱ㅤᯭִ*
+
+╭━━━━━━━━━━━━━━━━╮
+│  ✅ *ɪɴᴛᴇʀᴄᴀᴍʙɪᴏ ᴄᴏɴғɪʀᴍᴀᴅᴏ* ✅
+╰━━━━━━━━━━━━━━━━╯
+
+*${user2Name}* ᴀᴄᴇᴘᴛᴏ́ ᴇʟ ɪɴᴛᴇʀᴄᴀᴍʙɪᴏ.
+
+🎴 *ᴀʜᴏʀᴀ ᴛɪᴇɴᴇs ᴀ:* ${char2.name}
+
+> ## \`ᴅɪsғʀᴜᴛᴀ ᴛᴜ ɴᴜᴇᴠᴀ ᴡᴀɪғᴜ 💕\``.trim();
+        
+        conn.sendMessage(trade.user1, { 
+            text: notifyTxt,
+            contextInfo: {
+                externalAdReply: {
+                    title: `✅ Trade Aceptado`,
+                    body: `Recibiste a ${char2.name}`,
+                    mediaType: 1,
+                    thumbnail: thumbnail
+                }
+            }
+        });
+        
+        // Eliminar solicitud
+        delete global.tradeRequests[tradeId];
+    } catch (e) {
+        await conn.reply(m.chat, txt, m);
+    }
 };
 
 handler.help = ['accepttrade'];
 handler.tags = ['gacha'];
 handler.command = ['accepttrade', 'aceptarintercambio'];
 handler.group = true;
-handler.reg = true
+handler.reg = true;
 
 export default handler;

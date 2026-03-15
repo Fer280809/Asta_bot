@@ -1,8 +1,9 @@
 // ============================================
-// plugins/gacha-robwaifu.js
+// plugins/gacha-robwaifu.js (ESTILO PREMIUM)
 // ============================================
 import fs from 'fs';
 import path from 'path';
+import fetch from 'node-fetch';
 
 const handler = async (m, { conn, text }) => {
     if (!m.mentionedJid || m.mentionedJid.length === 0) {
@@ -42,7 +43,7 @@ const handler = async (m, { conn, text }) => {
     
     // Cooldown de 6 horas
     const now = Date.now();
-    const cooldown = 21600000; // 6 horas
+    const cooldown = 21600000;
     
     if (users[robberId].lastRob && (now - users[robberId].lastRob) < cooldown) {
         const remaining = Math.ceil((cooldown - (now - users[robberId].lastRob)) / 3600000);
@@ -55,7 +56,23 @@ const handler = async (m, { conn, text }) => {
     if (!success) {
         users[robberId].lastRob = now;
         fs.writeFileSync(usersPath, JSON.stringify(users, null, 2), 'utf-8');
-        return m.reply('❌ *¡Intento de robo fallido!* Fuiste descubierto.');
+        
+        const txt = `
+> . ﹡ ﹟ ❌ ׄ ⬭ *¡ʀᴏʙᴏ ғᴀʟʟɪᴅᴏ!* @${robberId.split('@')[0]}
+
+*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜🚔* ㅤ֢ㅤ⸱ㅤᯭִ*
+
+╭━━━━━━━━━━━━━━━━╮
+│  ❌ *ғᴜɪsᴛᴇ ᴅᴇsᴄᴜʙɪᴇʀᴛᴏ* ❌
+╰━━━━━━━━━━━━━━━━╯
+
+> ## \`ɪɴᴛᴇɴᴛᴏ ғʀᴀᴄᴀsᴀᴅᴏ 🚔\`
+
+*ᴛᴜ ɪɴᴛᴇɴᴛᴏ ᴅᴇ ʀᴏʙᴏ ғᴜᴇ ғʀᴀᴄᴀsᴀᴅᴏ ʏ ғᴜɪsᴛᴇ ᴅᴇsᴄᴜʙɪᴇʀᴛᴏ.*
+
+⏰ *ᴄᴏᴏʟᴅᴏᴡɴ: 6 ʜᴏʀᴀs*`;
+        
+        return conn.reply(m.chat, txt, m);
     }
     
     // Seleccionar personaje aleatorio
@@ -92,18 +109,96 @@ const handler = async (m, { conn, text }) => {
     const robberName = await conn.getName(robberId);
     const victimName = await conn.getName(victimId);
     
-    m.reply(`🏴‍☠️ *¡Robo exitoso!*\n\n*${robberName}* le robó *${stolenChar.name}* a *${victimName}*!`);
+    // ========== TEXTO CON ESTILO PREMIUM ==========
+    const txt = `
+> . ﹡ ﹟ 🏴‍☠️ ׄ ⬭ *¡ʀᴏʙᴏ ᴇxɪᴛᴏsᴏ!* @${robberId.split('@')[0]}
+
+*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜🏴‍☠️* ㅤ֢ㅤ⸱ㅤᯭִ*
+
+╭━━━━━━━━━━━━━━━━╮
+│  🏴‍☠️ *ᴏᴘᴇʀᴀᴄɪᴏ́ɴ ᴄᴏᴍᴘʟᴇᴛᴀᴅᴀ* 🏴‍☠️
+╰━━━━━━━━━━━━━━━━╯
+
+┌─⊷ *ʙᴏᴛɪ́ɴ*
+│ 🎴 *ᴘᴇʀsᴏɴᴀᴊᴇ:* ${stolenChar.name}
+│ 📺 *sᴇʀɪᴇ:* ${stolenChar.source}
+│ 💎 *ᴠᴀʟᴏʀ:* ${stolenChar.value}
+└───────────────
+
+┌─⊷ *ᴘᴀʀᴛɪᴄɪᴘᴀɴᴛᴇs*
+│ 🏴‍☠️ *ʟᴀᴅʀᴏ́ɴ:* ${robberName}
+│ 🎯 *ᴠíᴄᴛɪᴍᴀ:* ${victimName}
+└───────────────
+
+> ## \`ᴍɪssɪᴏɴ ᴄᴜᴍᴘʟɪᴅᴀ ⚔️\``;
+
+    // ========== SISTEMA DE ENVÍO PREMIUM ==========
+    const isSubBot = conn.user?.jid !== global.conn?.user?.jid;
+    const botConfig = conn.subConfig || {};
     
-    // Notificar a la víctima
-    conn.sendMessage(victimId, { 
-        text: `🏴‍☠️ *¡Fuiste robado!*\n\n*${robberName}* te robó a *${stolenChar.name}*!` 
-    });
+    let thumbnail = null;
+    if (stolenChar.img && stolenChar.img.length > 0) {
+        try {
+            const response = await fetch(stolenChar.img[0]);
+            if (response.ok) thumbnail = await response.buffer();
+        } catch (e) {}
+    }
+    
+    if (!thumbnail) {
+        let imageUrl = isSubBot && botConfig.logoUrl ? botConfig.logoUrl 
+            : global.icono || 'https://i.ibb.co/0Q3J9XZ/file.jpg';
+        try {
+            const response = await fetch(imageUrl);
+            if (response.ok) thumbnail = await response.buffer();
+        } catch (e) {}
+    }
+
+    try {
+        await conn.sendMessage(m.chat, { 
+            text: txt,
+            contextInfo: {
+                mentionedJid: [robberId, victimId],
+                isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                    newsletterJid: global.channelRD?.id || "120363399175402285@newsletter",
+                    serverMessageId: '',
+                    newsletterName: global.channelRD?.name || "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』"
+                },
+                externalAdReply: {
+                    title: `🏴‍☠️ Robo Exitoso`,
+                    body: `${stolenChar.name} robada de ${victimName}`,
+                    mediaType: 1,
+                    mediaUrl: stolenChar.img?.[0] || global.icono,
+                    sourceUrl: global.redes || global.channel,
+                    thumbnail: thumbnail || await (await fetch(global.icono)).buffer(),
+                    showAdAttribution: false,
+                    containsAutoReply: true,
+                    renderLargerThumbnail: true
+                }
+            }
+        }, { quoted: m });
+        
+        // Notificar a la víctima
+        conn.sendMessage(victimId, { 
+            text: `🏴‍☠️ *¡ғᴜɪsᴛᴇ ʀᴏʙᴀᴅᴏ!*\n\n*${robberName}* ᴛᴇ ʀᴏʙᴏ́ ᴀ *${stolenChar.name}*!`,
+            contextInfo: {
+                externalAdReply: {
+                    title: `🏴‍☠️ Robo Detectado`,
+                    body: `${stolenChar.name} fue robada`,
+                    mediaType: 1,
+                    thumbnail: thumbnail
+                }
+            }
+        });
+    } catch (e) {
+        await conn.reply(m.chat, txt, m);
+    }
 };
 
 handler.help = ['robwaifu', 'robarwaifu'];
 handler.tags = ['gacha'];
 handler.command = ['robwaifu', 'robarwaifu'];
 handler.group = true;
-handler.reg = true
+handler.reg = true;
 
 export default handler;

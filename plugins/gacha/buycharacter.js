@@ -1,8 +1,9 @@
 // ============================================
-// plugins/gacha-buycharacter.js
+// plugins/gacha-buycharacter.js (ESTILO PREMIUM)
 // ============================================
 import fs from 'fs';
 import path from 'path';
+import fetch from 'node-fetch';
 
 const handler = async (m, { conn, text }) => {
     if (!text) {
@@ -25,7 +26,6 @@ const handler = async (m, { conn, text }) => {
             claimMessage: '✧ {user} ha reclamado a {character}!',
             lastRoll: 0,
             votes: {}
-            // Eliminado: gachaCoins
         };
     }
     
@@ -62,7 +62,7 @@ const handler = async (m, { conn, text }) => {
         return m.reply('⚠️ *Ya tienes este personaje en tu harem.*');
     }
     
-    // Verificar fondos en MONEDA OFICIAL
+    // Verificar fondos
     if (!global.db.data.users[buyerId]) {
         global.db.data.users[buyerId] = { coin: 0, bank: 0 };
     }
@@ -73,10 +73,10 @@ const handler = async (m, { conn, text }) => {
     const buyerCoins = global.db.data.users[buyerId].coin || 0;
     
     if (buyerCoins < found.salePrice) {
-        return m.reply(`❌ *No tienes suficientes monedas.* Necesitas *¥${found.salePrice}* pero solo tienes *¥${buyerCoins}*`);
+        return m.reply(`❌ *No tienes suficientes monedas.* Necesitas *¥${found.salePrice}* pero solo tienes *¥${buyyerCoins}*`);
     }
     
-    // Realizar transacción en MONEDA OFICIAL
+    // Realizar transacción
     global.db.data.users[buyerId].coin -= found.salePrice;
     global.db.data.users[sellerId].coin += found.salePrice;
     
@@ -98,18 +98,99 @@ const handler = async (m, { conn, text }) => {
     const buyerName = await conn.getName(buyerId);
     const sellerName = await conn.getName(sellerId);
     
-    m.reply(`✅ *¡Compra exitosa!*\n\n*${buyerName}* ha comprado a *${found.name}* de *${sellerName}* por *¥${found.salePrice}*`);
+    // ========== TEXTO CON ESTILO PREMIUM ==========
+    const txt = `
+> . ﹡ ﹟ 💰 ׄ ⬭ *¡ᴄᴏᴍᴘʀᴀ ᴇxɪᴛᴏsᴀ!* @${buyerId.split('@')[0]}
+
+*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜💎* ㅤ֢ㅤ⸱ㅤᯭִ*
+
+╭━━━━━━━━━━━━━━━━╮
+│  💰 *ᴛʀᴀɴsᴀᴄᴄɪᴏ́ɴ ᴄᴏᴍᴘʟᴇᴛᴀᴅᴀ* 💰
+╰━━━━━━━━━━━━━━━━╯
+
+┌─⊷ *ᴅᴇᴛᴀʟʟᴇs ᴅᴇ ʟᴀ ᴄᴏᴍᴘʀᴀ*
+│ 🎴 *ᴘᴇʀsᴏɴᴀᴊᴇ:* ${found.name}
+│ 📺 *sᴇʀɪᴇ:* ${found.source}
+│ 💎 *ᴠᴀʟᴏʀ:* ${found.value}
+│ 💰 *ᴘʀᴇᴄɪᴏ:* ¥${found.salePrice}
+└───────────────
+
+┌─⊷ *ᴘᴀʀᴛɪᴄɪᴘᴀɴᴛᴇs*
+│ 👤 *ᴄᴏᴍᴘʀᴀᴅᴏʀ:* ${buyerName}
+│ 🏷️ *ᴠᴇɴᴅᴇᴅᴏʀ:* ${sellerName}
+└───────────────
+
+> ## \`ғᴇʟɪᴄɪᴅᴀᴅᴇs 🎉\`
+
+*¡${found.name}* ᴀʜᴏʀᴀ ᴘᴇʀᴛᴇɴᴇᴄᴇ ᴀ ᴛᴜ ʜᴀʀᴇᴍ!`.trim();
+
+    // ========== SISTEMA DE ENVÍO PREMIUM ==========
+    const isSubBot = conn.user?.jid !== global.conn?.user?.jid;
+    const botConfig = conn.subConfig || {};
     
-    // Notificar al vendedor
-    conn.sendMessage(sellerId, { 
-        text: `💰 *¡Venta realizada!*\n\n*${buyerName}* ha comprado tu personaje *${found.name}* por *¥${found.salePrice}*` 
-    });
+    let thumbnail = null;
+    if (found.img && found.img.length > 0) {
+        try {
+            const response = await fetch(found.img[0]);
+            if (response.ok) thumbnail = await response.buffer();
+        } catch (e) {}
+    }
+    
+    if (!thumbnail) {
+        let imageUrl = isSubBot && botConfig.logoUrl ? botConfig.logoUrl 
+            : global.icono || 'https://i.ibb.co/0Q3J9XZ/file.jpg';
+        try {
+            const response = await fetch(imageUrl);
+            if (response.ok) thumbnail = await response.buffer();
+        } catch (e) {}
+    }
+
+    try {
+        await conn.sendMessage(m.chat, { 
+            text: txt,
+            contextInfo: {
+                mentionedJid: [buyerId, sellerId],
+                isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                    newsletterJid: global.channelRD?.id || "120363399175402285@newsletter",
+                    serverMessageId: '',
+                    newsletterName: global.channelRD?.name || "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』"
+                },
+                externalAdReply: {
+                    title: `💰 ${found.name} Adquirida`,
+                    body: `Comprada por ${buyerName} • ¥${found.salePrice}`,
+                    mediaType: 1,
+                    mediaUrl: found.img?.[0] || global.icono,
+                    sourceUrl: global.redes || global.channel,
+                    thumbnail: thumbnail || await (await fetch(global.icono)).buffer(),
+                    showAdAttribution: false,
+                    containsAutoReply: true,
+                    renderLargerThumbnail: true
+                }
+            }
+        }, { quoted: m });
+        
+        // Notificar al vendedor
+        conn.sendMessage(sellerId, { 
+            text: `💰 *¡ᴠᴇɴᴛᴀ ʀᴇᴀʟɪᴢᴀᴅᴀ!*\n\n*${buyerName}* ʜᴀ ᴄᴏᴍᴘʀᴀᴅᴏ ᴛᴜ ᴘᴇʀsᴏɴᴀᴊᴇ *${found.name}* ᴘᴏʀ *¥${found.salePrice}*`,
+            contextInfo: {
+                externalAdReply: {
+                    title: `💰 Venta Realizada`,
+                    body: `${found.name} • ¥${found.salePrice}`,
+                    mediaType: 1,
+                    thumbnail: thumbnail
+                }
+            }
+        });
+    } catch (e) {
+        await conn.reply(m.chat, txt, m);
+    }
 };
 
 handler.help = ['buycharacter', 'buychar', 'buyc'];
 handler.tags = ['gacha'];
 handler.command = ['buycharacter', 'buychar', 'buyc'];
 handler.group = true;
-handler.reg = true
+handler.reg = true;
 
 export default handler;

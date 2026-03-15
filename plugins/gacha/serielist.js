@@ -1,8 +1,9 @@
 // ============================================
-// plugins/gacha-serielist.js
+// plugins/gacha-serielist.js (ESTILO PREMIUM)
 // ============================================
 import fs from 'fs';
 import path from 'path';
+import fetch from 'node-fetch';
 
 const handler = async (m, { conn, args }) => {
     const dbPath = path.join(process.cwd(), 'lib', 'characters.json');
@@ -30,31 +31,76 @@ const handler = async (m, { conn, args }) => {
     const end = start + perPage;
     const totalPages = Math.ceil(seriesList.length / perPage);
     
-    let text = `
-╭━━━━━━━━━━━━━━━━╮
-│  📚 *LISTA DE SERIES* 📚
-╰━━━━━━━━━━━━━━━━╯
-
-📊 *Total de series:* ${seriesList.length}
-📄 *Página ${page} de ${totalPages}*
-
-`;
-    
+    // Construir lista
+    let listText = '';
     seriesList.slice(start, end).forEach(([serie, count], i) => {
-        text += `${start + i + 1}. *${serie}* - ${count} personajes\n`;
+        listText += `${start + i + 1}. *${serie}* • ${count} 👤\n`;
     });
     
-    if (totalPages > 1) {
-        text += `\n💡 *Usa /serielist <página> para ver más.*`;
-    }
+    // ========== TEXTO CON ESTILO PREMIUM ==========
+    const txt = `
+> . ﹡ ﹟ 📚 ׄ ⬭ *ᴄᴀᴛᴀ́ʟᴏɢᴏ ᴅᴇ sᴇʀɪᴇs*
+
+*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜📚* ㅤ֢ㅤ⸱ㅤᯭִ*
+
+╭━━━━━━━━━━━━━━━━╮
+│  📚 *ʟɪsᴛᴀ ᴅᴇ sᴇʀɪᴇs* 📚
+╰━━━━━━━━━━━━━━━━╯
+
+┌─⊷ *ᴇsᴛᴀᴅɪ́sᴛɪᴄᴀs*
+│ 📊 *ᴛᴏᴛᴀʟ:* ${seriesList.length}
+│ 📄 *ᴘᴀ́ɢɪɴᴀ:* ${page}/${totalPages}
+└───────────────
+
+${listText}
+
+${totalPages > 1 ? `💡 *Usa /serielist ${page + 1} para ver más*` : ''}`.trim();
+
+    // ========== SISTEMA DE ENVÍO PREMIUM ==========
+    const isSubBot = conn.user?.jid !== global.conn?.user?.jid;
+    const botConfig = conn.subConfig || {};
     
-    m.reply(text);
+    let thumbnail = null;
+    let imageUrl = isSubBot && botConfig.logoUrl ? botConfig.logoUrl 
+        : global.icono || global.banner 
+        || 'https://i.ibb.co/0Q3J9XZ/file.jpg';
+    try {
+        const response = await fetch(imageUrl);
+        if (response.ok) thumbnail = await response.buffer();
+    } catch (e) {}
+
+    try {
+        await conn.sendMessage(m.chat, { 
+            text: txt,
+            contextInfo: {
+                isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                    newsletterJid: global.channelRD?.id || "120363399175402285@newsletter",
+                    serverMessageId: '',
+                    newsletterName: global.channelRD?.name || "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』"
+                },
+                externalAdReply: {
+                    title: `📚 Catálogo de Series`,
+                    body: `${seriesList.length} series disponibles`,
+                    mediaType: 1,
+                    mediaUrl: global.icono,
+                    sourceUrl: global.redes || global.channel,
+                    thumbnail: thumbnail || await (await fetch(global.icono)).buffer(),
+                    showAdAttribution: false,
+                    containsAutoReply: true,
+                    renderLargerThumbnail: true
+                }
+            }
+        }, { quoted: m });
+    } catch (e) {
+        await conn.reply(m.chat, txt, m);
+    }
 };
 
 handler.help = ['serielist', 'slist', 'animelist'];
 handler.tags = ['gacha'];
 handler.command = ['serielist', 'slist', 'animelist'];
 handler.group = true;
-handler.reg = true
+handler.reg = true;
 
 export default handler;

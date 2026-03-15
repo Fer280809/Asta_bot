@@ -1,8 +1,9 @@
 // ============================================
-// plugins/gacha-gachainfo.js
+// plugins/gacha-gachainfo.js (ESTILO PREMIUM)
 // ============================================
 import fs from 'fs';
 import path from 'path';
+import fetch from 'node-fetch';
 
 const handler = async (m, { conn }) => {
     const userId = m.sender;
@@ -37,34 +38,99 @@ const handler = async (m, { conn }) => {
     // Tiempo desde último roll
     const lastRollTime = user.lastRoll ? new Date(user.lastRoll).toLocaleString('es-ES') : 'Nunca';
     
-    const text = `
+    // ========== TEXTO CON ESTILO PREMIUM ==========
+    const txt = `
+> . ﹡ ﹟ 📊 ׄ ⬭ *ᴘᴇʀғɪʟ ɢᴀᴄʜᴀ* @${userId.split('@')[0]}
+
+*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜📊* ㅤ֢ㅤ⸱ㅤᯭִ*
+
 ╭━━━━━━━━━━━━━━━━╮
-│  📊 *INFO DE ${userName.toUpperCase()}* 📊
+│  📊 *${userName.toUpperCase()}* 📊
 ╰━━━━━━━━━━━━━━━━╯
 
-┌─⊷ *ESTADÍSTICAS*
-│ 👤 *Usuario:* ${userName}
-│ 💖 *Personajes:* ${user.harem.length}
-│ ⭐ *Favoritos:* ${user.favorites.length}
-│ 💰 *GachaCoins:* ${user.gachaCoins}
-│ 🏪 *En venta:* ${forSale}
-│ 💎 *Valor total:* ${totalValue}
+┌─⊷ *ᴇsᴛᴀᴅɪ́sᴛɪᴄᴀs*
+│ 👤 *ᴜsᴜᴀʀɪᴏ:* ${userName}
+│ 💖 *ᴘᴇʀsᴏɴᴀᴊᴇs:* ${user.harem.length}
+│ ⭐ *ғᴀᴠᴏʀɪᴛᴏs:* ${user.favorites.length}
+│ 💰 *ɢᴀᴄʜᴀᴄᴏɪɴs:* ${user.gachaCoins}
+│ 🏪 *ᴇɴ ᴠᴇɴᴛᴀ:* ${forSale}
+│ 💎 *ᴠᴀʟᴏʀ ᴛᴏᴛᴀʟ:* ${totalValue}
 └───────────────
 
-┌─⊷ *ACTIVIDAD*
-│ 🎲 *Último roll:* ${lastRollTime}
-│ 🗳️ *Votos dados:* ${Object.keys(user.votes).length}
+┌─⊷ *ᴀᴄᴛɪᴠɪᴅᴀᴅ*
+│ 🎲 *ᴜ́ʟᴛɪᴍᴏ ʀᴏʟʟ:* ${lastRollTime}
+│ 🗳️ *ᴠᴏᴛᴏs ᴅᴀᴅᴏs:* ${Object.keys(user.votes).length}
 └───────────────
 
-💬 *Mensaje de claim:* ${user.claimMessage}`;
+> ## \`ᴍᴇɴsᴀᴊᴇ ᴅᴇ ᴄʟᴀɪᴍ 💬\`
 
-    m.reply(text);
+${user.claimMessage}`.trim();
+
+    // ========== SISTEMA DE ENVÍO PREMIUM ==========
+    const isSubBot = conn.user?.jid !== global.conn?.user?.jid;
+    const botConfig = conn.subConfig || {};
+    
+    // Obtener imagen del personaje favorito o primero del harem
+    let profileImg = null;
+    if (user.favorites.length > 0) {
+        const favChar = user.harem.find(c => c.id === user.favorites[0]);
+        if (favChar?.img?.length > 0) profileImg = favChar.img[0];
+    }
+    if (!profileImg && user.harem.length > 0 && user.harem[0].img?.length > 0) {
+        profileImg = user.harem[0].img[0];
+    }
+    
+    let thumbnail = null;
+    if (profileImg) {
+        try {
+            const response = await fetch(profileImg);
+            if (response.ok) thumbnail = await response.buffer();
+        } catch (e) {}
+    }
+    
+    if (!thumbnail) {
+        let imageUrl = isSubBot && botConfig.logoUrl ? botConfig.logoUrl 
+            : global.icono || global.banner 
+            || 'https://i.ibb.co/0Q3J9XZ/file.jpg';
+        try {
+            const response = await fetch(imageUrl);
+            if (response.ok) thumbnail = await response.buffer();
+        } catch (e) {}
+    }
+
+    try {
+        await conn.sendMessage(m.chat, { 
+            text: txt,
+            contextInfo: {
+                mentionedJid: [userId],
+                isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                    newsletterJid: global.channelRD?.id || "120363399175402285@newsletter",
+                    serverMessageId: '',
+                    newsletterName: global.channelRD?.name || "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』"
+                },
+                externalAdReply: {
+                    title: `📊 Perfil Gacha de ${userName}`,
+                    body: `${user.harem.length} waifus • 💎 ${totalValue} valor total`,
+                    mediaType: 1,
+                    mediaUrl: profileImg || global.icono,
+                    sourceUrl: global.redes || global.channel,
+                    thumbnail: thumbnail || await (await fetch(global.icono)).buffer(),
+                    showAdAttribution: false,
+                    containsAutoReply: true,
+                    renderLargerThumbnail: true
+                }
+            }
+        }, { quoted: m });
+    } catch (e) {
+        await conn.reply(m.chat, txt, m);
+    }
 };
 
 handler.help = ['gachainfo', 'ginfo', 'infogacha'];
 handler.tags = ['gacha'];
 handler.command = ['gachainfo', 'ginfo', 'infogacha'];
 handler.group = true;
-handler.reg = true
+handler.reg = true;
 
 export default handler;

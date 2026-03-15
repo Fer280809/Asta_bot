@@ -1,8 +1,9 @@
 // ============================================
-// plugins/gacha-sell.js
+// plugins/gacha-sell.js (ESTILO PREMIUM)
 // ============================================
 import fs from 'fs';
 import path from 'path';
+import fetch from 'node-fetch';
 
 const handler = async (m, { conn, text }) => {
     const args = text.split(',').map(arg => arg.trim());
@@ -44,13 +45,83 @@ const handler = async (m, { conn, text }) => {
     
     fs.writeFileSync(usersPath, JSON.stringify(users, null, 2), 'utf-8');
     
-    m.reply(`✅ *${users[userId].harem[charIndex].name}* ahora está en venta por *$${price}*`);
+    const char = users[userId].harem[charIndex];
+    
+    // ========== TEXTO CON ESTILO PREMIUM ==========
+    const txt = `
+> . ﹡ ﹟ 🏪 ׄ ⬭ *ᴘᴇʀsᴏɴᴀᴊᴇ ᴇɴ ᴠᴇɴᴛᴀ* @${userId.split('@')[0]}
+
+*ㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜💰* ㅤ֢ㅤ⸱ㅤᯭִ*
+
+╭━━━━━━━━━━━━━━━━╮
+│  🏪 *ᴇɴ ᴠᴇɴᴛᴀ* 🏪
+╰━━━━━━━━━━━━━━━━╯
+
+┌─⊷ *ᴅᴇᴛᴀʟʟᴇs*
+│ 🎴 *ɴᴏᴍʙʀᴇ:* ${char.name}
+│ 📺 *sᴇʀɪᴇ:* ${char.source}
+│ 💎 *ᴠᴀʟᴏʀ:* ${char.value}
+│ 💰 *ᴘʀᴇᴄɪᴏ:* ¥${price}
+└───────────────
+
+> ## \`ᴍᴀʀᴄᴀᴅᴏ ᴇxɪᴛᴏsᴀᴍᴇɴᴛᴇ ✅\`
+
+*ᴜsᴀ /haremshop ᴘᴀʀᴀ ᴠᴇʀ ʟᴀ ᴛɪᴇɴᴅᴀ*`.trim();
+
+    // ========== SISTEMA DE ENVÍO PREMIUM ==========
+    const isSubBot = conn.user?.jid !== global.conn?.user?.jid;
+    const botConfig = conn.subConfig || {};
+    
+    let thumbnail = null;
+    if (char.img && char.img.length > 0) {
+        try {
+            const response = await fetch(char.img[0]);
+            if (response.ok) thumbnail = await response.buffer();
+        } catch (e) {}
+    }
+    
+    if (!thumbnail) {
+        let imageUrl = isSubBot && botConfig.logoUrl ? botConfig.logoUrl 
+            : global.icono || 'https://i.ibb.co/0Q3J9XZ/file.jpg';
+        try {
+            const response = await fetch(imageUrl);
+            if (response.ok) thumbnail = await response.buffer();
+        } catch (e) {}
+    }
+
+    try {
+        await conn.sendMessage(m.chat, { 
+            text: txt,
+            contextInfo: {
+                mentionedJid: [userId],
+                isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                    newsletterJid: global.channelRD?.id || "120363399175402285@newsletter",
+                    serverMessageId: '',
+                    newsletterName: global.channelRD?.name || "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』"
+                },
+                externalAdReply: {
+                    title: `🏪 ${char.name} en Venta`,
+                    body: `Precio: ¥${price} • ${char.source}`,
+                    mediaType: 1,
+                    mediaUrl: char.img?.[0] || global.icono,
+                    sourceUrl: global.redes || global.channel,
+                    thumbnail: thumbnail || await (await fetch(global.icono)).buffer(),
+                    showAdAttribution: false,
+                    containsAutoReply: true,
+                    renderLargerThumbnail: true
+                }
+            }
+        }, { quoted: m });
+    } catch (e) {
+        await conn.reply(m.chat, txt, m);
+    }
 };
 
 handler.help = ['sell', 'vender'];
 handler.tags = ['gacha'];
 handler.command = ['sell', 'vender'];
 handler.group = true;
-handler.reg = true
+handler.reg = true;
 
 export default handler;
